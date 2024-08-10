@@ -48,7 +48,6 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                gap: 1rem;
                 height: 100%;
 
                 &[data-pos='center']{
@@ -105,55 +104,5 @@
             border-bottom-right-radius: 1.6rem;
         }
 
-        &__detail_container{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 1rem;
-        
-        .key{
-        font-size: 1.2rem;
-        font-weight: 400;
-        color: $col-grey-1;
-    }
-        
-        .value{
-            font-size: 1.5rem;
-            font-weight: 500;
-            color: $col-grey-1;
-
-            &[data-status="completed"]{
-                background-color: #ECFDF3;
-                color: #027A48;
-            }
-            &[data-status="ongoing"]{
-                background-color:#F0F9FF;
-                color:#026AA2;
-            }
-            &[data-status="declined"]{
-                background-color: #FEF3F2;
-                color: #B42318;
-            }
-        }
-
-        .rental{
-            background-color: #F2F4F7;
-            color: #344054;
-        
-
-        }
-}
-
-&__btn_container{
-    width: 100%;
-    padding: 0 1rem;
-
-    .btn{
-        width: 100%;
-        margin-top: 1rem;
-        padding: 1.6rem;
-    }
-}
 }
 }

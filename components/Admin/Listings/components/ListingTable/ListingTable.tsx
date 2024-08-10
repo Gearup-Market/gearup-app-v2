@@ -166,23 +166,6 @@ const ListingTable = () => {
 				</div>
 			),
 		},
-
-		/* {
-			...sharedColDef,
-
-			field: 'availability',
-			cellClassName: styles.table_cell,
-			headerClassName: styles.table_header,
-			headerName: 'Availability',
-			minWidth: 200,
-			renderCell: ({ value }) => (
-				<div className={styles.container__availability_container}>
-					<span className={styles.container__availability_container__availability} data-status={value?.toLowerCase()}>
-						{value}
-					</span>
-				</div>
-			),
-		}, */
 		{
 			...sharedColDef,
 
@@ -272,13 +255,11 @@ const ListingTable = () => {
 
 				</>
 			) : (
-				<>
-					<div className={styles.container__grid}>
-						{rows.map(item => (
-							<Link key={item.id} href={`/admin/listings/${item.id}`}><ListingCard key={item.id} props={item} /></Link>
-						))}
-					</div>
-				</>
+				<div className={styles.container__grid}>
+					{rows.map(item => (
+						<Link key={item.id} href={`/admin/listings/${item.id}`}><ListingCard key={item.id} props={item} /></Link>
+					))}
+				</div>
 			)}
 			<Pagination
 				currentPage={1}
