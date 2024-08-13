@@ -286,7 +286,7 @@ export const navLinks: NavLink[] = [
 	},
 	{
 		label: "blog",
-		href: "/",
+		href: "/blog",
 		icon: "/svgs/icon-courses.svg",
 		external: true,
 	},

@@ -9,6 +9,8 @@ import Listings from "./listings/Listings";
 import Platform from "./platform/Platform";
 import Reviews from "./reviews/Reviews";
 import ScrollComponent from "./scrollComponent/ScrollComponent";
+import BlogComponent from "./blog/Blog";
+import BlogDetailsComponent from "./blog/blogDetails/blogDetails";
 
 export {
 	Hero,
@@ -22,4 +24,6 @@ export {
 	Reviews,
 	ScrollComponent,
 	Faq,
+	BlogComponent,
+	BlogDetailsComponent,
 };

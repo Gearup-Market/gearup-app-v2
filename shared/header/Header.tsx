@@ -81,145 +81,145 @@ const Header = () => {
 								<li
 									key={index}
 									className={styles.header_navLink}
-									// onClick={() => setIsActive(!isActive)}
-									// data-active={isActive}
+								// onClick={() => setIsActive(!isActive)}
+								// data-active={isActive}
 								>
-									{/* {link.external ? (
-										<a
-											href={link.href}
-											rel="noreferrer"
-											target="_blank"
-										>
-											{link.label}
-										</a>
-									) : (
-										<Link href={link.href}>{link.label}</Link>
-									)} */}
-									<div className={styles.small_row}>
-										<div className={styles.link_icon}>
-											<Image
-												src={link.icon}
-												fill
-												alt=""
-												sizes="100vw"
-											/>
-										</div>
-										<p>{link.label}</p>
-									</div>
-									{link.subMenu && (
-										<div className={styles.mob_chevron}>
-											<Image
-												src="/svgs/chevron.svg"
-												fill
-												alt=""
-												sizes="100vw"
-											/>
-										</div>
-									)}
-									{link.subMenu && (
-										<div
-											className={styles.subMenu_container}
-											data-active={
-												link.label === "sell gears" ||
-												link.label === "rent out"
-											}
-										>
-											<div className={styles.subMenu}>
-												<div className={styles.container}>
-													{link.title && (
-														<div
-															className={
-																styles.subMenu_title
-															}
-														>
-															<h1>{link.title}</h1>
-															<p>{link.description}</p>
-														</div>
-													)}
-													{link.button && (
-														<Button
-															className={styles.link_button}
-															onClick={() =>
-																router.push(link.href)
-															}
-														>
-															<div
-																className={
-																	styles.icon_plus
-																}
-															>
+
+
+									{
+										link.label === "blog" ?
+											<Link href={link.href}>
+												{link.label}
+											</Link> :
+											<>
+												<div className={styles.small_row}>
+													<div className={styles.link_icon}>
+														<Image
+															src={link.icon}
+															fill
+															alt=""
+															sizes="100vw"
+														/>
+													</div>
+													<p>{link.label}</p>
+												</div>
+												{link.subMenu && (
+													<div className={styles.mob_chevron}>
+														<Image
+															src="/svgs/chevron.svg"
+															fill
+															alt=""
+															sizes="100vw"
+														/>
+													</div>
+												)}
+												{link.subMenu && (
+													<div
+														className={styles.subMenu_container}
+														data-active={
+															link.label === "sell gears" ||
+															link.label === "rent out"
+														}
+													>
+														<div className={styles.subMenu}>
+															<div className={styles.container}>
+																{link.title && (
+																	<div
+																		className={
+																			styles.subMenu_title
+																		}
+																	>
+																		<h1>{link.title}</h1>
+																		<p>{link.description}</p>
+																	</div>
+																)}
+																{link.button && (
+																	<Button
+																		className={styles.link_button}
+																		onClick={() =>
+																			router.push(link.href)
+																		}
+																	>
+																		<div
+																			className={
+																				styles.icon_plus
+																			}
+																		>
+																			<Image
+																				src="/svgs/icon-plus.svg"
+																				alt=""
+																				fill
+																				sizes="100vw"
+																			/>
+																		</div>
+																		<p>{link.button}</p>
+																	</Button>
+																)}
+																{link.subMenu.map(
+																	(
+																		subMenu: NavLinkSub,
+																		index: number
+																	) => (
+																		<ul
+																			className={
+																				styles.subMenu_navlist
+																			}
+																			key={index}
+																		>
+																			<h2>{subMenu.label}</h2>
+																			{subMenu.menu.map(
+																				(
+																					menu: NavLinkMenu,
+																					index: number
+																				) => (
+																					<li
+																						key={index}
+																						className={
+																							styles.subMenu_link
+																						}
+																					>
+																						{menu.icon && (
+																							<div
+																								className={
+																									styles.subMenu_icon
+																								}
+																							>
+																								<Image
+																									src={
+																										menu.icon
+																									}
+																									fill
+																									alt=""
+																									sizes="100vw"
+																								/>
+																							</div>
+																						)}
+																						<p>
+																							{
+																								menu.label
+																							}
+																						</p>
+																					</li>
+																				)
+																			)}
+																		</ul>
+																	)
+																)}
+															</div>
+															<div className={styles.youtube_banner}>
 																<Image
-																	src="/svgs/icon-plus.svg"
-																	alt=""
+																	src="/svgs/youtube-banner.svg"
 																	fill
+																	alt="youtube"
 																	sizes="100vw"
 																/>
 															</div>
-															<p>{link.button}</p>
-														</Button>
-													)}
-													{link.subMenu.map(
-														(
-															subMenu: NavLinkSub,
-															index: number
-														) => (
-															<ul
-																className={
-																	styles.subMenu_navlist
-																}
-																key={index}
-															>
-																<h2>{subMenu.label}</h2>
-																{subMenu.menu.map(
-																	(
-																		menu: NavLinkMenu,
-																		index: number
-																	) => (
-																		<li
-																			key={index}
-																			className={
-																				styles.subMenu_link
-																			}
-																		>
-																			{menu.icon && (
-																				<div
-																					className={
-																						styles.subMenu_icon
-																					}
-																				>
-																					<Image
-																						src={
-																							menu.icon
-																						}
-																						fill
-																						alt=""
-																						sizes="100vw"
-																					/>
-																				</div>
-																			)}
-																			<p>
-																				{
-																					menu.label
-																				}
-																			</p>
-																		</li>
-																	)
-																)}
-															</ul>
-														)
-													)}
-												</div>
-												<div className={styles.youtube_banner}>
-													<Image
-														src="/svgs/youtube-banner.svg"
-														fill
-														alt="youtube"
-														sizes="100vw"
-													/>
-												</div>
-											</div>
-										</div>
-									)}
+														</div>
+													</div>
+												)}
+											</>
+									}
+
 								</li>
 							);
 						})}
