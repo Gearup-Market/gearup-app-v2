@@ -457,11 +457,7 @@ export const allCategories = [
 	},
 ];
 
-<<<<<<< HEAD
 export const _category = [
-=======
-const _category = [
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	{
 		id: 1,
 		name: "Camera",

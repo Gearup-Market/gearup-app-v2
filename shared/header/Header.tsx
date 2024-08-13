@@ -9,12 +9,9 @@ import Image from "next/image";
 import { NavLink, NavLinkMenu, NavLinkSub } from "@/interfaces";
 import { usePathname, useRouter } from "next/navigation";
 import { useGlobalContext } from "@/contexts/AppContext";
-<<<<<<< HEAD
 import { AppState, useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateUser } from "@/store/slices/userSlice";
 import { clearNewListing } from "@/store/slices/addListingSlice";
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 
 enum Scroll {
 	Idle = "idle",
@@ -23,7 +20,6 @@ enum Scroll {
 }
 
 const Header = () => {
-<<<<<<< HEAD
 	const { heroHeight, isLoggedIn }: any = useGlobalContext();
 	const [collapsed, setCollapsed] = useState<boolean>(true);
 	const [scroll, setScroll] = useState<Scroll>(Scroll.Idle);
@@ -40,19 +36,6 @@ const Header = () => {
 		const scrollCheck = () => {
 			const currentScrollY = window.scrollY;
 
-=======
-	const { heroHeight }: any = useGlobalContext();
-	const [collapsed, setCollapsed] = useState<boolean>(true);
-	const [scroll, setScroll] = useState<Scroll>(Scroll.Idle);
-	const headerRef: any = useRef(null);
-	const router = useRouter();
-	const pathName = usePathname();
-	const homePath = pathName === "/";
-	useEffect(() => {
-		const headerHeight: any = headerRef.current?.offsetHeight;
-		const scrollCheck = () => {
-			const currentScrollY = window.scrollY;
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			if (homePath) {
 				if (currentScrollY > headerHeight) {
 					setScroll(Scroll.InitialScroll);
@@ -93,16 +76,11 @@ const Header = () => {
 				<nav className={styles.header_nav}>
 					<ul className={styles.header_navList}>
 						{navLinks.map((link: NavLink, index: number) => {
-<<<<<<< HEAD
 							// const [isActive, setIsActive] = useState<boolean>(false);
-=======
-							const [isActive, setIsActive] = useState<boolean>(false);
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 							return (
 								<li
 									key={index}
 									className={styles.header_navLink}
-<<<<<<< HEAD
 								// onClick={() => setIsActive(!isActive)}
 								// data-active={isActive}
 								>
@@ -242,147 +220,6 @@ const Header = () => {
 											</>
 									}
 
-=======
-									onClick={() => setIsActive(!isActive)}
-									data-active={isActive}
-								>
-									{/* {link.external ? (
-										<a
-											href={link.href}
-											rel="noreferrer"
-											target="_blank"
-										>
-											{link.label}
-										</a>
-									) : (
-										<Link href={link.href}>{link.label}</Link>
-									)} */}
-									<div className={styles.small_row}>
-										<div className={styles.link_icon}>
-											<Image
-												src={link.icon}
-												fill
-												alt=""
-												sizes="100vw"
-											/>
-										</div>
-										<p>{link.label}</p>
-									</div>
-									{link.subMenu && (
-										<div className={styles.mob_chevron}>
-											<Image
-												src="/svgs/chevron.svg"
-												fill
-												alt=""
-												sizes="100vw"
-											/>
-										</div>
-									)}
-									{link.subMenu && (
-										<div
-											className={styles.subMenu_container}
-											data-active={
-												link.label === "sell gears" ||
-												link.label === "rent out"
-											}
-										>
-											<div className={styles.subMenu}>
-												<div className={styles.container}>
-													{link.title && (
-														<div
-															className={
-																styles.subMenu_title
-															}
-														>
-															<h1>{link.title}</h1>
-															<p>{link.description}</p>
-														</div>
-													)}
-													{link.button && (
-														<Button
-															className={styles.link_button}
-															onClick={() =>
-																router.push(link.href)
-															}
-														>
-															<div
-																className={
-																	styles.icon_plus
-																}
-															>
-																<Image
-																	src="/svgs/icon-plus.svg"
-																	alt=""
-																	fill
-																	sizes="100vw"
-																/>
-															</div>
-															<p>{link.button}</p>
-														</Button>
-													)}
-													{link.subMenu.map(
-														(
-															subMenu: NavLinkSub,
-															index: number
-														) => (
-															<ul
-																className={
-																	styles.subMenu_navlist
-																}
-																key={index}
-															>
-																<h2>{subMenu.label}</h2>
-																{subMenu.menu.map(
-																	(
-																		menu: NavLinkMenu,
-																		index: number
-																	) => (
-																		<li
-																			key={index}
-																			className={
-																				styles.subMenu_link
-																			}
-																		>
-																			{menu.icon && (
-																				<div
-																					className={
-																						styles.subMenu_icon
-																					}
-																				>
-																					<Image
-																						src={
-																							menu.icon
-																						}
-																						fill
-																						alt=""
-																						sizes="100vw"
-																					/>
-																				</div>
-																			)}
-																			<p>
-																				{
-																					menu.label
-																				}
-																			</p>
-																		</li>
-																	)
-																)}
-															</ul>
-														)
-													)}
-												</div>
-												<div className={styles.youtube_banner}>
-													<Image
-														src="/svgs/youtube-banner.svg"
-														fill
-														alt="youtube"
-														sizes="100vw"
-													/>
-												</div>
-											</div>
-										</div>
-									)}
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 								</li>
 							);
 						})}
@@ -417,7 +254,6 @@ const Header = () => {
 							/>
 						</div>
 					</Button>
-<<<<<<< HEAD
 					{user.isAuthenticated ? (
 						<Link className={styles.user_image} href="/admin/dashboard">
 							<Image src="/images/user.png" alt="" fill />
@@ -435,14 +271,6 @@ const Header = () => {
 							</Button>
 						</>
 					)}
-=======
-					<Button buttonType="transparent" className={styles.trans_button}>
-						<Link href={"/login"}>Login</Link>
-					</Button>
-					<Button className={styles.button}>
-						<Link href={"/sign-up"}>Sign Up</Link>
-					</Button>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 				</div>
 			</div>
 			<div className={styles.mob_buttons}>

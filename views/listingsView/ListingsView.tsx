@@ -3,18 +3,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./ListingsView.module.scss";
 import { Listings } from "@/interfaces";
-<<<<<<< HEAD
 import { Button, CustomBreadCrumb, Listing, Pagination } from "@/shared";
-=======
-import { Button, Listing, Pagination } from "@/shared";
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 import { usePathname, useRouter } from "next/navigation";
 import { BreadCrumbSelect, Filter } from "@/components/listings";
 import gsap from "gsap";
 import { useGlobalContext } from "@/contexts/AppContext";
 import { PageLoader } from "@/shared/loaders";
 import { useFetch } from "@/hooks";
-<<<<<<< HEAD
 import { useSearchParams } from "next/navigation";
 import { AppState, useAppSelector } from "@/store/configureStore";
 const ListingsView = () => {
@@ -25,14 +20,6 @@ const ListingsView = () => {
 	const pagePathName = pathName.split("/")[1];
 	const search = useSearchParams();
 	const category = search.get("category");
-=======
-
-const ListingsView = () => {
-	const { listings, setListings }: any = useGlobalContext();
-	const pathName = usePathname();
-	const router = useRouter();
-	const pagePathName = pathName.split("/")[1];
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 
 	const [hideFilters, setHideFilters] = useState<boolean>(false);
 	// const [listings, setListings] = useState<any[]>([]);
@@ -41,10 +28,7 @@ const ListingsView = () => {
 	const [showOnMaps, setShowOnMaps] = useState<boolean>(false);
 	const pageSize: number = 12;
 	const elementRef: any = useRef(null);
-<<<<<<< HEAD
 	console.log(listings);
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 
 	const checkActive = (url: string) => {
 		let isActive = url === pathName;
@@ -137,7 +121,6 @@ const ListingsView = () => {
 	// }, [hideFilters]);
 	return (
 		<section className={styles.section} data-hidden={hideFilters} ref={elementRef}>
-<<<<<<< HEAD
 			<div className={styles.breadcrumb_container}>
 				{!!category && <CustomBreadCrumb path1="categories" path2="gears" />}
 				<BreadCrumbSelect
@@ -151,9 +134,6 @@ const ListingsView = () => {
 					</p>
 				)}
 			</div>
-=======
-			{/* <BreadCrumbSelect className={styles.desk_breadcrumb} isMobile={isMobile} /> */}
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			<div className={styles.section_grid}>
 				<Filter
 					hideFilters={hideFilters}

@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import styles from "./NewListingViews.module.scss";
-<<<<<<< HEAD
 import { Button, DetailContainer, Logo, Select } from "@/shared";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,15 +12,6 @@ import { ListingType } from "@/components/newListing";
 import { ImageSlider } from "@/components/listing";
 import { formatNum } from "@/utils";
 import { addListing } from "@/store/slices/listingsSlice";
-=======
-import { Button, Logo, Select } from "@/shared";
-import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "@/store/configureStore";
-import { updateNewListing } from "@/store/slices/addListingSlice";
-import { useRouter } from "next/navigation";
-import { ListingType } from "@/components/newListing";
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 
 const SummaryView = () => {
 	const router = useRouter();
@@ -36,12 +26,8 @@ const SummaryView = () => {
 	const nextPage = () => {
 		const newListingData = {};
 		dispatch(updateNewListing(newListingData));
-<<<<<<< HEAD
 		dispatch(addListing(newListing));
 		router.push("/");
-=======
-		router.push("/new-listing/pricing");
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	};
 
 	const handleToggle = (title: string) => {
@@ -62,22 +48,11 @@ const SummaryView = () => {
 					<Logo type="dark" />
 					<div className={styles.steps}>
 						<div className={styles.text}>
-<<<<<<< HEAD
 							<p>Step 6 of 6 : Summary</p>
 						</div>
 					</div>
 				</div>
 				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
-=======
-							<p>Step 4 of 5 : Products</p>
-						</div>
-					</div>
-				</div>
-				<div
-					className={styles.small_row}
-					style={{ gap: "0.8rem", cursor: "pointer" }}
-				>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -86,11 +61,7 @@ const SummaryView = () => {
 						<span></span>
 					</div>
 				</div>
-<<<<<<< HEAD
 				<span style={{ width: "100%" }}></span>
-=======
-				<span style={{ width: "80%" }}></span>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			</div>
 			<div className={styles.body}>
 				<div className={styles.details}>
@@ -98,7 +69,6 @@ const SummaryView = () => {
 						<h1>Review & Submit</h1>
 						<p>Review your listing, hit submit, and you’re done!</p>
 					</div>
-<<<<<<< HEAD
 					<div className={styles.container}>
 						<ImageSlider images={newListing.images} />
 						<div className={styles.block}>
@@ -179,9 +149,6 @@ const SummaryView = () => {
 							/>
 						</div>
 					</div>
-=======
-					<div className={styles.container}></div>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 				</div>
 				<div className={styles.image_container}>
 					<div className={styles.image}>
@@ -195,24 +162,14 @@ const SummaryView = () => {
 					className={styles.button}
 					onClick={() => router.back()}
 				>
-<<<<<<< HEAD
 					Edit
-=======
-					Back
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 				</Button>
 				<Button
 					className={styles.button}
 					onClick={nextPage}
-<<<<<<< HEAD
-					// disabled={disabledButton}
+				// disabled={disabledButton}
 				>
 					Submit
-=======
-					disabled={disabledButton}
-				>
-					Continue
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 				</Button>
 			</div>
 		</div>

@@ -15,12 +15,9 @@ import ImagesView from "./newListingViews/ImagesView";
 import ListingTypeView from "./newListingViews/ListingTypeView";
 import PricingView from "./newListingViews/PricingView";
 import SummaryView from "./newListingViews/SummaryView";
-<<<<<<< HEAD
 import CourseListingView from "./CourseListingView/CourseListingView";
 import BlogView from "./BlogView/BlogView";
 import BlogDetailsView from "./BlogDetailsView/BlogDetailsView";
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 
 export {
 	HomeView,
@@ -40,10 +37,7 @@ export {
 	ListingTypeView,
 	PricingView,
 	SummaryView,
-<<<<<<< HEAD
 	CourseListingView,
 	BlogView,
 	BlogDetailsView,
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 };

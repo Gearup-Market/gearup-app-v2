@@ -25,14 +25,9 @@
 	}
 	.body {
 		@include grid(1fr 67.7rem, 2.4rem);
-<<<<<<< HEAD
 		max-height: 75vh;
 		border-bottom: 0.1rem solid #dedfe0;
 		overflow: hidden;
-=======
-		min-height: 77vh;
-		border-bottom: 0.1rem solid #dedfe0;
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 		.image_container {
 			background-color: #fff7e7;
 			height: 100%;
@@ -54,13 +49,8 @@
 			width: 62.8rem;
 			height: 6rem;
 			padding: 0.4rem;
-<<<<<<< HEAD
 			margin-top: 1rem;
 			margin-bottom: 3rem;
-=======
-			margin-top: 6.4rem;
-			margin-left: 8rem;
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			background-color: #f6f6f6;
 			.button_container {
 				padding: 0;
@@ -103,7 +93,6 @@
 				.items {
 					margin-bottom: 2.4rem;
 				}
-<<<<<<< HEAD
 				.row {
 					@include flex(flex-start, center);
 					gap: 1.6rem;
@@ -114,8 +103,6 @@
 						cursor: default;
 					}
 				}
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 				.select_row {
 					@include grid(repeat(2, 1fr), 2rem);
 					margin-block: 1.6rem;
@@ -212,15 +199,12 @@
 				padding: 1.6rem 4rem;
 			}
 		}
-<<<<<<< HEAD
 		.divider {
 			width: 100%;
 			height: 0.1rem;
 			background-color: #dedfe0;
 			margin-block: 2.4rem;
 		}
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	}
 	.single_footer {
 		width: 100%;
@@ -247,10 +231,7 @@
 		position: relative;
 		transition: all 0.3s linear;
 		cursor: pointer;
-<<<<<<< HEAD
 		@extend %center;
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 		span {
 			height: 1.4rem;
 			width: 0.2rem;
@@ -294,12 +275,9 @@
 			@extend %title-34;
 			margin-bottom: 0.8rem;
 		}
-<<<<<<< HEAD
 		h2 {
 			@extend %title-24;
 		}
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 		h3 {
 			@extend %text-18;
 			font-weight: 700;

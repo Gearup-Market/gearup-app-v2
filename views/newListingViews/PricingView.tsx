@@ -38,10 +38,6 @@ const PricingView = () => {
 		rent: false,
 		sell: false,
 	});
-<<<<<<< HEAD
-=======
-	console.log(newListing);
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	const nextPage = () => {
 		// const newListingData = { condition, type };
 		const newListingData = {
@@ -81,11 +77,7 @@ const PricingView = () => {
 		setChecked(prev => ({ ...prev, [title]: !isIncluded }));
 	};
 
-<<<<<<< HEAD
 	const disabledButton = !newListing.type.length;
-=======
-	const disabledButton = !type.length;
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>
@@ -93,22 +85,11 @@ const PricingView = () => {
 					<Logo type="dark" />
 					<div className={styles.steps}>
 						<div className={styles.text}>
-<<<<<<< HEAD
 							<p>Step 5 of 6 : Pricing</p>
 						</div>
 					</div>
 				</div>
 				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
-=======
-							<p>Step 5 of 5 : Products</p>
-						</div>
-					</div>
-				</div>
-				<div
-					className={styles.small_row}
-					style={{ gap: "0.8rem", cursor: "pointer" }}
-				>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -117,20 +98,12 @@ const PricingView = () => {
 						<span></span>
 					</div>
 				</div>
-<<<<<<< HEAD
 				<span style={{ width: "83.5%" }}></span>
-=======
-				<span style={{ width: "80%" }}></span>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			</div>
 			<div className={styles.body}>
 				<>
 					{hasBoth && (
-<<<<<<< HEAD
 						<div className={styles.details}>
-=======
-						<div>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 							<div className={styles.nav_button}>
 								<Button
 									buttonType="transparent"
@@ -203,13 +176,9 @@ const PricingView = () => {
 export default PricingView;
 
 const BuyView = ({ amount, setAmount }: any) => {
-	const toggle = () => {};
+	const toggle = () => { };
 	return (
-<<<<<<< HEAD
 		<div>
-=======
-		<div className={styles.details}>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			<div className={styles.text}>
 				<h1>Set A Price And Optional Offers</h1>
 				<p>
@@ -301,14 +270,10 @@ const RentView = ({ oneDayRent, setOneDayRent }: any) => {
 		enabled: false,
 	});
 	const [totalReplacementValue, setTotalReplacementValue] = useState<number>(0);
-	const toggle = () => {};
+	const toggle = () => { };
 
 	return (
-<<<<<<< HEAD
 		<div>
-=======
-		<div className={styles.details}>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			<div className={styles.text}>
 				<h1>Set A Daily Price And Optional Offers</h1>
 				<p>

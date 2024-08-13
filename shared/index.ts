@@ -21,7 +21,6 @@ import AdvanceSelect from "./selects/advancedSelect/AdvancedSelect";
 import MultipleSelect from "./selects/multipleSelect/MultipleSelect";
 import Select from "./selects/select/Select";
 import Title from "./title/Title";
-<<<<<<< HEAD
 import PieChartComponent from "./Charts/PieChart/PieChart";
 import ToggleSwitch from "./Switch/Switch";
 import RadioInput from "./Radio/Radio";
@@ -37,8 +36,6 @@ import CustomImage from "./customImage/CustomImage";
 import MobileCard from "./MobileCard/MobileCard";
 import MobileCardContainer from "./MobileCardContainer/MobileCardContainer";
 import AddBtn from "./addBtn/AddBtn";
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 
 export {
 	Header,
@@ -64,7 +61,6 @@ export {
 	TextArea,
 	MultipleSelect,
 	RangeInput,
-<<<<<<< HEAD
 	PieChartComponent,
 	ToggleSwitch,
 	RadioInput,
@@ -80,6 +76,4 @@ export {
 	MobileCard,
 	MobileCardContainer,
 	AddBtn,
-=======
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 };

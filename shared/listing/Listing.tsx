@@ -56,33 +56,21 @@ const Listing = ({ props, className }: Props) => {
 				<div className={styles.small_row}>
 					<div className={styles.avatar}>
 						<Image
-<<<<<<< HEAD
 							src={props.author?.image}
-=======
-							src={props.author.image}
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 							alt={props.user}
 							fill
 							sizes="100vw"
 						/>
 					</div>
 					<div className={styles.text} style={{ marginBottom: 0 }}>
-<<<<<<< HEAD
-						<p>{props.author?.name}</p>
-=======
 						<p>{props.author.name}</p>
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
-					</div>
-					<div className={styles.verified}>
-						<Image src="/svgs/icon-verify.svg" alt="" fill sizes="100vw" />
 					</div>
 				</div>
 				<div className={styles.small_row}>
 					<div className={styles.verified}>
 						<Image
-							src={`/svgs/icon-${
-								props.reviews ? "filled-star" : "star"
-							}.svg`}
+							src={`/svgs/icon-${props.reviews ? "filled-star" : "star"
+								}.svg`}
 							alt=""
 							fill
 							sizes="100vw"

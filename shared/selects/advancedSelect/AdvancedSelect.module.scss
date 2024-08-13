@@ -81,11 +81,7 @@
 			border-radius: 0.8rem;
 			box-shadow: 0px 0.2rem 3rem 0px rgba(18, 14, 6, 0.08);
 			z-index: 2;
-<<<<<<< HEAD
 			max-height: 18rem;
-=======
-			max-height: 30rem;
->>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			overflow-y: scroll;
 			@include noScrollBar;
 			@include screenMax("tablet") {
