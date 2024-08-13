@@ -53,11 +53,22 @@ const ImagesView = () => {
 					<Logo type="dark" />
 					<div className={styles.steps}>
 						<div className={styles.text}>
+<<<<<<< HEAD
 							<p>Step 3 of 6 : Pictures</p>
 						</div>
 					</div>
 				</div>
 				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+=======
+							<p>Step 3 of 5 : Products</p>
+						</div>
+					</div>
+				</div>
+				<div
+					className={styles.small_row}
+					style={{ gap: "0.8rem", cursor: "pointer" }}
+				>
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -66,7 +77,11 @@ const ImagesView = () => {
 						<span></span>
 					</div>
 				</div>
+<<<<<<< HEAD
 				<span style={{ width: "50.1%" }}></span>
+=======
+				<span style={{ width: "60%" }}></span>
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			</div>
 			<div className={styles.body}>
 				<div className={styles.details}>
@@ -83,7 +98,11 @@ const ImagesView = () => {
 								type="file"
 								className={styles.file_input}
 								onChange={handleIconChange}
+<<<<<<< HEAD
 								accept="image/*"
+=======
+								accept="image/png, image/jpeg"
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 								// required
 							/>
 							<div className={styles.add_image}>

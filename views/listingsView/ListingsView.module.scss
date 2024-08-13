@@ -3,6 +3,7 @@
 .section {
 	padding-top: 13.8rem !important;
 	background-color: #fbfbfd;
+<<<<<<< HEAD
 
 	.breadcrumb_container{
 		margin-bottom: 2rem;
@@ -13,6 +14,8 @@
 			font-weight: 700;
 		}
 	}
+=======
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	.section_grid {
 		// @include grid(30.2rem 1fr);
 		@include flex();

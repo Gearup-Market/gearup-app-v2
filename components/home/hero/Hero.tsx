@@ -5,6 +5,7 @@ import gsap from "gsap";
 import styles from "./Hero.module.scss";
 import Image from "next/image";
 import { SearchBox } from "@/shared";
+<<<<<<< HEAD
 import TextTransition, { presets } from "react-text-transition";
 import { useGlobalContext } from "@/contexts/AppContext";
 
@@ -44,6 +45,37 @@ const Hero = () => {
 
 	// 	return () => clearInterval(intervalId);
 	// }, [currentWordIndex]);
+=======
+import { useGlobalContext } from "@/contexts/AppContext";
+
+const words = ["Gears", "Studio Spaces"];
+const Hero = () => {
+	const { setHeroHeight }: any = useGlobalContext();
+	const heroRef: any = useRef(null);
+	const [currentWordIndex, setCurrentWordIndex] = useState<number>(0);
+
+	useEffect(() => {
+		const animateNextWord = () => {
+			const wordElement = document.getElementById("animated-word");
+
+			gsap.to(wordElement, {
+				duration: 1,
+				y: "-100%",
+				ease: "ease.out",
+				onComplete: () => {
+					setCurrentWordIndex(prevIndex =>
+						prevIndex === words.length - 1 ? 0 : prevIndex + 1
+					);
+					gsap.to(wordElement, { duration: 1, y: "0%", ease: "ease.out" });
+				},
+			});
+		};
+
+		const intervalId = setInterval(animateNextWord, 3000);
+
+		return () => clearInterval(intervalId);
+	}, [currentWordIndex]);
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	useEffect(() => {
 		const heroHeight = heroRef.current?.offsetHeight;
 		setHeroHeight(heroHeight);
@@ -54,12 +86,16 @@ const Hero = () => {
 				<div className={styles.text}>
 					<h1>
 						The Marketplace For African Creators to Rent, Buy & Sell{" "}
+<<<<<<< HEAD
 						<TextTransition
 							springConfig={presets.wobbly}
 							className={styles.cta_text}
 						>
 							{words[index % words.length]}
 						</TextTransition>
+=======
+						<span id="animated-word">{words[currentWordIndex]}</span>
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 					</h1>
 					<p>
 						Rent, buy, or sell gears with ease within your country. Our secure

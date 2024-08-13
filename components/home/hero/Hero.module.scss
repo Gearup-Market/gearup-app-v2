@@ -47,6 +47,7 @@
 			color: $col-grey-500;
 		}
 	}
+<<<<<<< HEAD
 	.cta_text {
 		div {
 			@extend %title-56;
@@ -57,6 +58,8 @@
 			text-align: center;
 		}
 	}
+=======
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	.row {
 		@include flex();
 	}

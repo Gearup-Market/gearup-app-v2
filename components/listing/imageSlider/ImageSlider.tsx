@@ -11,6 +11,7 @@ import "swiper/css/thumbs";
 
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { useGlobalContext } from "@/contexts/AppContext";
+<<<<<<< HEAD
 import { Button, CustomImage } from "@/shared";
 
 const imageList = [
@@ -43,6 +44,35 @@ const ImageSlider = ({ images }: ImageProps) => {
 	const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 	const [slidesToShow, setSlidesToShow] = useState<number>(5);
 	const [imageArr, setImageArr] = useState<string[]>(images || imageList);
+=======
+import { Button } from "@/shared";
+
+const images = [
+	"camera",
+	"audio",
+	"cinematography",
+	"drone",
+	"gimbal",
+	"grip",
+	"lense",
+	"guitar",
+	"video",
+	"camera",
+	"audio",
+	"cinematography",
+	"drone",
+	"gimbal",
+	"grip",
+	"lense",
+	"guitar",
+	"video",
+];
+
+const ImageSlider = () => {
+	const { isMobile } = useGlobalContext();
+	const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+	const [slidesToShow, setSlidesToShow] = useState<number>(5);
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	useLayoutEffect(() => {
 		if (isMobile) {
 			setSlidesToShow(5);
@@ -58,10 +88,22 @@ const ImageSlider = ({ images }: ImageProps) => {
 				thumbs={{ swiper: thumbsSwiper }}
 				modules={[FreeMode, Navigation, Thumbs]}
 			>
+<<<<<<< HEAD
 				{imageArr.map((image: any, index: number) => (
 					<SwiperSlide key={index}>
 						<div className={styles.slide}>
 							<CustomImage src={image} alt="" fill sizes="100vw" />
+=======
+				{images.map((image: any, index: number) => (
+					<SwiperSlide key={index}>
+						<div className={styles.slide}>
+							<Image
+								src={`/images/${image}.png`}
+								alt=""
+								fill
+								sizes="100vw"
+							/>
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 							<div className={styles.button_container}>
 								{/* {props.forSale && <Button className={styles.button}>Buy</Button>}
 					{props.forRent && <Button className={styles.button}>Rent</Button>} */}
@@ -80,6 +122,7 @@ const ImageSlider = ({ images }: ImageProps) => {
 				modules={[FreeMode, Navigation, Thumbs]}
 				className="listing-smaller-slide"
 			>
+<<<<<<< HEAD
 				{imageArr.slice(0, slidesToShow).map((image: any, index: number) => (
 					<SwiperSlide key={index}>
 						<div className={styles.smaller_slide}>
@@ -91,6 +134,24 @@ const ImageSlider = ({ images }: ImageProps) => {
 										onClick={() => setSlidesToShow(imageArr.length)}
 									>
 										<p>{imageArr.length - slidesToShow} more</p>
+=======
+				{images.slice(0, slidesToShow).map((image: any, index: number) => (
+					<SwiperSlide key={index}>
+						<div className={styles.smaller_slide}>
+							<Image
+								src={`/images/${image}.png`}
+								alt=""
+								fill
+								sizes="100vw"
+							/>
+							{images.length !== slidesToShow &&
+								index === slidesToShow - 1 && (
+									<div
+										className={styles.slide_more}
+										onClick={() => setSlidesToShow(images.length)}
+									>
+										<p>{images.length - slidesToShow} more</p>
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 									</div>
 								)}
 						</div>

@@ -53,8 +53,11 @@ $col-yellow-700: #fef9ec;
 
 // Grey
 $col-grey-1: #121212;
+<<<<<<< HEAD
 $col-grey-50: #f8fafc;
 $col-grey-100: #f3f4f6;
+=======
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 $col-grey-200: #eaecf0;
 $col-grey-300: #d0d5dd;
 $col-grey-400: #444444;
@@ -96,6 +99,7 @@ $col-success-700: #e8f1df;
 $col-success-800: #f0f5ea;
 $col-success-900: #e0f1cc;
 
+<<<<<<< HEAD
 // dashboard
 $col-border: #DEDFE0;
 $col-profile-container-bg: #FBFBFD;
@@ -111,17 +115,23 @@ $col-bg:#FbFbFD;
 
 
 
+=======
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 // fonts
 $font: "Source Sans 3", sans-serif;
 $font-good: "Good";
 $font-cera: "Cera";
 
+<<<<<<< HEAD
 $z-indexes: (
 	"level-four",
 	"level-three",
 	"level-two",
 	"level-one"
 );
+=======
+$z-indexes: ("level-four", "level-three", "level-two", "level-one");
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 
 //transition
 $all-transition: all 0.3s ease-out;
@@ -129,6 +139,7 @@ $all-transition: all 0.3s ease-out;
 //gradient
 $orange-grad: linear-gradient(76.89deg, #ffb30f 11.85%, #edcb00 100.03%);
 
+<<<<<<< HEAD
 $elastic-out: linear(0,
 		0.2178 2.1%,
 		1.1144 8.49%,
@@ -182,3 +193,62 @@ $elastic-in-out: linear(0,
 		1.0047 80.79%,
 		0.9991 91.48%,
 		1);
+=======
+$elastic-out: linear(
+	0,
+	0.2178 2.1%,
+	1.1144 8.49%,
+	1.2959 10.7%,
+	1.3463 11.81%,
+	1.3705 12.94%,
+	1.3726,
+	1.3643 14.48%,
+	1.3151 16.2%,
+	1.0317 21.81%,
+	0.941 24.01%,
+	0.8912 25.91%,
+	0.8694 27.84%,
+	0.8698 29.21%,
+	0.8824 30.71%,
+	1.0122 38.33%,
+	1.0357,
+	1.046 42.71%,
+	1.0416 45.7%,
+	0.9961 53.26%,
+	0.9839 57.54%,
+	0.9853 60.71%,
+	1.0012 68.14%,
+	1.0056 72.24%,
+	0.9981 86.66%,
+	1
+);
+$elastic-in-out: linear(
+	0,
+	0.0009 8.51%,
+	-0.0047 19.22%,
+	0.0016 22.39%,
+	0.023 27.81%,
+	0.0237 30.08%,
+	0.0144 31.81%,
+	-0.0051 33.48%,
+	-0.1116 39.25%,
+	-0.1181 40.59%,
+	-0.1058 41.79%,
+	-0.0455,
+	0.0701 45.34%,
+	0.9702 55.19%,
+	1.0696 56.97%,
+	1.0987 57.88%,
+	1.1146 58.82%,
+	1.1181 59.83%,
+	1.1092 60.95%,
+	1.0057 66.48%,
+	0.986 68.14%,
+	0.9765 69.84%,
+	0.9769 72.16%,
+	0.9984 77.61%,
+	1.0047 80.79%,
+	0.9991 91.48%,
+	1
+);
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe

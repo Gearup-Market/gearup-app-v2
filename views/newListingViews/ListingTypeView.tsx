@@ -55,11 +55,22 @@ const ListingTypeView = () => {
 					<Logo type="dark" />
 					<div className={styles.steps}>
 						<div className={styles.text}>
+<<<<<<< HEAD
 							<p>Step 4 of 5 : Type</p>
 						</div>
 					</div>
 				</div>
 				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+=======
+							<p>Step 4 of 5 : Products</p>
+						</div>
+					</div>
+				</div>
+				<div
+					className={styles.small_row}
+					style={{ gap: "0.8rem", cursor: "pointer" }}
+				>
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -68,7 +79,11 @@ const ListingTypeView = () => {
 						<span></span>
 					</div>
 				</div>
+<<<<<<< HEAD
 				<span style={{ width: "66.8%" }}></span>
+=======
+				<span style={{ width: "80%" }}></span>
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			</div>
 			<div className={styles.body}>
 				<div className={styles.details}>

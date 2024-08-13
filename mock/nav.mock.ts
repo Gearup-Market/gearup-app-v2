@@ -197,7 +197,11 @@ export const navLinks: NavLink[] = [
 	},
 	{
 		label: "sell gears",
+<<<<<<< HEAD
 		href: "/new-listing",
+=======
+		href: "/sell",
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 		external: false,
 		videoUrl: "#",
 		title: "Selling a gear",
@@ -239,7 +243,11 @@ export const navLinks: NavLink[] = [
 	},
 	{
 		label: "rent out",
+<<<<<<< HEAD
 		href: "/new-listing",
+=======
+		href: "/rent",
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 		external: false,
 		title: "Rent out a gear",
 		description:
@@ -286,7 +294,11 @@ export const navLinks: NavLink[] = [
 	},
 	{
 		label: "blog",
+<<<<<<< HEAD
 		href: "/blog",
+=======
+		href: "/",
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 		icon: "/svgs/icon-courses.svg",
 		external: true,
 	},

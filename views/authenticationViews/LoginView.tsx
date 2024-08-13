@@ -1,10 +1,14 @@
+<<<<<<< HEAD
 "use client";
 
+=======
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 import React from "react";
 import styles from "./Authentication.module.scss";
 import { Button, InputField, Logo } from "@/shared";
 import Image from "next/image";
 import Link from "next/link";
+<<<<<<< HEAD
 import { useGlobalContext } from "@/contexts/AppContext";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/configureStore";
@@ -19,6 +23,10 @@ const LoginView = () => {
 		dispatch(updateUser({ isAuthenticated: true }));
 		router.push("/");
 	};
+=======
+
+const LoginView = () => {
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 	return (
 		<div className={styles.row}>
 			<div className={styles.logo_section}>
@@ -69,9 +77,13 @@ const LoginView = () => {
 						</Link>
 					</p>
 				</div>
+<<<<<<< HEAD
 				<Button className={styles.button} onClick={signIn}>
 					Login
 				</Button>
+=======
+				<Button className={styles.button}>Login</Button>
+>>>>>>> ef3643d0d0927c1731578b17d8df37e087c513fe
 			</div>
 		</div>
 	);
