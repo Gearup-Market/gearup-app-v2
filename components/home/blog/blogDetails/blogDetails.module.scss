@@ -6,6 +6,9 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 20rem;
+    padding: 1.6rem;
+    padding-bottom: 8rem;
+    overflow: hidden;
 
     .tags_time_container{
         display: flex;
@@ -57,10 +60,10 @@
     height: 100%;
     padding-top: 13.8rem !important;
     max-width: 84.5rem;
+    width: 100%;
 
     .blog_main_img {
-        width: 84rem;
-        height: 40rem;
+       
         object-fit: cover;
         border-radius: 0.8rem;
     }
@@ -95,7 +98,7 @@
     
 }
 
-.recommended_Section_container{
+.recommended_section_container{
     padding: 0 8rem;
 
 .recommended_title{
@@ -109,22 +112,24 @@
 .recommended_blogs_section{
     display: flex;
     flex-wrap: wrap;
-    gap: 1.6rem;
+    gap: 2.4rem;
     width: 100%;
-    justify-content: space-between;
  
 
     .recommended_blog{
-        width: 41.1rem;
+        width: 40rem;
 
         .blog_recommended_img{
-            width: 41.1rem;
-            height: 45.6rem;
+            max-width: 40rem;
+            height: 45rem;
             border-radius: 0.8rem;
             border-radius: 0.4rem;
 
             img{
                 border-radius: 0.8rem;
+                max-width: 40rem;
+                height: 45rem;
+                width: 100%;
             }
         }
 
@@ -159,24 +164,42 @@
 }
 }
 
-@include screenMax(768px){
+@include screenMax("mobile"){
     .container{
-        padding-top: 10.8rem !important;
+        padding-top: 10rem !important;
+        width: 100%;
+        max-width: 100%;
 
-        
     }
+    .recommended_section_container{
+        padding: 0 1.6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-    .recommended_Section_container{
-        padding: 0 2.4rem;
+        .recommended_title{
+            text-align: start;
+            width: 100%;
+        }
 
         .recommended_blogs_section{
-            justify-content: center;
+            display: grid;
+            padding: 0;
         }
 
         .recommended_blog{
             width: 100%;
+            max-width: 35rem;
+
+            .blog_recommended_img{
+                height: 25rem;
+                width: 100%;
+
+            }
         }
     }
+
+    
 }
 
 }
