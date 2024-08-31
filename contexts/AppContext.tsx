@@ -1,7 +1,5 @@
 "use client";
-
 import { useFetch } from "@/hooks";
-import useFetchAll from "@/hooks/useFetchAll";
 import { ListingType } from "@/interfaces";
 import { useAppDispatch } from "@/store/configureStore";
 import { setListings } from "@/store/slices/listingsSlice";
@@ -17,28 +15,26 @@ const AppContext = createContext<any>(null);
 
 const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [heroHeight, setHeroHeight] = useState<number>(0);
-	// const [listings, setListings] = useState<any[]>([]);
 	const [singleListing, setSingleListing] = useState<any>(null);
 	const [listingType, setListingType] = useState<ListingType>(ListingType.Rent);
 	const [isMobile, setIsMobile] = useState<boolean>(true);
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const { data }: any = useFetch(`/api`);
+
 	useEffect(() => {
 		if (!data) return;
 		dispatch(setListings(data));
 	}, [data, dispatch]);
+
 	useLayoutEffect(() => {
 		if (window.innerWidth > 450) {
 			setIsMobile(false);
 		} else {
 			setIsMobile(true);
 		}
+		
 	}, []);
-	// function GlobalHooks() {
-	// 	useFetchAll();
-	// 	return null;
-	// }
 
 	return (
 		<AppContext.Provider

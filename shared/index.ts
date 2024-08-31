@@ -36,6 +36,7 @@ import CustomImage from "./customImage/CustomImage";
 import MobileCard from "./MobileCard/MobileCard";
 import MobileCardContainer from "./MobileCardContainer/MobileCardContainer";
 import AddBtn from "./addBtn/AddBtn";
+import LoadingSpinner  from "./Spinner/Spinner";
 
 export {
 	Header,
@@ -76,4 +77,5 @@ export {
 	MobileCard,
 	MobileCardContainer,
 	AddBtn,
+	LoadingSpinner,
 };

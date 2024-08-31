@@ -13,11 +13,6 @@ export const metadata: Metadata = {
 	description: "Marketplace to get everything gears",
 };
 
-// function GlobalHooks() {
-// 	useFetchAll();
-// 	return null;
-// }
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
