@@ -31,7 +31,7 @@ const LoginView = () => {
 	const router = useRouter();
 	const { setIsLoggedIn } = useGlobalContext();
 	const dispatch = useAppDispatch();
-	const { mutateAsync: postSignIn, isPending, data, isSuccess, status } = usePostUserSignIn();
+	const { mutateAsync: postSignIn, data, isSuccess } = usePostUserSignIn();
 	const searchParams = useSearchParams();
 	const returnUrl = searchParams.get("returnUrl") || "/user/dashboard";
 
