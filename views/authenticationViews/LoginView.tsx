@@ -32,23 +32,20 @@ const LoginView = () => {
 	const {setUser} = useAuth();
 	const { setIsLoggedIn } = useGlobalContext();
 	const dispatch = useAppDispatch();
-	const { mutateAsync: postSignIn, data, isSuccess } = usePostUserSignIn();
+	const { mutateAsync: postSignIn } = usePostUserSignIn();
 	const searchParams = useSearchParams();
 	const returnUrl = searchParams.get("returnUrl") || "/user/dashboard";
 
 	const handleSubmit = async (values: typeof initialValues) => {
 		try {
-			await postSignIn({ email: values.email, password: values.password });
-			if(isSuccess){
+		const res =	await postSignIn({ email: values.email, password: values.password });
+			if(res?.data?.token){
 				toast.success("Login successful");
-				const parsedToken = parseJwt(data?.data?.token);
 				setIsLoggedIn(true);
-				setUser(data?.data?.user);
-				setAuthToken(data?.data?.token);
-				dispatch(updateUser(data?.data?.user));
+				setUser(res?.data?.user);
+				setAuthToken(res?.data?.token);
+				dispatch(updateUser(res?.data?.user));
 				router.push(returnUrl);
-			}else{
-				toast.error("Something went wrong, please try again");
 			}
 		} catch (error:any) {
 			toast.error(error.response.data.message || "Login failed");	
