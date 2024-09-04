@@ -4,6 +4,7 @@ export interface UserType {
   email?: string;
   language?: string;
   name?: string;
+  userName?: string;
   otp?: number;
   phone_number?: string;
   resetPasswordToken?: string;

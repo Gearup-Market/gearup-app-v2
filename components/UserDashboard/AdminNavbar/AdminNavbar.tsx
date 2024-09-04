@@ -6,12 +6,14 @@ import { Button, InputField, Logo } from '@/shared';
 import { ArrowDownIcon, LogoIcon, NotificationIcon } from '@/shared/svgs/dashboard';
 import Image from 'next/image';
 import AdminSidebar from '../AdminSidebar/AdminSidebar';
+import { useAuth } from '@/contexts/AuthContext';
 
 const AdminNavbar = () => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showSearchBar,setShowSearchBar]=useState<boolean>(false)
   const [showMenubar,setShowMenubar]=useState<boolean>(false)
+  const {user}=useAuth()
   
 
   const handleSearchTerm = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +25,7 @@ const AdminNavbar = () => {
 
   }
 
-
+console.log(user)
   return (
     <div className={styles.navbar_container}>
       <div className={styles.logo_icon}>
@@ -73,7 +75,7 @@ const AdminNavbar = () => {
         <div className={styles.avatar}>
           <Image src="/images/admin-img.jpg" width={40} height={40} alt="avatar" />
         </div>
-        <span className={styles.name}>Waden Warren</span>
+        <span className={styles.name}>{user?.userName || "Guest"}</span>
         <span>
           <ArrowDownIcon />
         </span>

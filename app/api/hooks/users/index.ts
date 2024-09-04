@@ -149,7 +149,7 @@ const useGetUser = (
 	useQuery<any, IGetCardHistoriesErr>({
 		queryKey: ["user"],
 		queryFn: async () =>
-			await api.get(`${API_URL.getUser}/${token}`),
+			(await api.get(`${API_URL.getUser}/${token}`)).data,
 		...options,
 		enabled: !!token,
 		refetchOnMount: false,

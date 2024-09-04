@@ -12,7 +12,7 @@ import {
 	usePostUserSignIn,
 	usePostUserSignUp
 } from "@/app/api/hooks/users";
-import { api } from "@/app/api";
+import { api, queryClient } from "@/app/api";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -86,7 +86,14 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		setTimeout(() => {
 			router.replace(`/login?returnUrl=${pathname}`);
 		}, 0);
+		queryClient.clear();
 	};
+
+	useEffect(() => {
+		if (userData) {
+			setUser(userData.data);
+		}
+	}, [userData]);
 
 
 	const values = useMemo(
@@ -123,10 +130,10 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 		if (!isAuthenticated && !isOtpVerified) {
 			delete api.defaults.headers.Authorization;
 			localStorage.removeItem("user_token");
-			router.replace(`/login?returnUrl=${pathname}`);
-		} else if (isAuthenticated && isOtpVerified) {
-			router.replace("/user/dashboard");
-		}
+			if(pathname !== "/login") {
+				router.replace(`/login?returnUrl=${pathname}`);
+			}
+		} 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pathname]);
 
@@ -141,7 +148,7 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 
 				}}
 			>
-				<CircularProgress color="info" />
+			  <CircularProgress style={{ color: "#FFB30F" }} />
 			</Box>
 		);
 	} else {
