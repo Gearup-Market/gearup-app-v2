@@ -4,9 +4,10 @@ import React from "react";
 import styles from "./AddedItem.module.scss";
 import { Button } from "@/shared";
 import Image from "next/image";
-import { Item, updateNewListing } from "@/store/slices/addListingSlice";
+import {  updateNewListing } from "@/store/slices/addListingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
+import { Item } from "@/interfaces/Listing";
 
 interface Props {
 	item: Item;

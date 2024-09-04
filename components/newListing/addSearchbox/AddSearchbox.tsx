@@ -6,7 +6,8 @@ import Image from "next/image";
 import { Button } from "@/shared";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
-import { Item, updateNewListing } from "@/store/slices/addListingSlice";
+import {  updateNewListing } from "@/store/slices/addListingSlice";
+import { Item } from "@/interfaces/Listing";
 
 interface Option {
 	name: string;
