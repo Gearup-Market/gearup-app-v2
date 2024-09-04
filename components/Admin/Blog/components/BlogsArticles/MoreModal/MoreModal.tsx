@@ -2,6 +2,7 @@
 import React, { RefObject, useEffect } from 'react'
 import styles from './MoreModal.module.scss'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation';
 
 interface MoreModalProps {
     row?: any;
@@ -34,16 +35,17 @@ const lists = [
 ]
 
 const MoreModal = ({ row, onClose, containerRef }: MoreModalProps) => {
+    const router = useRouter()
 
     const handleActions = (id: number) => {
         console.log(id)
         switch (id) {
             case MoreModalActions.EDIT:
-
                 console.log(`editing ${row.title}`)
                 break;
             case MoreModalActions.PREVIEW:
                 console.log(`previewing ${row.title}`)
+                router.push(`/blog/${row.id}`)
                 break;
             case MoreModalActions.DELETE:
                 console.log(`deleting ${row.title}`)

@@ -7,14 +7,15 @@ interface Props {
 	checked?: boolean;
 	onChange?: (e: any) => void;
 	disabled?: boolean;
+
 }
 
-const CheckBox = ({ label, onChange, className, checked, disabled = false }: Props) => {
+const CheckBox = ({ label, onChange, className, checked, disabled = false, ...options }: Props) => {
 	return (
 		<div className={`${styles.checkBox} ${className}`}>
 			<label className={styles.container} data-type={disabled}>
 				{label}
-				<input type="checkbox" onChange={onChange} checked={checked} />
+				<input type="checkbox" onChange={onChange} checked={checked} {...options} />
 				<span className={styles.checkmark}></span>
 			</label>
 		</div>

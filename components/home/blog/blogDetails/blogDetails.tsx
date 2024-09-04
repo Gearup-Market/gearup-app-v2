@@ -17,7 +17,7 @@ const BlogDetails = ({ slug }: Props) => {
                 <BackNavigation />
                 <article>
                     <div className={styles.blog_main_img}>
-                        <CustomImage fill src="/svgs/blogdetail-mi.svg" alt="hero" />
+                        <CustomImage width={840} height={400} src="/svgs/blogdetail-mi.svg" alt="hero" />
                     </div>
                     <div className={styles.tags_time_container}>
                         <ul className={styles.tags_container}>
@@ -67,7 +67,7 @@ const BlogDetails = ({ slug }: Props) => {
                     </div>
                 </article>
             </div>
-            <aside className={styles.recommended_Section_container}>
+            <aside className={styles.recommended_section_container}>
                 <h2 className={styles.recommended_title}>Recommended for you</h2>
                 <ul className={styles.recommended_blogs_section}>
                     {
@@ -75,7 +75,7 @@ const BlogDetails = ({ slug }: Props) => {
                             <li key={index}>
                                 <div className={styles.recommended_blog}>
                                     <div className={styles.blog_recommended_img}>
-                                        <CustomImage fill src={blog.image} alt={blog.title} />
+                                        <CustomImage width={400} height={450} src={blog.image} alt={blog.title} />
                                     </div>
                                     <div className={styles.tags_time_container}>
                                         <ul className={styles.tags_container}>

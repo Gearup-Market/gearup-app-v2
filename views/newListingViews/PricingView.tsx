@@ -33,6 +33,7 @@ const PricingView = () => {
 	const [oneDayRent, setOneDayRent] = useState<RentOffer>({ value: 0, enabled: false });
 	const [amount, setAmount] = useState<number>(0);
 	// const [rentOffers, setRentOffers] = useState<any>({})
+	console.log(newListing,"new listing");
 
 	const [checked, setChecked] = useState<{ rent: boolean; sell: boolean }>({
 		rent: false,
@@ -56,10 +57,10 @@ const PricingView = () => {
 			setHasBoth(true);
 			setView(View.Rent);
 		} else if (hasRent) {
-			setView(View.singleRent);
+			setView(View.Rent);
 			setHasBoth(false);
 		} else if (hasSell) {
-			setView(View.singleSell);
+			setView(View.Sell);
 			setHasBoth(false);
 		}
 	}

@@ -4,6 +4,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "27/11/23",
       "category": "Travel",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -11,6 +12,7 @@ export const blogsData = [
       "title": "Latest in Sports",
       "published_date": "25/07/22",
       "category": "Travel",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -18,6 +20,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "27/10/22",
       "category": "Entertainment",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -25,6 +28,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "25/03/23",
       "category": "Technology",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -32,6 +36,7 @@ export const blogsData = [
       "title": "Entertainment Trends",
       "published_date": "06/02/23",
       "category": "Education",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -39,6 +44,7 @@ export const blogsData = [
       "title": "Latest in Sports",
       "published_date": "25/12/23",
       "category": "Technology",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -46,6 +52,7 @@ export const blogsData = [
       "title": "Latest in Sports",
       "published_date": "07/03/23",
       "category": "Health",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -53,6 +60,7 @@ export const blogsData = [
       "title": "The Future of Technology",
       "published_date": "24/05/22",
       "category": "Lifestyle",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -60,6 +68,7 @@ export const blogsData = [
       "title": "Latest in Sports",
       "published_date": "24/07/23",
       "category": "Education",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -67,6 +76,7 @@ export const blogsData = [
       "title": "Latest in Sports",
       "published_date": "25/11/23",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -74,6 +84,7 @@ export const blogsData = [
       "title": "Latest in Sports",
       "published_date": "30/10/22",
       "category": "Health",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -81,6 +92,7 @@ export const blogsData = [
       "title": "The Future of Technology",
       "published_date": "31/07/22",
       "category": "Travel",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -88,6 +100,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "08/01/23",
       "category": "Technology",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -95,6 +108,7 @@ export const blogsData = [
       "title": "Entertainment Trends",
       "published_date": "28/12/22",
       "category": "Lifestyle",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -102,6 +116,7 @@ export const blogsData = [
       "title": "Lifestyle Hacks for a Better You",
       "published_date": "21/01/22",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -109,6 +124,7 @@ export const blogsData = [
       "title": "Health Benefits of Yoga",
       "published_date": "21/06/23",
       "category": "Business",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -116,6 +132,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "30/10/22",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -123,6 +140,7 @@ export const blogsData = [
       "title": "The Future of Technology",
       "published_date": "28/04/23",
       "category": "Technology",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -130,6 +148,7 @@ export const blogsData = [
       "title": "Lifestyle Hacks for a Better You",
       "published_date": "07/07/23",
       "category": "Education",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -137,6 +156,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "14/07/23",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -144,6 +164,7 @@ export const blogsData = [
       "title": "Health Benefits of Yoga",
       "published_date": "28/09/22",
       "category": "Lifestyle",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -151,6 +172,7 @@ export const blogsData = [
       "title": "The Future of Technology",
       "published_date": "14/04/23",
       "category": "Education",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -158,6 +180,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "28/04/23",
       "category": "Travel",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -165,6 +188,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "08/03/22",
       "category": "Business",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -172,6 +196,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "26/06/22",
       "category": "Lifestyle",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -179,6 +204,7 @@ export const blogsData = [
       "title": "Health Benefits of Yoga",
       "published_date": "21/08/22",
       "category": "Travel",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -186,6 +212,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "21/02/23",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -193,6 +220,7 @@ export const blogsData = [
       "title": "Entertainment Trends",
       "published_date": "28/06/22",
       "category": "Health",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -200,6 +228,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "23/07/22",
       "category": "Health",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -207,6 +236,7 @@ export const blogsData = [
       "title": "Travel Guide 2024",
       "published_date": "27/11/23",
       "category": "Entertainment",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -214,6 +244,7 @@ export const blogsData = [
       "title": "The Future of Technology",
       "published_date": "08/02/22",
       "category": "Travel",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -221,6 +252,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "01/10/22",
       "category": "Health",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -228,6 +260,7 @@ export const blogsData = [
       "title": "Entertainment Trends",
       "published_date": "20/08/22",
       "category": "Travel",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -235,6 +268,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "23/08/23",
       "category": "Education",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -242,6 +276,7 @@ export const blogsData = [
       "title": "Lifestyle Hacks for a Better You",
       "published_date": "09/04/22",
       "category": "Business",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -249,6 +284,7 @@ export const blogsData = [
       "title": "Latest in Sports",
       "published_date": "25/09/23",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -256,6 +292,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "08/06/23",
       "category": "Business",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -263,6 +300,7 @@ export const blogsData = [
       "title": "Lifestyle Hacks for a Better You",
       "published_date": "14/09/23",
       "category": "Business",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -270,6 +308,7 @@ export const blogsData = [
       "title": "Lifestyle Hacks for a Better You",
       "published_date": "21/05/22",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -277,6 +316,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "10/05/22",
       "category": "Lifestyle",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -284,6 +324,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "27/09/22",
       "category": "Lifestyle",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -291,6 +332,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "18/06/23",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -298,6 +340,7 @@ export const blogsData = [
       "title": "Top 10 Business Strategies",
       "published_date": "25/02/22",
       "category": "Health",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -305,6 +348,7 @@ export const blogsData = [
       "title": "Entertainment Trends",
       "published_date": "10/10/22",
       "category": "Education",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -312,6 +356,7 @@ export const blogsData = [
       "title": "Lifestyle Hacks for a Better You",
       "published_date": "11/12/22",
       "category": "Technology",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -319,6 +364,7 @@ export const blogsData = [
       "title": "Education Reforms 2023",
       "published_date": "16/11/23",
       "category": "Health",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -326,6 +372,7 @@ export const blogsData = [
       "title": "Travel Guide 2024",
       "published_date": "18/11/23",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -333,6 +380,7 @@ export const blogsData = [
       "title": "Entertainment Trends",
       "published_date": "18/07/22",
       "category": "Sports",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     },
     {
@@ -340,6 +388,7 @@ export const blogsData = [
       "title": "Travel Guide 2024",
       "published_date": "13/07/22",
       "category": "Technology",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "published"
     },
     {
@@ -347,6 +396,7 @@ export const blogsData = [
       "title": "Lifestyle Hacks for a Better You",
       "published_date": "03/09/23",
       "category": "Business",
+      "preview_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
       "status": "draft"
     }
   ]

@@ -1,3 +1,4 @@
+'use client';
 import React from "react";
 import styles from "./Authentication.module.scss";
 import { Button, Logo } from "@/shared";
@@ -5,6 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const VerifyView = () => {
+	const openEmailClient = () => {
+    window.location.href = 'mailto:';
+  };
 	return (
 		<section className={styles.section}>
 			<Logo className={styles.logo} />
@@ -21,8 +25,8 @@ const VerifyView = () => {
 						complete the sign-up process.
 					</p>
 				</div>
-				<Button className={styles.button}>
-					<Link href="/login">Back to Login</Link>
+				<Button className={styles.button} onClick={openEmailClient}>
+					Open email
 				</Button>
 			</div>
 		</section>

@@ -1,24 +1,60 @@
 "use client";
 
 import React from "react";
+import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
+import * as Yup from "yup";
 import styles from "./Authentication.module.scss";
-import { Button, InputField, Logo } from "@/shared";
+import { Button, InputField, LoadingSpinner, Logo } from "@/shared";
 import Image from "next/image";
 import Link from "next/link";
 import { useGlobalContext } from "@/contexts/AppContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/configureStore";
 import { updateUser } from "@/store/slices/userSlice";
+import { parseJwt, useAuth } from "@/contexts/AuthContext";
+import { usePostUserSignIn } from "@/app/api/hooks/users";
+import toast from "react-hot-toast";
+import { setAuthToken } from "@/utils/tokenStorage";
+
+// Validation schema using Yup
+const loginSchema = Yup.object().shape({
+	email: Yup.string().email("Invalid email format").required("Email is required"),
+	password: Yup.string().required("Password is required"),
+});
+
+const initialValues = {
+	email: "",
+	password: "",
+};
 
 const LoginView = () => {
 	const router = useRouter();
+	const {setUser} = useAuth();
 	const { setIsLoggedIn } = useGlobalContext();
 	const dispatch = useAppDispatch();
+	const { mutateAsync: postSignIn, data, isSuccess } = usePostUserSignIn();
+	const searchParams = useSearchParams();
+	const returnUrl = searchParams.get("returnUrl") || "/user/dashboard";
 
-	const signIn = () => {
-		dispatch(updateUser({ isAuthenticated: true }));
-		router.push("/");
+	const handleSubmit = async (values: typeof initialValues) => {
+		try {
+			await postSignIn({ email: values.email, password: values.password });
+			if(isSuccess){
+				toast.success("Login successful");
+				const parsedToken = parseJwt(data?.data?.token);
+				setIsLoggedIn(true);
+				setUser(data?.data?.user);
+				setAuthToken(data?.data?.token);
+				dispatch(updateUser(data?.data?.user));
+				router.push(returnUrl);
+			}else{
+				toast.error("Something went wrong, please try again");
+			}
+		} catch (error:any) {
+			toast.error(error.response.data.message || "Login failed");	
+		}
 	};
+
 	return (
 		<div className={styles.row}>
 			<div className={styles.logo_section}>
@@ -31,7 +67,7 @@ const LoginView = () => {
 						</h1>
 						<h5>
 							Rent, buy, or sell gears with ease within your country. Our
-							secure escrow system ensures worry-free transactions
+							secure escrow system ensures worry-free transactions.
 						</h5>
 					</div>
 				</div>
@@ -48,30 +84,62 @@ const LoginView = () => {
 						<Link href="/signup">Sign up</Link> if you don’t have an account
 					</p>
 				</div>
-				<div className={styles.input_block}>
-					<InputField
-						label="Email address"
-						placeholder="Enter email address"
-						className={styles.input}
-					/>
-					<InputField
-						label="Password"
-						placeholder="Enter Password"
-						isPassword
-						className={styles.input}
-					/>
-				</div>
-				<div className={styles.text}>
-					<p>
-						Forgot your password?{" "}
-						<Link href="/forgot-password" style={{ textDecoration: "none" }}>
-							Reset it here
-						</Link>
-					</p>
-				</div>
-				<Button className={styles.button} onClick={signIn}>
-					Login
-				</Button>
+				<Formik
+					initialValues={initialValues}
+					validationSchema={loginSchema}
+					onSubmit={handleSubmit}
+				>
+					{({ errors, touched, isSubmitting }) => (
+						<Form>
+							<div className={styles.input_block}>
+								<Field name="email">
+									{({ field }: FieldProps) => (
+										<InputField
+											{...field}
+											label="Email address"
+											placeholder="Enter email address"
+											className={styles.input}
+											error={(touched.email && errors.email) || ""}
+										/>
+									)}
+								</Field>
+								<Field name="password">
+									{({ field }: FieldProps) => (
+										<InputField
+											{...field}
+											label="Password"
+											placeholder="Enter Password"
+											isPassword
+											className={styles.input}
+											error={
+												(touched.password && errors.password) ||
+												""
+											}
+										/>
+									)}
+								</Field>
+							</div>
+							<div className={styles.text}>
+								<p>
+									Forgot your password?{" "}
+									<Link
+										href="/forgot-password"
+										style={{ textDecoration: "none" }}
+									>
+										Reset it here
+									</Link>
+								</p>
+							</div>
+							<Button
+								type="submit"
+								className={styles.button}
+								disabled={isSubmitting}
+							>
+								{isSubmitting ? <LoadingSpinner size="small" /> : "Login"}
+							</Button>
+						</Form>
+					)}
+				</Formik>
 			</div>
 		</div>
 	);

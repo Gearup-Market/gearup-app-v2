@@ -7,8 +7,9 @@ import Image from "next/image";
 import { AddSearchbox, AddedItem } from "@/components/newListing";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
-import { Item, updateNewListing } from "@/store/slices/addListingSlice";
+import {  updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
+import { Item } from "@/interfaces/Listing";
 
 const NewListingView = () => {
 	const newListing = useSelector((state: AppState) => state.newListing);

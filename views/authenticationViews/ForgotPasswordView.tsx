@@ -1,9 +1,32 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import styles from "./Authentication.module.scss";
-import { Button, InputField, Logo } from "@/shared";
+import { Button, InputField, LoadingSpinner, Logo } from "@/shared";
 import Link from "next/link";
+import { useResetPasswordRequest } from "@/app/api/hooks/users";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const ForgotPasswordView = () => {
+	const [email, setEmail] = useState("");
+	const router = useRouter();
+	const { mutateAsync: postResetPassword , isPending, data, isSuccess} = useResetPasswordRequest();
+
+	const onSubmit = async () => {
+		try {
+		const res=	await postResetPassword({ email });
+		console.log(res,"res");
+		console.log(data,"dta");
+			if(isSuccess){
+				toast.success("Verification code sent successfully");
+			}
+			router.push("/reset");
+		} catch (error:any) {
+			console.log(error,"error");
+			toast.error(error?.response?.data?.message || "Something went wrong, please try again");
+		}
+	};
+
 	return (
 		<section className={styles.section}>
 			<Logo className={styles.logo} />
@@ -16,8 +39,12 @@ const ForgotPasswordView = () => {
 					label="Email address"
 					placeholder="Enter email address"
 					className={styles.input}
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
 				/>
-				<Button className={styles.button}>Send verification code</Button>
+				<Button className={styles.button} onClick={onSubmit}>
+					{isPending ?  <LoadingSpinner size="small" /> : "Send verification code"}
+				</Button>
 				<div className={styles.text}>
 					<p>
 						Remembered your password?{" "}
