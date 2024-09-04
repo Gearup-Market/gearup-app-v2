@@ -29,6 +29,7 @@ const initialValues = {
 
 const LoginView = () => {
 	const router = useRouter();
+	const {setUser} = useAuth();
 	const { setIsLoggedIn } = useGlobalContext();
 	const dispatch = useAppDispatch();
 	const { mutateAsync: postSignIn, data, isSuccess } = usePostUserSignIn();
@@ -42,7 +43,8 @@ const LoginView = () => {
 				toast.success("Login successful");
 				const parsedToken = parseJwt(data?.data?.token);
 				setIsLoggedIn(true);
-				setAuthToken(parsedToken);
+				setUser(data?.data?.user);
+				setAuthToken(data?.data?.token);
 				dispatch(updateUser(data?.data?.user));
 				router.push(returnUrl);
 			}else{

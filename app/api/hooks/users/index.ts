@@ -144,19 +144,17 @@ export type IGetCardHistoriesErr = AxiosError<{ status: string }>;
 
 const useGetUser = (
 	{ token }: { token: string },
-
 	options?: UseQueryOptions<any, IGetCardHistoriesErr>
 ) =>
 	useQuery<any, IGetCardHistoriesErr>({
 		queryKey: ["user"],
 		queryFn: async () =>
-			await api.get(API_URL.getUser, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}),
+			await api.get(`${API_URL.getUser}/${token}`),
 		...options,
-	});
+		enabled: !!token,
+		refetchOnMount: false,
+	},
+);
 
 export {
 	useResetPassword,

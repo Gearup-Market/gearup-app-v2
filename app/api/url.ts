@@ -6,5 +6,5 @@ export const API_URL = {
     resetPassword: "/users/create",
     signUp: "/users/create",
     createListings: "/listings/create",
-    getUser: "/users/get",
+    getUser: "/users",
 };
