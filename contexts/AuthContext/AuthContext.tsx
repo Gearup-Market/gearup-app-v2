@@ -25,7 +25,7 @@ export const defaultAuthProvider: DefaultProviderType = {
 	loading: false,
 	signup: async (user: any) => {},
 	logout: async () => {},
-	resendOTP: async (email: string) => false,
+	resendOTP: async (email: string) => false
 };
 
 const AuthContext = createContext(defaultAuthProvider);
@@ -59,14 +59,16 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		setIsTokenValid(isTokenValid);
 
 		if (!isTokenValid) {
-			setUser(mockUser);
+			setUser(null);
 			removeAuthToken();
 			delete api.defaults.headers.Authorization;
+		} else {
+			api.defaults.headers.Authorization = `Bearer ${token}`;
 		}
 	}, []);
 
 	const { isFetching: loading, data: userData } = useGetUser({
-		token: token,
+		token: token
 	});
 
 	const signup = async (user: any) => {
@@ -95,7 +97,6 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		}
 	}, [userData]);
 
-
 	const values = useMemo(
 		() => ({
 			isAuthenticated: user !== null && isTokenValid,
@@ -105,9 +106,10 @@ export const AuthProvider = (params: AuthProviderProps) => {
 			loading,
 			signup,
 			logout,
-			resendOTP,
+			resendOTP
 		}),
-		[user, loading, userData]
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[user, loading, userData, isTokenValid]
 	);
 
 	return <AuthContext.Provider value={values}>{params.children}</AuthContext.Provider>;
@@ -118,24 +120,37 @@ export const useAuth = () => useContext(AuthContext);
 export const ProtectRoute = (props: ProtectRouteProps) => {
 	const router = useRouter();
 	const pathname = usePathname();
-	const { isAuthenticated, isOtpVerified, loading, user } = useAuth();
+	const { isAuthenticated, loading, user } = useAuth();
+	const searchParams = useSearchParams();
+	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
 
+	const unprotectedRoutes = useMemo(
+		() => [
+			"/login",
+			"/signup",
+			"/forgot-password",
+			"/password-reset",
+			"/reset",
+			"/verified",
+			"/verify"
+		],
+		[]
+	);
 
 	useEffect(() => {
-		// ignore initial default provider context value
-		if (isEqual(user, {}) || user === null) {
+		if (user === null) {
 			return;
 		}
-
-		if (!isAuthenticated && !isOtpVerified) {
-			delete api.defaults.headers.Authorization;
-			localStorage.removeItem("user_token");
-			if(pathname !== "/login") {
+		if (!loading) {
+			if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
 				router.replace(`/login?returnUrl=${pathname}`);
+			} else if (isAuthenticated && unprotectedRoutes.includes(pathname)) {
+				if (pathname !== "/login") {
+					router.replace(returnUrl);
+				}
 			}
-		} 
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [pathname]);
+		}
+	}, [isAuthenticated, loading, pathname, router, unprotectedRoutes, user]);
 
 	if (loading) {
 		return (
@@ -144,14 +159,18 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 					display: "flex",
 					justifyContent: "center",
 					alignItems: "center",
-					height: "400px",
-
+					height: "400px"
 				}}
 			>
-			  <CircularProgress style={{ color: "#FFB30F" }} />
+				<CircularProgress style={{ color: "#FFB30F" }} />
 			</Box>
 		);
-	} else {
+	}
+
+	if (isAuthenticated || unprotectedRoutes.includes(pathname)) {
 		return <>{props.children}</>;
 	}
+
+	// Return null while redirecting
+	return null;
 };
