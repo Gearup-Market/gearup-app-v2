@@ -6,5 +6,6 @@
 	"semi": true,
 	"tabWidth": 4,
 	"useTabs": true,
-	"trailingComma": "none"
+	"trailingComma": "none",
+	"fmtOnSave": true
 }
