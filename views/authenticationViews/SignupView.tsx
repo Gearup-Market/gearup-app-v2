@@ -1,14 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
+import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
 import styles from "./Authentication.module.scss";
 import { Button, CheckBox, InputField, LoadingSpinner, Logo } from "@/shared";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { usePostUserSignUp } from "@/app/api/hooks/users";
 // Validation schema using Yup
 const signupSchema = Yup.object().shape({
 	email: Yup.string().email("Invalid email format").required("Email is required"),
@@ -33,21 +33,17 @@ const initialValues = {
 };
 
 const SignupView = () => {
-	const [loading, setLoading] = useState(false);
-	const { signup } = useAuth();
+	const { mutateAsync: postUserSignUp, isPending } = usePostUserSignUp();
 	const router = useRouter();
 
 	const handleSubmit = async (values: any) => {
-		setLoading(true);
 		const { email, userName, password } = values;
 		try {
-			await signup({ email, UserName: userName, password });
+			await postUserSignUp({ email, userName, password });
 			toast.success("Account created successfully");
 			router.push("/verify");
 		} catch (error: any) {
 			toast.error(error.response.data.message || "An error occurred while creating your account, please try again");
-		} finally {
-			setLoading(false);
 		}
 	};
 	
@@ -199,7 +195,7 @@ const SignupView = () => {
 									)}
 								</div>
 								<Button type="submit" className={styles.button}>
-									{loading ? (
+									{isPending ? (
 										<LoadingSpinner size="small" />
 									) : (
 										"Create Account"

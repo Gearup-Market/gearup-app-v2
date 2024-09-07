@@ -18,7 +18,7 @@
         border-bottom: 1px solid $col-grey-300;
 
 
-        &[data-lastEle='true']{
+        &[data-lastele='true']{
             border-bottom-left-radius: 1.6rem;
             border-bottom-right-radius: 1.6rem;
         }
@@ -99,7 +99,7 @@
 
         
 
-        &[data-lastEle="true"]{
+        &[data-lastele="true"]{
             border-bottom-left-radius: 1.6rem;
             border-bottom-right-radius: 1.6rem;
         }

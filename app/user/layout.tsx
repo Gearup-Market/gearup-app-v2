@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import styles from "./layout.module.scss";
 import { AdminNavbar, AdminSidebar } from "@/components/UserDashboard";
-import { AuthProvider, ProtectRoute } from "@/contexts/AuthContext";
+import {  ProtectRoute } from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
 	title: "Welcome to Gear Up",
@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<AuthProvider>
 			<ProtectRoute>
 				<main className={styles.main}>
 					<div className={styles.body}>
@@ -24,6 +23,5 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 					</div>
 				</main>
 			</ProtectRoute>
-		</AuthProvider>
 	);
 }

@@ -1,17 +1,15 @@
 "use client";
 
 import React from "react";
-import { Formik, Form, Field, ErrorMessage, FieldProps } from "formik";
+import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
 import styles from "./Authentication.module.scss";
 import { Button, InputField, LoadingSpinner, Logo } from "@/shared";
 import Image from "next/image";
 import Link from "next/link";
-import { useGlobalContext } from "@/contexts/AppContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/configureStore";
 import { updateUser } from "@/store/slices/userSlice";
-import { parseJwt, useAuth } from "@/contexts/AuthContext";
 import { usePostUserSignIn } from "@/app/api/hooks/users";
 import toast from "react-hot-toast";
 import { setAuthToken } from "@/utils/tokenStorage";
@@ -19,36 +17,35 @@ import { setAuthToken } from "@/utils/tokenStorage";
 // Validation schema using Yup
 const loginSchema = Yup.object().shape({
 	email: Yup.string().email("Invalid email format").required("Email is required"),
-	password: Yup.string().required("Password is required"),
+	password: Yup.string().required("Password is required")
 });
 
 const initialValues = {
 	email: "",
-	password: "",
+	password: ""
 };
 
 const LoginView = () => {
 	const router = useRouter();
-	const {setUser} = useAuth();
-	const { setIsLoggedIn } = useGlobalContext();
 	const dispatch = useAppDispatch();
 	const { mutateAsync: postSignIn } = usePostUserSignIn();
 	const searchParams = useSearchParams();
-	const returnUrl = searchParams.get("returnUrl") || "/user/dashboard";
+	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
 
 	const handleSubmit = async (values: typeof initialValues) => {
 		try {
-		const res =	await postSignIn({ email: values.email, password: values.password });
-			if(res?.data?.token){
+			const res = await postSignIn({
+				email: values.email,
+				password: values.password
+			});
+			if (res?.data?.token) {
 				toast.success("Login successful");
-				setIsLoggedIn(true);
-				setUser(res?.data?.user);
 				setAuthToken(res?.data?.token);
 				dispatch(updateUser(res?.data?.user));
 				router.push(returnUrl);
 			}
-		} catch (error:any) {
-			toast.error(error.response.data.message || "Login failed");	
+		} catch (error: any) {
+			toast.error(error.response.data.message || "Login failed");
 		}
 	};
 

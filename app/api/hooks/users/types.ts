@@ -84,9 +84,10 @@ export type iPostUserSignUpResp = {
 };
 
 export type iPostUserSignUpRsq = {
-  name: string;
+  name?: string;
   email: string;
   password: string;
+  userName?: string;
   phoneNumber?: string;
 };
 
