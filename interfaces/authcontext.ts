@@ -10,6 +10,7 @@ export interface UserType {
   resetPasswordToken?: string;
   roles?: number;
   updatedAt?: string;
+  _id?: string;
 }
 
 export interface LoginResponseOutput {

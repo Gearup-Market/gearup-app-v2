@@ -2,25 +2,37 @@
 
 import React, { useState } from "react";
 import styles from "./NewListingViews.module.scss";
-import { Button, DetailContainer, Logo, Select } from "@/shared";
+import { Button, DetailContainer, LoadingSpinner, Logo } from "@/shared";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
-import { clearNewListing, updateNewListing } from "@/store/slices/addListingSlice";
+import {
+	mockListing,
+	updateNewListing
+} from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
-import { ListingType } from "@/components/newListing";
 import { ImageSlider } from "@/components/listing";
 import { formatNum } from "@/utils";
 import { addListing } from "@/store/slices/listingsSlice";
+import { usePostCreateListing } from "@/app/api/hooks/listings";
+import { toast } from "react-toastify";
+import { useAuth } from "@/contexts/AuthContext";
+
+const images = [
+	"https://res.cloudinary.com/demo/image/upload/sample.jpg",
+	"https://res.cloudinary.com/demo/image/upload/car.jpg"
+];
 
 const SummaryView = () => {
 	const router = useRouter();
 	const newListing = useSelector((state: AppState) => state.newListing);
+	const { user } = useAuth();
+	const { mutateAsync: createProductListing, isPending } = usePostCreateListing();
 	const dispatch = useDispatch();
 	const [type, setType] = useState<string[]>([]);
 	const [checked, setChecked] = useState<{ rent: boolean; sell: boolean }>({
 		rent: false,
-		sell: false,
+		sell: false
 	});
 
 	const nextPage = () => {
@@ -41,6 +53,31 @@ const SummaryView = () => {
 	};
 
 	const disabledButton = !type.length;
+	console.log(newListing, "newListing");
+
+	console.log(user, "id");
+
+	const handleSubmission = async () => {
+		if (!user?._id) {
+			toast.error("Please login to create a product");
+			return;
+		}
+		const data = {
+			...mockListing,
+			images,
+			listingType: "renting",
+			user: user?._id
+		};
+
+		try {
+			const resp = await createProductListing(data);
+			console.log(resp, "resp");
+			toast.success("Product created successfully");
+		} catch (error) {
+			toast.error("Error creating product");
+		}
+	};
+
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>
@@ -70,7 +107,7 @@ const SummaryView = () => {
 						<p>Review your listing, hit submit, and you’re done!</p>
 					</div>
 					<div className={styles.container}>
-						<ImageSlider images={newListing.images} />
+						<ImageSlider images={images} />
 						<div className={styles.block}>
 							<div className={styles.text}>
 								<h2>{newListing.title}</h2>
@@ -101,7 +138,7 @@ const SummaryView = () => {
 								value={
 									newListing.fieldValues.find(
 										(value: any) => value.name === "Brand"
-									).selectedValues[0].name
+									)?.selectedValues[0].name
 								}
 							/>
 							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
@@ -110,7 +147,7 @@ const SummaryView = () => {
 							<div className={styles.row}>
 								{newListing.fieldValues
 									.find((value: any) => value.name === "Good for")
-									.selectedValues.map((values: any, index: number) => (
+									?.selectedValues.map((values: any, index: number) => (
 										<Button key={index} className={styles.button}>
 											{values.name}
 										</Button>
@@ -122,7 +159,7 @@ const SummaryView = () => {
 							<div className={styles.row}>
 								{newListing.fieldValues
 									.find((value: any) => value.name === "Mount")
-									.selectedValues.map((values: any, index: number) => (
+									?.selectedValues.map((values: any, index: number) => (
 										<Button key={index} className={styles.button}>
 											{values.name}
 										</Button>
@@ -166,10 +203,11 @@ const SummaryView = () => {
 				</Button>
 				<Button
 					className={styles.button}
-					onClick={nextPage}
-				// disabled={disabledButton}
+					onClick={handleSubmission}
+					type="button"
+					// disabled={disabledButton}
 				>
-					Submit
+					{isPending ? <LoadingSpinner /> : "Submit"}
 				</Button>
 			</div>
 		</div>

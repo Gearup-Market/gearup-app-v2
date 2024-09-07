@@ -10,7 +10,10 @@ const initialState: AddListing = {
 	subCategory: { id: "", name: "" },
 	fieldValues: [],
 	description: "",
-	images: [],
+	images: [
+    "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    "https://res.cloudinary.com/demo/image/upload/car.jpg"
+  ],
 	currency: { name: "NGN", symbol: "N" },
 	price1Day: { value: 0, enabled: false },
 	price3Days: { value: 0, enabled: false },
@@ -42,3 +45,32 @@ const addListingSlice = createSlice({
 
 export default addListingSlice.reducer;
 export const { updateNewListing, clearNewListing } = addListingSlice.actions;
+
+
+export const mockListing= {
+  "productName": "Canon EOS R5 Camera",
+  "category": {
+    "main": "Cameras",
+    "sub": "Mirrorless"
+  },
+  "subCategoryDescription": {
+    "features": ["45MP full-frame sensor", "8K video recording"],
+    "brand": "Canon"
+  },
+  "description": "High-resolution mirrorless camera perfect for professional photography and videography.",
+  "listingsPhoto": [
+    "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    "https://res.cloudinary.com/demo/image/upload/car.jpg"
+  ],
+  "listingType": "renting",
+  "gearCondition": "like new",
+  "offer": {
+    "currency": "USD",
+    "1dayOffer": 100,
+    "3daysOffer": 270,
+    "7daysOffer": 600,
+    "overtimePercentage": 10,
+    "totalReplacementValue": 3500
+  },
+  "user":"669085633009561af8ac1371"
+}
