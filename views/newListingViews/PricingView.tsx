@@ -84,7 +84,7 @@ const PricingView = () => {
 		}
 	}
 	useEffect(() => {
-		checkAvailability(newListing.type);
+		checkAvailability(newListing.listingType);
 	}, []);
 
 	const handleToggle = (title: "rent" | "sell") => {
@@ -286,7 +286,7 @@ const RentView = ({ oneDayRent, setOneDayRent }: any) => {
 	const toggle = () => {};
 
 	const handlePriceChange = (e: any) => {
-		setOneDayRent({ value: e.target.value, enabled: true });
+		setOneDayRent({ value: +e.target.value, enabled: true });
 		// update other enabled offers
 		if (threeDayRent.enabled) {
 			setThreeDayRent({ value: +e.target.value * 2, enabled: true });
@@ -337,6 +337,7 @@ const RentView = ({ oneDayRent, setOneDayRent }: any) => {
 						value={oneDayRent.value}
 						onChange={handlePriceChange}
 						name="oneDayRent"
+						checked={true}
 					/>
 					<RentOffer
 						title={3}

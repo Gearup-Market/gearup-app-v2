@@ -28,7 +28,7 @@ const RentOffer = ({ title, value, onChange , toggleInput, checked=false ,name, 
 	}
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} data-disabled={!checked}>
 			<div className={styles.header}>
 				<div className={styles.text}>
 					<h3>
@@ -47,6 +47,7 @@ const RentOffer = ({ title, value, onChange , toggleInput, checked=false ,name, 
 				placeholder="0"
 				value={value}
 				onChange={onChange}
+				disabled={!checked}
 			/>
 			<div className={styles.footer}>
 				{title !== 1 && (
