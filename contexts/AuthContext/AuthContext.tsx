@@ -42,9 +42,11 @@ export const AuthProvider = (params: AuthProviderProps) => {
 	});
 
 	useEffect(() => {
-		const token = getAuthToken() || "";
-		const decodedJwt = parseJwt(token || "");
+		const token = getAuthToken() ?? "";
+		const decodedJwt = parseJwt(token ?? "");
 		const isTokenValid = !!decodedJwt && decodedJwt?.exp * 1000 > Date.now();
+		console.log(decodedJwt, "decodedJwt")
+		console.log(new Date(decodedJwt?.exp * 1000), "decodedJwt")
 		setToken(decodedJwt?.userId);
 		setIsTokenValid(isTokenValid);
 		if (!isTokenValid) {
@@ -97,6 +99,9 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 	const searchParams = useSearchParams();
 	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
 
+	console.log(user,"user")
+	console.log(isAuthenticated,"isAuthenticated")
+
 	const unprotectedRoutes = useMemo(
 		() => [
 			"/login",
@@ -110,20 +115,6 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 		[]
 	);
 
-	useEffect(() => {
-		if (user === null) {
-			return;
-		}
-		if (!loading) {
-			if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
-				router.replace(`/login?returnUrl=${pathname}`);
-			} else if (isAuthenticated && unprotectedRoutes.includes(pathname)) {
-				if (pathname !== "/login") {
-					router.replace(returnUrl);
-				}
-			}
-		}
-	}, [isAuthenticated, loading, pathname, router, unprotectedRoutes, user]);
 
 	if (loading) {
 		return (

@@ -1,0 +1,88 @@
+@import "@/styles/imports";
+
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 60rem;
+    min-width: 50rem;
+
+    &__balance_container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #FBFBFD;
+        padding: 2rem;
+        flex-direction: column;
+        gap: .1rem;
+
+        .title{
+            color: #828489;
+            font-size: 1.6rem;
+        }
+
+        .amount{
+            color: #1B1E21;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+    }
+
+    &__bank_details{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        background: #FBFBFD;
+        padding: 2rem;
+        .left{
+            .details_title{
+                color: #1B1E21;
+                font-size: 1.4rem;
+                font-weight: 700;
+            }
+
+            .img_bank_container{
+                display: flex;
+                gap: 1rem;
+                margin-top: 1rem;
+                align-items: center;
+
+                img{
+                    height: 2rem;
+                    width: 3rem;
+                    border-radius: 0.5rem;
+                }
+
+                .bank_container{
+                    width: 100%;
+                    .bank_name{
+                        color: #1B1E21;
+                        font-size: 1.2rem;
+                    }
+                    
+                    .bank_number{
+                        font-size: 1.2rem;
+                        color: #7B8086;
+                    }
+                }
+            }
+        }
+        .right{
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-weight: 700;
+           color:  #7B8086;
+            .icon{
+                height: 2rem;
+                width: 2rem;
+            }
+        }
+    }
+
+    @include screenMax("mobile"){
+        min-width: 100%;
+    }
+        
+}

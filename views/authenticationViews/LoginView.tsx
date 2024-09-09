@@ -40,9 +40,10 @@ const LoginView = () => {
 			});
 			if (res?.data?.token) {
 				toast.success("Login successful");
-				setAuthToken(res?.data?.token);
 				dispatch(updateUser(res?.data?.user));
+				setAuthToken(res?.data?.token);
 				router.push(returnUrl);
+				window.location.reload();
 			}
 		} catch (error: any) {
 			toast.error(error.response.data.message || "Login failed");

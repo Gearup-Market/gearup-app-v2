@@ -1,29 +1,47 @@
 import { AxiosError } from "axios";
 
-export interface iPostListingReq {
-	productName: string;
-	category: {
-		main: string;
-		sub: string;
-	};
-	subCategoryDescription: {
-		features: string[];
-		brand: string;
-	};
-	description: string;
-	listingsPhoto: string[];
-	listingType: string;
-	gearCondition: string;
-	offer: {
-		currency: string;
-		"1dayOffer": number;
-		"3daysOffer": number;
-		"7daysOffer": number;
-		overtimePercentage: number;
-		totalReplacementValue: number;
-	};
-	user: string;
+
+export interface Product  {
+  productName: string;
+  category: string;
+  subCategory: string;
+  productionType: string;
+  subCategoryFields: {
+    brand: string;
+    model: string;
+    sensorType: string;
+    megapixels: string;
+    videoResolution: string;
+  };
+  description: string;
+  listingPhotos: string[];
+  listingType: string;
+  gearCondition: string;
+  offer: SellingOffer | RentingOffer;
+  user: string;
+}[]
+
+interface SellingOffer {
+  currency: string;
+  pricing: number;
+  shipping: {
+    shippingOffer: boolean;
+    offerLocalPickup: boolean;
+    shippingCosts: boolean;
+  };
 }
+
+interface RentingOffer {
+  currency: string;
+  day1Offer: number;
+  day3Offer: number;
+  day7Offer: number;
+  overtimePercentage: number;
+  totalReplacementValue: number;
+}
+
+export type iPostListingReq = Product[];
+
 
 export interface iPostListingResp {
 	data: {

@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/shared";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Props {
 	isMobile?: boolean;
@@ -28,6 +29,7 @@ interface Props {
 
 const AdminSidebar = ({ isMobile, onClose }: Props) => {
 	const pathname = usePathname()
+	const { logout } = useAuth();
 	const sidebarItems = [
 		{
 			name: 'Dashboard',
@@ -130,7 +132,7 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 						</span>
 						<p>Settings</p>
 					</Link>
-					<div className={styles.navlinks_container__item}>
+					<div className={styles.navlinks_container__item} onClick={logout}>
 						<span>
 							<LogoutNavIcon />
 						</span>

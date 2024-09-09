@@ -217,6 +217,7 @@
 		@include flex(space-between);
 		.button {
 			padding: 1.6rem 2.4rem;
+			min-width: 10rem;
 			&:first-child {
 				border: 0.1rem solid #ffb30f;
 				border-radius: 10rem;

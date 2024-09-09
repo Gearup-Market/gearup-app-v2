@@ -1,16 +1,32 @@
 import { InputField } from "@/shared";
 import styles from "./RentOffer.module.scss";
+import React from "react";
+
+export interface RentOfferProps {
+	value: number;
+	enabled: boolean;
+}
 
 interface Props {
 	title: 1 | 3 | 7 | 30;
-	value: { value: number; enabled: boolean };
-	onChange: (e?: any) => void;
+	value: number; 
+	onChange?: (e?: any) => void;
+	toggleInput?: React.Dispatch<React.SetStateAction<RentOfferProps>>;
+	checked?: boolean;
+	name: string;
+	updateFieldPrice?: (name: string) => void;
 }
 
-const RentOffer = ({ title, value, onChange }: Props) => {
-	const handleChange = (e: any) => {
-		onChange((prev: any) => ({ ...prev, value: e.target.value }));
-	};
+const RentOffer = ({ title, value, onChange , toggleInput, checked=false ,name, updateFieldPrice}: Props) => {
+
+	const handleToggle = () => {
+		if(toggleInput) {
+			toggleInput((prev) => ({ value, enabled: !prev.enabled
+			}));
+			updateFieldPrice && updateFieldPrice(name);
+		}
+	}
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -21,7 +37,7 @@ const RentOffer = ({ title, value, onChange }: Props) => {
 				</div>
 				{title !== 1 ? (
 					<label className={styles.switch}>
-						<input type="checkbox" />
+						<input type="checkbox" onChange={handleToggle} checked={checked}/>
 						<span className={styles.slider}></span>
 					</label>
 				) : null}
@@ -29,8 +45,8 @@ const RentOffer = ({ title, value, onChange }: Props) => {
 			<InputField
 				prefix="N"
 				placeholder="0"
-				value={value.value}
-				onChange={handleChange}
+				value={value}
+				onChange={onChange}
 			/>
 			<div className={styles.footer}>
 				{title !== 1 && (

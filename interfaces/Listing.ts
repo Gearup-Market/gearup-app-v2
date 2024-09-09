@@ -104,6 +104,64 @@ export interface AddListing {
 	};
 }
 
+interface SubCategoryFields {
+	brand: string;
+	model: string;
+	sensorType: string;
+	megapixels: string;
+	videoResolution: string;
+}
+
+interface SellingOffer {
+	currency: string;
+	pricing: number;
+	shipping: {
+		shippingOffer: boolean;
+		offerLocalPickup: boolean;
+		shippingCosts: boolean;
+	};
+}
+
+interface RentingOffer {
+	currency: string;
+	day1Offer: number;
+	day3Offer: number;
+	day7Offer: number;
+	overtimePercentage: number;
+	totalReplacementValue: number;
+}
+
+export interface ListingState {
+	productName: string;
+	items?: Item[];
+	category: string;
+	subCategory: string;
+	productionType: string;
+	subCategoryFields: SubCategoryFields;
+	description: string;
+	listingPhotos: string[];
+	listingType: string | string[];
+	gearCondition: string;
+	user: string;
+	fieldValues: Field[];
+	offer: {
+		forSell?: SellingOffer;
+		forRent?: RentingOffer;
+	};
+}
+
+interface SelectedValue {
+  id: number;
+  name: string;
+}
+
+interface Field {
+  name: string;
+  selectedValues: SelectedValue[];
+  fieldType: "single" | "multiple";
+}
+
+
 // {
 //     "id": "",
 //     "items": [],

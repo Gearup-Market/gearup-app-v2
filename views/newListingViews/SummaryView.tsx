@@ -55,22 +55,21 @@ const SummaryView = () => {
 	const disabledButton = !type.length;
 	console.log(newListing, "newListing");
 
-	console.log(user, "id");
 
 	const handleSubmission = async () => {
 		if (!user?._id) {
 			toast.error("Please login to create a product");
 			return;
 		}
-		const data = {
+		const data = [{
 			...mockListing,
 			images,
 			listingType: "renting",
 			user: user?._id
-		};
+		}];
 
 		try {
-			const resp = await createProductListing(data);
+			const resp = await createProductListing(newListing);
 			console.log(resp, "resp");
 			toast.success("Product created successfully");
 		} catch (error) {
@@ -207,7 +206,7 @@ const SummaryView = () => {
 					type="button"
 					// disabled={disabledButton}
 				>
-					{isPending ? <LoadingSpinner /> : "Submit"}
+					{isPending ? <LoadingSpinner size="small" /> : "Submit"}
 				</Button>
 			</div>
 		</div>

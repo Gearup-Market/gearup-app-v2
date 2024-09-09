@@ -7,4 +7,5 @@ export const API_URL = {
     signUp: "/users/create",
     createListings: "/listings/create",
     getUser: "/users",
+    uploadFiles: "/listings/upload",
 };

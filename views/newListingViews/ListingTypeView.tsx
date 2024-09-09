@@ -9,6 +9,7 @@ import { AppState } from "@/store/configureStore";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { ListingType } from "@/components/newListing";
+import toast from "react-hot-toast";
 
 const gearConditions = [
 	"new",
@@ -17,7 +18,7 @@ const gearConditions = [
 	"good",
 	"well used",
 	"heavily used",
-	"for parts",
+	"for parts"
 ];
 
 const ListingTypeView = () => {
@@ -27,12 +28,16 @@ const ListingTypeView = () => {
 	const [type, setType] = useState<string[]>([]);
 	const [checked, setChecked] = useState<{ rent: boolean; sell: boolean }>({
 		rent: false,
-		sell: false,
+		sell: false
 	});
 	const [condition, setCondition] = useState<string>("");
 
 	const nextPage = () => {
-		const newListingData = { condition, type };
+		if (!condition) {
+			toast.error("Please select a gear condition");
+			return;
+		}
+		const newListingData = { gearCondition: condition, listingType: type.length === 2 ? "both" : type[0] };
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/pricing");
 	};
@@ -92,6 +97,7 @@ const ListingTypeView = () => {
 						{!disabledButton && (
 							<Select
 								label="Gear condition"
+								required={true}
 								options={gearConditions}
 								onOptionChange={setCondition}
 							/>

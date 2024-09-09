@@ -8,14 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
-import { ListingType, RentOffer } from "@/components/newListing";
+import { ListingType } from "@/components/newListing";
+import RentOffer, { RentOfferProps } from "@/components/newListing/rentOffer/RentOffer";
 
 const enum View {
 	Idle = "idle",
 	Rent = "rent",
 	Sell = "sell",
 	singleRent = "singleRent",
-	singleSell = "singleSell",
+	singleSell = "singleSell"
 }
 
 interface RentOffer {
@@ -33,27 +34,45 @@ const PricingView = () => {
 	const [oneDayRent, setOneDayRent] = useState<RentOffer>({ value: 0, enabled: false });
 	const [amount, setAmount] = useState<number>(0);
 	// const [rentOffers, setRentOffers] = useState<any>({})
-	console.log(newListing,"new listing");
+	console.log(newListing, "new listing");
 
 	const [checked, setChecked] = useState<{ rent: boolean; sell: boolean }>({
 		rent: false,
-		sell: false,
+		sell: false
 	});
+
 	const nextPage = () => {
-		// const newListingData = { condition, type };
-		const newListingData = {
-			buyPrice: amount,
-			price1Day: oneDayRent,
+		const data = {
+			offer: {
+				forSell: {
+					currency: "",
+					pricing: 0,
+					shipping: {
+						shippingOffer: false,
+						offerLocalPickup: false,
+						shippingCosts: false
+					}
+				},
+				forRent: {
+					currency: "",
+					day1Offer: 0,
+					day3Offer: 0,
+					day7Offer: 0,
+					overtimePercentage: 0,
+					totalReplacementValue: 0
+				}
+			}
 		};
-		dispatch(updateNewListing(newListingData));
+		dispatch(updateNewListing(data));
 		router.push("/new-listing/summary");
 	};
 
-	function checkAvailability(arr: string[]) {
-		const hasRent = arr.includes("rent");
-		const hasSell = arr.includes("sell");
+	function checkAvailability(type: string) {
+		const hasRent = type === "rent";
+		const hasSell = type === "sell";
+		const hasBothTypes = type === "both";
 
-		if (hasRent && hasSell) {
+		if (hasBothTypes) {
 			setHasBoth(true);
 			setView(View.Rent);
 		} else if (hasRent) {
@@ -102,52 +121,43 @@ const PricingView = () => {
 				<span style={{ width: "83.5%" }}></span>
 			</div>
 			<div className={styles.body}>
-				<>
+				<div className={styles.details}>
 					{hasBoth && (
-						<div className={styles.details}>
-							<div className={styles.nav_button}>
-								<Button
-									buttonType="transparent"
-									className={styles.button_container}
-									onClick={() => setView(View.Rent)}
+						<div className={styles.nav_button}>
+							<Button
+								buttonType="transparent"
+								className={styles.button_container}
+								onClick={() => setView(View.Rent)}
+							>
+								<div
+									className={styles.button}
+									data-active={view === View.Rent}
 								>
-									<div
-										className={styles.button}
-										data-active={view === View.Rent}
-									>
-										For rent
-									</div>
-								</Button>
-								<Button
-									buttonType="transparent"
-									className={styles.button_container}
-									onClick={() => setView(View.Sell)}
+									For rent
+								</div>
+							</Button>
+							<Button
+								buttonType="transparent"
+								className={styles.button_container}
+								onClick={() => setView(View.Sell)}
+							>
+								<div
+									className={styles.button}
+									data-active={view === "sell"}
 								>
-									<div
-										className={styles.button}
-										data-active={view === "sell"}
-									>
-										For sell
-									</div>
-								</Button>
-							</div>
-							{view === View.Sell && (
-								<BuyView amount={amount} setAmount={setAmount} />
-							)}
-							{view === View.Rent && (
-								<RentView
-									oneDayRent={oneDayRent}
-									setOneDayRent={setOneDayRent}
-								/>
-							)}
+									For sell
+								</div>
+							</Button>
 						</div>
 					)}
+					{view === View.Sell && (
+						<BuyView amount={amount} setAmount={setAmount} />
+					)}
+					{view === View.Rent && (
+						<RentView oneDayRent={oneDayRent} setOneDayRent={setOneDayRent} />
+					)}
+				</div>
 
-					{/* {
-						!hasBoth && ({view === View.singleSell && <BuyView />}
-						{view === View.singleRent && <RentView />})
-					} */}
-				</>
 				<div className={styles.image_container}>
 					<div className={styles.image}>
 						<Image src="/images/camera-man.png" alt="" fill sizes="100vw" />
@@ -177,7 +187,7 @@ const PricingView = () => {
 export default PricingView;
 
 const BuyView = ({ amount, setAmount }: any) => {
-	const toggle = () => { };
+	const toggle = () => {};
 	return (
 		<div>
 			<div className={styles.text}>
@@ -258,20 +268,57 @@ const BuyView = ({ amount, setAmount }: any) => {
 
 const RentView = ({ oneDayRent, setOneDayRent }: any) => {
 	// const [oneDayRent, setOneDayRent] = useState<RentOffer>({ value: 0, enabled: false });
-	const [threeDayRent, setThreeDayRent] = useState<RentOffer>({
+	const [rentingData, setRentingData] = useState<any>({}); // {currency: "NGN", day1Offer: 0, day3Offer: 0, day7Offer: 0, overtimePercentage: 0, totalReplacementValue: 0}
+
+	const [threeDayRent, setThreeDayRent] = useState<RentOfferProps>({
 		value: 0,
-		enabled: false,
+		enabled: false
 	});
-	const [sevenDayRent, setSevenDayRent] = useState<RentOffer>({
+	const [sevenDayRent, setSevenDayRent] = useState<RentOfferProps>({
 		value: 0,
-		enabled: false,
+		enabled: false
 	});
-	const [thirtyDayRent, setThirtyDayRent] = useState<RentOffer>({
+	const [thirtyDayRent, setThirtyDayRent] = useState<RentOfferProps>({
 		value: 0,
-		enabled: false,
+		enabled: false
 	});
 	const [totalReplacementValue, setTotalReplacementValue] = useState<number>(0);
-	const toggle = () => { };
+	const toggle = () => {};
+
+	const handlePriceChange = (e: any) => {
+		setOneDayRent({ value: e.target.value, enabled: true });
+		// update other enabled offers
+		if (threeDayRent.enabled) {
+			setThreeDayRent({ value: +e.target.value * 2, enabled: true });
+		}
+		if (sevenDayRent.enabled) {
+			setSevenDayRent({ value: +e.target.value * 3, enabled: true });
+		}
+		if (thirtyDayRent.enabled) {
+			setThirtyDayRent({ value: +e.target.value * 9, enabled: true });
+		}
+	};
+
+	const updateFieldPrice = (field: string) => {
+		if (field === "threeDayRent") {
+			setThreeDayRent(prev => ({
+				enabled: prev.enabled,
+				value: prev.enabled ? oneDayRent.value * 2 : 0
+			}));
+		}
+		if (field === "sevenDayRent") {
+			setSevenDayRent(prev => ({
+				enabled: prev.enabled,
+				value: prev.enabled ? oneDayRent.value * 3 : 0
+			}));
+		}
+		if (field === "thirtyDayRent") {
+			setThirtyDayRent(prev => ({
+				enabled: prev.enabled,
+				value: prev.enabled ? oneDayRent.value * 9 : 0
+			}));
+		}
+	};
 
 	return (
 		<div>
@@ -285,21 +332,35 @@ const RentView = ({ oneDayRent, setOneDayRent }: any) => {
 			<div className={styles.container}>
 				<Select label="Currency" options={["NGN"]} />
 				<div className={styles.select_row}>
-					<RentOffer title={1} value={oneDayRent} onChange={setOneDayRent} />
+					<RentOffer
+						title={1}
+						value={oneDayRent.value}
+						onChange={handlePriceChange}
+						name="oneDayRent"
+					/>
 					<RentOffer
 						title={3}
-						value={threeDayRent}
-						onChange={setThreeDayRent}
+						value={threeDayRent.value}
+						toggleInput={setThreeDayRent}
+						checked={threeDayRent.enabled}
+						name="threeDayRent"
+						updateFieldPrice={updateFieldPrice}
 					/>
 					<RentOffer
 						title={7}
-						value={sevenDayRent}
-						onChange={setSevenDayRent}
+						value={sevenDayRent.value}
+						toggleInput={setSevenDayRent}
+						checked={sevenDayRent.enabled}
+						name="sevenDayRent"
+						updateFieldPrice={updateFieldPrice}
 					/>
 					<RentOffer
 						title={30}
-						value={thirtyDayRent}
-						onChange={setThirtyDayRent}
+						value={thirtyDayRent.value}
+						toggleInput={setThirtyDayRent}
+						checked={thirtyDayRent.enabled}
+						name="thirtyDayRent"
+						updateFieldPrice={updateFieldPrice}
 					/>
 				</div>
 				<div className={styles.block}>

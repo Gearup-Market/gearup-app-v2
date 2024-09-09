@@ -55,6 +55,7 @@ const AddSearchbox = ({ addItem }: Props) => {
 				</div>
 			</div>
 			<input
+				autoFocus
 				type="text"
 				className={styles.input}
 				value={item.name}

@@ -1,27 +1,5 @@
+import { User } from "@/interfaces/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface User {
-  _id?: string;
-  userId?: string;
-  email?: string;
-  password?: string;
-  userName?: string;
-  verificationToken?: string;
-  isVerified?: boolean;
-  resetPasswordToken?: string;
-  verificationTokenExpiry?: string; // Consider using Date if you handle this as a Date object
-  createdAt?: string; // Same as above
-  resetPasswordTokenExpiry?: string; // Same as above
-  name?: string;
-  phoneNumber?: string | number;
-  token?: string;
-  id?: string;
-  isAuthenticated?: boolean;
-  isSuperAdmin?: boolean;
-  role?: string;
-}
-
-
 
 const initialState: User = {
 	_id: "",
