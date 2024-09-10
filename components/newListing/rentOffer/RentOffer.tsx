@@ -9,24 +9,20 @@ export interface RentOfferProps {
 
 interface Props {
 	title: 1 | 3 | 7 | 30;
-	value: number; 
+	value: number;
 	onChange?: (e?: any) => void;
-	toggleInput?: React.Dispatch<React.SetStateAction<RentOfferProps>>;
+	toggleInput?: (field:string) => void;
 	checked?: boolean;
 	name: string;
-	updateFieldPrice?: (name: string) => void;
 }
 
-const RentOffer = ({ title, value, onChange , toggleInput, checked=false ,name, updateFieldPrice}: Props) => {
+const RentOffer = ({ title, value, onChange, toggleInput, checked = false, name }: Props) => {
 
 	const handleToggle = () => {
-		if(toggleInput) {
-			toggleInput((prev) => ({ value, enabled: !prev.enabled
-			}));
-			updateFieldPrice && updateFieldPrice(name);
+		if (toggleInput) {
+			toggleInput(name)
 		}
 	}
-
 	return (
 		<div className={styles.container} data-disabled={!checked}>
 			<div className={styles.header}>
@@ -37,7 +33,7 @@ const RentOffer = ({ title, value, onChange , toggleInput, checked=false ,name, 
 				</div>
 				{title !== 1 ? (
 					<label className={styles.switch}>
-						<input type="checkbox" onChange={handleToggle} checked={checked}/>
+						<input type="checkbox" onChange={handleToggle} checked={checked} />
 						<span className={styles.slider}></span>
 					</label>
 				) : null}

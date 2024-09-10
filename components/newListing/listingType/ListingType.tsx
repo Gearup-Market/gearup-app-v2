@@ -1,15 +1,32 @@
 import React from "react";
 import styles from "./ListingType.module.scss";
 import Image from "next/image";
-
+import { Tooltip } from "@mui/material";
 interface Props {
 	src?: string;
 	title: string;
-	toggle: (e: string) => void;
+	name?: string;
+	type?: string;
+	toggle?: (e: string) => void;
 	checked: boolean;
+	tipDescription?: string;
+	showToolTip?: boolean;
+	handleToggle?: () => void;
 }
 
-const ListingType = ({ src, title, toggle, checked }: Props) => {
+const ListingType = ({ src, title, toggle, checked, tipDescription, showToolTip = false, handleToggle ,type}: Props) => {
+
+	const handleToggling = () => {
+		console.log(title)
+		if (type === "rent") {
+			console.log("title was called")
+			toggle ? toggle(title) : null;
+		} else {
+			console.log("i was called")
+			handleToggle ? handleToggle() : null;
+		}
+	};
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.small_row}>
@@ -19,11 +36,23 @@ const ListingType = ({ src, title, toggle, checked }: Props) => {
 					</div>
 				)}
 				<div className={styles.text}>
-					<p>For {title}</p>
+					<p>{title}</p>
+					{
+						showToolTip && (
+							<Tooltip title={tipDescription} className="">
+								<Image
+									src="/svgs/required-icon.svg"
+									alt=""
+									height={14}
+									width={14}
+								/>
+							</Tooltip>
+						)
+					}
 				</div>
 			</div>
 			<label className={styles.switch}>
-				<input type="checkbox" onChange={() => toggle(title)} checked={checked} />
+				<input type="checkbox" onChange={handleToggling} checked={checked} />
 				<span className={styles.slider}></span>
 			</label>
 		</div>

@@ -112,23 +112,25 @@ interface SubCategoryFields {
 	videoResolution: string;
 }
 
-interface SellingOffer {
-	currency: string;
-	pricing: number;
-	shipping: {
-		shippingOffer: boolean;
-		offerLocalPickup: boolean;
-		shippingCosts: boolean;
+export interface SellingOffer {
+	currency?: string;
+	pricing?: number;
+	acceptOffers?: boolean;
+	shipping?: {
+		shippingOffer?: boolean;
+		offerLocalPickup?: boolean;
+		shippingCosts?: boolean;
 	};
 }
 
-interface RentingOffer {
-	currency: string;
+export interface RentingOffer {
+	currency?: string;
 	day1Offer: number;
 	day3Offer: number;
 	day7Offer: number;
-	overtimePercentage: number;
-	totalReplacementValue: number;
+	day30Offer?: number;
+	overtimePercentage?: number;
+	totalReplacementValue?: number;
 }
 
 export interface ListingState {
@@ -161,6 +163,12 @@ interface Field {
   fieldType: "single" | "multiple";
 }
 
+export enum DayOfferEnum {
+	ONE_DAY = "ONE_DAY",
+	THREE_DAYS = "THREE_DAYS",
+	SEVEN_DAYS = "SEVEN_DAYS",
+	THIRTY_DAYS = "THIRTY_DAYS", 
+}
 
 // {
 //     "id": "",

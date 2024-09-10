@@ -46,15 +46,13 @@
 			font-weight: 700;
 			color: #1b1e21;
 		}
-		// &[data-type="loss"] {
-		// 	h5 {
-		// 		color: $col-error-4;
-		// 	}
-		// }
-		// &[data-type="gain"] {
-		// 	h5 {
-		// 		color: $col-success-4;
-		// 	}
-		// }
 	}
+}
+
+.description {
+	@extend %text-14;
+	color: #4b525a;
+	border: 1px solid #dedfe0;
+	border-radius: 0.8rem;
+	padding: 1.6rem;
 }

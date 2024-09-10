@@ -24,6 +24,7 @@ const initialState: ListingState = {
     forSell: {
       currency: "",
       pricing: 0,
+      acceptOffers: false,
       shipping: {
         shippingOffer: false,
         offerLocalPickup: false,

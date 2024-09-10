@@ -10,6 +10,7 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { ListingType } from "@/components/newListing";
 import RentOffer, { RentOfferProps } from "@/components/newListing/rentOffer/RentOffer";
+import { DayOfferEnum, RentingOffer, SellingOffer } from "@/interfaces/Listing";
 
 const enum View {
 	Idle = "idle",
@@ -24,43 +25,44 @@ interface RentOffer {
 	enabled: boolean;
 }
 
+const initialForSellDetails: SellingOffer = {
+	currency: "",
+	pricing: 0,
+	acceptOffers: false,
+	shipping: {
+		shippingOffer: false,
+		offerLocalPickup: false,
+		shippingCosts: false
+	}
+};
+
+const initialForRentDetails: RentingOffer = {
+	currency: "",
+	day1Offer: 0,
+	day3Offer: 0,
+	day7Offer: 0,
+	day30Offer: 0,
+	overtimePercentage: 0,
+	totalReplacementValue: 0
+};
+
 const PricingView = () => {
 	const router = useRouter();
 	const newListing = useSelector((state: AppState) => state.newListing);
 	const dispatch = useDispatch();
-	const [type, setType] = useState<string[]>([]);
 	const [view, setView] = useState<View>(View.Rent);
 	const [hasBoth, setHasBoth] = useState<boolean>(false);
-	const [oneDayRent, setOneDayRent] = useState<RentOffer>({ value: 0, enabled: false });
-	const [amount, setAmount] = useState<number>(0);
+	const [forSellDetails, setForSellDetails] = useState<SellingOffer>(newListing.offer.forSell ?? initialForSellDetails);
+	const [forRentDetails, setForRentDetails] = useState<RentingOffer>(newListing.offer.forRent ?? initialForRentDetails);
+
 	// const [rentOffers, setRentOffers] = useState<any>({})
 	console.log(newListing, "new listing");
-
-	const [checked, setChecked] = useState<{ rent: boolean; sell: boolean }>({
-		rent: false,
-		sell: false
-	});
 
 	const nextPage = () => {
 		const data = {
 			offer: {
-				forSell: {
-					currency: "",
-					pricing: 0,
-					shipping: {
-						shippingOffer: false,
-						offerLocalPickup: false,
-						shippingCosts: false
-					}
-				},
-				forRent: {
-					currency: "",
-					day1Offer: 0,
-					day3Offer: 0,
-					day7Offer: 0,
-					overtimePercentage: 0,
-					totalReplacementValue: 0
-				}
+				forSell: forSellDetails,
+				forRent: forRentDetails
 			}
 		};
 		dispatch(updateNewListing(data));
@@ -87,15 +89,6 @@ const PricingView = () => {
 		checkAvailability(newListing.listingType);
 	}, []);
 
-	const handleToggle = (title: "rent" | "sell") => {
-		const _type = type;
-		const isIncluded: boolean = _type.includes(title);
-		const filteredType = isIncluded
-			? [...type.filter(item => item !== title)]
-			: [..._type, title];
-		setType(filteredType);
-		setChecked(prev => ({ ...prev, [title]: !isIncluded }));
-	};
 
 	const disabledButton = !newListing.type.length;
 	return (
@@ -151,10 +144,10 @@ const PricingView = () => {
 						</div>
 					)}
 					{view === View.Sell && (
-						<BuyView amount={amount} setAmount={setAmount} />
+						<BuyView forSellDetails={forSellDetails} setForSellDetails={setForSellDetails} />
 					)}
 					{view === View.Rent && (
-						<RentView oneDayRent={oneDayRent} setOneDayRent={setOneDayRent} />
+						<RentView forRentDetails={forRentDetails} setForRentDetails={setForRentDetails} />
 					)}
 				</div>
 
@@ -186,8 +179,8 @@ const PricingView = () => {
 
 export default PricingView;
 
-const BuyView = ({ amount, setAmount }: any) => {
-	const toggle = () => {};
+const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: SellingOffer, setForSellDetails: React.Dispatch<React.SetStateAction<SellingOffer>> }) => {
+	
 	return (
 		<div>
 			<div className={styles.text}>
@@ -198,7 +191,7 @@ const BuyView = ({ amount, setAmount }: any) => {
 				</p>
 			</div>
 			<div className={styles.container}>
-				<Select label="Currency" options={["NGN"]} />
+				<Select label="Currency" options={["NGN"]} defaultOptionIndex={0} onOptionChange={(value)=>setForSellDetails((prev)=>({...prev,currency:value}))}/>
 				<div className={styles.block}>
 					<div className={styles.text}>
 						<h3>Pricing</h3>
@@ -211,11 +204,18 @@ const BuyView = ({ amount, setAmount }: any) => {
 						placeholder="0"
 						label="Amount"
 						type="number"
-						value={amount}
-						onChange={(e: any) => setAmount(e.target.value)}
+						value={forSellDetails?.pricing}
+						onChange={(e: any) => setForSellDetails((prev) => ({ ...prev, pricing: e.target.value ?? 0 }))}
 						className={styles.input}
 					/>
-					<ListingType title="Accept offers" checked toggle={toggle} />
+					<ListingType
+						title="Accept offers"
+						type="buy"
+						checked={forSellDetails?.acceptOffers || false}
+						handleToggle={() => setForSellDetails((prev) => ({ ...prev, acceptOffers: !prev?.acceptOffers }))}
+						tipDescription="Allow buyer to make an offer."
+						showToolTip={true}
+					/>
 				</div>
 				<div className={styles.block}>
 					<div className={styles.text}>
@@ -224,9 +224,30 @@ const BuyView = ({ amount, setAmount }: any) => {
 							Multiple shipping options help your listings get sold faster.
 						</p>
 					</div>
-					<ListingType title="Offer shipping" checked toggle={toggle} />
-					<ListingType title="Offer Local pickup" checked toggle={toggle} />
-					<ListingType title="Cover shipping costs" checked toggle={toggle} />
+					<ListingType
+						title="Offer shipping"
+						type="buy"
+						checked={forSellDetails?.shipping?.shippingOffer || false}
+						tipDescription="Allow the buyer to choose shipping when they place an order."
+						showToolTip={true}
+						handleToggle={() => setForSellDetails((prev) => ({ ...prev, shipping: { ...prev?.shipping, shippingOffer: !prev?.shipping?.shippingOffer } }))}
+					/>
+					<ListingType
+						title="Offer Local pickup"
+						type="buy"
+						checked={forSellDetails?.shipping?.offerLocalPickup || false}
+						tipDescription="Offer to pay for shipping to buyer."
+						showToolTip={true}
+						handleToggle={() => setForSellDetails((prev) => ({ ...prev, shipping: { ...prev?.shipping, offerLocalPickup: !prev?.shipping?.offerLocalPickup } }))}
+					/>
+					<ListingType
+						title="Cover shipping costs"
+						type="buy"
+						checked={forSellDetails?.shipping?.shippingCosts || false}
+						handleToggle={() => setForSellDetails((prev) => ({ ...prev, shipping: { ...prev?.shipping, shippingCosts: !prev?.shipping?.shippingCosts } }))}
+						showToolTip={true}
+						tipDescription="Buyers expects having a return policy and the choice to opt for Third-Party Verification when making a purchase. Hence, we mandate that all sellers on Gearup to provide a 48-hour return policy and be open to accepting payments through Third-Party Verification from buyers."
+					/>
 				</div>
 				<div className={styles.text}>
 					<CheckBox className={styles.checkbox} />
@@ -266,57 +287,42 @@ const BuyView = ({ amount, setAmount }: any) => {
 	);
 };
 
-const RentView = ({ oneDayRent, setOneDayRent }: any) => {
-	// const [oneDayRent, setOneDayRent] = useState<RentOffer>({ value: 0, enabled: false });
-	const [rentingData, setRentingData] = useState<any>({}); // {currency: "NGN", day1Offer: 0, day3Offer: 0, day7Offer: 0, overtimePercentage: 0, totalReplacementValue: 0}
+const RentView = ({ forRentDetails, setForRentDetails }: { forRentDetails: RentingOffer, setForRentDetails: React.Dispatch<React.SetStateAction<RentingOffer>> }) => {
 
-	const [threeDayRent, setThreeDayRent] = useState<RentOfferProps>({
-		value: 0,
-		enabled: false
+	const [toggleValues, setToggleValues] = useState<{ oneDayRent: boolean; threeDayRent: boolean; sevenDayRent: boolean; thirtyDayRent: boolean }>({
+		oneDayRent: true,
+		threeDayRent: forRentDetails.day3Offer !== 0,
+		sevenDayRent: forRentDetails.day7Offer !== 0,
+		thirtyDayRent: forRentDetails.day30Offer !== 0
 	});
-	const [sevenDayRent, setSevenDayRent] = useState<RentOfferProps>({
-		value: 0,
-		enabled: false
-	});
-	const [thirtyDayRent, setThirtyDayRent] = useState<RentOfferProps>({
-		value: 0,
-		enabled: false
-	});
-	const [totalReplacementValue, setTotalReplacementValue] = useState<number>(0);
-	const toggle = () => {};
 
 	const handlePriceChange = (e: any) => {
-		setOneDayRent({ value: +e.target.value, enabled: true });
+		setToggleValues((prev) => ({ ...prev, oneDayRent: true }));
+		setForRentDetails((prev) => ({ ...prev, day1Offer: e.target.value }));
 		// update other enabled offers
-		if (threeDayRent.enabled) {
-			setThreeDayRent({ value: +e.target.value * 2, enabled: true });
+		if (toggleValues.threeDayRent) {
+			setForRentDetails((prev) => ({ ...prev, day3Offer: +e.target.value * 2 }));
 		}
-		if (sevenDayRent.enabled) {
-			setSevenDayRent({ value: +e.target.value * 3, enabled: true });
+		if (toggleValues.sevenDayRent) {
+			setForRentDetails((prev) => ({ ...prev, day7Offer: +e.target.value * 3 }));
 		}
-		if (thirtyDayRent.enabled) {
-			setThirtyDayRent({ value: +e.target.value * 9, enabled: true });
+		if (toggleValues.thirtyDayRent) {
+			setForRentDetails((prev) => ({ ...prev, day30Offer: +e.target.value * 9 }));
 		}
 	};
 
 	const updateFieldPrice = (field: string) => {
-		if (field === "threeDayRent") {
-			setThreeDayRent(prev => ({
-				enabled: prev.enabled,
-				value: prev.enabled ? oneDayRent.value * 2 : 0
-			}));
+		if (field === DayOfferEnum.THREE_DAYS) {
+			setToggleValues((prev) => ({ ...prev, threeDayRent: !prev.threeDayRent }));
+			setForRentDetails((prev) => ({ ...prev, day3Offer: toggleValues.threeDayRent ? 0 : +forRentDetails?.day1Offer * 2 }));
 		}
-		if (field === "sevenDayRent") {
-			setSevenDayRent(prev => ({
-				enabled: prev.enabled,
-				value: prev.enabled ? oneDayRent.value * 3 : 0
-			}));
+		if (field === DayOfferEnum.SEVEN_DAYS) {
+			setToggleValues((prev) => ({ ...prev, sevenDayRent: !prev.sevenDayRent }));
+			setForRentDetails((prev) => ({ ...prev, day7Offer: toggleValues.sevenDayRent ? 0 : +forRentDetails?.day1Offer * 3 }));
 		}
-		if (field === "thirtyDayRent") {
-			setThirtyDayRent(prev => ({
-				enabled: prev.enabled,
-				value: prev.enabled ? oneDayRent.value * 9 : 0
-			}));
+		if (field === DayOfferEnum.THIRTY_DAYS) {
+			setToggleValues((prev) => ({ ...prev, thirtyDayRent: !prev.thirtyDayRent }));
+			setForRentDetails((prev) => ({ ...prev, day30Offer: toggleValues.thirtyDayRent ? 0 : +forRentDetails?.day1Offer * 9 }));
 		}
 	};
 
@@ -330,38 +336,41 @@ const RentView = ({ oneDayRent, setOneDayRent }: any) => {
 				</p>
 			</div>
 			<div className={styles.container}>
-				<Select label="Currency" options={["NGN"]} />
+				<Select label="Currency" options={["NGN"]} defaultOptionIndex={0}  onOptionChange={(value)=>setForRentDetails((prev)=>({...prev,currency:value}))} />
 				<div className={styles.select_row}>
 					<RentOffer
 						title={1}
-						value={oneDayRent.value}
+						value={forRentDetails?.day1Offer ?? 0}
 						onChange={handlePriceChange}
-						name="oneDayRent"
+						name={DayOfferEnum.ONE_DAY}
 						checked={true}
 					/>
 					<RentOffer
 						title={3}
-						value={threeDayRent.value}
-						toggleInput={setThreeDayRent}
-						checked={threeDayRent.enabled}
-						name="threeDayRent"
-						updateFieldPrice={updateFieldPrice}
+						value={forRentDetails?.day3Offer ?? 0}
+						toggleInput={(field) => {
+							updateFieldPrice(field);
+						}}
+						checked={toggleValues.threeDayRent}
+						name={DayOfferEnum.THREE_DAYS}
 					/>
 					<RentOffer
 						title={7}
-						value={sevenDayRent.value}
-						toggleInput={setSevenDayRent}
-						checked={sevenDayRent.enabled}
-						name="sevenDayRent"
-						updateFieldPrice={updateFieldPrice}
+						value={forRentDetails.day7Offer ?? 0}
+						toggleInput={(field) => {
+							updateFieldPrice(field);
+						}}
+						checked={toggleValues.sevenDayRent}
+						name={DayOfferEnum.SEVEN_DAYS}
 					/>
 					<RentOffer
 						title={30}
-						value={thirtyDayRent.value}
-						toggleInput={setThirtyDayRent}
-						checked={thirtyDayRent.enabled}
-						name="thirtyDayRent"
-						updateFieldPrice={updateFieldPrice}
+						value={forRentDetails?.day30Offer ?? 0}
+						toggleInput={(field) => {
+							updateFieldPrice(field);
+						}}
+						checked={toggleValues.thirtyDayRent}
+						name={DayOfferEnum.THIRTY_DAYS}
 					/>
 				</div>
 				<div className={styles.block}>
@@ -376,14 +385,20 @@ const RentView = ({ oneDayRent, setOneDayRent }: any) => {
 						<div className={styles.text}>
 							<p>Percentage of the total replacement value</p>
 						</div>
-						<RangeInput value={700} min={50} max={1000} />
+						<RangeInput
+							value={forRentDetails?.overtimePercentage ?? 0}
+							label={`${forRentDetails?.overtimePercentage?.toString()}%`}
+							onChange={e => setForRentDetails((prev) => ({ ...prev, overtimePercentage: e.target.value ?? 0 }))}
+							min={0}
+							max={100}
+						/>
 					</div>
 					<InputField
 						prefix="N"
 						placeholder="0"
 						type="number"
-						value={totalReplacementValue}
-						onChange={(e: any) => setTotalReplacementValue(e.target.value)}
+						value={forRentDetails?.totalReplacementValue ?? 0}
+						onChange={(e: any) => setForRentDetails((prev) => ({ ...prev, totalReplacementValue: e.target.value ?? 0 }))}
 						label="Total replacement value"
 						className={styles.input}
 					/>
