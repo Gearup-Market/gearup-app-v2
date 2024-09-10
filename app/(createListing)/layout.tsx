@@ -3,7 +3,7 @@ import styles from "./layout.module.scss";
 
 export const metadata: Metadata = {
 	title: "Create a Listing",
-	description: "Marketplace to get everything gears",
+	description: "Marketplace to get everything gears"
 };
 
 export default function ListingLayout({ children }: { children: React.ReactNode }) {

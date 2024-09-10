@@ -26,6 +26,7 @@ export interface SelectProps {
 	titleClassName?: string;
 	optionClassName?: string;
 	bodyClassName?: string;
+	required?: boolean;
 }
 
 const Select: React.FunctionComponent<SelectProps> = ({
@@ -42,6 +43,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 	optionClassName,
 	bodyClassName,
 	label,
+	required=false,
 }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [selectedOptionIndex, setSelectedOptionIndex] =
@@ -74,7 +76,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 
 	return (
 		<div className={styles.select_wrapper}>
-			{!!label && <label className={styles.input_label}>{label}</label>}
+			{!!label && <label className={styles.input_label}>{label} {required && <Image src='/svgs/required-icon.svg' alt="required" height={20} width={20}/>}</label>}
 			<div
 				className={`${styles.select} ${className}`}
 				data-type={isTransparent}

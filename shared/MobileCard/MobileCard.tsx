@@ -17,7 +17,7 @@ const MobileCard = ({ mainHeaderImage, mainHeaderText, subHeaderText, lastEle, i
     const [showDetails, setShowDetails] = React.useState<boolean>(false)
     return (
         <div className={styles.container}>
-            <div className={styles.container__header} data-index={ind} data-lastEle={lastEle && !showDetails}>
+            <div className={styles.container__header} data-index={ind} data-lastele={lastEle && !showDetails}>
                 <div className={styles.container__header__left}>
                     <div className={styles.avatar}>
                         <CustomImage src={mainHeaderImage || "/images/admin-img.jpg"} alt={mainHeaderText || "custom-image"} width={16} height={16} />

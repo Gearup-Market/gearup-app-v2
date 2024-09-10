@@ -10,6 +10,7 @@ export interface UserType {
   resetPasswordToken?: string;
   roles?: number;
   updatedAt?: string;
+  _id?: string;
 }
 
 export interface LoginResponseOutput {
@@ -21,10 +22,6 @@ export interface DefaultProviderType {
   isAuthenticated: boolean;
   isOtpVerified: boolean;
   user: null | UserType;
-  setUser: (user:UserType) => void;
   loading: boolean;
-  signup: (user:any) => Promise<void>;
   logout: () => Promise<void>;
-  // updateUser: (f: any) => Promise<boolean>;
-  resendOTP: (email: string) => Promise<boolean>;
 }

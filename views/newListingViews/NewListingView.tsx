@@ -56,7 +56,7 @@ const NewListingView = () => {
 				<div className={styles.details}>
 					<div className={styles.text}>
 						<h1>What are you renting or selling?</h1>
-						<p>Add one or more producrs to be listed</p>
+						<p>Add one or more products to be listed</p>
 					</div>
 					<div className={styles.container}>
 						{items.map((item: Item, index: number) => (
@@ -70,7 +70,9 @@ const NewListingView = () => {
 									<span></span>
 									<span></span>
 								</div>
-								Add a product
+								{
+									!!items.length ? "Add more to set" : "Add a product"
+								}
 							</Button>
 						)}
 					</div>

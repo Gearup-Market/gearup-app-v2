@@ -3,34 +3,23 @@ import { Box, CircularProgress } from "@mui/material";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { AuthProviderProps, ProtectRouteProps } from "./types";
-import { isEqual } from "lodash";
-import { getAuthToken, removeAuthToken, setAuthToken } from "@/utils/tokenStorage";
+import { getAuthToken, removeAuthToken } from "@/utils/tokenStorage";
 import { DefaultProviderType, UserType } from "@/interfaces/authcontext";
-import {
-	useGetUser,
-	usePostResendOTP,
-	usePostUserSignIn,
-	usePostUserSignUp
-} from "@/app/api/hooks/users";
+import { useGetUser } from "@/app/api/hooks/users";
 import { api, queryClient } from "@/app/api";
-import toast from "react-hot-toast";
-import { useQueryClient } from "@tanstack/react-query";
+import { useAppDispatch, useAppSelector } from "@/store/configureStore";
+import { updateUser } from "@/store/slices/userSlice";
 
 // ** Defaults
 export const defaultAuthProvider: DefaultProviderType = {
 	isAuthenticated: false,
 	isOtpVerified: false,
 	user: null,
-	setUser: (user: UserType) => {},
 	loading: false,
-	signup: async (user: any) => {},
-	logout: async () => {},
-	resendOTP: async (email: string) => false
+	logout: async () => {}
 };
 
 const AuthContext = createContext(defaultAuthProvider);
-
-const mockUser = {};
 
 export const parseJwt = (token: string) => {
 	try {
@@ -43,23 +32,25 @@ export const parseJwt = (token: string) => {
 export const AuthProvider = (params: AuthProviderProps) => {
 	const router = useRouter();
 	const pathname = usePathname();
-	const [user, setUser] = useState<UserType | null>(null);
+	const user = useAppSelector(state => state.user);
+	const dispatch = useAppDispatch();
 
 	const [token, setToken] = useState("");
 	const [isTokenValid, setIsTokenValid] = useState(false);
-
-	const { mutateAsync: postUserSignUp } = usePostUserSignUp();
-	const { mutateAsync: postOTP } = usePostResendOTP();
+	const { isFetching: loading, data: userData } = useGetUser({
+		token: token
+	});
 
 	useEffect(() => {
-		const token = getAuthToken() || "";
-		const decodedJwt = parseJwt(token || "");
+		const token = getAuthToken() ?? "";
+		const decodedJwt = parseJwt(token ?? "");
 		const isTokenValid = !!decodedJwt && decodedJwt?.exp * 1000 > Date.now();
+		console.log(decodedJwt, "decodedJwt")
+		console.log(new Date(decodedJwt?.exp * 1000), "decodedJwt")
 		setToken(decodedJwt?.userId);
 		setIsTokenValid(isTokenValid);
-
 		if (!isTokenValid) {
-			setUser(null);
+		dispatch(updateUser(null));
 			removeAuthToken();
 			delete api.defaults.headers.Authorization;
 		} else {
@@ -67,23 +58,10 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		}
 	}, []);
 
-	const { isFetching: loading, data: userData } = useGetUser({
-		token: token
-	});
-
-	const signup = async (user: any) => {
-		await postUserSignUp(user);
-	};
-
-	const resendOTP = async (email: string) => {
-		const res = await postOTP({ email });
-		return !!res.status;
-	};
-
 	const logout = async () => {
 		setToken("");
 		removeAuthToken();
-		setUser(null);
+		dispatch(updateUser(null));
 		delete api.defaults.headers.Authorization;
 		setTimeout(() => {
 			router.replace(`/login?returnUrl=${pathname}`);
@@ -93,7 +71,7 @@ export const AuthProvider = (params: AuthProviderProps) => {
 
 	useEffect(() => {
 		if (userData) {
-			setUser(userData.data);
+			updateUser(userData.data);
 		}
 	}, [userData]);
 
@@ -102,11 +80,8 @@ export const AuthProvider = (params: AuthProviderProps) => {
 			isAuthenticated: user !== null && isTokenValid,
 			isOtpVerified: user !== null && isTokenValid,
 			user,
-			setUser,
 			loading,
-			signup,
-			logout,
-			resendOTP
+			logout
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[user, loading, userData, isTokenValid]
@@ -124,6 +99,9 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 	const searchParams = useSearchParams();
 	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
 
+	console.log(user,"user")
+	console.log(isAuthenticated,"isAuthenticated")
+
 	const unprotectedRoutes = useMemo(
 		() => [
 			"/login",
@@ -137,20 +115,6 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 		[]
 	);
 
-	useEffect(() => {
-		if (user === null) {
-			return;
-		}
-		if (!loading) {
-			if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
-				router.replace(`/login?returnUrl=${pathname}`);
-			} else if (isAuthenticated && unprotectedRoutes.includes(pathname)) {
-				if (pathname !== "/login") {
-					router.replace(returnUrl);
-				}
-			}
-		}
-	}, [isAuthenticated, loading, pathname, router, unprotectedRoutes, user]);
 
 	if (loading) {
 		return (

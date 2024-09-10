@@ -11,6 +11,9 @@
 	.small_row {
 		@include flex(flex-start, center);
 		gap: 1.6rem;
+		flex: 1;
+		flex-direction: row;
+		width: 100%;
 		.icon {
 			width: 3.2rem;
 			height: 3.2rem;
@@ -78,8 +81,15 @@
 		transition: 0.4s;
 	}
 	.text {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 		p {
 			color: #1b1e21;
+		}
+		img{
+			width: 1.4rem;
+			height: 1.4rem;
 		}
 	}
 }

@@ -1,17 +1,17 @@
+import { User } from "@/interfaces/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface User {
-	name?: string;
-	email?: string;
-	phoneNumber?: string | number;
-	token?: string;
-	id?: string;
-	isAuthenticated?: boolean;
-	isSuperAdmin?: boolean;
-	role?: string;
-}
-
 const initialState: User = {
+	_id: "",
+	userId: "",
+	password: "",
+	userName: "",
+	verificationToken: "",
+	isVerified: false,
+	resetPasswordToken: "",
+	verificationTokenExpiry: "",
+	createdAt: "",
+	resetPasswordTokenExpiry: "",
 	name: "",
 	email: "",
 	phoneNumber: "",
@@ -20,13 +20,17 @@ const initialState: User = {
 	isAuthenticated: false,
 	isSuperAdmin: false,
 	role: "",
+
 };
 
 const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
-		updateUser: (state, action: PayloadAction<User>) => {
+		updateUser: (state, action: PayloadAction<User | null>) => {
+			if (!action.payload) {
+				return initialState;
+			}
 			state.name = action.payload.name;
 			state.email = action.payload.email;
 			state.phoneNumber = action.payload.phoneNumber;
@@ -35,6 +39,15 @@ const userSlice = createSlice({
 			state.isAuthenticated = action.payload.isAuthenticated;
 			state.isSuperAdmin = action.payload.isSuperAdmin;
 			state.role = action.payload.role;
+			state._id = action.payload._id;
+			state.userId = action.payload.userId;
+			state.userName = action.payload.userName;
+			state.verificationToken = action.payload.verificationToken;
+			state.isVerified = action.payload.isVerified;
+			state.resetPasswordToken = action.payload.resetPasswordToken;
+			state.verificationTokenExpiry = action.payload.verificationTokenExpiry;
+			state.createdAt = action.payload.createdAt;
+			state.resetPasswordTokenExpiry = action.payload.resetPasswordTokenExpiry;
 		},
 		clearUser: state => initialState,
 	},

@@ -2,25 +2,37 @@
 
 import React, { useState } from "react";
 import styles from "./NewListingViews.module.scss";
-import { Button, DetailContainer, Logo, Select } from "@/shared";
+import { Button, DetailContainer, LoadingSpinner, Logo } from "@/shared";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
-import { clearNewListing, updateNewListing } from "@/store/slices/addListingSlice";
+import {
+	mockListing,
+	updateNewListing
+} from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
-import { ListingType } from "@/components/newListing";
 import { ImageSlider } from "@/components/listing";
 import { formatNum } from "@/utils";
 import { addListing } from "@/store/slices/listingsSlice";
+import { usePostCreateListing } from "@/app/api/hooks/listings";
+import { toast } from "react-toastify";
+import { useAuth } from "@/contexts/AuthContext";
+
+const images = [
+	"https://res.cloudinary.com/demo/image/upload/sample.jpg",
+	"https://res.cloudinary.com/demo/image/upload/car.jpg"
+];
 
 const SummaryView = () => {
 	const router = useRouter();
 	const newListing = useSelector((state: AppState) => state.newListing);
+	const { user } = useAuth();
+	const { mutateAsync: createProductListing, isPending } = usePostCreateListing();
 	const dispatch = useDispatch();
 	const [type, setType] = useState<string[]>([]);
 	const [checked, setChecked] = useState<{ rent: boolean; sell: boolean }>({
 		rent: false,
-		sell: false,
+		sell: false
 	});
 
 	const nextPage = () => {
@@ -41,6 +53,39 @@ const SummaryView = () => {
 	};
 
 	const disabledButton = !type.length;
+	console.log(newListing, "newListing");
+
+
+	const handleSubmission = async () => {
+		if (!user?._id) {
+			toast.error("Please login to create a product");
+			return;
+		}
+		const data = [{
+			...mockListing,
+			images,
+			listingType: "renting",
+			user: user?._id
+		}];
+
+		try {
+			const resp = await createProductListing(newListing);
+			console.log(resp, "resp");
+			toast.success("Product created successfully");
+		} catch (error) {
+			toast.error("Error creating product");
+		}
+	};
+	const fieldValues = Object.entries(newListing?.fieldValues)
+	console.log(fieldValues, "fieldValues")
+	console.log("mount", fieldValues?.filter(([key, value]) => key === "Mount"))
+
+	const goodForValues = (fieldValues
+		?.find(([key, value]) => key === "Good for")?.[1]) as string[] || [];
+
+	const mountValues: string[] = (fieldValues
+		?.find(([key, value]) => key === "Mount")?.[1]) as string[] || [];
+
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>
@@ -70,7 +115,7 @@ const SummaryView = () => {
 						<p>Review your listing, hit submit, and you’re done!</p>
 					</div>
 					<div className={styles.container}>
-						<ImageSlider images={newListing.images} />
+						<ImageSlider images={newListing?.images} />
 						<div className={styles.block}>
 							<div className={styles.text}>
 								<h2>{newListing.title}</h2>
@@ -79,74 +124,98 @@ const SummaryView = () => {
 								title="Category"
 								value={newListing.category.name}
 							/>
-							{newListing.fieldValues.map(
-								(fieldValue: any, index: number) => {
-									return fieldValue.fieldType === "single" &&
-										fieldValue.name !== "Brand" ? (
-										<DetailContainer
-											title={fieldValue.name}
-											value={fieldValue.selectedValues[0].name}
-											key={index}
-										/>
-									) : null;
-								}
-							)}
-							<div className={styles.divider}></div>
 							<DetailContainer
 								title="Sub category"
 								value={newListing.subCategory.name}
 							/>
+							{fieldValues?.map(([key, value]) => {
+								return typeof value === "string" ? (
+									<DetailContainer
+										title={key}
+										value={value}
+										key={key}
+									/>
+								) : null;
+							}
+							)}
 							<DetailContainer
-								title="Brand"
-								value={
-									newListing.fieldValues.find(
-										(value: any) => value.name === "Brand"
-									).selectedValues[0].name
-								}
+								title="Description"
+								description={newListing.description}
 							/>
 							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<p>Use cases</p>
-							</div>
-							<div className={styles.row}>
-								{newListing.fieldValues
-									.find((value: any) => value.name === "Good for")
-									.selectedValues.map((values: any, index: number) => (
-										<Button key={index} className={styles.button}>
-											{values.name}
-										</Button>
-									))}
-							</div>
-							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<p>Mount</p>
-							</div>
-							<div className={styles.row}>
-								{newListing.fieldValues
-									.find((value: any) => value.name === "Mount")
-									.selectedValues.map((values: any, index: number) => (
-										<Button key={index} className={styles.button}>
-											{values.name}
-										</Button>
-									))}
+								{fieldValues?.map(([key, value]) => {
+									return typeof value === "object" ? (
+										<div key={key}>
+											<p>{key}</p>
+											<div className={styles.row}>
+												{(value as string[])?.map((val: string, index: number) => (
+													<Button key={`${key}-${index}`} className={styles.button}>
+														{val}
+														<Image
+															src="/svgs/field-values-check.svg"
+															alt="checks"
+															width={10}
+															height={10}
+														/>
+													</Button>
+												))}
+											</div>
+										</div>
+									) : null;
+								})}
 							</div>
 							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<h6 style={{ marginBottom: "1rem" }}>FOR SALE PERKS</h6>
-								<p style={{ marginBottom: "0.6rem" }}>Accepts offers</p>
-								<p style={{ marginBottom: "0.6rem" }}>Offers shipping</p>
-								<p style={{ marginBottom: "0.6rem" }}>
+								<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> FOR SALE PERKS</h6>
+								<p className={styles.perks} style={{ marginBottom: "0.6rem" }}><Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} /> Accepts offers</p>
+								<p className={styles.perks} style={{ marginBottom: "0.6rem" }}><Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} /> Offers shipping</p>
+								<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
+									<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />
 									Cover shipping costs
 								</p>
-								<p style={{ marginBottom: "0.6rem" }}>
-									Offer local pick up
+								<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
+									<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />	Offer local pick up
 								</p>
 							</div>
 							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<h6 style={{ marginBottom: "1rem" }}>PRICING</h6>
+								<h6 style={{ marginBottom: "1rem" }}>Sale PRICING</h6>
 							</div>
 							<DetailContainer
 								title="Amount(including VAT)"
-								value={formatNum(newListing.buyPrice)}
+								value={formatNum(+newListing.offer?.forSell?.pricing)}
 								prefix="₦"
 							/>
+
+							<div className={styles.divider}></div>
+							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
+								<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> Rental Pricing</h6>
+								<DetailContainer
+									title="Daily price(including VAT)"
+									value={formatNum(+newListing.offer?.forRent?.day1Offer)}
+									prefix="₦"
+								/>
+								<DetailContainer
+									title="3 days offer(including VAT)"
+									value={formatNum(+newListing.offer?.forRent.day3Offer)}
+									prefix="₦"
+								/>
+								<DetailContainer
+									title="7 days offer(including VAT)"
+									value={formatNum(+newListing.offer?.forRent.day7Offer)}
+									prefix="₦"
+								/>
+								<DetailContainer
+									title="30 days offer(including VAT)"
+									value={formatNum(+newListing.offer?.forRent.day30Offer)}
+									prefix="₦"
+								/>
+							</div>
+							<DetailContainer
+								title="Total replacement amount (Including VAT):"
+								value={formatNum(+newListing.offer?.forRent?.totalReplacementValue)}
+								prefix="₦"
+							/>
+
+							<div className={styles.divider}></div>
 						</div>
 					</div>
 				</div>
@@ -166,10 +235,11 @@ const SummaryView = () => {
 				</Button>
 				<Button
 					className={styles.button}
-					onClick={nextPage}
+					onClick={handleSubmission}
+					type="button"
 				// disabled={disabledButton}
 				>
-					Submit
+					{isPending ? <LoadingSpinner size="small" /> : "Submit"}
 				</Button>
 			</div>
 		</div>

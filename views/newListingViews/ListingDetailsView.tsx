@@ -8,7 +8,7 @@ import {
 	InputField,
 	Logo,
 	MultipleSelect,
-	TextArea,
+	TextArea
 } from "@/shared";
 import Image from "next/image";
 import { AddSearchbox, AddedItem } from "@/components/newListing";
@@ -31,23 +31,33 @@ const ListingDetailsView = () => {
 		description: string;
 	}>({ title: "", description: "" });
 	console.log(selectedFields);
+	console.log(newListing, "newListing");
+
+	const convertArrToObj = (arr: any[]) => {
+		return arr?.reduce((acc, field) => {
+			const selectedNames = field.selectedValues.map((value: any) => value.name);
+			acc[field.name] = selectedNames.length > 1 ? selectedNames : selectedNames[0];
+			return acc;
+		}, {} as Record<string, string | string[]>);
+	};
 
 	const handleSelectedFields = (item: any) => {
 		const tempArr = [
 			...selectedFields.filter(field => field.name !== item.name),
-			item,
+			item
 		];
 		setSelectedFields(tempArr);
 	};
 
 	const nextPage = () => {
 		const newListingData = {
-			title: inputValues.title,
+			productName: inputValues.title,
 			description: inputValues.description,
 			category,
 			subCategory,
-			fieldValues: selectedFields,
+			fieldValues: convertArrToObj(selectedFields)
 		};
+		console.log(newListingData, "newListingData");
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/images");
 	};
@@ -105,7 +115,7 @@ const ListingDetailsView = () => {
 							onChange={(e: any) =>
 								setInputValues((prev: any) => ({
 									...prev,
-									title: e.target.value,
+									title: e.target.value
 								}))
 							}
 						/>
@@ -154,7 +164,7 @@ const ListingDetailsView = () => {
 							onChange={(e: any) =>
 								setInputValues((prev: any) => ({
 									...prev,
-									description: e.target.value,
+									description: e.target.value
 								}))
 							}
 							label="Description"

@@ -4,15 +4,13 @@ import React, { useState } from "react";
 import styles from "./NewListingViews.module.scss";
 import { Button, Logo } from "@/shared";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "@/store/configureStore";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/configureStore";
 
 const ImagesView = () => {
 	const router = useRouter();
-	const newListing = useSelector((state: AppState) => state.newListing);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [displayedImages, setDisplayedImages] = useState<any[]>([]);
 
 	const handleIconChange = (e: any) => {
@@ -40,7 +38,7 @@ const ImagesView = () => {
 	};
 
 	const nextPage = () => {
-		const newListingData = { images: displayedImages };
+		const newListingData = { listingPhotos: displayedImages };
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/type");
 	};

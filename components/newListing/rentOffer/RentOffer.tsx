@@ -1,18 +1,30 @@
 import { InputField } from "@/shared";
 import styles from "./RentOffer.module.scss";
+import React from "react";
+
+export interface RentOfferProps {
+	value: number;
+	enabled: boolean;
+}
 
 interface Props {
 	title: 1 | 3 | 7 | 30;
-	value: { value: number; enabled: boolean };
-	onChange: (e?: any) => void;
+	value: number;
+	onChange?: (e?: any) => void;
+	toggleInput?: (field:string) => void;
+	checked?: boolean;
+	name: string;
 }
 
-const RentOffer = ({ title, value, onChange }: Props) => {
-	const handleChange = (e: any) => {
-		onChange((prev: any) => ({ ...prev, value: e.target.value }));
-	};
+const RentOffer = ({ title, value, onChange, toggleInput, checked = false, name }: Props) => {
+
+	const handleToggle = () => {
+		if (toggleInput) {
+			toggleInput(name)
+		}
+	}
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} data-disabled={!checked}>
 			<div className={styles.header}>
 				<div className={styles.text}>
 					<h3>
@@ -21,7 +33,7 @@ const RentOffer = ({ title, value, onChange }: Props) => {
 				</div>
 				{title !== 1 ? (
 					<label className={styles.switch}>
-						<input type="checkbox" />
+						<input type="checkbox" onChange={handleToggle} checked={checked} />
 						<span className={styles.slider}></span>
 					</label>
 				) : null}
@@ -29,8 +41,9 @@ const RentOffer = ({ title, value, onChange }: Props) => {
 			<InputField
 				prefix="N"
 				placeholder="0"
-				value={value.value}
-				onChange={handleChange}
+				value={value}
+				onChange={onChange}
+				disabled={!checked}
 			/>
 			<div className={styles.footer}>
 				{title !== 1 && (

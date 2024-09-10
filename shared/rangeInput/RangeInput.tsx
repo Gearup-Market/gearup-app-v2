@@ -20,7 +20,7 @@ const RangeInput = ({
 	useEffect(() => {
 		ref.current.style.backgroundSize =
 			((value! - min) * 100) / (max - min) + "% 100%";
-	});
+	},[value]);
 	return (
 		<div className={styles.container}>
 			{!!label && <label htmlFor="range">{label}</label>}
