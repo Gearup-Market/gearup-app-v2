@@ -21,24 +21,8 @@ const initialState: ListingState = {
   listingType: "",
   gearCondition: "",
   offer: {
-    forSell: {
-      currency: "",
-      pricing: 0,
-      acceptOffers: false,
-      shipping: {
-        shippingOffer: false,
-        offerLocalPickup: false,
-        shippingCosts: false
-      }
-    },
-    forRent: {
-      currency: "",
-      day1Offer: 0,
-      day3Offer: 0,
-      day7Offer: 0,
-      overtimePercentage: 0,
-      totalReplacementValue: 0
-    }
+    forSell: undefined,
+    forRent: undefined
   },
   user: ""
 };

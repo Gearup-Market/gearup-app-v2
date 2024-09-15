@@ -14,9 +14,10 @@ import { useRouter } from "next/navigation";
 import { ImageSlider } from "@/components/listing";
 import { formatNum } from "@/utils";
 import { addListing } from "@/store/slices/listingsSlice";
-import { usePostCreateListing } from "@/app/api/hooks/listings";
+import { usePostCreateListing, useUploadFiles } from "@/app/api/hooks/listings";
 import { toast } from "react-toastify";
 import { useAuth } from "@/contexts/AuthContext";
+import { sub } from "date-fns";
 
 const images = [
 	"https://res.cloudinary.com/demo/image/upload/sample.jpg",
@@ -24,6 +25,7 @@ const images = [
 ];
 
 const SummaryView = () => {
+	const { mutateAsync: postUploadFile, isPending: uploadingImgs } = useUploadFiles()
 	const router = useRouter();
 	const newListing = useSelector((state: AppState) => state.newListing);
 	const { user } = useAuth();
@@ -61,15 +63,21 @@ const SummaryView = () => {
 			toast.error("Please login to create a product");
 			return;
 		}
-		const data = [{
-			...mockListing,
-			images,
-			listingType: "renting",
-			user: user?._id
-		}];
 
 		try {
-			const resp = await createProductListing(newListing);
+
+			const imgUploadRes = await postUploadFile(newListing.listingPhotos);
+			console.log(imgUploadRes, "imgUploadRes");
+			const data = {
+				...newListing,
+				category: newListing.category.name,
+				subCategory: newListing.subCategory.name,
+				user: user?._id,
+				productionType: "renting",
+				listingPhotos: imgUploadRes?.imageUrls || []
+			};
+			// return
+			const resp = await createProductListing(data);
 			console.log(resp, "resp");
 			toast.success("Product created successfully");
 		} catch (error) {
@@ -77,14 +85,6 @@ const SummaryView = () => {
 		}
 	};
 	const fieldValues = Object.entries(newListing?.fieldValues)
-	console.log(fieldValues, "fieldValues")
-	console.log("mount", fieldValues?.filter(([key, value]) => key === "Mount"))
-
-	const goodForValues = (fieldValues
-		?.find(([key, value]) => key === "Good for")?.[1]) as string[] || [];
-
-	const mountValues: string[] = (fieldValues
-		?.find(([key, value]) => key === "Mount")?.[1]) as string[] || [];
 
 	return (
 		<div className={styles.section}>
@@ -115,7 +115,7 @@ const SummaryView = () => {
 						<p>Review your listing, hit submit, and you’re done!</p>
 					</div>
 					<div className={styles.container}>
-						<ImageSlider images={newListing?.images} />
+						<ImageSlider images={newListing?.listingPhotos} />
 						<div className={styles.block}>
 							<div className={styles.text}>
 								<h2>{newListing.title}</h2>
@@ -164,57 +164,95 @@ const SummaryView = () => {
 									) : null;
 								})}
 							</div>
-							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> FOR SALE PERKS</h6>
-								<p className={styles.perks} style={{ marginBottom: "0.6rem" }}><Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} /> Accepts offers</p>
-								<p className={styles.perks} style={{ marginBottom: "0.6rem" }}><Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} /> Offers shipping</p>
-								<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
-									<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />
-									Cover shipping costs
-								</p>
-								<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
-									<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />	Offer local pick up
-								</p>
-							</div>
-							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<h6 style={{ marginBottom: "1rem" }}>Sale PRICING</h6>
-							</div>
-							<DetailContainer
-								title="Amount(including VAT)"
-								value={formatNum(+newListing.offer?.forSell?.pricing)}
-								prefix="₦"
-							/>
 
-							<div className={styles.divider}></div>
-							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> Rental Pricing</h6>
-								<DetailContainer
-									title="Daily price(including VAT)"
-									value={formatNum(+newListing.offer?.forRent?.day1Offer)}
-									prefix="₦"
-								/>
-								<DetailContainer
-									title="3 days offer(including VAT)"
-									value={formatNum(+newListing.offer?.forRent.day3Offer)}
-									prefix="₦"
-								/>
-								<DetailContainer
-									title="7 days offer(including VAT)"
-									value={formatNum(+newListing.offer?.forRent.day7Offer)}
-									prefix="₦"
-								/>
-								<DetailContainer
-									title="30 days offer(including VAT)"
-									value={formatNum(+newListing.offer?.forRent.day30Offer)}
-									prefix="₦"
-								/>
-							</div>
-							<DetailContainer
-								title="Total replacement amount (Including VAT):"
-								value={formatNum(+newListing.offer?.forRent?.totalReplacementValue)}
-								prefix="₦"
-							/>
+							{
+								newListing.offer?.forSell &&
+								<>
 
+									<div className={styles.text} style={{ marginTop: "3.2rem" }}>
+										<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> FOR SALE PERKS</h6>
+										{
+											newListing.offer?.forSell?.acceptOffer &&
+											<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
+												<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />
+												Accepts offers
+											</p>
+										}
+										{
+											newListing.offer?.forSell?.shipping?.shippingOffer &&
+											<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
+												<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />
+												Offers shipping
+											</p>
+										}
+										{
+											newListing.offer?.forSell?.shipping?.shippingCosts &&
+											<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
+												<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />
+												Cover shipping costs
+											</p>
+										}
+										{
+											newListing.offer?.forSell?.shipping?.offerLocalPickup &&
+											<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
+												<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />
+												Offer local pick up
+											</p>
+										}
+									</div>
+									<div className={styles.text} style={{ marginTop: "3.2rem" }}>
+										<h6 style={{ marginBottom: "1rem" }}>Sale PRICING</h6>
+									</div>
+									<DetailContainer
+										title="Amount(including VAT)"
+										value={formatNum(+newListing.offer?.forSell?.pricing)}
+										prefix="₦"
+									/>
+									<div className={styles.divider}></div>
+								</>
+							}
+							{
+								newListing.offer?.forRent &&
+								<>
+									<div className={styles.text} style={{ marginTop: "3.2rem" }}>
+										<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> Rental Pricing</h6>
+										<DetailContainer
+											title="Daily price(including VAT)"
+											value={formatNum(+newListing.offer?.forRent?.day1Offer)}
+											prefix="₦"
+										/>
+										{
+											newListing.offer?.forRent?.day3Offer &&
+											<DetailContainer
+												title="3 days offer(including VAT)"
+												value={formatNum(+newListing.offer?.forRent.day3Offer)}
+												prefix="₦"
+											/>
+										}
+										{
+											newListing.offer?.forRent?.day7Offer &&
+											<DetailContainer
+												title="7 days offer(including VAT)"
+												value={formatNum(+newListing.offer?.forRent.day7Offer)}
+												prefix="₦"
+											/>
+										}
+										{
+											newListing.offer?.forRent?.day30Offer &&
+											<DetailContainer
+												title="30 days offer(including VAT)"
+												value={formatNum(+newListing.offer?.forRent.day30Offer)}
+												prefix="₦"
+											/>
+										}
+									</div>
+									<DetailContainer
+										title="Total replacement amount (Including VAT):"
+										value={formatNum(+newListing.offer?.forRent?.totalReplacementValue)}
+										prefix="₦"
+									/>
+								</>
+							}
 							<div className={styles.divider}></div>
 						</div>
 					</div>
@@ -239,7 +277,7 @@ const SummaryView = () => {
 					type="button"
 				// disabled={disabledButton}
 				>
-					{isPending ? <LoadingSpinner size="small" /> : "Submit"}
+					{isPending || uploadingImgs ? <LoadingSpinner size="small" /> : "Submit"}
 				</Button>
 			</div>
 		</div>

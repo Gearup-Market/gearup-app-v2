@@ -1,7 +1,7 @@
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { api } from "../../api";
 import { API_URL } from "../../url";
-import { iPostListingResp, iPostListingErr, iPostListingReq } from "./types";
+import { iPostListingResp, iPostListingErr, iPostListingReq, iUploadImagesResp } from "./types";
 
 const usePostCreateListing = (
 	options?: Omit<
@@ -17,11 +17,11 @@ const usePostCreateListing = (
 
 
 const useUploadFiles = () =>
-	useMutation<string[], void, { files: File[] }>({
+	useMutation<iUploadImagesResp, void,  File[] >({
 		mutationFn: async props => {
 			const formData = new FormData();
-			props.files.forEach((file, index) => {
-				formData.append(`file${index}`, file); // Append each file with a unique key
+			props.forEach((file, index) => {
+				formData.append(`form`, file); // Append each file with a unique key
 			});
 			return (
 				await api.post(API_URL.uploadFiles, formData, {
@@ -29,7 +29,7 @@ const useUploadFiles = () =>
 						"Content-Type": "multipart/form-data"
 					}
 				})
-			).data;
+			);
 		}
 	});
 

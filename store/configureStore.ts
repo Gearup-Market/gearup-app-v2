@@ -107,4 +107,5 @@ export function useStore(initialState: any) {
 	return useMemo(() => initializeStore(initialState), [initialState]);
 }
 
+
 export default store;

@@ -50,7 +50,6 @@ export default async function middleware(req: NextRequest) {
 
 	// 5. Redirect to /login if the user is not authenticated
 	if (isProtectedRoute && !isTokenValid) {
-        console.log(isTokenValid, "isTokenValid 1")
 		return NextResponse.redirect(new URL("/login", req.nextUrl));
 	}
     
@@ -60,10 +59,8 @@ export default async function middleware(req: NextRequest) {
 		isTokenValid &&
 		!req.nextUrl.pathname.startsWith("/user" || "/admin")
 	) {
-        console.log(isTokenValid, "isTokenValid 2")
 		return NextResponse.redirect(new URL("/user/dashboard", req.nextUrl));
 	}
-    console.log(isTokenValid, "isTokenValid 3")
 	return NextResponse.next();
 }
 
