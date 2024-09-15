@@ -16,7 +16,7 @@ export const defaultAuthProvider: DefaultProviderType = {
 	isOtpVerified: false,
 	user: null,
 	loading: false,
-	logout: async () => {}
+	logout: async () => { }
 };
 
 const AuthContext = createContext(defaultAuthProvider);
@@ -50,7 +50,7 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		setToken(decodedJwt?.userId);
 		setIsTokenValid(isTokenValid);
 		if (!isTokenValid) {
-		dispatch(updateUser(null));
+			dispatch(updateUser(null));
 			removeAuthToken();
 			delete api.defaults.headers.Authorization;
 		} else {
@@ -99,8 +99,8 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 	const searchParams = useSearchParams();
 	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
 
-	console.log(user,"user")
-	console.log(isAuthenticated,"isAuthenticated")
+	console.log(user, "user")
+	console.log(isAuthenticated, "isAuthenticated")
 
 	const unprotectedRoutes = useMemo(
 		() => [

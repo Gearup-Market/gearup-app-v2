@@ -87,12 +87,14 @@ const ListingTypeView = () => {
 							title="rent"
 							toggle={handleToggle}
 							checked={checked.rent}
+							type="listingView"
 						/>
 						<ListingType
 							src="/svgs/for-sell.svg"
 							title="sell"
 							toggle={handleToggle}
 							checked={checked.sell}
+							type="listingView"
 						/>
 						{!disabledButton && (
 							<Select

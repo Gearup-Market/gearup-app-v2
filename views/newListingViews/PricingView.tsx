@@ -90,7 +90,7 @@ const PricingView = () => {
 	}, []);
 
 
-	const disabledButton = !newListing.type.length;
+	const disabledButton = !newListing.listingType.length;
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>
@@ -180,7 +180,7 @@ const PricingView = () => {
 export default PricingView;
 
 const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: SellingOffer, setForSellDetails: React.Dispatch<React.SetStateAction<SellingOffer>> }) => {
-	
+
 	return (
 		<div>
 			<div className={styles.text}>
@@ -191,7 +191,7 @@ const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: Sellin
 				</p>
 			</div>
 			<div className={styles.container}>
-				<Select label="Currency" options={["NGN"]} defaultOptionIndex={0} onOptionChange={(value)=>setForSellDetails((prev)=>({...prev,currency:value}))}/>
+				<Select label="Currency" options={["NGN"]} onOptionChange={(value) => setForSellDetails((prev) => ({ ...prev, currency: value }))} />
 				<div className={styles.block}>
 					<div className={styles.text}>
 						<h3>Pricing</h3>
@@ -336,7 +336,7 @@ const RentView = ({ forRentDetails, setForRentDetails }: { forRentDetails: Renti
 				</p>
 			</div>
 			<div className={styles.container}>
-				<Select label="Currency" options={["NGN"]} defaultOptionIndex={0}  onOptionChange={(value)=>setForRentDetails((prev)=>({...prev,currency:value}))} />
+				<Select label="Currency" options={["NGN"]} onOptionChange={(value) => setForRentDetails((prev) => ({ ...prev, currency: value }))} />
 				<div className={styles.select_row}>
 					<RentOffer
 						title={1}

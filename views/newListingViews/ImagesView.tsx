@@ -2,11 +2,13 @@
 
 import React, { useState } from "react";
 import styles from "./NewListingViews.module.scss";
-import { Button, Logo } from "@/shared";
+import { Button, LoadingSpinner, Logo } from "@/shared";
 import Image from "next/image";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/configureStore";
+import { useUploadFiles } from "@/app/api/hooks/listings";
+import toast from "react-hot-toast";
 
 const ImagesView = () => {
 	const router = useRouter();
@@ -37,7 +39,7 @@ const ImagesView = () => {
 		setDisplayedImages(filteredImages);
 	};
 
-	const nextPage = () => {
+	const nextPage = async () => {
 		const newListingData = { listingPhotos: displayedImages };
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/type");
@@ -82,6 +84,7 @@ const ImagesView = () => {
 								className={styles.file_input}
 								onChange={handleIconChange}
 								accept="image/*"
+								multiple
 							// required
 							/>
 							<div className={styles.add_image}>

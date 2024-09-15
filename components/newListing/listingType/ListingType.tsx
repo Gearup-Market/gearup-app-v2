@@ -14,15 +14,13 @@ interface Props {
 	handleToggle?: () => void;
 }
 
-const ListingType = ({ src, title, toggle, checked, tipDescription, showToolTip = false, handleToggle ,type}: Props) => {
+const ListingType = ({ src, title, toggle, checked, tipDescription, showToolTip = false, handleToggle, type }: Props) => {
 
 	const handleToggling = () => {
-		console.log(title)
-		if (type === "rent") {
+		if (type === "rent" || type === "listingView") {
 			console.log("title was called")
 			toggle ? toggle(title) : null;
 		} else {
-			console.log("i was called")
 			handleToggle ? handleToggle() : null;
 		}
 	};
