@@ -43,7 +43,7 @@ const LoginView = () => {
 				dispatch(updateUser(res?.data?.user));
 				setAuthToken(res?.data?.token);
 				router.push(returnUrl);
-				window.location.reload();
+				// window.location.reload();
 			}
 		} catch (error: any) {
 			toast.error(error.response.data.message || "Login failed");
