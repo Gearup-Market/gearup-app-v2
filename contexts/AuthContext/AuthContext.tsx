@@ -54,7 +54,7 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		} else {
 			api.defaults.headers.Authorization = `Bearer ${token}`;
 		}
-	}, []);
+	}, [user]);
 
 	const logout = async () => {
 		setToken("");
