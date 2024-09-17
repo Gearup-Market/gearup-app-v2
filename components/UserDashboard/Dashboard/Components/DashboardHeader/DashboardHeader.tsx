@@ -11,7 +11,7 @@ const DashboardHeader = () => {
     return (
         <div className={styles.container}>
             <div className={styles.container__left}>
-                <h2 className={styles.container__left__welcome}>Goodmorning Einstein👋🏾</h2>
+                <h2 className={styles.container__left__welcome}>Good morning {user?.userName || "Guest"} 👋🏾</h2>
                 <p className={styles.container__left__question}>What are you doing today?</p>
             </div>
             <div className={styles.create_listing}>
