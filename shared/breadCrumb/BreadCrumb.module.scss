@@ -3,20 +3,25 @@
 .breadcrumb {
 	@include flex(flex-start, center);
 	margin-bottom: 2.4rem;
+
+	img{
+		height: 16px;
+		width: 16px;
+	}
 }
 
 .text {
-	h6,
-	a {
-		@extend %text-14;
+	@extend %text-14;
+	text-transform: capitalize;
+	
+	span {
+		text-decoration: underline;
 	}
 	h6 {
 		font-weight: 600;
-		font-family: $font-medium;
-		text-transform: uppercase;
+		
 	}
 	span {
-		color: $col-grey-30;
 		margin-right: 0.4rem;
 		text-transform: capitalize;
 	}

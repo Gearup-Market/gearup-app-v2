@@ -1,0 +1,77 @@
+@import "@/styles/imports";
+
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 3.2rem;
+
+	.summary_item {
+		@include flex;
+		justify-content: space-between;
+		gap: 2rem;
+		margin-bottom: 1.2rem;
+
+		h4 {
+			font-size: 1.4rem;
+			font-weight: 400;
+			color: #7b8086;
+		}
+
+		p {
+			font-size: 1.4rem;
+			font-weight: 700;
+			color: #1b1e21;
+		}
+
+        .owner{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1rem;
+            flex: 1 1 auto;
+
+            p{
+                text-wrap: nowrap;
+                width: auto;
+            }
+
+            
+
+            img {
+                width: 3.2rem;
+                height: 3.2rem;
+                border-radius: 50%;
+            }
+
+            .image{
+                width: 3.2rem;
+                height: 3.2rem;
+            }
+
+            p {
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: #1b1e21;
+            }
+        
+        }
+
+
+        .type{
+            background-color: #F2F4F7;
+            padding: 0.2rem 1rem;
+            border-radius: 1.6rem;
+        }
+	}
+
+	.total_amount {
+		border-top: 1px solid #e0e0e0;
+        padding-top: 1.6rem;
+
+        p{
+
+            font-size: 2.4rem;
+            font-weight: 700;
+        }
+	}
+}
