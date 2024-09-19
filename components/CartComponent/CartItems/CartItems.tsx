@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import styles from './CartItems.module.scss'
 import CartItemCardContainer from '../CartItemCard/CartItemCard'
 import { CustomImage, Ratings } from '@/shared'
@@ -11,6 +12,7 @@ const cartItems = [
         quantity: 2,
         image: '/images/product1.jpg',
         type: 'rental',
+        query:"",
         rental_duration: '1 month',
         rental_price_days: 10,
         gearup_service_fee: 10,
@@ -28,6 +30,7 @@ const cartItems = [
         quantity: 1,
         image: '/images/product2.jpg',
         type: 'Gear sale',
+        query:"",
         gearup_service_fee: 20,
         vat: 10,
         seller: {
@@ -43,6 +46,7 @@ const cartItems = [
         quantity: 2,
         image: '/images/product1.jpg',
         type: 'rental',
+        query:"",
         rental_duration: '1 month',
         rental_price_days: 10,
         gearup_service_fee: 10,
@@ -60,6 +64,7 @@ const cartItems = [
         quantity: 1,
         image: '/images/product2.jpg',
         type: 'Gear sale',
+        query:"",
         gearup_service_fee: 20,
         vat: 10,
         seller: {
@@ -73,6 +78,7 @@ const cartItems = [
         name: 'Sony A7s II',
         image: '/images/product1.jpg',
         type: 'course',
+        query:"",
         author: 'Jane Doe',
         gearup_service_fee: 10,
         vat: 5,
@@ -87,6 +93,7 @@ const cartItems = [
         name: 'Sony A7s II',
         image: '/images/product1.jpg',
         type: 'course',
+        query:"",
         author: 'Jane Doe',
         gearup_service_fee: 10,
         vat: 5,
@@ -100,7 +107,7 @@ const cartItems = [
 ]
 
 const CartItems = () => {
-    const [newCartItems, setNewCartItems] = React.useState(cartItems)
+    const [newCartItems, setNewCartItems] = useState(cartItems)
 
     const handleDeleteItem = (id: number) => {
         setNewCartItems(newCartItems.filter((item) => item.id !== id))

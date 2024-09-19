@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage"; // Use localStorage or sessionStorage here
+import { combineReducers, configureStore, ThunkDispatch } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import {
 	FLUSH,
@@ -30,7 +30,7 @@ const persistConfig = {
 	key: "primary",
 	whitelist: PERSISTED_KEYS,
 	blacklist: ["profile"],
-	storage, // Using web storage
+	storage, // <-- Use the correct storage for the web
 	version: 0,
 	migrate: createMigrate(migrations, { debug: false }),
 };
@@ -43,7 +43,7 @@ const rootReducer = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-let store: ReturnType<typeof makeStore> | undefined;
+let store: ReturnType<typeof makeStore>
 
 export function makeStore(preloadedState = undefined) {
 	return configureStore({
@@ -68,7 +68,7 @@ export const initializeStore = (preloadedState: any = undefined) => {
 			...store.getState(),
 			...preloadedState,
 		});
-		store = undefined;
+	
 	}
 
 	if (typeof window === "undefined") return _store;
@@ -79,7 +79,7 @@ export const initializeStore = (preloadedState: any = undefined) => {
 
 store = initializeStore();
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<ReturnType<typeof persistedReducer>, any, any>;
 export type AppState = ReturnType<typeof store.getState>;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
