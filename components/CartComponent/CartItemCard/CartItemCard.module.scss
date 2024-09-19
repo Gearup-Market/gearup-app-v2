@@ -1,0 +1,123 @@
+@import "@/styles/imports.scss";
+
+.cart_item_card {
+	padding: 2.4rem;
+	border: 1px solid $col-grey-300;
+	border-radius: 1.6rem;
+
+	.container {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		flex-direction: column;
+		width: 100%;
+
+		&__header {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			gap: 1rem;
+
+			&__left {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+
+				.avatar {
+					width: 4.8rem;
+					height: 4.8rem;
+
+					img {
+						width: 4.8rem;
+						height: 4.8rem;
+						border-radius: 4px;
+					}
+				}
+
+				&__name_amount {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					height: 100%;
+
+					.name {
+						font-size: 1.4rem;
+						font-weight: 700;
+						color: $col-grey-1;
+						text-wrap: wrap;
+					}
+				}
+			}
+
+			&__header:not(:last-child) {
+				border-bottom: 1px solid $col-grey-300;
+			}
+
+			&__icon {
+				cursor: pointer;
+				&[data-rotate="true"] {
+					transform: rotate(180deg);
+				}
+			}
+		}
+
+		&__details {
+			width: 100%;
+			padding: 1rem;
+			background-color: $col-white;
+			border-bottom: 1px solid $col-grey-300;
+			animation: 0.5s fadeIn ease-in-out;
+
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+		}
+
+		&__body {
+			background: #fbfbfd;
+			width: 100%;
+			padding: 2.4rem;
+			margin-top: 1.2rem;
+			animation: 0.5s fadeIn ease-in-out;
+
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+		}
+
+		.buttons_container {
+			display: flex;
+			flex-direction: column;
+			gap: 1.6rem;
+			width: 100%;
+			align-items: center;
+			margin-top: 3.2rem;
+			.place_btn {
+				height: 5.2rem;
+				gap: 0.8rem;
+				width: 100%;
+			}
+
+			.delete_btn {
+				gap: 0.5rem;
+				color: #ff3729;
+			}
+		}
+	}
+
+	@include screenMax("mobile") {
+			padding: 1.6rem;
+	
+	}
+
+}

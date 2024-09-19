@@ -242,16 +242,18 @@ const Header = () => {
 					</Button>
 					<Button buttonType="transparent" className={styles.small_icon}>
 						<div>
-							<Image
-								src={
-									scroll === Scroll.FinalScroll
-										? "/svgs/icon-cart-dark.svg"
-										: "/svgs/icon-cart.svg"
-								}
-								fill
-								alt=""
-								sizes="100vw"
-							/>
+							<Link href="/cart">
+								<Image
+									src={
+										scroll === Scroll.FinalScroll
+											? "/svgs/icon-cart-dark.svg"
+											: "/svgs/icon-cart.svg"
+									}
+									fill
+									alt=""
+									sizes="100vw"
+								/>
+							</Link>
 						</div>
 					</Button>
 					{user.isAuthenticated ? (
@@ -289,7 +291,7 @@ const Header = () => {
 					</div>
 				</Button>
 				<Button buttonType="transparent" className={styles.small_icon}>
-					<div>
+					<Link href="/cart">
 						<Image
 							src={
 								!collapsed || scroll === Scroll.FinalScroll
@@ -300,7 +302,7 @@ const Header = () => {
 							alt=""
 							sizes="100vw"
 						/>
-					</div>
+					</Link>
 				</Button>
 				<div
 					onClick={() => setCollapsed(!collapsed)}

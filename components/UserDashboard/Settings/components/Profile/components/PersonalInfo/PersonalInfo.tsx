@@ -34,19 +34,6 @@ const PersonalInfoForm: React.FC = () => {
         // Handle form submission
         console.log(values);
     };
-    const banksOptions = [
-        'GTBank',
-        'Access Bank',
-        'Zenith Bank',
-        'First Bank',
-        'UBA',
-        'FCMB',
-        'Sterling Bank',
-        'Union Bank',
-        'Wema Bank',
-        'Polaris Bank',
-        'Keystone Bank',
-    ]
 
     return (
         <div className={styles.container}>
