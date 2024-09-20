@@ -133,16 +133,33 @@ export interface RentingOffer {
 	totalReplacementValue?: number;
 }
 
+interface Category {
+	id: number | string;
+	name: string;
+}
+
+interface Price {
+	value: number;
+	enabled: boolean;
+}
+
+export interface Item {
+	id: number;
+	quantity: number;
+	name: string;
+}
+
+
 export interface ListingState {
 	productName: string;
 	items?: Item[];
-	category: string;
-	subCategory: string;
+	category?: Category;
+	subCategory?: Category;
 	productionType: string;
 	subCategoryFields: SubCategoryFields;
 	description: string;
-	listingPhotos: string[];
-	listingType: string | string[];
+	listingPhotos: File[];
+	listingType: string;
 	gearCondition: string;
 	user: string;
 	fieldValues: Field[];

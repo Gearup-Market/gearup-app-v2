@@ -47,13 +47,13 @@ export interface Categories {
 // listings
 
 export interface Listings {
-	label: string;
-	type: "rent" | "buy";
-	image: string;
-	user: string;
-	avatar: string;
-	reviews: number;
-	price: number;
+	label?: string;
+	type?: "rent" | "buy";
+	image?: string;
+	user?: string;
+	avatar?: string;
+	reviews?: number;
+	price?: number;
 }
 
 // courses

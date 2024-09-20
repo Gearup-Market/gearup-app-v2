@@ -70,8 +70,8 @@ const SummaryView = () => {
 			console.log(imgUploadRes, "imgUploadRes");
 			const data = {
 				...newListing,
-				category: newListing.category.name,
-				subCategory: newListing.subCategory.name,
+				category: newListing?.category?.name,
+				subCategory: newListing?.subCategory?.name,
 				user: user?._id,
 				productionType: "renting",
 				listingPhotos: imgUploadRes?.imageUrls || []
@@ -115,18 +115,18 @@ const SummaryView = () => {
 						<p>Review your listing, hit submit, and you’re done!</p>
 					</div>
 					<div className={styles.container}>
-						<ImageSlider images={newListing?.listingPhotos} />
+						<ImageSlider images={newListing?.listingPhotos as unknown as string[]} />
 						<div className={styles.block}>
 							<div className={styles.text}>
-								<h2>{newListing.title}</h2>
+								<h2>{newListing?.productName}</h2>
 							</div>
 							<DetailContainer
 								title="Category"
-								value={newListing.category.name}
+								value={newListing?.category?.name}
 							/>
 							<DetailContainer
 								title="Sub category"
-								value={newListing.subCategory.name}
+								value={newListing?.subCategory?.name}
 							/>
 							{fieldValues?.map(([key, value]) => {
 								return typeof value === "string" ? (
@@ -148,7 +148,7 @@ const SummaryView = () => {
 										<div key={key}>
 											<p>{key}</p>
 											<div className={styles.row}>
-												{(value as string[])?.map((val: string, index: number) => (
+												{(value as unknown as string[])?.map((val: string, index: number) => (
 													<Button key={`${key}-${index}`} className={styles.button}>
 														{val}
 														<Image
@@ -172,7 +172,7 @@ const SummaryView = () => {
 									<div className={styles.text} style={{ marginTop: "3.2rem" }}>
 										<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> FOR SALE PERKS</h6>
 										{
-											newListing.offer?.forSell?.acceptOffer &&
+											newListing.offer?.forSell?.acceptOffers &&
 											<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
 												<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />
 												Accepts offers
@@ -205,7 +205,7 @@ const SummaryView = () => {
 									</div>
 									<DetailContainer
 										title="Amount(including VAT)"
-										value={formatNum(+newListing.offer?.forSell?.pricing)}
+										value={formatNum(newListing?.offer?.forSell?.pricing ?? 0)}
 										prefix="₦"
 									/>
 									<div className={styles.divider}></div>
@@ -248,7 +248,7 @@ const SummaryView = () => {
 									</div>
 									<DetailContainer
 										title="Total replacement amount (Including VAT):"
-										value={formatNum(+newListing.offer?.forRent?.totalReplacementValue)}
+										value={formatNum(newListing.offer?.forRent?.totalReplacementValue)}
 										prefix="₦"
 									/>
 								</>
