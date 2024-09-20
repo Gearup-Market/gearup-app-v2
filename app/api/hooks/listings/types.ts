@@ -1,10 +1,11 @@
+import { RentingOffer, SellingOffer } from "@/interfaces/Listing";
 import { AxiosError } from "axios";
 
 
 export interface Product  {
   productName: string;
-  category: string;
-  subCategory: string;
+  category?: string;
+  subCategory?: string;
   productionType: string;
   subCategoryFields: {
     brand: string;
@@ -17,30 +18,15 @@ export interface Product  {
   listingPhotos: string[];
   listingType: string;
   gearCondition: string;
-  offer: SellingOffer | RentingOffer;
+  offer: {
+	 forSell?: SellingOffer;
+	 forRent?: RentingOffer;
+  } 
   user: string;
-}[]
-
-interface SellingOffer {
-  currency: string;
-  pricing: number;
-  shipping: {
-    shippingOffer: boolean;
-    offerLocalPickup: boolean;
-    shippingCosts: boolean;
-  };
 }
 
-interface RentingOffer {
-  currency: string;
-  day1Offer: number;
-  day3Offer: number;
-  day7Offer: number;
-  overtimePercentage: number;
-  totalReplacementValue: number;
-}
 
-export type iPostListingReq = Product[];
+export type iPostListingReq = Product;
 
 
 export interface iPostListingResp {

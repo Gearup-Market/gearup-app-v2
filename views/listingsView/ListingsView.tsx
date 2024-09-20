@@ -12,6 +12,8 @@ import { PageLoader } from "@/shared/loaders";
 import { useFetch } from "@/hooks";
 import { useSearchParams } from "next/navigation";
 import { AppState, useAppSelector } from "@/store/configureStore";
+import { ListingState } from "@/interfaces/Listing";
+
 const ListingsView = () => {
 	// const { listings, setListings }: any = useGlobalContext();
 	const listings = useAppSelector((state: AppState) => state.listings);
@@ -186,7 +188,7 @@ const ListingsView = () => {
 						<>
 							<div className={styles.grid}>
 								{currentTableData?.map(
-									(listing: Listings, index: number) => (
+									(listing: ListingState, index: number) => (
 										<Listing
 											props={listing}
 											className={styles.card}

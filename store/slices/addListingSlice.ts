@@ -4,10 +4,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: ListingState = {
   productName: "",
-  category: "",
+  category: undefined,
   items: [],
   fieldValues: [],
-  subCategory: "",
+  subCategory: undefined,
   productionType: "",
   subCategoryFields: {
     brand: "",
