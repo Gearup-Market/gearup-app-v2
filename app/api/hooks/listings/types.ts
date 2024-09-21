@@ -25,7 +25,6 @@ export interface Product  {
 
 
 export type iPostListingReq = Product;
-export type iPostListingReq = Product;
 
 
 export interface iPostListingResp {
