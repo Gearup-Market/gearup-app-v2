@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react'
 import styles from './BuyersTimeline.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import { CheckmarkIcon } from '@/shared/svgs/dashboard'
-import { AwaitingApproval, ConfirmShipment, RatingFeedback, StatusReport } from './components'
+import { AwaitingApproval, ConfirmShipment, StatusReport } from './components'
 import { saleBuyersTimeline, saleBuyersTimelineThirdParty } from '../../../utils/data'
 import { useSearchParams } from 'next/navigation'
 import TimeLine from './components/TimeLine/TimeLine'
 import Modal from '@/shared/modals/modal/Modal'
+import { CustomRatingFeedback } from '../../..'
 interface Timeline {
     id: number
     name: string
@@ -67,7 +68,7 @@ const BuyersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
                                 steps === 3 && <ConfirmShipment handleNext={handleNext} thirdPartyVerification={Boolean(thirdPartyVerification)} />
                             }
                             {
-                                steps === 4 && <RatingFeedback />
+                                steps === 4 && <CustomRatingFeedback />
                             }
                         </>
                         :
@@ -79,7 +80,7 @@ const BuyersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
                                 steps === 2 && <ConfirmShipment handleNext={handleNext} />
                             }
                             {
-                                steps === 3 && <RatingFeedback />
+                                steps === 3 && <CustomRatingFeedback />
                             }
                         </>
                 }

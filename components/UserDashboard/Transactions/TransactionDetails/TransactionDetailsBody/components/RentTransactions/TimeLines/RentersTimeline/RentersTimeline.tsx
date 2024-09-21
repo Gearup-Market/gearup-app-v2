@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react'
 import styles from './RentersTimeline.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
-import { CheckmarkIcon } from '@/shared/svgs/dashboard'
-import { AwaitingApproval, AwaitingConfirmation, ConfirmHandover, InitiateReturn, ReviewFeedback, TransactionOngoing } from './components'
+import { AwaitingApproval, AwaitingConfirmation, ConfirmHandover, InitiateReturn, TransactionOngoing } from './components'
 import { rentRentersTimeline } from '../../../utils/data'
 import Modal from '@/shared/modals/modal/Modal'
 import TimeLine from './components/TimeLine/TimeLine'
+import { CustomRatingFeedback } from '../../..'
 
 interface Props {
     timelines?: any
@@ -64,7 +64,7 @@ const RentersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
                     steps === 5 && <AwaitingConfirmation />
                 }
                 {
-                    steps === 6 && <ReviewFeedback />
+                    steps === 6 && <CustomRatingFeedback />
                 }
             </div>
             <Modal openModal={openModal} setOpenModal={() => setOpenModal(false)} title='Transaction timeline'>
