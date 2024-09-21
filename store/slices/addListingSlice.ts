@@ -43,29 +43,129 @@ export const { updateNewListing, clearNewListing } = addListingSlice.actions;
 
 
 export const mockListing= {
-  "productName": "Canon EOS R5 Camera",
+  "productName": "World cup",
   "category": {
-    "main": "Cameras",
-    "sub": "Mirrorless"
+      "id": 10,
+      "parentId": 0,
+      "name": "Lenses",
+      "subCategories": [
+          {
+              "id": 11,
+              "parentId": 10,
+              "name": "Prime"
+          },
+          {
+              "id": 12,
+              "parentId": 10,
+              "name": "Zoom"
+          },
+          {
+              "id": 13,
+              "parentId": 10,
+              "name": "Adapters"
+          },
+          {
+              "id": 14,
+              "parentId": 10,
+              "name": "Extenders"
+          },
+          {
+              "id": 15,
+              "parentId": 10,
+              "name": "Filters"
+          },
+          {
+              "id": 16,
+              "parentId": 10,
+              "name": "Other types"
+          }
+      ]
   },
-  "subCategoryDescription": {
-    "features": ["45MP full-frame sensor", "8K video recording"],
-    "brand": "Canon"
-  },
-  "description": "High-resolution mirrorless camera perfect for professional photography and videography.",
-  "listingsPhoto": [
-    "https://res.cloudinary.com/demo/image/upload/sample.jpg",
-    "https://res.cloudinary.com/demo/image/upload/car.jpg"
+  "items": [
+      {
+          "quantity": 1,
+          "name": "camera",
+          "id": 1
+      }
   ],
-  "listingType": "renting",
+  "fieldValues": {
+      "Production type": "Still",
+      "Brand": "Angenieux",
+      "Sensor size": "Super 35mm",
+      "Focus type": "Manual",
+      "Focal length": "Multiple",
+      "Image stabilization": "Yes",
+      "Good for": [
+          "Concert",
+          "Interviews",
+          "Documentary",
+          "Action",
+          "Instagram",
+          "Skiing",
+          "Iphone filmmaking",
+          "High altitude mountaineering",
+          "Timelapse"
+      ],
+      "Type": [
+          "Cinema",
+          "Fisheye (Ultra-wide)",
+          "Wide Angle",
+          "Other type",
+          "Tilt shift",
+          "Normal",
+          "Anamorphic"
+      ],
+      "Mount": [
+          "Micro Four Thirds",
+          "Leica L",
+          "Leica M",
+          "Leica S Bayonet",
+          "Canon EF-S",
+          "Canon EF-M",
+          "Canon EF",
+          "T-Mount (T-Thread)",
+          "Sony E"
+      ]
+  },
+  "subCategory": {
+      "id": 12,
+      "parentId": 10,
+      "name": "Zoom"
+  },
+  "productionType": "",
+  "subCategoryFields": {
+      "brand": "",
+      "model": "",
+      "sensorType": "",
+      "megapixels": "",
+      "videoResolution": ""
+  },
+  "description": "An excellent and wonderful title for lionel messi",
+  "listingPhotos": [
+      "blob:http://localhost:3001/a97d3ef0-1b9a-4dca-929c-f15ef40b1869"
+  ],
+  "listingType": "both",
   "gearCondition": "like new",
   "offer": {
-    "currency": "USD",
-    "1dayOffer": 100,
-    "3daysOffer": 270,
-    "7daysOffer": 600,
-    "overtimePercentage": 10,
-    "totalReplacementValue": 3500
+      "forSell": {
+          "currency": "NGN",
+          "pricing": "044",
+          "acceptOffers": true,
+          "shipping": {
+              "shippingOffer": true,
+              "offerLocalPickup": true,
+              "shippingCosts": true
+          }
+      },
+      "forRent": {
+          "currency": "NGN",
+          "day1Offer": "056",
+          "day3Offer": 112,
+          "day7Offer": 168,
+          "day30Offer": 504,
+          "overtimePercentage": "46",
+          "totalReplacementValue": "5000"
+      }
   },
-  "user":"669085633009561af8ac1371"
+  "user": ""
 }

@@ -1,0 +1,90 @@
+@import "@/styles/imports";
+
+.container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+    margin-top: 2rem;
+
+	.header {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	.toggle_container_mobile {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+
+		p {
+			text-wrap: nowrap;
+		}
+	}
+
+	.actions_btns {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+
+		.toggle_container_desktop {
+			display: none;
+		}
+
+		.btns {
+			display: flex;
+			gap: 1rem;
+			align-items: center;
+            width: 100%;
+			.delete_btn {
+				border: 1px solid $col-border;
+				border-radius: 10rem;
+				color: #4b525a;
+			}
+
+			button {
+				gap: 0.5rem;
+				font-size: 1.4rem;
+			}
+		}
+	}
+
+	.status,
+	.switch {
+		font-size: 1.3rem;
+	}
+
+	@include screenMax("mobile") {
+		flex-direction: column;
+
+		.toggle_container_mobile {
+			display: flex;
+			gap: 1rem;
+			align-items: center;
+
+			p {
+				text-wrap: nowrap;
+			}
+		}
+
+		.actions_btns {
+			width: 100%;
+            justify-content: flex-start;
+			.toggle_container_desktop {
+				display: none;
+			}
+
+			.btns {
+				width: 100%;
+                margin-top: 1rem;
+                flex: 1;
+                justify-content: space-between;
+				button {
+					width: 100%;
+				}
+			}
+		}
+	}
+}

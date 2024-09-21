@@ -9,13 +9,13 @@
     transition: all 0.3s ease-in-out;
     // transform: translateX(-3rem);
 
-    &__edit, &__delete,&__status_container{
-        padding: 0.7rem;
+    &__edit, &__delete,&__status_container, &__details{
+      
         font-size: 1.3rem;
+        cursor: pointer;
     }
 
     &__status_container{
-        // border: 1px solid $col-border;
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -23,6 +23,8 @@
     
     .item{
         border-bottom: 1px solid $col-border;
+        width: 100%;
+        padding: 0.7rem;
     }
 
     .status, .switch{
