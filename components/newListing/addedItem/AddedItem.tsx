@@ -19,7 +19,7 @@ const AddedItem = ({ item }: Props) => {
 	const items = newListing.items;
 
 	const deleteItem = () => {
-		const filteredItems = items.filter(
+		const filteredItems = items?.filter(
 			(singularItem: Item) => singularItem.name !== item.name
 		);
 		dispatch(updateNewListing({ items: filteredItems }));

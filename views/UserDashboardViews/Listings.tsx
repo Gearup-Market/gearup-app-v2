@@ -1,9 +1,9 @@
 import React from 'react'
-import { Listings } from '../../components/UserDashboard'
+import { UserListingsComponent } from '../../components/UserDashboard'
 
 const ListingsView = () => {
   return (
-    <div><Listings /></div>
+    <div><UserListingsComponent /></div>
   )
 }
 

@@ -1,48 +1,51 @@
 .radioLabel {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-size: 16px;
-  user-select: none;
-  position: relative;
-  padding-left: 25px;
-  
-  input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	font-size: 16px;
+	user-select: none;
+	position: relative;
 
-    &:checked ~ .radioCustom {
-      border-color: #FFB30F;
-    }
+	&[data-padding="true"] {
+		padding-left: 25px;
+	}
 
-    &:checked ~ .radioCustom:after {
-      display: block;
-    }
-  }
-  
-  .radioCustom {
-    position: relative;
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    background-color: #fff;
-    border: 2px solid #A4A6A7;
-    border-radius: 50%;
-    vertical-align: middle;
-    margin-right: 8px; // Adjust this as needed for spacing between radio and label
+	input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
 
-    &:after {
-      content: '';
-      position: absolute;
-      display: none;
-      top: 50%;
-      left: 50%;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #FFB30F;
-      transform: translate(-50%, -50%);
-    }
-  }
+		&:checked ~ .radioCustom {
+			border-color: #ffb30f;
+		}
+
+		&:checked ~ .radioCustom:after {
+			display: block;
+		}
+	}
+
+	.radioCustom {
+		position: relative;
+		display: inline-block;
+		height: 20px;
+		width: 20px;
+		background-color: #fff;
+		border: 2px solid #a4a6a7;
+		border-radius: 50%;
+		vertical-align: middle;
+		margin-right: 8px; // Adjust this as needed for spacing between radio and label
+
+		&:after {
+			content: "";
+			position: absolute;
+			display: none;
+			top: 50%;
+			left: 50%;
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: #ffb30f;
+			transform: translate(-50%, -50%);
+		}
+	}
 }

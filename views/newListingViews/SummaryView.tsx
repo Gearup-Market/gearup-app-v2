@@ -84,9 +84,10 @@ const SummaryView = () => {
 						<p>Review your listing, hit submit, and you’re done!</p>
 					</div>
 					<div className={styles.container}>
-						<ImageSlider images={newListing?.listingPhotos} />
+						<ImageSlider images={newListing?.listingPhotos as unknown as string[]} />
 						<div className={styles.block}>
 							<div className={styles.text}>
+								<h2>{newListing?.productName}</h2>
 								<h2>{newListing?.productName}</h2>
 							</div>
 							<DetailContainer
@@ -141,6 +142,7 @@ const SummaryView = () => {
 									<div className={styles.text} style={{ marginTop: "3.2rem" }}>
 										<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> FOR SALE PERKS</h6>
 										{
+											newListing.offer?.forSell?.acceptOffers &&
 											newListing.offer?.forSell?.acceptOffers &&
 											<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
 												<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />

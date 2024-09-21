@@ -15,7 +15,7 @@ const NewListingView = () => {
 	const newListing = useSelector((state: AppState) => state.newListing);
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const items = newListing.items;
+	const {items=[]} = newListing;
 	const [isProduct, setIsProduct] = useState<boolean>(false);
 
 	const addProduct = () => {
@@ -33,7 +33,7 @@ const NewListingView = () => {
 		setIsProduct(false);
 	};
 
-	const disabledButton = !items.length;
+	const disabledButton = !items?.length;
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>

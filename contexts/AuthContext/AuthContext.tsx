@@ -54,7 +54,7 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		} else {
 			api.defaults.headers.Authorization = `Bearer ${token}`;
 		}
-	}, []);
+	}, [user]);
 
 	const logout = async () => {
 		setToken("");
@@ -91,10 +91,10 @@ export const AuthProvider = (params: AuthProviderProps) => {
 export const useAuth = () => useContext(AuthContext);
 
 export const ProtectRoute = (props: ProtectRouteProps) => {
-	const router = useRouter();
 	const pathname = usePathname();
 	const { isAuthenticated, loading, user } = useAuth();
 	const searchParams = useSearchParams();
+	const router = useRouter()
 	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
 
 	const unprotectedRoutes = useMemo(
@@ -124,6 +124,11 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 				<CircularProgress style={{ color: "#FFB30F" }} />
 			</Box>
 		);
+	}
+
+	if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
+		router.replace(`/login?returnUrl=${pathname}`);
+		return null;
 	}
 
 	if (isAuthenticated || unprotectedRoutes.includes(pathname)) {

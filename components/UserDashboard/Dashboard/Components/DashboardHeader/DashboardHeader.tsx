@@ -4,7 +4,7 @@ import React from 'react'
 import styles from './DashboardHeader.module.scss'
 import { Button } from '@/shared'
 import { useAppSelector } from '@/store/configureStore'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 function greeting(){
     const timeNow = new Date().getHours()
@@ -19,19 +19,19 @@ function greeting(){
 }
 
 const DashboardHeader = () => {
-    const user = useAppSelector(s => s.user);
-    const router = useRouter()
+    const user = useAppSelector(state => state.user)
+    console.log(user, "user")
     return (
         <div className={styles.container}>
             <div className={styles.container__left}>
-                <h2 className={styles.container__left__welcome}>{greeting()}, {user.userName} 👋🏾</h2>
+                <h2 className={styles.container__left__welcome}>{greeting()} {user?.userName || "Guest"} 👋🏾</h2>
                 <p className={styles.container__left__question}>What are you doing today?</p>
             </div>
             <div className={styles.create_listing}>
-                <Button iconPrefix='/svgs/add.svg' onClick={() => router.push('/new-listing')}>
-                    Create a Listing
+                <Button iconPrefix='/svgs/add.svg'>
+                    <Link href='/new-listing'>Create a Listing</Link>
                 </Button>
-            </div>
+            </div>``
         </div>
     )
 }

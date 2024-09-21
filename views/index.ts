@@ -18,6 +18,8 @@ import SummaryView from "./newListingViews/SummaryView";
 import CourseListingView from "./CourseListingView/CourseListingView";
 import BlogView from "./BlogView/BlogView";
 import BlogDetailsView from "./BlogDetailsView/BlogDetailsView";
+import CartView from "./homeView/CartView/CartView";
+import CheckoutView from "./homeView/CheckoutView/CheckoutView";
 
 export {
 	HomeView,
@@ -40,4 +42,6 @@ export {
 	CourseListingView,
 	BlogView,
 	BlogDetailsView,
+	CartView,
+	CheckoutView
 };
