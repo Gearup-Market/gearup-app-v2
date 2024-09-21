@@ -1,4 +1,4 @@
-import { MessagesView } from '@/views/AdminViews'
+import { MessagesView } from '@/views/UserDashboardViews'
 import React from 'react'
 
 const Page = () => {
