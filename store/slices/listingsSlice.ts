@@ -1,14 +1,7 @@
+import { Field, iCategory } from "@/app/api/hooks/listings/types";
+import { RentingOffer, SellingOffer } from "@/interfaces/Listing";
+import { User } from "@/interfaces/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Category {
-	id: number | string;
-	name: string;
-}
-
-interface Price {
-	value: number;
-	enabled: boolean;
-}
 
 export interface Item {
 	id: number;
@@ -16,27 +9,36 @@ export interface Item {
 	name: string;
 }
 
-interface Listing {
-	id?: number | string;
+export interface ListingLocation {
+	address?: string;
+	city?: string;
+	state: string;
+	country: string;
+	coords: {
+		longitude: number;
+		latitude: number;
+	};
+}
+
+export interface Listing {
+	_id?: string;
 	items?: Item[];
-	title?: string;
-	category?: Category;
-	subCategory?: Category;
-	fieldValues?: {
-		name: string;
-		fieldType: "single" | "multiple";
-		selectedValues: Category[];
-	}[];
-	description?: string;
-	images?: { id: string | null; url: string; fileName: string; type: string }[];
+	productName: string;
+	productSlug: string;
+	category: iCategory;
+	subCategory: iCategory;
+	fieldValues: {
+		[key: string]: string | string[];
+	};
+	description: string;
+	listingPhotos: string[];
 	currency?: { name: string; symbol: string };
-	price1Day?: Price;
-	price3Days?: Price;
-	price7Days?: Price;
-	price30Days?: Price;
-	buyPrice?: number;
-	condition?: string;
-	type?: string[];
+	offer: {
+		forSell?: SellingOffer;
+		forRent?: RentingOffer;
+	};
+	condition: string;
+	listingType: string;
 	perks?: {
 		buyNow: boolean;
 		freeShipping: boolean;
@@ -45,25 +47,54 @@ interface Listing {
 		shipping: boolean;
 		terms: boolean;
 	};
+	createdAt: string;
+	status: string;
+	userId: string;
+	reviews: number;
+	averageRating: number | null;
+	totalReviews: number;
+	contractId: string;
+	location: ListingLocation;
+	user: Partial<User>;
+	ownerOtherListings?: Listing[];
+	ownerTotalListings?: number;
 }
 
-const initialState: Listing[] = [];
+type ListingState = {
+	owned: Listing[];
+	listings: Listing[];
+	currentListing: Listing | null;
+};
+
+const initialState: ListingState = {
+	owned: [],
+	listings: [],
+	currentListing: null
+};
 
 const listingsSlice = createSlice({
 	name: "listings",
 	initialState,
 	reducers: {
-		setListings: (state, action: PayloadAction<Listing[]>) => {
-			return action.payload;
+		setListings: (state, action: PayloadAction<Partial<ListingState>>) => {
+			return Object.assign(state, action.payload);
 		},
-		addListing: (state, action: PayloadAction<Listing>) => {
-			state.unshift(action.payload);
+		addListing: (
+			state,
+			action: PayloadAction<{ key: keyof ListingState; value: any[] }>
+		) => {
+			if (action.payload.key === "currentListing") {
+				state.currentListing = action.payload.value as unknown as Listing;
+			} else {
+				state[action.payload.key] = [
+					...action.payload.value,
+					state[action.payload.key]
+				];
+			}
 			return state;
 		},
-		clearListings: state => {
-			return [];
-		},
-	},
+		clearListings: state => initialState
+	}
 });
 
 export default listingsSlice.reducer;

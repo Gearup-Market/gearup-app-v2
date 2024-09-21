@@ -1,3 +1,4 @@
+import { Listing } from "@/store/slices/listingsSlice";
 import { AxiosError } from "axios";
 
 
@@ -17,7 +18,7 @@ export interface Product  {
   listingPhotos: string[];
   listingType: string;
   gearCondition: string;
-  offer: SellingOffer | RentingOffer;
+  offer?: SellingOffer | RentingOffer;
   user: string;
 }[]
 
@@ -40,7 +41,7 @@ interface RentingOffer {
   totalReplacementValue: number;
 }
 
-export type iPostListingReq = Product[];
+export type iPostListingReq = Product;
 
 
 export interface iPostListingResp {
@@ -49,25 +50,19 @@ export interface iPostListingResp {
 		category: {
 			_id: string;
 		};
-		subCategoryDescription: {
+		subCategory: {
 			_id: string;
 		};
 		description: string;
 		listingPhotos: string[];
-		listingType: "renting" | "selling";
-		gearCondition: string;
+		listingType: "rent" | "sell";
+		condition: string;
 		user: {
 			_id: string;
 			userId: string;
 			email: string;
-			password: string;
 			name: string;
-			verificationToken: string;
 			isVerified: boolean;
-			resetPasswordToken: string;
-			createdAt: string;
-			resetPasswordTokenExpiry: string;
-			__v: number;
 		};
 		_id: string;
 		__v: number;
@@ -75,6 +70,49 @@ export interface iPostListingResp {
 	message: string;
 }
 
+export interface iGetListingsResp {
+	data: Listing[];
+	message: string
+}
+
+export interface iGetListingResp {
+	data: Listing;
+	message: string
+}
+
+export interface iCategory {
+	_id: string;
+	id: string;
+	name: string;
+	image: string;
+	fields: Field[]
+	subCategories: iCategory[]
+}
+
+export interface Field {
+    name: string;
+    fieldType: 'single' | 'multiple',
+    values: {
+        id: string;
+        name: string;
+    }
+}
+
+export interface iCategoryDetailed {
+	id: string;
+	name: string;
+	image: string;
+	itemsCount: number;
+	listings: any[];
+}
+export interface iCategoryDetailedResp {
+	data: iCategoryDetailed[];
+	message: string;
+}
+export interface iCategoryResp {
+	data: iCategory[];
+	message: string;
+}
 
 export type iPostListingErr = AxiosError<{
 	error: string;

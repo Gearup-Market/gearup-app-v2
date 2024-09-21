@@ -22,6 +22,10 @@ const NewListingView = () => {
 		setIsProduct(true);
 	};
 
+	const handleClose = () => {
+		router.replace('/user/dashboard')
+	}
+
 	const addItem = (item: Item) => {
 		if (!item.name || !item.quantity) return;
 		const _items = [...items, item];
@@ -41,7 +45,7 @@ const NewListingView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }} onClick={handleClose}>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>

@@ -7,22 +7,14 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
 import {
-	mockListing,
-	updateNewListing
+	clearNewListing,
 } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { ImageSlider } from "@/components/listing";
 import { formatNum } from "@/utils";
-import { addListing } from "@/store/slices/listingsSlice";
 import { usePostCreateListing, useUploadFiles } from "@/app/api/hooks/listings";
 import { toast } from "react-toastify";
 import { useAuth } from "@/contexts/AuthContext";
-import { sub } from "date-fns";
-
-const images = [
-	"https://res.cloudinary.com/demo/image/upload/sample.jpg",
-	"https://res.cloudinary.com/demo/image/upload/car.jpg"
-];
 
 const SummaryView = () => {
 	const { mutateAsync: postUploadFile, isPending: uploadingImgs } = useUploadFiles()
@@ -31,32 +23,10 @@ const SummaryView = () => {
 	const { user } = useAuth();
 	const { mutateAsync: createProductListing, isPending } = usePostCreateListing();
 	const dispatch = useDispatch();
-	const [type, setType] = useState<string[]>([]);
-	const [checked, setChecked] = useState<{ rent: boolean; sell: boolean }>({
-		rent: false,
-		sell: false
-	});
 
-	const nextPage = () => {
-		const newListingData = {};
-		dispatch(updateNewListing(newListingData));
-		dispatch(addListing(newListing));
-		router.push("/");
-	};
-
-	const handleToggle = (title: string) => {
-		const _type = type;
-		const isIncluded: boolean = _type.includes(title);
-		const filteredType = isIncluded
-			? [...type.filter(item => item !== title)]
-			: [..._type, title];
-		setType(filteredType);
-		setChecked(prev => ({ ...prev, [title]: !isIncluded }));
-	};
-
-	const disabledButton = !type.length;
-	console.log(newListing, "newListing");
-
+	const handleClose = () => {
+		router.replace('/user/dashboard')
+	}
 
 	const handleSubmission = async () => {
 		if (!user?._id) {
@@ -65,21 +35,20 @@ const SummaryView = () => {
 		}
 
 		try {
-
-			const imgUploadRes = await postUploadFile(newListing.listingPhotos);
-			console.log(imgUploadRes, "imgUploadRes");
+			const imgUploadRes = await postUploadFile(newListing.tempPhotos);
 			const data = {
 				...newListing,
-				category: newListing.category.name,
-				subCategory: newListing.subCategory.name,
-				user: user?._id,
+				category: newListing.category?.id || "",
+				subCategory: newListing.subCategory?.id || "",
+				userId: user?._id,
 				productionType: "renting",
 				listingPhotos: imgUploadRes?.imageUrls || []
 			};
 			// return
-			const resp = await createProductListing(data);
-			console.log(resp, "resp");
+			await createProductListing(data);
 			toast.success("Product created successfully");
+			dispatch(clearNewListing());
+			router.push('/user/listings')
 		} catch (error) {
 			toast.error("Error creating product");
 		}
@@ -97,7 +66,7 @@ const SummaryView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }} onClick={handleClose}>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -118,15 +87,15 @@ const SummaryView = () => {
 						<ImageSlider images={newListing?.listingPhotos} />
 						<div className={styles.block}>
 							<div className={styles.text}>
-								<h2>{newListing.title}</h2>
+								<h2>{newListing?.productName}</h2>
 							</div>
 							<DetailContainer
 								title="Category"
-								value={newListing.category.name}
+								value={newListing.category?.name}
 							/>
 							<DetailContainer
 								title="Sub category"
-								value={newListing.subCategory.name}
+								value={newListing.subCategory?.name}
 							/>
 							{fieldValues?.map(([key, value]) => {
 								return typeof value === "string" ? (
@@ -148,7 +117,7 @@ const SummaryView = () => {
 										<div key={key}>
 											<p>{key}</p>
 											<div className={styles.row}>
-												{(value as string[])?.map((val: string, index: number) => (
+												{(value as unknown as string[])?.map((val: string, index: number) => (
 													<Button key={`${key}-${index}`} className={styles.button}>
 														{val}
 														<Image
@@ -172,7 +141,7 @@ const SummaryView = () => {
 									<div className={styles.text} style={{ marginTop: "3.2rem" }}>
 										<h6 className={styles.perks} style={{ marginBottom: "1rem" }}> FOR SALE PERKS</h6>
 										{
-											newListing.offer?.forSell?.acceptOffer &&
+											newListing.offer?.forSell?.acceptOffers &&
 											<p className={styles.perks} style={{ marginBottom: "0.6rem" }}>
 												<Image className={styles.check} src="/svgs/check-icon.svg" alt="check" height={10} width={10} />
 												Accepts offers
@@ -205,7 +174,7 @@ const SummaryView = () => {
 									</div>
 									<DetailContainer
 										title="Amount(including VAT)"
-										value={formatNum(+newListing.offer?.forSell?.pricing)}
+										value={formatNum(+(newListing.offer?.forSell?.pricing || 0))}
 										prefix="₦"
 									/>
 									<div className={styles.divider}></div>
@@ -248,7 +217,7 @@ const SummaryView = () => {
 									</div>
 									<DetailContainer
 										title="Total replacement amount (Including VAT):"
-										value={formatNum(+newListing.offer?.forRent?.totalReplacementValue)}
+										value={formatNum(+(newListing.offer?.forRent?.totalReplacementValue || 0))}
 										prefix="₦"
 									/>
 								</>

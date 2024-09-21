@@ -4,165 +4,229 @@ export type iGetUserTransactionHistoryErr = AxiosError<any>;
 
 // ----------------------------------------------
 export type IUpdateUserPasswordErr =
-  | AxiosError<string>
-  | AxiosError<{ message: string; status?: string }>;
+	| AxiosError<string>
+	| AxiosError<{ message: string; status?: string }>;
 export interface IUpdateUserPasswordProps {
-  currentPassword: string;
-  newPassword: string;
+	currentPassword: string;
+	newPassword: string;
 }
 export interface IUpdateUserPasswordRes {
-  message: string;
+	message: string;
 }
-
 
 export type IAddTokensErr = AxiosError<{ message: string; status: string }>;
 
 export interface IAddTokensProps extends FormData {
-  tokenName: string;
-  price: string;
-  file: string;
+	tokenName: string;
+	price: string;
+	file: string;
 }
 
 export interface IAddTokensRes {
-  message: string;
+	message: string;
 }
 
 // ----------------------------------------------
 export type IResetPasswordErr = AxiosError<{
-  message?: string;
-  result?: string;
-  error?: string;
+	message?: string;
+	result?: string;
+	error?: string;
 }>;
 
 export interface IResetPasswordProps {
-  newPassword: string;
-  token: string;
+	newPassword: string;
+	token: string;
 }
 
 export interface IResetPasswordRes {
-  message: string;
+	message: string;
 }
 
 export type IResetPasswordRequestErr = AxiosError<{
-  message: string;
-  error?: string;
+	message: string;
+	error?: string;
 }>;
 
 export interface IResetPasswordRequestProps {
-  email: string;
+	email: string;
 }
 
 export interface IResetPasswordRequestRes {
-  status: string;
+	status: string;
 }
 
 export type IAddPlatformsErr = AxiosError<{ message: string }>;
 export interface IAddPlatformsProps {
-  file: string;
-  name: string;
-  platform: string;
-  url: string;
+	file: string;
+	name: string;
+	platform: string;
+	url: string;
 }
 export interface IAddPlatformsRes {
-  status: string;
+	status: string;
 }
 
-
 export type iPostUserSignUpErr = AxiosError<{
-  message?: string;
-  error?: string;
+	message?: string;
+	error?: string;
 }>;
+
 export type iPostUserSignUpResp = {
-  status: string;
-  data: {
-    email: string;
-    name: string;
-    phone_number: string;
-    token: string;
-    role: number;
-  };
+	status: string;
+	data: {
+		email: string;
+		name: string;
+		phoneNumber: string;
+		token: string;
+		role: number;
+	};
 };
 
 export type iPostUserSignUpRsq = {
-  name?: string;
-  email: string;
-  password: string;
-  userName?: string;
-  phoneNumber?: string;
+	name?: string;
+	email: string;
+	password: string;
+	userName?: string;
+	phoneNumber?: string;
 };
 
 // ----------------------------------------------
 export type iPostUserSignInErr = AxiosError<{
-  message?: string;
-  error?: string;
+	message?: string;
+	error?: string;
 }>;
 
 export type iPostUserSignInResp = {
-    data: {
-        token: string
-        user: {
-            _id: string
-            userId: string
-            email: string
-            password: string
-            userName: string
-            isVerified: boolean,
-            resetPasswordToken: string,
-            verificationTokenExpiry: string
-            createdAt: string
-            resetPasswordTokenExpiry: string
-        }
-    },
-    message: string
-
+	data: {
+		token: string;
+		user: {
+			_id: string;
+			userId: string;
+			email: string;
+			password: string;
+			userName: string;
+			isVerified: boolean;
+			createdAt: string;
+		};
+	};
+	message: string;
 };
 
 export type iPostUserSignInRsq = {
-  email: string;
-  password: string;
+	email: string;
+	password: string;
 };
 
 export type iPostVerifyOTPErr = AxiosError<{
-  error?: string;
-  message?: string;
-  status?: string;
+	error?: string;
+	message?: string;
+	status?: string;
 }>;
 
 export type iPostVerifyOTPResp = {
-  status: string;
-  data: {
-    avatar: string;
-    email: string;
-    name: string;
-    phone_number: string;
-    role: number;
-    token: string;
-  };
+	status: string;
+	data: {
+		avatar: string;
+		email: string;
+		name: string;
+		phone_number: string;
+		role: number;
+		token: string;
+	};
 };
 
 export type iPostVerifyOTPRsq = {
-  otp: string;
+	otp: string;
 };
 
 export type iPostUpdateUserErr = AxiosError<{
-  error?: string;
-  message?: string;
-  status?: string;
+	error?: string;
+	message?: string;
+	status?: string;
 }>;
 
 export type iPostUpdateUserResp = {
-  status: string;
-  user: {
-    avatar: string;
-    email: string;
-    name: string;
-    phone_number: string;
-    roles: number;
-    token: string;
-  };
+	status: string;
+	user: {
+		avatar: string;
+		email: string;
+		name: string;
+		phone_number: string;
+		roles: number;
+		token: string;
+	};
 };
 
 export type iPostUpdateUserRsq = {
-  formData: FormData;
+	formData: FormData;
 };
 
+export type iPostRegisterKycResp = {
+	status: string;
+	data: {
+		_id: string;
+		userId: string;
+		firstName: string;
+		lastName: string;
+		birthday: string;
+		bvn: string;
+		phoneNumber: string;
+		isPhoneNumberVerified: boolean;
+		country: string;
+		address: string;
+		city: string;
+		postalCode: string;
+		documentType:
+			| "intl_passport"
+			| "driver_license"
+			| "national_id"
+			| "voters_card"
+			| "nin";
+		documentPhoto: string[];
+		isSubmitted: boolean;
+		isApproved: boolean;
+		createdAt?: string;
+	};
+};
+
+export type iPostRegisterKycReq = {
+	userId: string;
+	firstName: string;
+	lastName: string;
+	birthday: string;
+	bvn: string;
+	phoneNumber: string;
+	country: string;
+	address: string;
+	city: string;
+	postalCode: string;
+	documentType?:
+		| "intl_passport"
+		| "driver_license"
+		| "national_id"
+		| "voters_card"
+		| "nin";
+	documentPhoto?: string[];
+};
+
+export type iPostUpdateBankResp = {
+	data: {
+		_id: string;
+		userId: string;
+		email: string;
+		password: string;
+		userName: string;
+		isVerified: boolean;
+		accountName: string;
+		accountNumber: string;
+		bankName: string;
+		createdAt: string;
+	};
+	message: string;
+};
+
+export type iPostUpdateBankRsq = {
+	accountName: string;
+	accountNumber: string;
+	bankName: string;
+};

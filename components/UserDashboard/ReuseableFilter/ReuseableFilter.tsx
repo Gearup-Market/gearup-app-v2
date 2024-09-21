@@ -1,12 +1,13 @@
 'use client';
+import { Filter } from '@/interfaces/Listing';
 import styles from './ReuseableFilter.module.scss'
 
 interface Props {
-    parentFilters: { id: number, name: string, subFilters: { id: number, name: string }[] }[]
-    activeFilterId: number
-    setActiveFilterId: (id: number) => void
-    setActiveSubFilterId: (id: number) => void
-    activeSubFilterId: number
+    parentFilters: Filter[]
+    activeFilterId: number | string
+    setActiveFilterId: (id: number | string) => void
+    setActiveSubFilterId: (id: number | string) => void
+    activeSubFilterId: number | string
 
 }
 const ReuseableFilters = ({ parentFilters, activeFilterId, setActiveFilterId, setActiveSubFilterId, activeSubFilterId }: Props) => {
@@ -20,7 +21,7 @@ const ReuseableFilters = ({ parentFilters, activeFilterId, setActiveFilterId, se
                             <li data-active={filter.id === activeFilterId} onClick={() => {
                                 setActiveFilterId(filter.id)
                                 setActiveSubFilterId(1)
-                            }} key={filter.id} className={styles.container__filters__parent_container__filter}>
+                            }} key={`${filter.name}-${filter.id}`} className={styles.container__filters__parent_container__filter}>
                                 <p>{filter.name}</p>
                             </li>
                         ))
@@ -29,8 +30,8 @@ const ReuseableFilters = ({ parentFilters, activeFilterId, setActiveFilterId, se
                 <ul className={styles.container__filters__children_container}>
                     {
                         parentFilters.find((filter) => filter.id === activeFilterId)?.subFilters.map((subFilter) => (
-                            <li onClick={() => setActiveSubFilterId(subFilter.id)} key={subFilter.id} className={styles.container__filters__children_container__filter} data-active={activeSubFilterId === subFilter.id}>
-                                <p>{subFilter.name}</p>
+                            <li onClick={() => setActiveSubFilterId(subFilter.id)} key={`${subFilter.name}-${subFilter.id}`} className={styles.container__filters__children_container__filter} data-active={activeSubFilterId === subFilter.id}>
+                                <p>{subFilter.name.split(' ')[0]}</p>
                             </li>
                         ))
                     }

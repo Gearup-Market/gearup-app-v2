@@ -26,7 +26,7 @@ interface RentOffer {
 }
 
 const initialForSellDetails: SellingOffer = {
-	currency: "",
+	currency: "NGN",
 	pricing: 0,
 	acceptOffers: false,
 	shipping: {
@@ -37,7 +37,7 @@ const initialForSellDetails: SellingOffer = {
 };
 
 const initialForRentDetails: RentingOffer = {
-	currency: "",
+	currency: "NGN",
 	day1Offer: 0,
 	day3Offer: 0,
 	day7Offer: 0,
@@ -55,14 +55,11 @@ const PricingView = () => {
 	const [forSellDetails, setForSellDetails] = useState<SellingOffer>(newListing.offer.forSell ?? initialForSellDetails);
 	const [forRentDetails, setForRentDetails] = useState<RentingOffer>(newListing.offer.forRent ?? initialForRentDetails);
 
-	// const [rentOffers, setRentOffers] = useState<any>({})
-	console.log(newListing, "new listing");
-
 	const nextPage = () => {
 		const data = {
 			offer: {
-				forSell: forSellDetails,
-				forRent: forRentDetails
+				forSell: newListing.listingType === 'rent' ? undefined : forSellDetails,
+				forRent: newListing.listingType === 'sell' ? undefined : forRentDetails
 			}
 		};
 		dispatch(updateNewListing(data));
@@ -191,7 +188,7 @@ const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: Sellin
 				</p>
 			</div>
 			<div className={styles.container}>
-				<Select label="Currency" options={["NGN"]} onOptionChange={(value) => setForSellDetails((prev) => ({ ...prev, currency: value }))} />
+				<Select label="Currency" options={["NGN"]} defaultOptionIndex={0} onOptionChange={(value) => setForSellDetails((prev) => ({ ...prev, currency: value }))} />
 				<div className={styles.block}>
 					<div className={styles.text}>
 						<h3>Pricing</h3>
@@ -336,7 +333,7 @@ const RentView = ({ forRentDetails, setForRentDetails }: { forRentDetails: Renti
 				</p>
 			</div>
 			<div className={styles.container}>
-				<Select label="Currency" options={["NGN"]} onOptionChange={(value) => setForRentDetails((prev) => ({ ...prev, currency: value }))} />
+				<Select label="Currency" options={["NGN"]} defaultOptionIndex={0} onOptionChange={(value) => setForRentDetails((prev) => ({ ...prev, currency: value }))} />
 				<div className={styles.select_row}>
 					<RentOffer
 						title={1}

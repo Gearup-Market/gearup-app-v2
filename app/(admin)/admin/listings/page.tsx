@@ -1,10 +1,10 @@
-import { LisitingsView } from '@/views/AdminViews'
+import { ListingsView } from '@/views/AdminViews'
 import React from 'react'
 
 const Page = () => {
   return (
     <div>
-      <LisitingsView/>
+      <ListingsView/>
     </div>
   )
 }

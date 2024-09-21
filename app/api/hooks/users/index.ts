@@ -4,7 +4,7 @@ import {
 	useMutation,
 	UseMutationOptions,
 	useQuery,
-	UseQueryOptions,
+	UseQueryOptions
 } from "@tanstack/react-query";
 import { API_URL } from "../../url";
 import {
@@ -14,12 +14,16 @@ import {
 	IResetPasswordRequestProps,
 	IResetPasswordRequestRes,
 	IResetPasswordRes,
+	iPostRegisterKycReq,
+	iPostRegisterKycResp,
+	iPostUpdateBankResp,
+	iPostUpdateBankRsq,
 	iPostUserSignInErr,
 	iPostUserSignInResp,
 	iPostUserSignInRsq,
 	iPostUserSignUpErr,
 	iPostUserSignUpResp,
-	iPostUserSignUpRsq,
+	iPostUserSignUpRsq
 } from "./types";
 
 // ----------------------------------------------
@@ -36,10 +40,10 @@ const useResetPassword = (
 			(
 				await api.post(API_URL.resetPassword, {
 					newPassword: props.newPassword,
-					token: props.token,
+					token: props.token
 				})
 			).data,
-		...options,
+		...options
 	});
 
 // ----------------------------------------------
@@ -59,7 +63,7 @@ const useResetPasswordRequest = (
 		mutationFn: async props =>
 			(await api.post(API_URL.sendResetPasswordEmail, { email: props?.email }))
 				.data,
-		...options,
+		...options
 	});
 
 // ----------------------------------------------
@@ -74,10 +78,10 @@ const usePostUserSignUp = (
 		mutationFn: async props =>
 			(
 				await api.post(API_URL.signUp, {
-					...props,
+					...props
 				})
 			).data,
-		...options,
+		...options
 	});
 
 // ----------------------------------------------
@@ -92,10 +96,10 @@ const usePostUserSignIn = (
 		mutationFn: async props =>
 			(
 				await api.post(API_URL.signIn, {
-					...props,
+					...props
 				})
 			).data,
-		...options,
+		...options
 	});
 
 // ----------------------------------------------
@@ -120,10 +124,10 @@ const usePostResendOTP = (
 		mutationFn: async props =>
 			(
 				await api.post(API_URL.resendOTP, {
-					...props,
+					...props
 				})
 			).data,
-		...options,
+		...options
 	});
 
 // ----------------------------------------------
@@ -135,7 +139,7 @@ const useGetVerifyOTP = ({ otp }: { otp: string }) => {
 			const response = await api.get(`${API_URL.verifyOTP}/${otp}`);
 			return response.data;
 		},
-		enabled: !!otp,
+		enabled: !!otp
 	});
 };
 
@@ -148,14 +152,127 @@ const useGetUser = (
 ) =>
 	useQuery<any, IGetCardHistoriesErr>({
 		queryKey: ["user"],
-		queryFn: async () =>
-			(await api.get(`${API_URL.getUser}/${token}`)).data,
+		queryFn: async () => (await api.get(`${API_URL.getUser}/${token}`)).data,
 		...options,
 		enabled: !!token,
-		refetchOnMount: false,
-	},
-);
+		refetchOnMount: false
+	});
 
+// ----------------------------------------------
+
+const usePostRegisterKyc = (
+	options?: Omit<
+		UseMutationOptions<
+			iPostRegisterKycResp,
+			iPostUserSignUpErr,
+			Partial<iPostRegisterKycReq>
+		>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostRegisterKycResp, iPostUserSignUpErr, iPostRegisterKycReq>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.registerKyc, {
+					...props
+				})
+			).data,
+		...options
+	});
+
+const usePostUpdateKyc = (
+	options?: Omit<
+		UseMutationOptions<
+			iPostRegisterKycResp,
+			iPostUserSignUpErr,
+			Partial<iPostRegisterKycReq>
+		>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostRegisterKycResp, iPostUserSignUpErr, Partial<iPostRegisterKycReq>>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.updateKyc, {
+					...props
+				})
+			).data,
+		...options
+	});
+
+export type iPostResendKycCodeResp = {
+	message: string;
+	data: any;
+};
+export type iPostResendKycCodeReq = {
+	userId: string;
+	phoneNumber: string;
+	code: string;
+};
+
+const usePostResendKycCode = (
+	options?: Omit<
+		UseMutationOptions<
+			iPostResendKycCodeResp,
+			iPostUserSignUpErr,
+			Partial<iPostResendKycCodeReq>
+		>,
+		"mutationFn"
+	>
+) =>
+	useMutation<
+		iPostResendKycCodeResp,
+		iPostUserSignUpErr,
+		Partial<iPostResendKycCodeReq>
+	>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.resendKycOtp, {
+					...props
+				})
+			).data,
+		...options
+	});
+
+const usePostValidateKycCode = (
+	options?: Omit<
+		UseMutationOptions<
+			iPostResendKycCodeResp,
+			iPostUserSignUpErr,
+			Partial<iPostResendKycCodeReq>
+		>,
+		"mutationFn"
+	>
+) =>
+	useMutation<
+		iPostResendKycCodeResp,
+		iPostUserSignUpErr,
+		Partial<iPostResendKycCodeReq>
+	>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.validateKycOtp, {
+					...props
+				})
+			).data,
+		...options
+	});
+
+const usePostUpdateBank = (
+	options?: Omit<
+		UseMutationOptions<iPostUpdateBankResp, iPostUserSignInErr, iPostUpdateBankRsq>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostUpdateBankResp, iPostUserSignInErr, iPostUpdateBankRsq>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.updateBank, {
+					...props
+				})
+			).data,
+		...options
+	});
 export {
 	useResetPassword,
 	useResetPasswordRequest,
@@ -164,4 +281,9 @@ export {
 	usePostResendOTP,
 	useGetUser,
 	useGetVerifyOTP,
+	usePostRegisterKyc,
+	usePostUpdateKyc,
+	usePostResendKycCode,
+	usePostValidateKycCode,
+	usePostUpdateBank
 };

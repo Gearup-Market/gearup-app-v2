@@ -7,18 +7,18 @@ import { Button, InputField, Select, TextArea } from '@/shared';
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText';
 
 interface PayoutFormValues {
-    firstName: string;
-    lastName: string;
-    bank: string;
-    accountNumber: string;
+    linkedin: string;
+	facebook: string;
+	instagram: string;
+	twitter: string;
 }
 
 const SocialForm: React.FC = () => {
     const initialValues: PayoutFormValues = {
-        firstName: '',
-        lastName: '',
-        bank: '',
-        accountNumber: '',
+        linkedin: '',
+        facebook: '',
+        instagram: '',
+        twitter: '',
     };
 
     const validationSchema = Yup.object().shape({

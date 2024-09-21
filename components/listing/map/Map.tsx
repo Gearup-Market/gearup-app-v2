@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "./Map.module.scss";
 import Image from "next/image";
+import { Listing } from "@/store/slices/listingsSlice";
 
-const Map = () => {
+const Map = ({ location }: { location: Listing['location'] }) => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.text}>
@@ -12,7 +13,7 @@ const Map = () => {
 				<Image src="/images/map.png" fill alt="" sizes="100vw" />
 			</div>
 			<div className={styles.text}>
-				<p>2972 Westheimer Rd. Santa Ana, Lagos, Nigeria</p>
+				<p>{location.city}</p>
 			</div>
 		</div>
 	);

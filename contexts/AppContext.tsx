@@ -1,13 +1,10 @@
 "use client";
-import { useFetch } from "@/hooks";
 import { ListingType } from "@/interfaces";
 import { useAppDispatch } from "@/store/configureStore";
-import { setListings } from "@/store/slices/listingsSlice";
 import React, {
 	useState,
 	useContext,
 	createContext,
-	useEffect,
 	useLayoutEffect,
 } from "react";
 
@@ -20,12 +17,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [isMobile, setIsMobile] = useState<boolean>(true);
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
-	const { data }: any = useFetch(`/api`);
-
-	useEffect(() => {
-		if (!data) return;
-		dispatch(setListings(data));
-	}, [data, dispatch]);
 
 	useLayoutEffect(() => {
 		if (window.innerWidth > 450) {
@@ -41,8 +32,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 			value={{
 				heroHeight,
 				setHeroHeight,
-				// listings,
-				// setListings,
 				listingType,
 				setListingType,
 				isMobile,
@@ -52,7 +41,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 				setIsLoggedIn,
 			}}
 		>
-			{/* <GlobalHooks /> */}
 			{children}
 		</AppContext.Provider>
 	);

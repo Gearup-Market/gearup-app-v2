@@ -1,5 +1,5 @@
 import { formatNumber } from "./formatNumber";
-import { shortenTitle, stringShortner } from "./stringShortner";
+// import { shortenTitle, stringShortner } from "./stringUtils";
 import { errorMessage } from "./toast";
 import getUnixTimeStamp from "./getUnixTimeStamp";
 import formatNum from "./formatNum";
@@ -13,11 +13,17 @@ import { scrollTo } from "./scrollTo";
 import { eventEmitter } from "./eventEmitter";
 import { formatLink } from "./formatLink";
 import { arraysAreEqual } from "./compareArrays";
+import { isEmpty } from "./isEmpty";
+import { buildUrlQuery } from "./buildQuery";
 
+export * from './stringUtils';
 
 export {
+	isEmpty,
+	buildUrlQuery,
 	formatNumber,
-	stringShortner,
+	// stringShortner,
+	// shortenTitle,
 	errorMessage,
 	getUnixTimeStamp,
 	formatNum,
@@ -27,7 +33,6 @@ export {
 	showDollar,
 	copyText,
 	convertEpochToFormattedDate,
-	shortenTitle,
 	scrollTo,
 	eventEmitter,
 	formatLink,

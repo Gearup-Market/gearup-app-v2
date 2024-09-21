@@ -42,7 +42,7 @@ const ImageSlider = ({ images }: ImageProps) => {
 	const { isMobile } = useGlobalContext();
 	const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 	const [slidesToShow, setSlidesToShow] = useState<number>(5);
-	const [imageArr, setImageArr] = useState<string[]>(images || imageList);
+	const [imageArr, setImageArr] = useState<string[]>(images || []);
 	useLayoutEffect(() => {
 		if (isMobile) {
 			setSlidesToShow(5);

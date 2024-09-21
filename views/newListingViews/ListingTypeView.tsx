@@ -37,7 +37,7 @@ const ListingTypeView = () => {
 			toast.error("Please select a gear condition");
 			return;
 		}
-		const newListingData = { gearCondition: condition, listingType: type.length === 2 ? "both" : type[0] };
+		const newListingData = { condition, listingType: type.length === 2 ? "both" : type[0] };
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/pricing");
 	};

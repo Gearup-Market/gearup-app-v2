@@ -12,9 +12,13 @@ import { Toaster } from "react-hot-toast";
 const Providers: React.FC<{ children: ReactNode }> = ({ children }) => {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<Provider store={store}>
+			<Provider store={store!}>
 				<AuthProvider>
-					<Toaster />
+					<Toaster toastOptions={{
+						style: {
+							zIndex: 9999999
+						}
+					}} />
 					<PersistGate persistor={persistor}>
 						<AppProvider>{children}</AppProvider>
 					</PersistGate>

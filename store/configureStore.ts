@@ -17,8 +17,11 @@ import { updateStoreVersion } from "./global";
 import userSlice from "./slices/userSlice";
 import addListingSlice from "./slices/addListingSlice";
 import listingsSlice from "./slices/listingsSlice";
+import verificationSlice from "./slices/verificationSlice";
+import storage from "redux-persist/lib/storage";
+import walletSlice from "./slices/walletSlice";
 
-const PERSISTED_KEYS: string[] = ["user", "newListing"];
+const PERSISTED_KEYS: string[] = ["user", "newListing", "verification"];
 
 const migrations = {
 	0: (state: any) => ({
@@ -30,7 +33,7 @@ const persistConfig = {
 	key: "primary",
 	whitelist: PERSISTED_KEYS,
 	blacklist: ["profile"],
-	storage: AsyncStorage,
+	storage,
 	version: 0,
 	migrate: createMigrate(migrations, { debug: false }),
 };
@@ -41,13 +44,15 @@ const persistedReducer = persistReducer(
 		user: userSlice,
 		newListing: addListingSlice,
 		listings: listingsSlice,
+		verification: verificationSlice,
+		wallet: walletSlice
 	})
 );
 
 // eslint-disable-next-line import/no-mutable-exports
 // let store: ReturnType<typeof makeStore>;
 
-let store: any;
+let store: ReturnType<typeof makeStore> | undefined;;
 
 export function makeStore(preloadedState = undefined) {
 	return configureStore({
@@ -100,12 +105,11 @@ export const useAppDispatch = () => useDispatch();
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 export const persistor = persistStore(store, undefined, () => {
-	store.dispatch(updateStoreVersion());
+	store!.dispatch(updateStoreVersion());
 });
 
 export function useStore(initialState: any) {
 	return useMemo(() => initializeStore(initialState), [initialState]);
 }
-
 
 export default store;

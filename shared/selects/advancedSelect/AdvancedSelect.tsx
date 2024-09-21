@@ -90,13 +90,13 @@ const AdvanceSelect: React.FunctionComponent<SelectProps> = ({
 							<div className={styles.flex}>
 								{selectedOptionIndex === -1
 									? null
-									: options[selectedOptionIndex].icon && (
+									: options[selectedOptionIndex]?.icon && (
 											<div
 												className={`${styles.icon} ${iconClass}`}
 											>
 												<Image
 													src={
-														options[selectedOptionIndex].icon!
+														options[selectedOptionIndex].icon
 													}
 													fill
 													sizes="100vw"

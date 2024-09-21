@@ -18,7 +18,6 @@ const ListingType = ({ src, title, toggle, checked, tipDescription, showToolTip 
 
 	const handleToggling = () => {
 		if (type === "rent" || type === "listingView") {
-			console.log("title was called")
 			toggle ? toggle(title) : null;
 		} else {
 			handleToggle ? handleToggle() : null;

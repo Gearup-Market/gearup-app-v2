@@ -1,3 +1,5 @@
+import { iCategory } from "@/app/api/hooks/listings/types";
+
 export interface Product {
 	productName: string;
 	category: {
@@ -135,20 +137,28 @@ export interface RentingOffer {
 
 export interface ListingState {
 	productName: string;
-	items?: Item[];
-	category: string;
-	subCategory: string;
+	items: Item[];
+	category?: iCategory;
+	subCategory?: iCategory;
 	productionType: string;
-	subCategoryFields: SubCategoryFields;
 	description: string;
 	listingPhotos: string[];
-	listingType: string | string[];
-	gearCondition: string;
-	user: string;
+	tempPhotos: File[];
+	listingType: string;
+	condition: string;
+	userId: string;
 	fieldValues: Field[];
 	offer: {
 		forSell?: SellingOffer;
 		forRent?: RentingOffer;
+	};
+	perks?: {
+		buyNow: boolean;
+		freeShipping: boolean;
+		makeOffer: boolean;
+		pickup: boolean;
+		shipping: boolean;
+		terms: boolean;
 	};
 }
 
@@ -169,6 +179,12 @@ export enum DayOfferEnum {
 	SEVEN_DAYS = "SEVEN_DAYS",
 	THIRTY_DAYS = "THIRTY_DAYS", 
 }
+
+export type Filter = {
+	id: string | number;
+	name: string;
+	subFilters: Omit<Filter, 'subFilters'>[];
+};
 
 // {
 //     "id": "",

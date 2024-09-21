@@ -30,7 +30,7 @@ const LoginView = () => {
 	const dispatch = useAppDispatch();
 	const { mutateAsync: postSignIn } = usePostUserSignIn();
 	const searchParams = useSearchParams();
-	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
+	const returnUrl = searchParams.get("returnUrl");
 
 	const handleSubmit = async (values: typeof initialValues) => {
 		try {
@@ -42,8 +42,12 @@ const LoginView = () => {
 				toast.success("Login successful");
 				dispatch(updateUser(res?.data?.user));
 				setAuthToken(res?.data?.token);
-				router.push(returnUrl);
-				window.location.reload();
+				router.push(
+					returnUrl && !returnUrl.includes("login")
+						? returnUrl
+						: "/user/dashboard"
+				);
+				// window.location.reload();
 			}
 		} catch (error: any) {
 			toast.error(error.response.data.message || "Login failed");

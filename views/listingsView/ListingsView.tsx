@@ -2,19 +2,22 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./ListingsView.module.scss";
-import { Listings } from "@/interfaces";
-import { Button, CustomBreadCrumb, Listing, Pagination } from "@/shared";
+import { Listings, ListingType } from "@/interfaces";
+import { Button, Listing, Pagination } from "@/shared";
 import { usePathname, useRouter } from "next/navigation";
 import { BreadCrumbSelect, Filter } from "@/components/listings";
-import gsap from "gsap";
-import { useGlobalContext } from "@/contexts/AppContext";
 import { PageLoader } from "@/shared/loaders";
-import { useFetch } from "@/hooks";
 import { useSearchParams } from "next/navigation";
 import { AppState, useAppSelector } from "@/store/configureStore";
+import { useListings } from "@/hooks/useListings";
+import { iCategory } from "@/app/api/hooks/listings/types";
+import { useGetCategories } from "@/app/api/hooks/listings";
+
 const ListingsView = () => {
-	// const { listings, setListings }: any = useGlobalContext();
-	const listings = useAppSelector((state: AppState) => state.listings);
+	useListings(true);
+	const { data: categories } = useGetCategories();
+
+	const { listings } = useAppSelector((state: AppState) => state.listings);
 	const pathName = usePathname();
 	const router = useRouter();
 	const pagePathName = pathName.split("/")[1];
@@ -22,28 +25,61 @@ const ListingsView = () => {
 	const category = search.get("category");
 
 	const [hideFilters, setHideFilters] = useState<boolean>(false);
-	// const [listings, setListings] = useState<any[]>([]);
+	const [selectedCategory, setSelectedCategory] = useState<iCategory | null>(null);
+	const [selectedSubCategory, setSelectedSubCategory] = useState<iCategory | null>(
+		null
+	);
 	const [isMobile, setIsMobile] = useState<boolean>(true);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [showOnMaps, setShowOnMaps] = useState<boolean>(false);
 	const pageSize: number = 12;
 	const elementRef: any = useRef(null);
-	console.log(listings);
+
+	const listingType = pagePathName === "buy" ? "sell" : pagePathName;
+
+	const filteredListings = useMemo(() => {
+		if (!!selectedCategory && !!selectedSubCategory) {
+			return listings.filter(l => {
+				if (l.subCategory)
+					return (
+						l.subCategory._id === selectedSubCategory.id &&
+						(l.listingType === listingType ||
+							l.listingType === ListingType.Both)
+					);
+				return (
+					l.category._id === selectedCategory.id &&
+					(l.listingType === listingType || l.listingType === ListingType.Both)
+				);
+			});
+		} else if (!!selectedCategory) {
+			return listings.filter(l => {
+				return (
+					l.category._id === selectedCategory.id &&
+					(l.listingType === listingType || l.listingType === ListingType.Both)
+				);
+			});
+		}
+
+		return listings.filter(
+			l => l.listingType === listingType || l.listingType === ListingType.Both
+		);
+	}, [listings, listingType, selectedCategory, selectedSubCategory]);
 
 	const checkActive = (url: string) => {
 		let isActive = url === pathName;
-
 		return isActive;
 	};
+
 	const currentTableData = useMemo(() => {
 		const firstPageIndex = (currentPage - 1) * pageSize;
 		const lastPageIndex = firstPageIndex + pageSize;
-		return listings?.slice(firstPageIndex, lastPageIndex);
-	}, [currentPage, listings]);
+		return filteredListings?.slice(firstPageIndex, lastPageIndex);
+	}, [currentPage, filteredListings]);
+
 	const startNumber = (currentPage - 1) * pageSize + 1;
 	const endNumber = Math.min(
 		startNumber + currentTableData?.length - 1,
-		listings?.length
+		filteredListings?.length
 	);
 
 	useEffect(() => {
@@ -64,75 +100,42 @@ const ListingsView = () => {
 			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
-	// useEffect(() => {
-	// 	const windowWidth = window.innerWidth;
-	// 	const element = elementRef.current;
-	// 	const sectionGrid = element.children[1];
-	// 	const rowSection = sectionGrid.children[1];
-	// 	const grid = rowSection.children[1];
-	// 	if (windowWidth > 450) {
-	// 		if (hideFilters) {
-	// 			// gsap.to(grid, {
-	// 			// 	gridTemplateColumns: "repeat(4, 1fr)",
-	// 			// 	duration: 0.01,
-	// 			// 	delay: 2,
-	// 			// 	// ease: "power2.inOut",
-	// 			// });
-	// 			gsap.fromTo(
-	// 				grid,
-	// 				{
-	// 					marginLeft: "30.2rem",
-	// 					duration: 0.25,
-	// 				},
-	// 				{
-	// 					marginLeft: 0,
-	// 					duration: 0.25,
-	// 				}
-	// 			);
-	// 			// gsap.to(sectionGrid, {
-	// 			// 	gridTemplateColumns: "1fr",
-	// 			// 	// delay: 3,
-	// 			// });
-	// 			gsap.to(rowSection, {
-	// 				width: "100%",
-	// 				duration: 0.25,
-	// 				// delay: 2,
-	// 				// ease: "power2.inOut",
-	// 			});
-	// 		} else {
-	// 			// gsap.to(grid, {
-	// 			// 	gridTemplateColumns: "repeat(3, 1fr)",
-	// 			// 	duration: 0.01,
-	// 			// 	// delay: 3,
-	// 			// 	// ease: "power2.inOut",
-	// 			// });
-	// 			// gsap.to(sectionGrid, {
-	// 			// 	gridTemplateColumns: "30.2rem 1fr",
-	// 			// 	// delay: 3,
-	// 			// });
-	// 			gsap.to(rowSection, {
-	// 				width: "calc(100% - 32.6rem)",
-	// 				duration: 0.001,
-	// 				// delay: 2,
-	// 				// ease: "power2.inOut",
-	// 			});
-	// 		}
-	// 	}
-	// }, [hideFilters]);
+
+	useEffect(() => {
+		if (category) {
+			const _category = categories?.data.find(
+				c => c.name.toLowerCase() === category.toLowerCase()
+			);
+			if (_category) {
+				setSelectedCategory(_category);
+			}
+		}
+	}, [category]);
+
+	const onChangeSelectedCategory = (option: iCategory) => {
+		setSelectedCategory(option);
+		setSelectedSubCategory(null);
+	};
+
 	return (
 		<section className={styles.section} data-hidden={hideFilters} ref={elementRef}>
 			<div className={styles.breadcrumb_container}>
-				{!!category && <CustomBreadCrumb path1="categories" path2="gears" />}
+				{/* {!!category && <CustomBreadCrumb path1="categories" path2="gears" />} */}
 				<BreadCrumbSelect
 					className={styles.desk_breadcrumb}
 					isMobile={isMobile}
+					categories={categories?.data}
+					selectedCategory={selectedCategory}
+					selectedSubCategory={selectedSubCategory}
+					setSelectedCategory={onChangeSelectedCategory}
+					setSelectedSubCategory={setSelectedSubCategory}
 				/>
-				{!!category && (
+				{/* {!!category && (
 					<p>
 						Showing <span className={styles.items_count}>20</span> results for{" "}
 						<span className={styles.category_name}> {`"${category}"`}</span>
 					</p>
-				)}
+				)} */}
 			</div>
 			<div className={styles.section_grid}>
 				<Filter
@@ -182,22 +185,20 @@ const ListingsView = () => {
 							</label>
 						</div>
 					</div>
-					{listings && listings.length ? (
+					{currentTableData && currentTableData.length ? (
 						<>
 							<div className={styles.grid}>
-								{currentTableData?.map(
-									(listing: Listings, index: number) => (
-										<Listing
-											props={listing}
-											className={styles.card}
-											key={index}
-										/>
-									)
-								)}
+								{currentTableData.map((listing, index: number) => (
+									<Listing
+										props={listing}
+										className={styles.card}
+										key={index}
+									/>
+								))}
 							</div>
 							<Pagination
 								currentPage={currentPage}
-								totalCount={listings?.length}
+								totalCount={filteredListings?.length}
 								pageSize={pageSize}
 								onPageChange={(page: any) => setCurrentPage(page)}
 								startNumber={startNumber}

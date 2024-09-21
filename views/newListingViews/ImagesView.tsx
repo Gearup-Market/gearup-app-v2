@@ -13,11 +13,11 @@ import toast from "react-hot-toast";
 const ImagesView = () => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
-	const [displayedImages, setDisplayedImages] = useState<any[]>([]);
+	const [displayedImages, setDisplayedImages] = useState<File[]>([]);
 
 	const handleIconChange = (e: any) => {
 		const file = e.target.files[0];
-		const localArr = [...displayedImages, URL.createObjectURL(file)];
+		const localArr = [...displayedImages, file];
 		setDisplayedImages(localArr);
 		// if (file) {
 		// 	const reader = new FileReader();
@@ -33,14 +33,14 @@ const ImagesView = () => {
 		// }
 	};
 
-	const deleteImage = (image: string) => {
+	const deleteImage = (image: File) => {
 		const localArr = displayedImages;
-		const filteredImages = localArr.filter(item => item !== image);
+		const filteredImages = localArr.filter(item => item.name !== image.name);
 		setDisplayedImages(filteredImages);
 	};
 
 	const nextPage = async () => {
-		const newListingData = { listingPhotos: displayedImages };
+		const newListingData = { listingPhotos: displayedImages.map((c) => URL.createObjectURL(c)), tempPhotos: displayedImages };
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/type");
 	};
@@ -103,10 +103,10 @@ const ImagesView = () => {
 							</div>
 						</div>
 						<div className={styles.image_row}>
-							{displayedImages.map((displayedImage: string) => (
-								<div key={displayedImage} className={styles.image}>
+							{displayedImages.map((displayedImage: File) => (
+								<div key={displayedImage.name} className={styles.image}>
 									<Image
-										src={displayedImage}
+										src={URL.createObjectURL(displayedImage)}
 										alt=""
 										fill
 										sizes="100vw"

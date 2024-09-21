@@ -45,8 +45,6 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		const token = getAuthToken() ?? "";
 		const decodedJwt = parseJwt(token ?? "");
 		const isTokenValid = !!decodedJwt && decodedJwt?.exp * 1000 > Date.now();
-		console.log(decodedJwt, "decodedJwt")
-		console.log(new Date(decodedJwt?.exp * 1000), "decodedJwt")
 		setToken(decodedJwt?.userId);
 		setIsTokenValid(isTokenValid);
 		if (!isTokenValid) {
@@ -98,9 +96,6 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 	const { isAuthenticated, loading, user } = useAuth();
 	const searchParams = useSearchParams();
 	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
-
-	console.log(user, "user")
-	console.log(isAuthenticated, "isAuthenticated")
 
 	const unprotectedRoutes = useMemo(
 		() => [
