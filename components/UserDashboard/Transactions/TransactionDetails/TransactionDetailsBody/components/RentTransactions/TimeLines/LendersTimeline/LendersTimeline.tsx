@@ -58,13 +58,13 @@ const LendersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
                         steps === 3 && <AwaitingConfirmation />
                     }
                     {
-                        steps === 6 && <TransactionOngoing isTimeElapsed={isTimeElapsed} />
+                        steps === 4 && <TransactionOngoing isTimeElapsed={isTimeElapsed} />
                     }
                     {
                         steps === 5 && <ConfirmReturn handleNext={handleNext} />
                     }
                     {
-                        steps === 4 && <CustomRatingFeedback />
+                        steps === 6 && <CustomRatingFeedback />
                     }
 
                 </div>
