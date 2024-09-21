@@ -115,7 +115,7 @@ const SummaryView = () => {
 						<p>Review your listing, hit submit, and you’re done!</p>
 					</div>
 					<div className={styles.container}>
-						<ImageSlider images={newListing?.listingPhotos as unknown as string[]} />
+						<ImageSlider images={newListing?.listingPhotos as unknown as string[]} type={newListing.listingType}/>
 						<div className={styles.block}>
 							<div className={styles.text}>
 								<h2>{newListing?.productName}</h2>
