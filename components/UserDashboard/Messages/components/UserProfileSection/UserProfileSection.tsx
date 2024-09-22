@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./UserProfileSection.module.scss";
 import Image from "next/image";
 import { CustomImage, Ratings } from "@/shared";
+import { VerifyIcon } from "@/shared/svgs/dashboard";
 
 const UserProfileSection = () => {
 	return (
@@ -16,7 +17,12 @@ const UserProfileSection = () => {
 						alt="avatar"
 					/>
 				</div>
-				<p className={styles.name}>Wade Warren</p>
+				<p className={styles.name}>
+					Wade Warren{" "}
+					<span className={styles.verfiy_icon}>
+						<VerifyIcon />
+					</span>
+				</p>
 				<p className={styles.location}>Lagos, Nigeria</p>
 				<div className={styles.ratings_container}>
 					<Ratings rating={0} showRatingNumber={true} />
@@ -68,7 +74,10 @@ const UserProfileSection = () => {
 					/>
 				</div>
 				<h2 className={styles.convo_name}>Canon EOS R5 Camera Kit For Sale</h2>
-				<p className={styles.text}><span className={styles.amount}>$230</span><span className={styles.day}>/Day</span></p>
+				<p className={styles.text}>
+					<span className={styles.amount}>$230</span>
+					<span className={styles.day}>/Day</span>
+				</p>
 			</div>
 		</div>
 	);

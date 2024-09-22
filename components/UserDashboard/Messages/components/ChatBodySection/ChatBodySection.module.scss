@@ -1,9 +1,73 @@
 @import "@/styles/imports";
 
 .container {
-    border: 1px solid $col-border;
-    border-top:none ;
-    border-bottom: none;
-    height: 100%;
+	border: 1px solid $col-border;
+	border-top: none;
+	border-bottom: none;
+	height: 100%;
 
+	.header {
+		border-bottom: 1px solid $col-border;
+		padding: 1.6rem;
+		display: flex;
+		justify-content: space-between;
+
+		.left {
+			display: flex;
+			gap: 0.8rem;
+			align-items: flex-start;
+
+			.user_alias {
+				font-size: 1.2rem;
+				font-weight: 700;
+				color: #1b1e21;
+				background: #dedfe0;
+				border-radius: 50%;
+				height: 4rem;
+				width: 4rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.name {
+				font-size: 1.2rem;
+				font-weight: 700;
+				color: #1b1e21;
+				display: flex;
+				align-items: center;
+
+				.verfiy_icon {
+					width: 2rem;
+					height: 2rem;
+					margin-left: 0.8rem;
+				}
+			}
+
+			.date_convo_about {
+				display: flex;
+				align-items: center;
+
+				.date {
+					font-size: 1.2rem;
+					color: #1b1e21;
+				}
+				.convo_about {
+					font-size: 1.2rem;
+					color: #a3a7ab;
+				}
+			}
+		}
+
+        .right{
+            display: flex;
+            align-items: center;
+            gap: 1.6rem;
+
+            .icon{
+                height: 2.4rem;
+                width: 2.4rem;
+            }
+        }
+	}
 }
