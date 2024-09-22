@@ -1,245 +1,188 @@
-'use client'
-import React, { useState } from 'react'
-import styles from './CartItems.module.scss'
-import CartItemCardContainer from '../CartItemCard/CartItemCard'
-import { CustomImage, Ratings } from '@/shared'
-
-const cartItems = [
-    {
-        id: 1,
-        name: 'Sony A7s II',
-        price: 100,
-        quantity: 2,
-        image: '/images/product1.jpg',
-        type: 'rental',
-        query:"",
-        rental_duration: '1 month',
-        rental_price_days: 10,
-        gearup_service_fee: 10,
-        vat: 5,
-        lender: {
-            name: 'Jane Doe',
-            image: '/images/seller.jpg',
-            rating: 4.8
-        }
-    },
-    {
-        id: 2,
-        name: 'Hollyland Solidcom C1-6S Intercoms 6x',
-        price: 200,
-        quantity: 1,
-        image: '/images/product2.jpg',
-        type: 'Gear sale',
-        query:"",
-        gearup_service_fee: 20,
-        vat: 10,
-        seller: {
-            name: 'Einstein Doe',
-            image: '/images/seller.jpg',
-            rating: 4.5
-        }
-    },
-    {
-        id: 3,
-        name: 'Sony A7s II',
-        price: 100,
-        quantity: 2,
-        image: '/images/product1.jpg',
-        type: 'rental',
-        query:"",
-        rental_duration: '1 month',
-        rental_price_days: 10,
-        gearup_service_fee: 10,
-        vat: 5,
-        lender: {
-            name: 'Jane Doe',
-            image: '/images/seller.jpg',
-            rating: 4.8
-        }
-    },
-    {
-        id: 4,
-        name: 'Hollyland Solidcom C1-6S Intercoms 6x',
-        price: 200,
-        quantity: 1,
-        image: '/images/product2.jpg',
-        type: 'Gear sale',
-        query:"",
-        gearup_service_fee: 20,
-        vat: 10,
-        seller: {
-            name: 'Einstein Doe',
-            image: '/images/seller.jpg',
-            rating: 4.5
-        }
-    },
-    {
-        id: 5,
-        name: 'Sony A7s II',
-        image: '/images/product1.jpg',
-        type: 'course',
-        query:"",
-        author: 'Jane Doe',
-        gearup_service_fee: 10,
-        vat: 5,
-        lender: {
-            name: 'Jane Doe',
-            image: '/images/seller.jpg',
-            rating: 4.8
-        }
-    },
-    {
-        id: 6,
-        name: 'Sony A7s II',
-        image: '/images/product1.jpg',
-        type: 'course',
-        query:"",
-        author: 'Jane Doe',
-        gearup_service_fee: 10,
-        vat: 5,
-        lender: {
-            name: 'Jane Doe',
-            image: '/images/seller.jpg',
-            rating: 4.8
-        }
-    },
-
-]
+"use client";
+import React from "react";
+import styles from "./CartItems.module.scss";
+import CartItemCardContainer from "../CartItemCard/CartItemCard";
+import { CustomImage, Ratings } from "@/shared";
+import useCart from "@/hooks/useCart";
+import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
 
 const CartItems = () => {
-    const [newCartItems, setNewCartItems] = useState(cartItems)
+	const { getCartItems, removeItemFromCart } = useCart();
+	const cartItems = getCartItems();
 
-    const handleDeleteItem = (id: number) => {
-        setNewCartItems(newCartItems.filter((item) => item.id !== id))
-    }
+	if (!cartItems) return null;
 
-    return (
-        <div className={styles.container}>
-            {newCartItems.map((item) => {
-                if (item.type === 'rental') {
-                    return (
-                        <CartItemCardContainer key={item.id} name={item.name} handleDeleteItem={handleDeleteItem} type={item.type} id={item.id}>
-                            <RentalComp item={item} />
-                        </CartItemCardContainer>
-                    )
-                }
-                if (item.type === 'Gear sale') {
-                    return (
-                        <CartItemCardContainer key={item.id} name={item.name} handleDeleteItem={handleDeleteItem} type={item.type} id={item.id}>
-                            <GearSaleComp item={item} />
-                        </CartItemCardContainer>
-                    )
-                }
-                if (item.type === 'course') {
-                    return (
-                        <CartItemCardContainer key={item.id} name={item.name} handleDeleteItem={handleDeleteItem} type={item.type} id={item.id}>
-                            <CourseComp item={item} />
-                        </CartItemCardContainer>
-                    )
-                }
-            })}
-        </div>
-    )
-}
+	const handleDeleteItem = async (id: string) => {
+        await removeItemFromCart(id)
+	};
+
+	return (
+		<div className={styles.container}>
+			{cartItems.items.map((item, index) => {
+				if (item.type === TransactionType.Rental) {
+					return (
+						<CartItemCardContainer
+                            item={item}
+							key={index}
+							name={item?.listing?.productName}
+							handleDeleteItem={handleDeleteItem}
+							type={item?.type}
+							id={item?.listing?._id}
+						>
+							<RentalComp item={item} />
+						</CartItemCardContainer>
+					);
+				}
+				if (item.type === TransactionType.Sale) {
+					return (
+						<CartItemCardContainer
+                            item={item}
+							key={index}
+							name={item?.listing?.productName}
+							handleDeleteItem={handleDeleteItem}
+							type={item?.type}
+							id={item?.listing?._id}
+						>
+							<GearSaleComp item={item} />
+						</CartItemCardContainer>
+					);
+				}
+				// if (item.type === "course") {
+				// 	return (
+				// 		<CartItemCardContainer
+				// 			key={item.id}
+				// 			name={item.name}
+				// 			handleDeleteItem={handleDeleteItem}
+				// 			type={item.type}
+				// 			id={item.id}
+				// 		>
+				// 			<CourseComp item={item} />
+				// 		</CartItemCardContainer>
+				// 	);
+				// }
+			})}
+		</div>
+	);
+};
 
 export default CartItems;
 
+const RentalComp = ({ item }: { item: CartItem }) => {
+	const price = item.listing?.offer?.forRent?.day1Offer;
+	return (
+		<div>
+			<div className={styles.summary_item}>
+				<h4>Author</h4>
+				<div className={styles.owner}>
+					<div className={styles.image}>
+						{item.listing?.user?.avatar && (
+							<CustomImage
+								height={40}
+								width={50}
+								src={item?.listing?.user?.avatar}
+								alt="owner"
+							/>
+						)}
+					</div>
+					<p>{item.listing?.user?.name || item.listing?.user?.userName}</p>
+					<Ratings rating={item?.listing?.averageRating || 0} readOnly />
+				</div>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>Type</h4>
+				<p className={styles.type}>{item?.type}</p>
+			</div>
+			{/* <div className={styles.summary_item}>
+				<h4>Gearup service fee</h4>
+				<p>$400.0</p>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>VAT</h4>
+				<p>10 days</p>
+			</div> */}
+			<div className={`${styles.summary_item} ${styles.total_amount}`}>
+				<h4>Total</h4>
+				<p>NGN {price}</p>
+			</div>
+		</div>
+	);
+};
 
-const RentalComp = ({ item }: any) => {
-    return (
-        <div>
-            <div className={styles.summary_item}>
-                <h4>Author</h4>
-                <div className={styles.owner}>
-                    <div className={styles.image} >
-                        <CustomImage height={40} width={50} src={item?.lender?.image} alt="owner" />
-                    </div>
-                    <p>{item.lender.name}</p>
-                    <Ratings rating={item?.lender?.rating} />
-                </div>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>Type</h4>
-                <p className={styles.type}>{item.type}</p>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>Gearup service fee</h4>
-                <p>$400.0</p>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>VAT</h4>
-                <p>10 days</p>
-            </div>
-            <div className={`${styles.summary_item} ${styles.total_amount}`}>
-                <h4>Total</h4>
-                <p>$400.0</p>
-            </div>
-        </div>
-    )
-}
-
-const GearSaleComp = ({ item }: any) => {
-    return (
-        <div>
-            <div className={styles.summary_item}>
-                <h4>Author</h4>
-                <div className={styles.owner}>
-                    <div className={styles.image} >
-                        <CustomImage height={40} width={50} src={item?.seller?.image} alt="owner" />
-                    </div>
-                    <p>{item?.seller?.name}</p>
-                    <Ratings rating={item?.seller?.rating} />
-                </div>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>Type</h4>
-                <p className={styles.type}>{item.type}</p>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>Gearup service fee</h4>
-                <p>$400.0</p>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>VAT</h4>
-                <p>10 days</p>
-            </div>
-            <div className={`${styles.summary_item} ${styles.total_amount}`}>
-                <h4>Total</h4>
-                <p>$400.0</p>
-            </div>
-        </div>
-    )
-}
+const GearSaleComp = ({ item }: { item: CartItem }) => {
+    const price = item.listing?.offer?.forSell?.pricing;
+	return (
+		<div>
+			<div className={styles.summary_item}>
+				<h4>Author</h4>
+				<div className={styles.owner}>
+					<div className={styles.image}>
+                    {item.listing?.user?.avatar && (
+							<CustomImage
+								height={40}
+								width={50}
+								src={item?.listing?.user?.avatar}
+								alt="owner"
+							/>
+						)}
+					</div>
+					<p>{item.listing?.user?.name || item.listing?.user?.userName}</p>
+					<Ratings rating={item?.listing?.averageRating || 0} readOnly />
+				</div>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>Type</h4>
+				<p className={styles.type}>{item?.type}</p>
+			</div>
+			{/* <div className={styles.summary_item}>
+				<h4>Gearup service fee</h4>
+				<p>$400.0</p>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>VAT</h4>
+				<p>10 days</p>
+			</div> */}
+			<div className={`${styles.summary_item} ${styles.total_amount}`}>
+				<h4>Total</h4>
+				<p>NGN {price}</p>
+			</div>
+		</div>
+	);
+};
 
 const CourseComp = ({ item }: any) => {
-    return (
-        <div>
-            <div className={styles.summary_item}>
-                <h4>Author</h4>
-                <div className={styles.owner}>
-                    <div className={styles.image} >
-                        <CustomImage height={40} width={50} src={item?.lender?.image} alt="owner" />
-                    </div>
-                    <p>{item.lender.name}</p>
-                    <Ratings rating={item?.lender?.rating} />
-                </div>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>Type</h4>
-                <p className={styles.type}>{item.type}</p>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>Gearup service fee</h4>
-                <p>$400.0</p>
-            </div>
-            <div className={styles.summary_item}>
-                <h4>VAT</h4>
-                <p>10 days</p>
-            </div>
-            <div className={`${styles.summary_item} ${styles.total_amount}`}>
-                <h4>Total</h4>
-                <p>$400.0</p>
-            </div>
-        </div>
-    )
-}
+	return (
+		<div>
+			<div className={styles.summary_item}>
+				<h4>Author</h4>
+				<div className={styles.owner}>
+					<div className={styles.image}>
+						<CustomImage
+							height={40}
+							width={50}
+							src={item?.lender?.image}
+							alt="owner"
+						/>
+					</div>
+					<p>{item.lender.name}</p>
+					<Ratings rating={item?.lender?.rating} />
+				</div>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>Type</h4>
+				<p className={styles.type}>{item.type}</p>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>Gearup service fee</h4>
+				<p>$400.0</p>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>VAT</h4>
+				<p>10 days</p>
+			</div>
+			<div className={`${styles.summary_item} ${styles.total_amount}`}>
+				<h4>Total</h4>
+				<p>$400.0</p>
+			</div>
+		</div>
+	);
+};

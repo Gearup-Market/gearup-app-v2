@@ -5,8 +5,8 @@ import styles from './ReuseableFilter.module.scss'
 interface Props {
     parentFilters: Filter[]
     activeFilterId: number | string
-    setActiveFilterId: (id: number | string) => void
-    setActiveSubFilterId: (id: number | string) => void
+    setActiveFilterId: any
+    setActiveSubFilterId: any
     activeSubFilterId: number | string
 
 }

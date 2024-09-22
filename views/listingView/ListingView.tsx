@@ -27,8 +27,6 @@ const ListingView = () => {
 	if (!currentListing && isFetching) return <PageLoader />;
 	if (!currentListing) return null;
 
-	console.log(currentListing);
-
 	const { offer, listingPhotos, ownerOtherListings } = currentListing;
 	const forSale = !!offer?.forSell;
 	const forRent = !!offer?.forRent;

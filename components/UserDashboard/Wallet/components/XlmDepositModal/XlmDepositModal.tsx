@@ -7,7 +7,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { CopyIcon, WarningIcon } from "@/shared/svgs/dashboard";
 import { StellarWallet } from "@/app/api/hooks/wallets/types";
 import { PageLoader } from "@/shared/loaders";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 interface Props {
 	openModal: boolean;
@@ -56,7 +56,7 @@ const XlmDepositModal = ({ setOpenModal, openModal, wallet, isLoading }: Props) 
 	const onOptionClick = (option: FundingOption) => {
 		switch (option.id) {
 			case 1:
-				toast.info(
+				toast.error(
 					"Ramping currently not supported. Please deposit with the transfer option"
 				);
 				break;

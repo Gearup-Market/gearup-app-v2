@@ -19,8 +19,10 @@ import addListingSlice from "./slices/addListingSlice";
 import listingsSlice from "./slices/listingsSlice";
 import verificationSlice from "./slices/verificationSlice";
 import walletSlice from "./slices/walletSlice";
+import cartSlice from "./slices/cartSlice";
+import checkoutSlice from "./slices/checkoutSlice";
 
-const PERSISTED_KEYS: string[] = ["user", "newListing", "verification"];
+const PERSISTED_KEYS: string[] = ["user", "newListing", "verification", "cart"];
 
 const migrations = {
 	0: (state: any) => ({
@@ -40,11 +42,13 @@ const persistConfig = {
 const persistedReducer = persistReducer(
 	persistConfig,
 	combineReducers({
-		user: userSlice,
-		newListing: addListingSlice,
+		cart: cartSlice,
+		checkout: checkoutSlice,
 		listings: listingsSlice,
+		newListing: addListingSlice,
+		user: userSlice,
 		verification: verificationSlice,
-		wallet: walletSlice
+		wallet: walletSlice,
 	})
 );
 

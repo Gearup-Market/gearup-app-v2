@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { ImageSlider } from "@/components/listing";
 import { formatNum } from "@/utils";
 import { usePostCreateListing, useUploadFiles } from "@/app/api/hooks/listings";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
 
 const SummaryView = () => {

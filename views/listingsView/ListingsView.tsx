@@ -192,6 +192,7 @@ const ListingsView = () => {
 									<Listing
 										props={listing}
 										className={styles.card}
+										actionType={listingType}
 										key={index}
 									/>
 								))}

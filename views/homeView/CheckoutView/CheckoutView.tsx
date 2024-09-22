@@ -1,12 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CheckoutView.module.scss";
 import { BackNavigation } from "@/shared";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PaymentComp } from "@/components/CartComponent/CheckoutComp";
 import ShippingAddress from "@/components/CartComponent/CheckoutComp/ShippingAddress/ShippingAddress";
 import ShippingType from "@/components/CartComponent/CheckoutComp/ShippingType/ShippingType";
 import ThirdPartyCheck from "@/components/CartComponent/CheckoutComp/ThirdPartyCheck/ThirdPartyCheck";
+import { useAppSelector } from "@/store/configureStore";
+import { TransactionType } from "@/app/api/hooks/transactions/types";
+import { useStellarWallet, useWallet } from "@/hooks";
 
 enum BuyTimeLineEnum {
 	THIRD_PARTY_CHECK = "THIRD_PARTY_CHECK",
@@ -39,8 +42,8 @@ const buyTimeline = [
 ];
 
 const CheckoutView = () => {
-	const searchParams = useSearchParams();
-	const type = searchParams.get("type");
+	const router = useRouter();
+	const {checkout} = useAppSelector(s => s.checkout);
 	const [step, setStep] = useState(1);
 
 	const nextStep = () => {
@@ -51,13 +54,21 @@ const CheckoutView = () => {
 		setStep(prev => prev + 1);
 	};
 
+	useEffect(() => {
+		if (!checkout) {
+			router.back();
+		}
+	}, []);
+
+	console.log(checkout, "checkout");
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.body}>
 				<BackNavigation />
-				{(type === "rental" || type === "course") && <PaymentComp />}
+				{(checkout?.type === TransactionType.Rental) && <PaymentComp item={checkout.item} amount={checkout.amount} type={checkout.type} />}
 				<div>
-					{type === "gear-sale" && (
+					{checkout?.type === TransactionType.Sale && (
 						<>
 							<ul className={styles.timeline_container}>
 								{buyTimeline.map(item => (
@@ -94,7 +105,7 @@ const CheckoutView = () => {
 										handlePrev={prevStep}
 									/>
 								)}
-								{step === 4 && <PaymentComp />}
+								{step === 4 && <PaymentComp item={checkout.item} amount={checkout.amount} type={checkout.type} />}
 							</>
 						</>
 					)}

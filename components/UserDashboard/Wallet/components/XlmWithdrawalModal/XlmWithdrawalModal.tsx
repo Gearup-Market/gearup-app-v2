@@ -4,7 +4,7 @@ import styles from "./XlmWithdrawalModal.module.scss";
 import Modal from "@/shared/modals/modal/Modal";
 import Image from "next/image";
 import { Button, InputField } from "@/shared";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { usePostTransferXLM } from "@/app/api/hooks/wallets";
 import { useAppSelector } from "@/store/configureStore";
 import * as Yup from "yup";
@@ -100,7 +100,7 @@ const WalletWithdrawalModalModal = ({ setOpenModal, openModal, refetch }: Props)
 	const onOptionClick = (option: FundingOption) => {
 		switch (option.id) {
 			case 1:
-				toast.info(
+				toast.success(
 					"Ramping currently not supported. Please withdraw with the transfer option"
 				);
 				break;

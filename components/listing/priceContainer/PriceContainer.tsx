@@ -8,10 +8,15 @@ import { Button, DatePicker, Logo } from "@/shared";
 import format from "date-fns/format";
 import { Listing } from "@/store/slices/listingsSlice";
 import { formatNumber } from "@/utils";
+import { useAppSelector } from "@/store/configureStore";
+import useCart from "@/hooks/useCart";
+import { TransactionType } from "@/app/api/hooks/transactions/types";
 
 const PriceContainer = ({ listing }: { listing: Listing }) => {
+	const { addItemToCart } = useCart();
+	const { userId } = useAppSelector(s => s.user);
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
-	const [inputDate, setInputDate] = useState<any>([
+	const [inputDate, setInputDate] = useState([
 		{
 			startDate: new Date(),
 			endDate: addDays(new Date(), 0),
@@ -24,6 +29,22 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 
 	const currency = forSale ? offer.forSell?.currency : offer.forRent?.currency;
 	const pricing = forRent ? offer.forRent?.day1Offer : offer.forSell?.pricing;
+
+	const handleAddToCart = () => {
+		try {
+			const payload = addItemToCart({
+				listing,
+				type: TransactionType.Rental,
+				rentalPeriod: {
+					start: inputDate[0].startDate,
+					end: inputDate[0].endDate
+				}
+			});
+
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	return (
@@ -82,7 +103,9 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 					<Button buttonType="secondary" className={styles.button}>
 						Ask for availability
 					</Button>
-					<Button className={styles.button}>Add to cart</Button>
+					<Button className={styles.button} onClick={handleAddToCart}>
+						Add to cart
+					</Button>
 				</div>
 				{openModal && (
 					<DatePicker
