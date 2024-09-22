@@ -12,7 +12,7 @@ import { iPostRegisterKycReq } from "@/app/api/hooks/users/types";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateVerification } from "@/store/slices/verificationSlice";
 import { usePostRegisterKyc } from "@/app/api/hooks/users";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { updateUser } from "@/store/slices/userSlice";
 
 export type PersonalIdentificationFormValues = Omit<

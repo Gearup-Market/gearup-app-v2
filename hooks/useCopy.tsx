@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 export default function useCopy() {
 	const [copyText, setCopyText] = useState<string>("Copy");

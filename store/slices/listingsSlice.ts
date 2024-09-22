@@ -21,7 +21,7 @@ export interface ListingLocation {
 }
 
 export interface Listing {
-	_id?: string;
+	_id: string;
 	items?: Item[];
 	productName: string;
 	productSlug: string;

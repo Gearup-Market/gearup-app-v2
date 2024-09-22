@@ -14,7 +14,7 @@ import {
 	usePostUpdateKyc,
 	usePostValidateKycCode
 } from "@/app/api/hooks/users";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 interface Props {
 	setIsTokenVerified: (value: boolean) => void;

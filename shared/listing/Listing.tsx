@@ -8,13 +8,15 @@ import { formatLink, formatNumber, shortenTitle } from "@/utils";
 import Link from "next/link";
 import { Listing as iListing, setListings } from "@/store/slices/listingsSlice";
 import { useAppDispatch } from "@/store/configureStore";
+import { ListingType } from "@/interfaces";
 
 interface Props {
 	props: iListing;
 	className?: string;
+	actionType?: string;
 }
 
-const Listing = ({ props, className }: Props) => {
+const Listing = ({ props, className, actionType }: Props) => {
 	const dispatch = useAppDispatch();
 	const {
 		_id: id,
@@ -22,7 +24,7 @@ const Listing = ({ props, className }: Props) => {
 		listingPhotos,
 		productName,
 		productSlug,
-		reviews,
+		listingType,
 		user,
 		totalReviews,
 		averageRating
@@ -37,9 +39,13 @@ const Listing = ({ props, className }: Props) => {
 			})
 		);
 	};
+	const listingUrl = actionType
+		? `/listings/${productSlug}?type=${actionType}`
+		: `/listings/${productSlug}`;
+
 	return (
 		<Link
-			href={`/listings/${productSlug}`}
+			href={listingUrl}
 			className={`${styles.container} ${className}`}
 			onClick={onClickListing}
 		>

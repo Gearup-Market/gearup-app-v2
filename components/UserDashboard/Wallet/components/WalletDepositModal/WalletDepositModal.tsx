@@ -7,8 +7,7 @@ import { Button, InputField } from "@/shared";
 import { CopyIcon, EditIcon } from "@/shared/svgs/dashboard";
 import { useAppSelector } from "@/store/configureStore";
 import { usePaystackPayment } from "react-paystack";
-import { toast } from "react-toastify";
-import { useWallet } from "@/hooks";
+import { toast } from "react-hot-toast";
 
 interface Props {
 	openModal: boolean;

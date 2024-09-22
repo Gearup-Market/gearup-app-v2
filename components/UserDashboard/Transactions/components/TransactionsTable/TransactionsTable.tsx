@@ -16,6 +16,7 @@ interface Props {
 const TransactionTable = ({ transactionType }: Props) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(5);
+	
 	const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
 		transactions.slice(0, limit)
 	);

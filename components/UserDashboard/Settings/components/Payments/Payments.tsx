@@ -8,7 +8,7 @@ import { Button, Header, InputField, Select } from "@/shared";
 import HeaderSubText from "@/components/Admin/HeaderSubText/HeaderSubText";
 import { usePostUpdateBank } from "@/app/api/hooks/users";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { updateUser } from "@/store/slices/userSlice";
 import { isEmpty } from "@/utils";
 

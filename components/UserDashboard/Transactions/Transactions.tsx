@@ -1,10 +1,9 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import styles from './Transactions.module.scss'
 import {  TransactionsTable } from './components'
 import HeaderSubText from '../HeaderSubText/HeaderSubText'
 import ReuseableFilters from '../ReuseableFilter/ReuseableFilter'
-
 
 const Transactions = () => {
   const [activeFilterId, setActiveFilterId] = useState(1)
@@ -54,29 +53,8 @@ const Transactions = () => {
         }
       ]
     },
-    {
-      id: 3,
-      name: 'Courses',
-      subFilters: [
-        {
-          id: 1,
-          name: 'Ebooks'
-        },
-        {
-          id: 2,
-          name: 'Live'
-        },
-        {
-          id: 3,
-          name: 'Video'
-        },
-        {
-          id: 4,
-          name: 'Audio'
-        }
-      ]
-    }
   ]
+  
   return (
     <div className={styles.container}>
       <HeaderSubText title='Transactions' variant='main' />
