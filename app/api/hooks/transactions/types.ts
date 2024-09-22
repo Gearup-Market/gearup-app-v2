@@ -65,6 +65,7 @@ export interface Transaction {
 	item: Listing;
 	status: string;
 	type: TransactionType
+	payment: any;
 }
 
 export interface iPostTransactionRes {
