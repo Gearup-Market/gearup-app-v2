@@ -31,14 +31,15 @@ const imageList = [
 	"/images/grip.png",
 	"/images/lense.png",
 	"/images/guitar.png",
-	"/images/video.png",
+	"/images/video.png"
 ];
 
 interface ImageProps {
 	images?: string[];
+	type?: string;
 }
 
-const ImageSlider = ({ images }: ImageProps) => {
+const ImageSlider = ({ images, type }: ImageProps) => {
 	const { isMobile } = useGlobalContext();
 	const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 	const [slidesToShow, setSlidesToShow] = useState<number>(5);
@@ -65,7 +66,7 @@ const ImageSlider = ({ images }: ImageProps) => {
 							<div className={styles.button_container}>
 								{/* {props.forSale && <Button className={styles.button}>Buy</Button>}
 					{props.forRent && <Button className={styles.button}>Rent</Button>} */}
-								<Button className={styles.button}>Rent</Button>
+								<Button className={styles.button}>{type}</Button>
 							</div>
 						</div>
 					</SwiperSlide>

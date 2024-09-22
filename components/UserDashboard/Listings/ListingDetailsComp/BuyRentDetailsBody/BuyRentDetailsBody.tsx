@@ -32,7 +32,7 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 			<div className={styles.body}>
 				<div className={styles.details}>
 					<div className={styles.container}>
-						<ImageSlider images={images as unknown as string[]} />
+						<ImageSlider images={images as unknown as string[]} type={newListing.listingType}/>
 						<div className={styles.block}>
 							<div className={styles.text}>
 								<h2>{newListing?.productName}</h2>

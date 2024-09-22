@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import styles from './SellersTimeline.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import { CheckmarkIcon, LineIcon } from '@/shared/svgs/dashboard'
-import { AcceptDecline, AwaitingConfirmation, AwaitingShipment, ConfirmShipment, RatingFeedback, Shipment, StatusReport } from './components'
+import { AcceptDecline, AwaitingConfirmation, AwaitingShipment, ConfirmShipment,  Shipment, StatusReport } from './components'
 import { saleSellersTimeline, saleSellersTimelineThirdParty, sellersReturnTimeline } from '../../../utils/data'
 import { useSearchParams } from 'next/navigation'
 import TimeLine from './components/TimeLine/TimeLine'
 import Modal from '@/shared/modals/modal/Modal'
+import { CustomRatingFeedback } from '../../..'
 interface Timeline {
     id: number
     name: string
@@ -76,7 +77,7 @@ const SellersTimeline = ({ openModal, setOpenModal }: Props) => {
                                     steps === 2 && <ConfirmShipment handleNext={handleNext} />
                                 }
                                 {
-                                    steps === 3 && <RatingFeedback />
+                                    steps === 3 && <CustomRatingFeedback />
                                 }
                             </>
                             :
@@ -98,13 +99,13 @@ const SellersTimeline = ({ openModal, setOpenModal }: Props) => {
                                                     steps === 4 && <StatusReport />
                                                 }
                                                 {
-                                                    steps === 5 && <RatingFeedback />
+                                                    steps === 5 && <CustomRatingFeedback />
                                                 }
                                             </>
                                             :
                                             <>
                                                 {
-                                                    steps === 4 && <RatingFeedback />
+                                                    steps === 4 && <CustomRatingFeedback />
                                                 }
                                             </>
                                     }
