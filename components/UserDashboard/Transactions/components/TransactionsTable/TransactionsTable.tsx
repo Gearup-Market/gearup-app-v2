@@ -108,7 +108,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 					href={`/user/transactions/${row.id}?transaction_type=${transactionType}&user_role=${row.user_role}&third_party=${row.third_party_verification}&timeElapsed=${row.timeElapsed}`}
 					className={styles.container__action_btn}
 				>
-					view details
+					view details.
 				</Link>
 			),
 		},
