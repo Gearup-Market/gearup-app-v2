@@ -231,3 +231,4 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 );
 
 export default PhoneVerification;
+PhoneVerification.displayName = "PhoneVerification";
