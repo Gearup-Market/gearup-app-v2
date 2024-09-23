@@ -1,9 +1,9 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import styles from "./ChatBodySection.module.scss";
 import { VerifyIcon } from "@/shared/svgs/dashboard";
 import Image from "next/image";
-import { ChatBox, CustomTextEditor } from "@/shared";
+import { ChatBox, CustomTextEditor, InputField } from "@/shared";
 
 const ChatBodySection = () => {
 	const [value, setValue] = useState("");
@@ -50,9 +50,11 @@ const ChatBodySection = () => {
 				<p className={styles.chat_date}>Sun, Dec 17(Today)</p>
 				<div className={styles.chat_content}>
 
+				<form action="">
+					<InputField />
+				</form>
 				</div>
 			</div>
-
 		</div>
 	);
 };

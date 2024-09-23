@@ -25,7 +25,7 @@ const Listings = () => {
 				</Link>
 			</div>
 			<div className={styles.row}>
-				{listings.slice(0, 6).map((listing: any, index: number) => (
+				{listings.listings.slice(0, 6).map((listing: any, index: number) => (
 					<Listing props={listing} key={index} />
 				))}
 			</div>

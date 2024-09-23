@@ -109,27 +109,27 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 	);
 
 
-	if (loading) {
-		return (
-			<Box
-				sx={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					height: "400px"
-				}}
-			>
-				<CircularProgress style={{ color: "#FFB30F" }} />
-			</Box>
-		);
-	}
+	// if (loading) {
+	// 	return (
+	// 		<Box
+	// 			sx={{
+	// 				display: "flex",
+	// 				justifyContent: "center",
+	// 				alignItems: "center",
+	// 				height: "400px"
+	// 			}}
+	// 		>
+	// 			<CircularProgress style={{ color: "#FFB30F" }} />
+	// 		</Box>
+	// 	);
+	// }
 
-	if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
-		router.replace(`/login?returnUrl=${pathname}`);
-		return null;
-	}
+	// if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
+	// 	router.replace(`/login?returnUrl=${pathname}`);
+	// 	return null;
+	// }
 
-	if (isAuthenticated || unprotectedRoutes.includes(pathname)) {
+	if (!isAuthenticated || unprotectedRoutes.includes(pathname)) {
 		return <>{props.children}</>;
 	}
 
