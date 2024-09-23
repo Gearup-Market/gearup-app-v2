@@ -93,9 +93,7 @@ export const useAuth = () => useContext(AuthContext);
 export const ProtectRoute = (props: ProtectRouteProps) => {
 	const pathname = usePathname();
 	const { isAuthenticated, loading, user } = useAuth();
-	const searchParams = useSearchParams();
-	const router = useRouter()
-	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
+	const router = useRouter();
 
 	const unprotectedRoutes = useMemo(
 		() => [
