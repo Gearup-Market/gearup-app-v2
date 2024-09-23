@@ -1,0 +1,32 @@
+.chatBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    max-height: 50px;
+  
+    .ql-editor {
+      min-height: 50px !important;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      font-family: Arial, sans-serif;
+    }
+  
+    .sendButton {
+      padding: 10px 20px;
+      background-color: #0070f3;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      align-self: flex-end;
+  
+      &:hover {
+        background-color: #005bb5;
+      }
+    }
+  }
+  

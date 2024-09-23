@@ -1,9 +1,12 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import styles from "./ChatBodySection.module.scss";
 import { VerifyIcon } from "@/shared/svgs/dashboard";
 import Image from "next/image";
+import { ChatBox, CustomTextEditor } from "@/shared";
 
 const ChatBodySection = () => {
+	const [value, setValue] = useState("");
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
@@ -43,6 +46,13 @@ const ChatBodySection = () => {
 					</span>
 				</div>
 			</div>
+			<div className={styles.chat_body}>
+				<p className={styles.chat_date}>Sun, Dec 17(Today)</p>
+				<div className={styles.chat_content}>
+
+				</div>
+			</div>
+
 		</div>
 	);
 };

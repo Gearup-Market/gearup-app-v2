@@ -37,6 +37,7 @@ import MobileCard from "./MobileCard/MobileCard";
 import MobileCardContainer from "./MobileCardContainer/MobileCardContainer";
 import AddBtn from "./addBtn/AddBtn";
 import LoadingSpinner  from "./Spinner/Spinner";
+import ChatBox from "./chatBox/ChatBox";
 
 export {
 	Header,
@@ -78,4 +79,5 @@ export {
 	MobileCardContainer,
 	AddBtn,
 	LoadingSpinner,
+	ChatBox
 };

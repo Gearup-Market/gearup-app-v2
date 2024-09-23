@@ -124,12 +124,12 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 	// 	);
 	// }
 
-	if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
-		router.replace(`/login?returnUrl=${pathname}`);
-		return null;
-	}
+	// if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
+	// 	router.replace(`/login?returnUrl=${pathname}`);
+	// 	return null;
+	// }
 
-	if (isAuthenticated || unprotectedRoutes.includes(pathname)) {
+	if (!isAuthenticated || unprotectedRoutes.includes(pathname)) {
 		return <>{props.children}</>;
 	}
 
