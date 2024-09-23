@@ -5,108 +5,34 @@ import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Image from "next/image";
 import { Button, InputField, Pagination } from "@/shared";
 import { fiatWalletTransactions } from "@/mock/fiatWalletTransactions.mock";
+import { iWTransaction } from "@/app/api/hooks/wallets/types";
+import { useWalletTransactions } from "@/hooks";
 
 const WalletTransactionsTable = () => {
 	const [page, setPage] = useState(1);
+	const [skip, setSkip] = useState(0);
 	const [limit, setLimit] = useState(5);
-	const [paginatedTransactions, setPaginatedTransactions] = useState(
-		fiatWalletTransactions.slice(0, limit)
-	);
-
-
-
-
-	const rows: GridRowsProp = [
-		{
-			id: 1,
-			name: "Canon EOS R5 Camera Kit",
-			amount: "$200",
-			transaction_date: "15 Dec, 2023",
-			status: "Declined",
-			actions: "View",
-			image: "",
-		},
-		{
-			id: 2,
-			name: "Canon EOS R5 Camera Kit",
-			amount: "$200",
-			transaction_date: "15 Dec, 2023",
-			status: "Awaiting approval",
-			actions: "View",
-			image: "",
-		},
-		{
-			id: 3,
-			name: "Canon EOS R5 Camera Kit",
-			amount: "$200",
-			transaction_date: "15 Dec, 2023",
-			status: "Completed",
-			actions: "View",
-			image: "",
-		},
-		{
-			id: 4,
-			name: "Canon EOS R5 Camera Kit",
-			amount: "$200",
-			transaction_date: "15 Dec, 2023",
-			status: "Ongoing",
-			actions: "View",
-			image: "",
-		},
-		{
-			id: 5,
-			name: "Canon EOS R5 Camera Kit",
-			amount: "$200",
-			transaction_date: "15 Dec, 2023",
-			status: "Declined",
-			actions: "View",
-			image: "",
-		},
-		{
-			id: 6,
-			name: "Canon EOS R5 Camera Kit",
-			amount: "$200",
-			transaction_date: "15 Dec, 2023",
-			status: "Completed",
-			actions: "View",
-			image: "",
-		},
-	];
-
-
-
+	const { data, pagination, isFetching, refetch } = useWalletTransactions({ limit, skip });
 
 	useEffect(() => {
-		// Function to handle click events
 		const handleClick = (event: MouseEvent) => {
 			const target = event.target as HTMLElement;
-
-			// Check if the click happened outside the specified elements
-			if (
-				!target.closest('.options_icon') &&
-				!target.closest('.popover-content')
-			) {
+			if (!target.closest(".options_icon") && !target.closest(".popover-content")) {
 				/* setAnchorEl(null);
 				setOpenPopover(false); */
 			}
 		};
-
-		// Add event listener to the document
-		document.addEventListener('click', handleClick);
-
-		// Clean up the event listener
+		document.addEventListener("click", handleClick);
 		return () => {
-			document.removeEventListener('click', handleClick);
+			document.removeEventListener("click", handleClick);
 		};
 	}, []);
 
 	const handlePagination = (page: number) => {
-		const start = (page - 1) * limit;
-		const end = start + limit;
-		setPaginatedTransactions(fiatWalletTransactions.slice(start, end));
+		const offset = (page - 1) * limit;
+		setPage(page)
+		setSkip(offset);
 	};
-
-
 
 	return (
 		<div className={styles.container}>
@@ -120,34 +46,55 @@ const WalletTransactionsTable = () => {
 
 			<div>
 				<ul className={styles.container__table}>
-					{
-						paginatedTransactions.map((transaction) => (
-							<li className={styles.container__table__row} key={transaction.id}>
-								<div className={styles.container__table__row__left}>
-									<div className={styles.container__table__row__left__avatar}>
-										<Image src={transaction.type.toLowerCase() === 'deposit' ? "/svgs/wallet-deposit-green.svg" : "/svgs/wallet-withdraw-yellow.svg"} alt="admin-img" width={16} height={16} />
-									</div>
-									<div className={styles.container__table__row__left__name_amount}>
-										<p className={styles.type}>{transaction.type}</p>
-										<p className={styles.amount}>{transaction.price}</p>
-									</div>
+					{data.map(transaction => (
+						<li
+							className={styles.container__table__row}
+							key={transaction._id}
+						>
+							<div className={styles.container__table__row__left}>
+								<div
+									className={styles.container__table__row__left__avatar}
+								>
+									<Image
+										src={
+											transaction.type.toLowerCase() === "debit"
+												? "/svgs/wallet-deposit-green.svg"
+												: "/svgs/wallet-withdraw-yellow.svg"
+										}
+										alt="admin-img"
+										width={16}
+										height={16}
+									/>
 								</div>
-								<div className={styles.container__table__row__right}>
-									<p className={styles.status} data-status={transaction.status.toLowerCase()}>{transaction.status}</p>
-									<p className={styles.date}>{transaction.transaction_date}</p>
+								<div
+									className={
+										styles.container__table__row__left__name_amount
+									}
+								>
+									<p className={styles.type}>{transaction.type}</p>
+									<p className={styles.amount}>{transaction.amount}</p>
 								</div>
-							</li>
-						))
-					}
+							</div>
+							<div className={styles.container__table__row__right}>
+								<p
+									className={styles.status}
+									data-status={transaction.status.toLowerCase()}
+								>
+									{transaction.status}
+								</p>
+								<p className={styles.date}>{transaction.createdAt}</p>
+							</div>
+						</li>
+					))}
 				</ul>
 				<Pagination
-					currentPage={1}
+					currentPage={page}
 					onPageChange={handlePagination}
-					totalCount={fiatWalletTransactions.length}
-					pageSize={5}
+					totalCount={pagination.totalCount}
+					pageSize={limit}
 				/>
 			</div>
-		</div >
+		</div>
 	);
 };
 

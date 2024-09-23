@@ -4,8 +4,10 @@ import React from "react";
 import styles from "./ProfileCard.module.scss";
 import Image from "next/image";
 import { Button, Ratings } from "@/shared";
+import { Listing } from "@/store/slices/listingsSlice";
 
-const ProfileCard = () => {
+const ProfileCard = ({ listing }: { listing: Listing }) => {
+	const { location, user, reviews, averageRating, ownerTotalListings } = listing;
 	return (
 		<div className={styles.card}>
 			<div className={styles.text}>
@@ -15,8 +17,8 @@ const ProfileCard = () => {
 				<div className={styles.small_row}>
 					<div className={styles.avatar}>
 						<Image
-							src={"/svgs/avatar.svg"}
-							alt={"props.user"}
+							src={user.avatar || "/svgs/avatar.svg"}
+							alt={user.userName!}
 							fill
 							sizes="100vw"
 						/>
@@ -27,23 +29,25 @@ const ProfileCard = () => {
 							style={{ marginBottom: "1rem" }}
 						>
 							<div className={styles.text} style={{ marginBottom: 0 }}>
-								<h3>{"Wade Warren"}</h3>
+								<h3>{user.name || user.userName}</h3>
 							</div>
-							<div className={styles.verified}>
-								<Image
-									src="/svgs/icon-verify.svg"
-									alt=""
-									fill
-									sizes="100vw"
-								/>
-							</div>
+							{user.isVerified && (
+								<div className={styles.verified}>
+									<Image
+										src="/svgs/icon-verify.svg"
+										alt=""
+										fill
+										sizes="100vw"
+									/>
+								</div>
+							)}
 						</div>
+						{location && location.state && <div className={styles.text} style={{ marginBottom: 0 }}>
+							<p>{location.state}, Nigeria</p>
+						</div>}
+						<Ratings rating={averageRating || 0} showRatingNumber readOnly />
 						<div className={styles.text} style={{ marginBottom: 0 }}>
-							<p>Lagos, Nigeria</p>
-						</div>
-						<Ratings rating={0} showRatingNumber readOnly />
-						<div className={styles.text} style={{ marginBottom: 0 }}>
-							<p>50 deals</p>
+							<p>{ownerTotalListings || 0} deals</p>
 						</div>
 					</div>
 				</div>
@@ -54,15 +58,11 @@ const ProfileCard = () => {
 					<h5>Send a message</h5>
 				</Button>
 			</div>
-			<div className={styles.text}>
+			{user?.about && <div className={styles.text}>
 				<p>
-					The Hollyland Solidcom C1-6S Intercoms 6x is a cutting-edge
-					communication solution designed for seamless and crystal-clear
-					communication in professional settings. With a compact and robust
-					design, this intercom system provides reliable, wireless communication
-					for up to six
+					{user.about}
 				</p>
-			</div>
+			</div>}
 		</div>
 	);
 };

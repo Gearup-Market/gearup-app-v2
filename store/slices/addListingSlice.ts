@@ -4,27 +4,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: ListingState = {
   productName: "",
-  category: undefined,
   items: [],
   fieldValues: [],
-  subCategory: undefined,
   productionType: "",
-  subCategoryFields: {
-    brand: "",
-    model: "",
-    sensorType: "",
-    megapixels: "",
-    videoResolution: ""
-  },
   description: "",
   listingPhotos: [],
+  tempPhotos: [],
   listingType: "",
-  gearCondition: "",
+  condition: "",
   offer: {
     forSell: undefined,
     forRent: undefined
   },
-  user: ""
+  userId: "",
 };
 
 const addListingSlice = createSlice({

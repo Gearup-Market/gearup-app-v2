@@ -1,28 +1,24 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React from "react";
 import styles from "./BreadCrumbSelect.module.scss";
 import { Select, AdvanceSelect } from "@/shared";
-import { _category } from "@/mock/data.mock";
+import { useGetCategories } from "@/app/api/hooks/listings";
+import { iCategory } from "@/app/api/hooks/listings/types";
 
 interface Props {
 	isMobile?: boolean;
 	className?: string;
+	categories?: iCategory[]
+	selectedCategory: iCategory | null;
+	selectedSubCategory: iCategory | null;
+	setSelectedSubCategory: React.Dispatch<React.SetStateAction<iCategory | null>>;
+	setSelectedCategory: (option: iCategory) => void;
 }
 
-const BreadCrumbSelect = ({ isMobile, className }: Props) => {
-	const [filter, setFilter] = useState<any>({
-		category: "Camera",
-	});
+const BreadCrumbSelect = ({ isMobile, className, selectedCategory, setSelectedCategory, setSelectedSubCategory }: Props) => {
+	const { data: categories } = useGetCategories();
 
-	const [subFilters, setSubFilters] = useState<any>();
-	const subCategoryArr = useMemo(
-		() => _category?.filter((item: any) => item.name === filter.category),
-		[filter]
-	);
-	// const subCategoryArr = category.filter((item: any) => item.name === filter.category);
-	const subCategory = subCategoryArr[0]?.subCategories;
-	// console.log(filter, subCategory, subFilters);
 	return (
 		<div className={`${styles.container} ${className}`}>
 			<div className={styles.row}>
@@ -32,7 +28,7 @@ const BreadCrumbSelect = ({ isMobile, className }: Props) => {
 					</div>
 					<div className={styles.row}>
 						<Select
-							options={["lagos state", "abuja city", "Benin City"]}
+							options={["Lagos", "Abuja", "Benin"]}
 							defaultOptionIndex={0}
 							titleClassName={styles.titleClassName_light}
 							bodyClassName={styles.select_body}
@@ -49,15 +45,15 @@ const BreadCrumbSelect = ({ isMobile, className }: Props) => {
 					</div>
 					<div className={styles.row}>
 						<AdvanceSelect
-							options={_category}
+							options={categories?.data ? categories.data : []}
 							defaultOptionIndex={0}
+							defaultOption={selectedCategory?.name}
 							titleClassName={styles.titleClassName_light}
 							bodyClassName={styles.select_body}
 							optionClassName={styles.option_text}
 							isTransparent={isMobile ? false : true}
 							className={styles.select}
-							onOptionChange={setFilter}
-							objectOption={"category"}
+							onOptionChange={setSelectedCategory}
 							valueType="name"
 						/>
 					</div>
@@ -68,15 +64,14 @@ const BreadCrumbSelect = ({ isMobile, className }: Props) => {
 						<p>Sub-category</p>
 					</div>
 					<AdvanceSelect
-						options={subCategory}
+						options={selectedCategory?.subCategories ? selectedCategory.subCategories : []}
 						defaultOptionIndex={0}
 						titleClassName={styles.titleClassName}
 						bodyClassName={styles.select_body}
 						optionClassName={styles.option_text}
 						isTransparent={isMobile ? false : true}
 						className={styles.select}
-						onOptionChange={setSubFilters}
-						objectOption={"subCategory"}
+						onOptionChange={setSelectedSubCategory}
 						valueType="name"
 					/>
 				</div>

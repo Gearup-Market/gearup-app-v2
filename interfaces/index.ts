@@ -71,4 +71,5 @@ export interface Courses {
 export enum ListingType {
 	Buy = "buy",
 	Rent = "rent",
+	Both = 'both'
 }

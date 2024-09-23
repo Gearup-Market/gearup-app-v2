@@ -19,16 +19,18 @@ const DescriptionCard = ({ description }: Props) => {
 			<div className={styles.text}>
 				<p>{description.slice(0, textLength)}</p>
 			</div>
-			<div
-				className={styles.button}
-				onClick={() => {
-					textLength === description.length
-						? setTextLength(initialLength)
-						: setTextLength(description.length);
-				}}
-			>
-				<p>{textLength === description.length ? "Show Less" : "Read more"}</p>
-			</div>
+			{description.length > initialLength && (
+				<div
+					className={styles.button}
+					onClick={() => {
+						textLength === description.length
+							? setTextLength(initialLength)
+							: setTextLength(description.length);
+					}}
+				>
+					<p>{textLength === description.length ? "Show Less" : "Read more"}</p>
+				</div>
+			)}
 		</div>
 	);
 };

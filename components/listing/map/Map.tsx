@@ -7,10 +7,11 @@ const containerStyle = {
 	width: '100%',
 	height: '100%'
 };
+import { Listing } from "@/store/slices/listingsSlice";
 
-const Map = () => {
+const Map = ({ location }: { location?: Listing['location'] }) => {
 	const [map, setMap] = useState<google.maps.Map | null>(null)
-	const [location, setLocation] = useState({
+	const [loc, setLocation] = useState({
 		lat: 0,
 		lng: 0
 	});
@@ -79,7 +80,7 @@ const Map = () => {
 					isLoaded ? (
 						<GoogleMap
 							mapContainerStyle={containerStyle}
-							center={location}
+							center={loc}
 							zoom={10}
 							onLoad={onLoad}
 							onUnmount={onUnmount}
@@ -87,7 +88,7 @@ const Map = () => {
 
 						>
 							<Marker
-								position={location}
+								position={loc}
 								icon={{
 									url: '/svgs/map-location-svgrepo-com.svg',
 									scaledSize: new google.maps.Size(40, 40),

@@ -11,7 +11,7 @@ interface Props {
 	showTitle?: boolean
 }
 
-const Lisitings = ({ showTitle }: Props) => {
+const Listings = ({ showTitle }: Props) => {
 
 
 	return (
@@ -31,4 +31,4 @@ const Lisitings = ({ showTitle }: Props) => {
 	)
 }
 
-export default Lisitings;
+export default Listings;

@@ -11,27 +11,25 @@ import {
 	TextArea
 } from "@/shared";
 import Image from "next/image";
-import { AddSearchbox, AddedItem } from "@/components/newListing";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
 import { updateNewListing } from "@/store/slices/addListingSlice";
-import { allCategories, allSubCategories } from "@/mock/data.mock";
 import { useRouter } from "next/navigation";
+import { useGetCategories } from "@/app/api/hooks/listings";
+import { iCategory } from "@/app/api/hooks/listings/types";
 
 const ListingDetailsView = () => {
 	const router = useRouter();
-	const newListing = useSelector((state: AppState) => state.newListing);
+	const { isFetching: loading, data: allCategories } = useGetCategories();
+
 	const dispatch = useDispatch();
-	const [category, setCategory] = useState<any>();
-	const [subCategory, setSubCategory] = useState<any>();
-	const [otherFields, setOtherFields] = useState<any>(null);
+	const [category, setCategory] = useState<iCategory>();
+	const [subCategory, setSubCategory] = useState<iCategory>();
 	const [selectedFields, setSelectedFields] = useState<any[]>([]);
 	const [inputValues, setInputValues] = useState<{
 		title: string;
 		description: string;
 	}>({ title: "", description: "" });
-	console.log(selectedFields);
-	console.log(newListing, "newListing");
 
 	const convertArrToObj = (arr: any[]) => {
 		return arr?.reduce((acc, field) => {
@@ -57,24 +55,13 @@ const ListingDetailsView = () => {
 			subCategory,
 			fieldValues: convertArrToObj(selectedFields)
 		};
-		console.log(newListingData, "newListingData");
+		// console.log(newListingData, "newListingData");
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/images");
 	};
 
 	const disabledButton =
 		!inputValues.description || !inputValues.title || !category || !subCategory;
-
-	useEffect(() => {
-		if (!subCategory) {
-			setOtherFields(null);
-			return;
-		}
-		const otherCats =
-			subCategory &&
-			allSubCategories.filter(subCats => subCats.id === subCategory.id);
-		setOtherFields(otherCats[0]);
-	}, [subCategory]);
 
 	return (
 		<div className={styles.section}>
@@ -122,7 +109,7 @@ const ListingDetailsView = () => {
 						<div className={styles.select_row}>
 							<AdvanceSelect
 								label="Category"
-								options={allCategories}
+								options={allCategories?.data ?? []}
 								onOptionChange={setCategory}
 								valueType="name"
 							/>
@@ -132,8 +119,8 @@ const ListingDetailsView = () => {
 								onOptionChange={setSubCategory}
 								valueType="name"
 							/>
-							{otherFields &&
-								otherFields.fields.map((field: any, index: number) => {
+							{subCategory &&
+								subCategory.fields.map((field: any, index: number) => {
 									return field.fieldType === "single" ? (
 										<AdvanceSelect
 											label={field.name}
@@ -146,8 +133,8 @@ const ListingDetailsView = () => {
 									) : null;
 								})}
 						</div>
-						{otherFields &&
-							otherFields.fields.map((field: any, index: number) => {
+						{subCategory &&
+							subCategory.fields.map((field: any, index: number) => {
 								return field.fieldType === "multiple" ? (
 									<MultipleSelect
 										label={field.name}

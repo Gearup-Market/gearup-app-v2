@@ -1,10 +1,16 @@
-import React from 'react'
-import { Wallet } from '../../components/UserDashboard'
+"use client";
+
+import React from "react";
+import { Wallet } from "../../components/UserDashboard";
+import { useWallet } from "@/hooks";
 
 const WalletView = () => {
-  return (
-    <div><Wallet /></div>
-  )
-}
+	useWallet();
+	return (
+		<div>
+			<Wallet />
+		</div>
+	);
+};
 
-export default WalletView
+export default WalletView;

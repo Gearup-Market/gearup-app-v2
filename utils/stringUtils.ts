@@ -18,3 +18,9 @@ export const shortenTitle = (title: string, length: number = 10) => {
 	}
 	return title;
 };
+
+export const getIdFromSlug = (productSlug: string): string => {
+	if(!productSlug) return '';
+	const strArray = productSlug.split('-');
+	return strArray.at(-1) || '';
+}

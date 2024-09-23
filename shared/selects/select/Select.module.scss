@@ -122,6 +122,11 @@
 			position: relative;
 			margin-right: 0 !important;
 		}
+
+		&[data-error="true"] {
+			border: 0.1rem solid #ff0000;
+		}
+		
 		&[data-type="true"] {
 			padding-inline: 0;
 			padding-block: 0.4rem;
@@ -132,6 +137,7 @@
 			// 	top: 6rem;
 			// }
 		}
+
 		@include screenMax("tablet") {
 			width: auto;
 			padding: 0.7rem 1rem;

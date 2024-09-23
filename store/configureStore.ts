@@ -17,8 +17,12 @@ import { updateStoreVersion } from "./global";
 import userSlice from "./slices/userSlice";
 import addListingSlice from "./slices/addListingSlice";
 import listingsSlice from "./slices/listingsSlice";
+import verificationSlice from "./slices/verificationSlice";
+import walletSlice from "./slices/walletSlice";
+import cartSlice from "./slices/cartSlice";
+import checkoutSlice from "./slices/checkoutSlice";
 
-const PERSISTED_KEYS: string[] = ["user", "newListing"];
+const PERSISTED_KEYS: string[] = ["user", "newListing", "verification", "cart"];
 
 const migrations = {
 	0: (state: any) => ({
@@ -30,20 +34,28 @@ const persistConfig = {
 	key: "primary",
 	whitelist: PERSISTED_KEYS,
 	blacklist: ["profile"],
-	storage, // <-- Use the correct storage for the web
+	storage,
 	version: 0,
 	migrate: createMigrate(migrations, { debug: false }),
 };
 
-const rootReducer = combineReducers({
-	user: userSlice,
-	newListing: addListingSlice,
-	listings: listingsSlice,
-});
+const persistedReducer = persistReducer(
+	persistConfig,
+	combineReducers({
+		cart: cartSlice,
+		checkout: checkoutSlice,
+		listings: listingsSlice,
+		newListing: addListingSlice,
+		user: userSlice,
+		verification: verificationSlice,
+		wallet: walletSlice,
+	})
+);
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+// eslint-disable-next-line import/no-mutable-exports
+// let store: ReturnType<typeof makeStore>;
 
-let store: ReturnType<typeof makeStore>
+let store: ReturnType<typeof makeStore> | undefined;;
 
 export function makeStore(preloadedState = undefined) {
 	return configureStore({
@@ -85,7 +97,7 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 
 export const persistor = persistStore(store, undefined, () => {
-	store?.dispatch(updateStoreVersion());
+	store!.dispatch(updateStoreVersion());
 });
 
 export function useStore(initialState: any) {

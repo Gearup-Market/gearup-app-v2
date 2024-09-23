@@ -3,16 +3,19 @@ import React, { useState } from "react";
 import styles from "./CartItemCard.module.scss";
 import { Button, CustomImage } from "@/shared";
 import Image from "next/image";
-import Link from "next/link";
-import slugify from "slugify";
+import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
+import { useAppDispatch } from "@/store/configureStore";
+import { updateCheckout } from "@/store/slices/checkoutSlice";
+import { useRouter } from "next/navigation";
 
 interface CartItemCardContainerProps {
 	mainHeaderImage?: string;
 	name?: string;
 	children?: React.ReactNode;
-	handleDeleteItem: (id: number) => void;
-	id: number;
-	type: string;
+	handleDeleteItem: (id: string) => void;
+	id: string;
+	type: TransactionType;
+	item: CartItem
 }
 
 const CartItemCardContainer = ({
@@ -21,9 +24,23 @@ const CartItemCardContainer = ({
 	name,
 	handleDeleteItem,
 	children,
-	type
+	type,
+	item
 }: CartItemCardContainerProps) => {
 	const [showDetails, setShowDetails] = useState<boolean>(false);
+	const dispatch = useAppDispatch();
+	const router = useRouter();
+	const amount = type === TransactionType.Rental ? item.listing?.offer?.forRent?.day1Offer : item.listing?.offer?.forSell?.pricing; 
+
+	const placeOrder = () => {
+		dispatch(updateCheckout({
+			item: item.listing,
+			type,
+			amount: amount || 0,
+			rentalPeriod: item.rentalPeriod
+		}))
+		router.push('/checkout')
+	}
 
 	return (
 		<div className={styles.cart_item_card}>
@@ -61,15 +78,9 @@ const CartItemCardContainer = ({
 							<Button
 								className={styles.place_btn}
 								iconSuffix="/svgs/arrow-right2.svg"
+								onClick={placeOrder}
 							>
-								<Link
-									href={`/checkout?type=${slugify(type, {
-										replacement: "-",
-										lower: true
-									})}`}
-								>
-									Place order
-								</Link>
+								Place order
 							</Button>
 							<Button
 								buttonType="transparent"

@@ -16,6 +16,7 @@ interface Props {
 const TransactionTable = ({ transactionType }: Props) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(5);
+	
 	const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
 		transactions.slice(0, limit)
 	);
@@ -107,7 +108,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 					href={`/user/transactions/${row.id}?transaction_type=${transactionType}&user_role=${row.user_role}&third_party=${row.third_party_verification}&timeElapsed=${row.timeElapsed}`}
 					className={styles.container__action_btn}
 				>
-					view details
+					view details.
 				</Link>
 			),
 		},

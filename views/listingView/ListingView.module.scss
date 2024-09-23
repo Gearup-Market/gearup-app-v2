@@ -4,9 +4,24 @@
 	padding-block: 14rem !important;
 	.row {
 		width: 100%;
-		// @include grid(73.7rem 1fr, 2.4rem, 3.2rem);
 		@include flex(space-between);
 		gap: 2.4rem;
+	}
+	.section_grid {
+		// @include grid(30.2rem 1fr);
+		display: flex;
+		
+		width: 100%;
+		gap: 2.4rem;
+		position: relative;
+		
+		// .grid {
+		// 	width: 30.2rem;
+		// 	// @include flex();
+		// 	// row-gap: 3.2rem;
+		// 	// column-gap: 2.4rem;
+		// 	margin-top: 3.2rem;
+		// }
 	}
 	.large_block {
 		width: 73.7rem;

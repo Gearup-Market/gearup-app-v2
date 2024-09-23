@@ -18,7 +18,7 @@ interface Props {
 }
 
 const ListingCard = ({ props, className, activeFilter, activeRow, setActiveRow }: Props) => {
-    const { setSingleListing } = useGlobalContext();
+    console.log(activeFilter, "acyve filter")
     const [showMoreModal, setShowMoreModal] = useState(false);
 
     const handleMoreIconClick = (id: number) => {

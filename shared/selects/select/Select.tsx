@@ -27,6 +27,7 @@ export interface SelectProps {
 	optionClassName?: string;
 	bodyClassName?: string;
 	required?: boolean;
+	error?: string;
 }
 
 const Select: React.FunctionComponent<SelectProps> = ({
@@ -44,6 +45,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 	bodyClassName,
 	label,
 	required=false,
+	error
 }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [selectedOptionIndex, setSelectedOptionIndex] =
@@ -80,6 +82,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 			<div
 				className={`${styles.select} ${className}`}
 				data-type={isTransparent}
+				data-error={!!error}
 				onClick={(e: React.MouseEvent<HTMLDivElement>) =>
 					e.nativeEvent.stopImmediatePropagation()
 				}

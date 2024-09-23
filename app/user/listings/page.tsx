@@ -1,10 +1,10 @@
-import { LisitingsView } from '@/views/UserDashboardViews'
+import { ListingsView } from '@/views/UserDashboardViews'
 import React from 'react'
 
 const Page = () => {
   return (
     <div>
-      <LisitingsView />
+      <ListingsView />
     </div>
   )
 }

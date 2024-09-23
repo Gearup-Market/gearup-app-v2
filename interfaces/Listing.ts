@@ -1,3 +1,5 @@
+import { iCategory } from "@/app/api/hooks/listings/types";
+
 export interface Product {
 	productName: string;
 	category: {
@@ -152,20 +154,28 @@ export interface Item {
 
 export interface ListingState {
 	productName: string;
-	items?: Item[];
-	category?: Category;
-	subCategory?: Category;
+	items: Item[];
+	category?: iCategory;
+	subCategory?: iCategory;
 	productionType: string;
-	subCategoryFields: SubCategoryFields;
 	description: string;
-	listingPhotos: File[];
+	listingPhotos: string[];
+	tempPhotos: File[];
 	listingType: string;
-	gearCondition: string;
-	user: string;
+	condition: string;
+	userId: string;
 	fieldValues: Field[];
 	offer: {
 		forSell?: SellingOffer;
 		forRent?: RentingOffer;
+	};
+	perks?: {
+		buyNow: boolean;
+		freeShipping: boolean;
+		makeOffer: boolean;
+		pickup: boolean;
+		shipping: boolean;
+		terms: boolean;
 	};
 }
 
@@ -187,185 +197,8 @@ export enum DayOfferEnum {
 	THIRTY_DAYS = "THIRTY_DAYS", 
 }
 
-// {
-//     "id": "",
-//     "items": [],
-//     "title": "World cup",
-//     "category": {
-//         "id": 1,
-//         "parentId": 0,
-//         "name": "Cameras",
-//         "subCategories": [
-//             {
-//                 "id": 2,
-//                 "parentId": 1,
-//                 "name": "Cinema"
-//             },
-//             {
-//                 "id": 3,
-//                 "parentId": 1,
-//                 "name": "DSLR"
-//             },
-//             {
-//                 "id": 4,
-//                 "parentId": 1,
-//                 "name": "Mirrorless"
-//             },
-//             {
-//                 "id": 5,
-//                 "parentId": 1,
-//                 "name": "Medium format"
-//             },
-//             {
-//                 "id": 6,
-//                 "parentId": 1,
-//                 "name": "360-Degree"
-//             },
-//             {
-//                 "id": 7,
-//                 "parentId": 1,
-//                 "name": "Camcorder"
-//             },
-//             {
-//                 "id": 8,
-//                 "parentId": 1,
-//                 "name": "ActionCam"
-//             },
-//             {
-//                 "id": 9,
-//                 "parentId": 1,
-//                 "name": "Other types"
-//             }
-//         ]
-//     },
-//     "subCategory": {
-//         "id": 3,
-//         "parentId": 1,
-//         "name": "DSLR"
-//     },
-//     "fieldValues": [
-//         {
-//             "name": "Production type",
-//             "selectedValues": [
-//                 {
-//                     "id": 1,
-//                     "name": "Video"
-//                 }
-//             ],
-//             "fieldType": "single"
-//         },
-//         {
-//             "name": "Brand",
-//             "selectedValues": [
-//                 {
-//                     "id": 133,
-//                     "name": "Angenieux"
-//                 }
-//             ],
-//             "fieldType": "single"
-//         },
-//         {
-//             "name": "Sensor size",
-//             "selectedValues": [
-//                 {
-//                     "id": 183,
-//                     "name": "APS-C (Super 35 mm)"
-//                 }
-//             ],
-//             "fieldType": "single"
-//         },
-//         {
-//             "name": "Max Video Resolution",
-//             "selectedValues": [
-//                 {
-//                     "id": 192,
-//                     "name": "HD"
-//                 }
-//             ],
-//             "fieldType": "single"
-//         },
-//         {
-//             "name": "Good for",
-//             "selectedValues": [
-//                 {
-//                     "id": 25,
-//                     "name": "Surfing"
-//                 },
-//                 {
-//                     "id": 21,
-//                     "name": "Action"
-//                 },
-//                 {
-//                     "id": 23,
-//                     "name": "Real estate"
-//                 },
-//                 {
-//                     "id": 8,
-//                     "name": "Wildlife"
-//                 }
-//             ],
-//             "fieldType": "multiple"
-//         },
-//         {
-//             "name": "Mount",
-//             "selectedValues": [
-//                 {
-//                     "id": 165,
-//                     "name": "K Mount"
-//                 },
-//                 {
-//                     "id": 166,
-//                     "name": "Leica L"
-//                 },
-//                 {
-//                     "id": 168,
-//                     "name": "Leica S Bayonet"
-//                 },
-//                 {
-//                     "id": 180,
-//                     "name": "Universal (M42)"
-//                 }
-//             ],
-//             "fieldType": "multiple"
-//         }
-//     ],
-//     "description": "awesome kit",
-//     "images": [
-//         "blob:http://localhost:3001/587e262c-7cf7-44f5-84d4-cb84c1360a66",
-//         "blob:http://localhost:3001/b274337d-a154-43e6-9c66-62ba316173cd"
-//     ],
-//     "currency": {
-//         "name": "NGN",
-//         "symbol": "N"
-//     },
-//     "price1Day": {
-//         "value": "4504",
-//         "enabled": false
-//     },
-//     "price3Days": {
-//         "value": 0,
-//         "enabled": false
-//     },
-//     "price7Days": {
-//         "value": 0,
-//         "enabled": false
-//     },
-//     "price30Days": {
-//         "value": 0,
-//         "enabled": false
-//     },
-//     "buyPrice": 0,
-//     "condition": "like new",
-//     "type": [
-//         "rent",
-//         "sell"
-//     ],
-//     "perks": {
-//         "buyNow": false,
-//         "freeShipping": true,
-//         "makeOffer": true,
-//         "pickup": true,
-//         "shipping": true,
-//         "terms": false
-//     }
-// }
+export type Filter = {
+	id: string | number;
+	name: string;
+	subFilters: Omit<Filter, 'subFilters'>[];
+};
