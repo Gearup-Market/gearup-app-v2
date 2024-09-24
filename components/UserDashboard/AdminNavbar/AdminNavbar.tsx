@@ -25,7 +25,7 @@ const AdminNavbar = () => {
 
   }
 
-console.log(user)
+
   return (
     <div className={styles.navbar_container}>
       <div className={styles.logo_icon}>

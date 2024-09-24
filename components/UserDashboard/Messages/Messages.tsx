@@ -14,7 +14,7 @@ const Messages = () => {
 			) : (
 				<div className={styles.chat_messages}>
 					<ChatMessageHistory />
-          <ChatBodySection />
+					<ChatBodySection />
 					<UserProfileSection />
 				</div>
 			)}

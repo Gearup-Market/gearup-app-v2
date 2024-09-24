@@ -6,6 +6,8 @@
 	height: 100vh;
 	width: 100%;
 	box-sizing: border-box;
+	padding-bottom: 8rem;
+	overflow: hidden;
 
 	.body {
 		display: flex;
@@ -20,7 +22,7 @@
 			height: 100vh;
 			border-right: 1px solid $col-border;
 			box-sizing: border-box;
-			overflow: auto;
+			@include noScrollBar;
 
 			@include screenMax("mobile") {
 				display: none;
@@ -32,9 +34,16 @@
 		&__right {
 			width: 80%;
 			flex: 1 1 auto;
-			height: 100vh;
 			background-color: $col-bg;
-			overflow-y: auto;
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+
+			&__main{
+				height: 100%;
+				
+				@include noScrollBar;
+			}
 		}
 	}
 

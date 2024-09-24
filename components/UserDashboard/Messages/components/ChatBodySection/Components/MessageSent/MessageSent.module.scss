@@ -1,11 +1,10 @@
 @import "@/styles/imports";
 
 .container {
-    animation: 0.5s fadeIn ease-in-out;
-  
+	animation: 0.5s fadeIn ease-in-out;
     width: 100%;
     display: flex;
-
+    justify-content: flex-end;
     
 	@keyframes fadeIn {
         0% {
@@ -17,8 +16,8 @@
 	}
     
     .text{
+        background: $orange-grad;
         max-width: 43rem;
-        background: #fff;
         border-radius: 0.8rem;
         padding: 1.6rem;
         font-size: 1.4rem;
