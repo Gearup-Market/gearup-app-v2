@@ -8,13 +8,14 @@ import SuccessModal from "../SuccessModal/SuccessModal";
 import { Listing } from "@/store/slices/listingsSlice";
 import { useStellarWallet, useWallet } from "@/hooks";
 import { SmallLoader } from "@/shared/loaders";
-import { usePaystackPayment } from "react-paystack";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import toast from "react-hot-toast";
 import { usePostTransaction } from "@/app/api/hooks/transactions";
 import { RentalPeriod } from "@/app/api/hooks/transactions/types";
 import { resetCheckout } from "@/store/slices/checkoutSlice";
 import useCart from "@/hooks/useCart";
+import { PaystackPaymentButton } from "@/shared";
+import { PaystackProps } from "react-paystack/dist/types";
 
 export enum PaymentMethod {
 	Wallet = "wallet",
@@ -42,7 +43,7 @@ const PaymentComp = ({
 	const user = useAppSelector(s => s.user);
 	const { mutateAsync: postTransaction } = usePostTransaction();
 	const { removeItemFromCart } = useCart();
-	const initializePayment = usePaystackPayment(paystackConfig);
+	// const initializePayment = usePaystackPayment(paystackConfig);
 	const dispatch = useAppDispatch();
 
 	const preparedPayload = {
@@ -54,46 +55,36 @@ const PaymentComp = ({
 		rentalPeriod
 	};
 
-	const walletBalance = useMemo(() => (walletResult?.data.balance || 0) - (walletResult?.data.pendingDebit || 0), [walletResult])
+	const walletBalance = useMemo(
+		() => (walletResult?.data.balance || 0) - (walletResult?.data.pendingDebit || 0),
+		[walletResult]
+	);
 
 	const [openModal, setOpenModal] = useState(false);
 
-	const onClickPaystack = () => {
-		initializePayment({
-			onSuccess: onPaystackSuccess,
-			onClose: onClosePaymentModal,
-			config: {
-				currency: "NGN",
-				email: user.email,
-				amount: +amount * 100,
-				metadata: {
-					userId: user?.userId,
-					custom_fields: []
-				}
-			}
-		});
-	};
-
-	const onPaystackSuccess = async ({reference, status}: any) => {
-		if(status === 'success') {
-			setTimeout(async function(){
+	const onPaystackSuccess = async ({ reference, status }: any) => {
+		if (status === "success") {
+			setTimeout(async function () {
 				try {
 					const res = await postTransaction({
 						...preparedPayload,
 						reference,
 						method: PaymentMethod.Paystack
 					});
-			
+
 					if (res.data) {
 						toast.success("Request submitted");
-						dispatch(resetCheckout())
+						dispatch(resetCheckout());
 						removeItemFromCart(item._id);
 						setOpenModal(true);
 					}
 				} catch (error: any) {
-					toast.error(error?.response?.data?.message || "Could not complete transaction. Your funds will be deposited to wallet")
+					toast.error(
+						error?.response?.data?.message ||
+							"Could not complete transaction. Your funds will be deposited to wallet"
+					);
 				}
-			}, 10000)
+			}, 2000);
 		}
 	};
 
@@ -101,14 +92,28 @@ const PaymentComp = ({
 		toast.error("Paystack modal closed");
 	};
 
+	const paystackComponentProps: PaystackProps = useMemo(
+		() => ({
+			...paystackConfig,
+			currency: "NGN",
+			email: user.email,
+			amount: +amount * 100,
+			metadata: {
+				userId: user?.userId,
+				custom_fields: []
+			},
+			onSuccess: onPaystackSuccess,
+			onClose: onClosePaymentModal
+		}),
+		[user, amount]
+	);
+
 	const handlePayment = async (type: "fiat" | "xlm" | "paystack") => {
 		try {
-			if (type === "paystack") {
-				onClickPaystack();
-			} else if (type === "xlm") {
+			if (type === "xlm") {
 				toast.error("Crypto payment will be supported soon!");
 			} else {
-				if(walletBalance < amount) {
+				if (walletBalance < amount) {
 					toast.error("Insufficient funds in wallet");
 					return;
 				}
@@ -117,16 +122,16 @@ const PaymentComp = ({
 					...preparedPayload,
 					method: PaymentMethod.Wallet
 				});
-		
+
 				if (res.data) {
 					console.log(res.data, "res.data");
 					toast.success("Request submitted");
-					dispatch(resetCheckout())
+					dispatch(resetCheckout());
 					removeItemFromCart(item._id);
 				}
 			}
 		} catch (error: any) {
-			toast.error(error?.data?.response?.message || error?.message)
+			toast.error(error?.data?.response?.message || error?.message);
 		}
 	};
 
@@ -150,11 +155,12 @@ const PaymentComp = ({
 					hasBalance
 					onClick={() => handlePayment("xlm")}
 				/>
-				<PaymentOption
-					title="Pay with paystack"
-					icon="/svgs/paystack-wallet.svg"
-					onClick={() => handlePayment("paystack")}
-				/>
+				<PaystackPaymentButton {...paystackComponentProps} disabled={amount <= 0}>
+					<PaymentOption
+						title="Pay with paystack"
+						icon="/svgs/paystack-wallet.svg"
+					/>
+				</PaystackPaymentButton>
 			</div>
 			<SuccessModal openModal={openModal} setOpenModal={setOpenModal} />
 		</div>
@@ -169,7 +175,7 @@ interface PaymentOptionsProps {
 	readonly hasBalance?: boolean;
 	readonly icon: string;
 	readonly isLoading?: boolean;
-	onClick: () => void;
+	onClick?: () => void;
 }
 
 function PaymentOption({
@@ -190,7 +196,13 @@ function PaymentOption({
 						<p className={styles.balance_container}>
 							Wallet balance:{" "}
 							<span className={styles.balance}>
-								{Number(balance) >= 0 ? balance : isLoading ? <SmallLoader /> : ''}
+								{Number(balance) >= 0 ? (
+									balance
+								) : isLoading ? (
+									<SmallLoader />
+								) : (
+									""
+								)}
 							</span>
 						</p>
 					)}

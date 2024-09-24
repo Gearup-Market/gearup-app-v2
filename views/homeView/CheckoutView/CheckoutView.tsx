@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./CheckoutView.module.scss";
 import { BackNavigation } from "@/shared";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { PaymentComp } from "@/components/CartComponent/CheckoutComp";
 import ShippingAddress from "@/components/CartComponent/CheckoutComp/ShippingAddress/ShippingAddress";
 import ShippingType from "@/components/CartComponent/CheckoutComp/ShippingType/ShippingType";
 import ThirdPartyCheck from "@/components/CartComponent/CheckoutComp/ThirdPartyCheck/ThirdPartyCheck";
@@ -11,6 +10,9 @@ import { useAppSelector } from "@/store/configureStore";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { useStellarWallet, useWallet } from "@/hooks";
 import { useAuth } from "@/contexts/AuthContext";
+import dynamic from 'next/dynamic';
+
+const PaymentComp = dynamic(() => import('@/components/CartComponent/CheckoutComp').then(mod => mod.PaymentComp), { ssr: false });
 
 enum BuyTimeLineEnum {
 	THIRD_PARTY_CHECK = "THIRD_PARTY_CHECK",

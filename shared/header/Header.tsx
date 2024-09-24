@@ -10,8 +10,8 @@ import { NavLink, NavLinkMenu, NavLinkSub } from "@/interfaces";
 import { usePathname, useRouter } from "next/navigation";
 import { useGlobalContext } from "@/contexts/AppContext";
 import { AppState, useAppDispatch, useAppSelector } from "@/store/configureStore";
-import { updateUser } from "@/store/slices/userSlice";
 import { clearNewListing } from "@/store/slices/addListingSlice";
+import { useAuth } from "@/contexts/AuthContext";
 
 enum Scroll {
 	Idle = "idle",
@@ -20,7 +20,8 @@ enum Scroll {
 }
 
 const Header = () => {
-	const { heroHeight, isLoggedIn }: any = useGlobalContext();
+	const { isAuthenticated } = useAuth()
+	const { heroHeight }: any = useGlobalContext();
 	const [collapsed, setCollapsed] = useState<boolean>(true);
 	const [scroll, setScroll] = useState<Scroll>(Scroll.Idle);
 	const headerRef: any = useRef(null);
@@ -31,8 +32,7 @@ const Header = () => {
 	const homePath = pathName === "/";
 	useEffect(() => {
 		const headerHeight: any = headerRef.current?.offsetHeight;
-		dispatch(updateUser({ isAuthenticated: false }));
-		dispatch(clearNewListing());
+		// dispatch(clearNewListing());
 		const scrollCheck = () => {
 			const currentScrollY = window.scrollY;
 
@@ -76,16 +76,11 @@ const Header = () => {
 				<nav className={styles.header_nav}>
 					<ul className={styles.header_navList}>
 						{navLinks.map((link: NavLink, index: number) => {
-							// const [isActive, setIsActive] = useState<boolean>(false);
 							return (
 								<li
 									key={index}
 									className={styles.header_navLink}
-								// onClick={() => setIsActive(!isActive)}
-								// data-active={isActive}
 								>
-
-
 									{
 										link.label === "blog" ?
 											<Link href={link.href}>
@@ -256,9 +251,9 @@ const Header = () => {
 							</Link>
 						</div>
 					</Button>
-					{user.isAuthenticated ? (
-						<Link className={styles.user_image} href="/admin/dashboard">
-							<Image src="/images/user.png" alt="" fill />
+					{isAuthenticated ? (
+						<Link className={styles.user_image} href="/user/dashboard">
+							<Image src={user?.avatar || "/images/user.png"} alt="" fill />
 						</Link>
 					) : (
 						<>

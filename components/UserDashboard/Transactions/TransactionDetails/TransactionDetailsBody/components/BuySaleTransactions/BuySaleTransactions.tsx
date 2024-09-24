@@ -29,7 +29,7 @@ const BuySaleTransactions = ({ item }: Props) => {
             {
                 timeline === 'buyer' ? <BuyersTimeline openModal={openModal} setOpenModal={setOpenModal} /> : <SellersTimeline openModal={openModal} setOpenModal={setOpenModal} />
             }
-            <DetailsSummary />
+            <DetailsSummary item={item} />
         </div>
     )
 }

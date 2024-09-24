@@ -10,23 +10,23 @@ export default function Home() {
 		setSsr(false);
 	}, []);
 
-	const init = useCallback(async () => {
+	// const init = useCallback(async () => {
 
-		if (window === undefined) return;
-		// check if device is mobile
-		const width = window.innerWidth;
-		const ismobile: boolean = width <= 650;
+	// 	// if (typeof window === 'undefined') return;
+	// 	// check if device is mobile
+	// 	// const width = window.innerWidth;
+	// 	// const ismobile: boolean = width <= 650;
 
-		// import animations
-		const App = (await import("@/animations")).App;
+	// 	// import animations
+	// 	const App = (await import("@/animations")).App;
 
-		// initialize new animation
-		new App({ ismobile });
-	}, []);
+	// 	// initialize new animation
+	// 	new App({ ismobile });
+	// }, []);
 
-	useEffect(() => {
-		init();
-	}, []);
+	// useEffect(() => {
+	// 	init();
+	// }, []);
 	if (ssr) return null;
 	return <HomeView />;
 }

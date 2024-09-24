@@ -80,8 +80,6 @@ export enum ListingType {
 }
 
 export type StageSchema = { updatedAt: Date; stage: TransactionStage };
-export type TransactionStageSchema = { buyer: StageSchema; seller: StageSchema };
-
 
 export enum TransactionStage {
 	PendingApproval = 'PendingApproval',
@@ -115,7 +113,6 @@ export interface iTransactionDetails {
 	isBuyer: boolean;
 	payment: iWTransaction;
 	stage: TransactionStageObject;
-	stages: TransactionStageSchema;
 	rentalPeriod?: RentalPeriod;
 }
 

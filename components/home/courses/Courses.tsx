@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Courses.module.scss";
 import { Button, Course, Title } from "@/shared";
-import { Courses } from "@/interfaces";
+import { Courses as iCourses } from "@/interfaces";
 import Link from "next/link";
 import Image from "next/image";
 import { courses } from "@/mock";
@@ -29,7 +29,7 @@ const Courses = () => {
 				</Link>
 			</div>
 			<div className={styles.row}>
-				{courses.slice(0, 4).map((listing: Courses, index: number) => (
+				{courses.slice(0, 4).map((listing: iCourses, index: number) => (
 					<Course className={styles.course} props={listing} key={index} />
 				))}
 			</div>

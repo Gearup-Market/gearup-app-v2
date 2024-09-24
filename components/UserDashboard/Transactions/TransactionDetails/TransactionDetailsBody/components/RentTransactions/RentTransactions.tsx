@@ -35,7 +35,7 @@ const RentTransactions = ({ item }: Props) => {
 					<RentersTimeline item={item} openModal={openModal} setOpenModal={setOpenModal} />
 				)}
 			</div>
-			<DetailsSummary />
+			<DetailsSummary item={item} />
 		</div>
 	);
 };

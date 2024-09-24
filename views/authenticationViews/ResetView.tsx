@@ -63,7 +63,9 @@ const ResetView = () => {
 								handleKeyDown(index, e)
 							}
 							maxLength={1}
-							ref={ref => (inputRefs.current[index] = ref)}
+							ref={el => {
+								inputRefs.current[index] = el;
+							}}
 						/>
 					))}
 				</div>

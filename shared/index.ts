@@ -38,6 +38,7 @@ import MobileCardContainer from "./MobileCardContainer/MobileCardContainer";
 import AddBtn from "./addBtn/AddBtn";
 import LoadingSpinner  from "./Spinner/Spinner";
 import Countdown from "./countdown/Countdown";
+import PaystackPaymentButton from "./paystack/PaystackPaymentButton";
 
 export {
 	Header,
@@ -79,5 +80,6 @@ export {
 	MobileCardContainer,
 	AddBtn,
 	LoadingSpinner,
-	Countdown
+	Countdown,
+	PaystackPaymentButton
 };

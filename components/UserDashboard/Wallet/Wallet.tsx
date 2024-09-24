@@ -17,7 +17,6 @@ import {
 	WalletWithdrawalModal,
 	XlmDepositModal,
 	XlmWithdrawalModal,
-	WalletDepositModal
 } from "./components";
 import AlertModal from "./components/AlertModal/AlertModal";
 import { GridAddIcon } from "@mui/x-data-grid";
@@ -28,6 +27,9 @@ import { formatNumber } from "@/utils";
 import { WalletStatus } from "@/app/api/hooks/wallets/types";
 import { useStellarWallet } from "@/hooks";
 import { SmallLoader } from "@/shared/loaders";
+import dynamic from 'next/dynamic';
+
+const WalletDepositModal = dynamic(() => import('./components').then(mod => mod.WalletDepositModal), { ssr: false });
 
 enum ToggleType {
 	FIAT = "Fiat",

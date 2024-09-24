@@ -11,17 +11,17 @@ interface TokenConfirmProps {
 
 const ConfirmToken: React.FC<TokenConfirmProps> = ({ length, onComplete }) => {
     const [token, setToken] = useState<string[]>(Array(length).fill(''));
-    const inputRefs = useRef<HTMLInputElement[]>(Array(length).fill(null));
+    const inputRefs = useRef<(HTMLInputElement | null)[]>(Array(length).fill(null));
 
     const handleChange = (index: number, value: string) => {
         const newToken = [...token];
         newToken[index] = value;
         setToken(newToken);
         if (value.length === 1 && index < length - 1 && inputRefs.current[index + 1]) {
-            inputRefs.current[index + 1].focus();
+            inputRefs.current[index + 1]?.focus();
         }
         if (value === '' && index > 0 && inputRefs.current[index - 1]) {
-            inputRefs.current[index - 1].focus();
+            inputRefs.current[index - 1]?.focus();
         }
         if (newToken.every(char => char.length === 1)) {
             const completedToken = newToken.join('');
@@ -35,7 +35,7 @@ const ConfirmToken: React.FC<TokenConfirmProps> = ({ length, onComplete }) => {
             e.preventDefault();
         }
         if (charCode === 8 && index > 0) {
-            inputRefs.current[index - 1].focus();
+            inputRefs.current[index - 1]?.focus();
         }
     };
 
@@ -45,7 +45,9 @@ const ConfirmToken: React.FC<TokenConfirmProps> = ({ length, onComplete }) => {
                 {token.map((value, index) => (
                     <input
                         key={index}
-                        ref={el => (inputRefs.current[index] = el!)}
+                        ref={el => {
+                            inputRefs.current[index] = el;
+                        }}
                         className={styles.token_input}
                         type="text"
                         value={value}

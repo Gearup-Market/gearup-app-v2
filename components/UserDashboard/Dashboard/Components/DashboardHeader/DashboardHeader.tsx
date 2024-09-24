@@ -31,7 +31,7 @@ const DashboardHeader = () => {
                 <Button iconPrefix='/svgs/add.svg'>
                     <Link href='/new-listing'>Create a Listing</Link>
                 </Button>
-            </div>``
+            </div>
         </div>
     )
 }

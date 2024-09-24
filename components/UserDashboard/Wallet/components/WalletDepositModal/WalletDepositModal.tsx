@@ -1,20 +1,20 @@
-"use cient";
+"use client";
 import React, { useMemo, useState } from "react";
 import styles from "./WalletDepositModal.module.scss";
 import Modal from "@/shared/modals/modal/Modal";
 import Image from "next/image";
-import { Button, InputField } from "@/shared";
+import { Button, InputField, PaystackPaymentButton } from "@/shared";
 import { CopyIcon, EditIcon } from "@/shared/svgs/dashboard";
 import { useAppSelector } from "@/store/configureStore";
-import { usePaystackPayment } from "react-paystack";
 import { toast } from "react-hot-toast";
+import { PaystackProps } from "react-paystack/dist/types";
 
 interface Props {
 	openModal: boolean;
 	close: () => void;
 }
 
-const fundOptions: { gateway: 'paystack' | 'flutterwave'; label: string }[] = [
+const fundOptions: { gateway: "paystack" | "flutterwave"; label: string }[] = [
 	{ gateway: "flutterwave", label: "Fund with flutterwave" },
 	{ gateway: "paystack", label: "Fund with paystack" }
 ];
@@ -30,34 +30,34 @@ const WalletDepositModal = ({ openModal, close }: Props) => {
 	const [amount, setAmount] = useState<string | number>("");
 
 	const onClose = () => {
-		close()
+		close();
 	};
 
-	const initializePayment = usePaystackPayment(paystackConfig);
+	const onPaystackSuccess = (reference: any) => {
+		console.log(reference, "reference");
 
-	const onClickPaystack = () => {
-		initializePayment({
-			onSuccess: onPaystackSuccess,
-			onClose: onClosePaymentModal,
-			config: {
-				currency: "NGN",
-				email: user.email,
-				amount: +amount * 100,
-                metadata: {
-                    userId: user?.userId,
-                    custom_fields: []
-                }
-			}
-		});
-	};
-
-	const onPaystackSuccess = (reference: string) => {
-        onClose()
+		onClose();
 	};
 
 	const onClosePaymentModal = () => {
-		toast.error('Paystack modal closed')
+		toast.error("Paystack modal closed");
 	};
+
+	const paystackComponentProps: PaystackProps = useMemo(
+		() => ({
+			...paystackConfig,
+			currency: "NGN",
+			email: user.email,
+			amount: +amount * 100,
+			metadata: {
+				userId: user?.userId,
+				custom_fields: []
+			},
+			onSuccess: onPaystackSuccess,
+			onClose: onClosePaymentModal
+		}),
+		[user, amount]
+	);
 
 	return (
 		<Modal title="Withdrawal" openModal={openModal} setOpenModal={onClose}>
@@ -113,40 +113,72 @@ const WalletDepositModal = ({ openModal, close }: Props) => {
 				/>
 				<div>
 					<ul className={styles.container__bank_details}>
-						{fundOptions.map((option, index) => (
-							<li
-								key={index}
-								className={styles.container__bank_details__option}
-								onClick={() => {
-                                    if(!amount) {
-                                        return;
-                                    };
-                                    if(option.gateway === 'paystack') onClickPaystack()
-                                }}
-							>
-								<div className={styles.left}>
-									<span className={styles.icon}>
-										<Image
-											src="/svgs/deposit-icon-with.svg"
-											alt="deposit icon"
-											width={16}
-											height={16}
-										/>
-									</span>
-									<p>{option.label}</p>
-								</div>
-								<div className={styles.right}>
-									<span className={styles.icon}>
-										<Image
-											src="/svgs/arrow-right.svg"
-											alt="deposit icon"
-											width={16}
-											height={16}
-										/>
-									</span>
-								</div>
-							</li>
-						))}
+						{fundOptions.map((option, index) => {
+							return (
+								<li
+									key={index}
+									className={styles.container__bank_details__option}
+									onClick={() => {
+										if (!amount) {
+											return;
+										}
+									}}
+								>
+									{option.gateway === "paystack" ? (
+										<PaystackPaymentButton
+											{...paystackComponentProps}
+											disabled={+amount <= 0}
+										>
+											<div className={styles.left}>
+												<span className={styles.icon}>
+													<Image
+														src="/svgs/deposit-icon-with.svg"
+														alt="deposit icon"
+														width={16}
+														height={16}
+													/>
+												</span>
+												<p>{option.label}</p>
+											</div>
+											<div className={styles.right}>
+												<span className={styles.icon}>
+													<Image
+														src="/svgs/arrow-right.svg"
+														alt="deposit icon"
+														width={16}
+														height={16}
+													/>
+												</span>
+											</div>
+										</PaystackPaymentButton>
+									) : (
+										<>
+											<div className={styles.left}>
+												<span className={styles.icon}>
+													<Image
+														src="/svgs/deposit-icon-with.svg"
+														alt="deposit icon"
+														width={16}
+														height={16}
+													/>
+												</span>
+												<p>{option.label}</p>
+											</div>
+											<div className={styles.right}>
+												<span className={styles.icon}>
+													<Image
+														src="/svgs/arrow-right.svg"
+														alt="deposit icon"
+														width={16}
+														height={16}
+													/>
+												</span>
+											</div>
+										</>
+									)}
+								</li>
+							);
+						})}
 					</ul>
 				</div>
 			</div>

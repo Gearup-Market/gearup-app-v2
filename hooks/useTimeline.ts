@@ -19,36 +19,13 @@ export default function useTimeline(item: iTransactionDetails) {
 	const [steps, setSteps] = useState(1);
 	const { isBuyer, stage: stages, id, userRole, transactionType } = item;
 
-	console.log(stages, "sdfklks csldcsd");
-	
 	useEffect(() => {
 		if (userRole === UserRole.Renter && transactionType === TransactionType.Rental) {
-			// const stage = (stages?.buyer || {stage: TransactionStage.PendingApproval}).stage;
 			const {stage} = stages
-
-			// if (stage === TransactionStage.PendingApproval) {
-			// 	setSteps(1);
-			// 	// setAvailableAction(TransactionStage.)
-			// 	// transaction can be cancelled
-			// } else if (stage === TransactionStage.ConfirmHandover) {
-			// 	setSteps(2);
-			// 	// setNextStage(TransactionStage.TransactionOngoing);
-			// } else if (stage === TransactionStage.TransactionOngoing) {
-			// 	setSteps(3);
-			// } else if (stage === TransactionStage.InitiateReturn) {
-			// 	setSteps(4);
-			// } else if (stage === TransactionStage.AwaitingConfirmation) {
-			// 	setSteps(5);
-			// } else if (stage === TransactionStage.ReviewAndFeedback) {
-			// 	setSteps(6);
-			// }
 			if (stage === TransactionStage.PendingApproval) {
 				setSteps(1);
-				// setAvailableAction(TransactionStage.)
-				// transaction can be cancelled
 			} else if (stage === TransactionStage.AwaitingConfirmation) {
 				setSteps(2);
-				// setNextStage(TransactionStage.TransactionOngoing);
 			} else if (stage === TransactionStage.TransactionOngoing) {
 				setSteps(3);
 			} else if (stage === TransactionStage.InitiateReturn) {
@@ -63,7 +40,6 @@ export default function useTimeline(item: iTransactionDetails) {
 			transactionType === TransactionType.Rental
 		) {
 			const {stage} = stages
-			// const stage = (stages?.seller || {stage: TransactionStage.PendingApproval}).stage;
 			if (stage === TransactionStage.PendingApproval) {
 				setSteps(1);
 			} else if (stage === TransactionStage.ConfirmHandover) {
