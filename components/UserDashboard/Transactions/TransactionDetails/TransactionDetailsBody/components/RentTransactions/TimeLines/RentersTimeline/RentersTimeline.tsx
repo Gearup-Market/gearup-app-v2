@@ -7,37 +7,17 @@ import { rentRentersTimeline } from '../../../utils/data'
 import Modal from '@/shared/modals/modal/Modal'
 import TimeLine from './components/TimeLine/TimeLine'
 import { CustomRatingFeedback } from '../../..'
+import { iTransactionDetails } from '@/interfaces'
+import useTimeline from '@/hooks/useTimeline'
 
 interface Props {
-    timelines?: any
+    item: iTransactionDetails
     openModal: boolean
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const RentersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
-
-
-    const [steps, setSteps] = useState(1)
-    const isTimeElapsed = true
-
-
-    const handlePrev = () => {
-        if (steps > 1) {
-            setSteps(steps - 1)
-        }
-    }
-
-    const handleNext = () => {
-        if (steps < rentRentersTimeline.length) {
-            setSteps(steps + 1)
-        }
-    }
-
-    useEffect(() => {
-        if (isTimeElapsed) {
-            setSteps(3)
-        }
-    }, [isTimeElapsed])
+const RentersTimeline = ({ item, openModal, setOpenModal }: Props) => {
+    const {steps, handleAction} = useTimeline(item)
 
     return (
         <div className={styles.container}>
@@ -49,16 +29,16 @@ const RentersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
             </div>
             <div className={styles.right}>
                 {
-                    steps == 1 && <AwaitingApproval handleNext={handleNext} />
+                    steps == 1 && <AwaitingApproval item={item} handleNext={handleAction} />
                 }
                 {
-                    steps === 2 && <ConfirmHandover handleNext={handleNext} />
+                    steps === 2 && <ConfirmHandover item={item} handleNext={handleAction} />
                 }
                 {
-                    steps === 3 && <TransactionOngoing handleNext={handleNext} isTimeElapsed={isTimeElapsed} />
+                    steps === 3 && <TransactionOngoing item={item} handleNext={handleAction} isTimeElapsed={false} />
                 }
                 {
-                    steps === 4 && <InitiateReturn handleNext={handleNext} />
+                    steps === 4 && <InitiateReturn handleNext={handleAction} />
                 }
                 {
                     steps === 5 && <AwaitingConfirmation />

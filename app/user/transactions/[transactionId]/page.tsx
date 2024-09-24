@@ -1,10 +1,10 @@
 import { TransactionDetailsView } from '@/views/UserDashboardViews'
 import React from 'react'
 
-const Page = ({ params }: { params: { slug: string } }) => {
+const Page = ({ params }: { params: { transactionId: string } }) => {
   return (
     <div>
-      <TransactionDetailsView slug={params.slug} />
+      <TransactionDetailsView transactionId={params.transactionId} />
     </div>
   )
 }

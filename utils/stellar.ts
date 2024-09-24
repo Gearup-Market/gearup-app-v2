@@ -32,3 +32,8 @@ export async function calculateTotalCost(
 		throw error;
 	}
 }
+
+export const getExplorerUrl = (path: string) =>
+	process.env.NEXT_APP_STELLAR_MAINNET
+		? `https://stellar.expert/explorer/public/${path}`
+		: `https://stellar.expert/explorer/testnet/${path}`;

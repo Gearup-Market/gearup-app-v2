@@ -2,10 +2,14 @@ import React from 'react'
 import styles from './ConfirmHandover.module.scss'
 import { Button } from '@/shared'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
+import { iTransactionDetails, TransactionStage, TransactionStatus } from '@/interfaces';
 interface Props {
-    handleNext: () => void
+    handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
+	item: iTransactionDetails;
 }
+
 const ConfirmHandover = ({ handleNext }: Props) => {
+    // const {} = item
     return (
         <div className={styles.container}>
             <div className={styles.container_top}>
@@ -28,7 +32,7 @@ const ConfirmHandover = ({ handleNext }: Props) => {
                 </div>
             </div>
             <div className={styles.btn_container}>
-                <Button onClick={handleNext}>Confirm handover</Button>
+                <Button onClick={() => handleNext(TransactionStage.TransactionOngoing)}>Confirm handover</Button>
             </div>
         </div>
     )

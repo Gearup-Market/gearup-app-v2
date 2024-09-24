@@ -10,7 +10,7 @@ import { useGlobalContext } from "@/contexts/AppContext";
 import { AppState, useAppSelector } from "@/store/configureStore";
 
 const Listings = () => {
-	const listings = useAppSelector((state: AppState) => state.listings);
+	const { listings } = useAppSelector((state: AppState) => state.listings);
 	return (
 		<section className={styles.section}>
 			<div className={styles.flex_row}>

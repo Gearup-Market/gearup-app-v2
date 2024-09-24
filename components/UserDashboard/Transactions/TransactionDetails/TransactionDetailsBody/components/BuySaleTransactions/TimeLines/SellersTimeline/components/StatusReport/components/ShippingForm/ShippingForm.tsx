@@ -1,10 +1,12 @@
+"use client";
+
 import React from 'react'
 import styles from './ShippingForm.module.scss'
 import Modal from '@/shared/modals/modal/Modal'
 import { Form, Formik } from 'formik'
 import { Button, InputField } from '@/shared'
 import * as Yup from 'yup'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 interface Props {
     showShippingDetailsForm: boolean
@@ -24,6 +26,7 @@ interface ShippingDetailsProps {
 
 const ShippingForm = ({ showShippingDetailsForm, setShowShippingDetailsForm }: Props) => {
     const router = useRouter();
+    const pathname = usePathname()
 
     const closeModal = () => {
         console.log("closed")
@@ -50,7 +53,7 @@ const ShippingForm = ({ showShippingDetailsForm, setShowShippingDetailsForm }: P
     const handleSubmit = (values: ShippingDetailsProps) => {
         // Handle form submission
         console.log(values);
-        const currentPath = window.location.pathname;
+        const currentPath = pathname;
         // Navigate to the new URL with the updated query parameters
         router.push(`${currentPath}?return_goods=true`);
     };

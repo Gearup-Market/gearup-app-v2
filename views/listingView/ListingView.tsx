@@ -19,7 +19,6 @@ import { Listing } from "@/shared";
 
 const ListingView = () => {
 	const { currentListing } = useAppSelector(s => s.listings);
-	const dispatch = useAppDispatch();
 	const { productSlug } = useParams();
 	const productId = getIdFromSlug(productSlug.toString());
 	const { refetch, isFetching } = useSingleListing(productId);
@@ -29,7 +28,6 @@ const ListingView = () => {
 
 	const { offer, listingPhotos, ownerOtherListings } = currentListing;
 	const forSale = !!offer?.forSell;
-	const forRent = !!offer?.forRent;
 
 	return (
 		<section className={styles.section}>

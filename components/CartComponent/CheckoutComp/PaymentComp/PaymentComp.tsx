@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./PaymentComp.module.scss";
 import { HeaderSubText } from "@/components/UserDashboard";
 import Image from "next/image";
@@ -54,6 +54,8 @@ const PaymentComp = ({
 		rentalPeriod
 	};
 
+	const walletBalance = useMemo(() => (walletResult?.data.balance || 0) - (walletResult?.data.pendingDebit || 0), [walletResult])
+
 	const [openModal, setOpenModal] = useState(false);
 
 	const onClickPaystack = () => {
@@ -83,13 +85,13 @@ const PaymentComp = ({
 					});
 			
 					if (res.data) {
-						console.log(res.data, "res.data");
-						toast.success("Item submitted");
+						toast.success("Request submitted");
 						dispatch(resetCheckout())
 						removeItemFromCart(item._id);
+						setOpenModal(true);
 					}
-				} catch (error) {
-					
+				} catch (error: any) {
+					toast.error(error?.response?.data?.message || "Could not complete transaction. Your funds will be deposited to wallet")
 				}
 			}, 10000)
 		}
@@ -106,7 +108,7 @@ const PaymentComp = ({
 			} else if (type === "xlm") {
 				toast.error("Crypto payment will be supported soon!");
 			} else {
-				if(!walletResult?.data.balance || walletResult?.data.balance  < amount) {
+				if(walletBalance < amount) {
 					toast.error("Insufficient funds in wallet");
 					return;
 				}
@@ -118,7 +120,7 @@ const PaymentComp = ({
 		
 				if (res.data) {
 					console.log(res.data, "res.data");
-					toast.success("Item submitted");
+					toast.success("Request submitted");
 					dispatch(resetCheckout())
 					removeItemFromCart(item._id);
 				}
@@ -134,7 +136,7 @@ const PaymentComp = ({
 			<div className={styles.container__form_container}>
 				<PaymentOption
 					title="Pay from fiat wallet"
-					balance={walletResult?.data.balance}
+					balance={walletBalance}
 					icon="/svgs/fiat-wallet.svg"
 					isLoading={isFetching}
 					hasBalance
@@ -188,7 +190,7 @@ function PaymentOption({
 						<p className={styles.balance_container}>
 							Wallet balance:{" "}
 							<span className={styles.balance}>
-								{isLoading ? <SmallLoader /> : balance}
+								{Number(balance) >= 0 ? balance : isLoading ? <SmallLoader /> : ''}
 							</span>
 						</p>
 					)}

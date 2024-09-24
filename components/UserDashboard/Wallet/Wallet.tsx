@@ -66,6 +66,8 @@ const Wallet = () => {
 		[wallet?.status]
 	);
 
+  const walletBalance = useMemo(() => (wallet.balance || 0) - (wallet.pendingDebit || 0), [wallet])
+
 	return (
 		<div className={styles.wallet_wrapper}>
 			<div className={styles.mobile_title_container}>
@@ -137,7 +139,7 @@ const Wallet = () => {
 
 					<div className={styles.account_balance_container}>
 						<p>Wallet balance</p>
-						<h2>NGN {formatNumber(wallet.balance)}</h2>
+						<h2>NGN {formatNumber(walletBalance || 0)}</h2>
 					</div>
 					<div className={`${styles.btn_container} ${styles.mobile_btns}`}>
 						<Button

@@ -2,8 +2,9 @@ import React from 'react'
 import styles from './ConfirmReturn.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import { Button } from '@/shared'
+import { TransactionStage, TransactionStatus } from '@/interfaces';
 interface Props {
-    handleNext: () => void
+    handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 }
 const ConfirmReturn = ({ handleNext }: Props) => {
     return (
@@ -23,7 +24,7 @@ const ConfirmReturn = ({ handleNext }: Props) => {
                 </div>
             </div>
             <div className={styles.btn_container}>
-                <Button onClick={handleNext}>Completed</Button>
+                <Button onClick={() => handleNext(TransactionStage.ReviewAndFeedback, TransactionStatus.Completed)}>Completed</Button>
             </div>
         </div>
     )

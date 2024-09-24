@@ -46,6 +46,51 @@ const useUploadFiles = () =>
 		}
 	});
 
+const usePostRemoveListing = (
+	options?: Omit<
+		UseMutationOptions<iPostListingResp, iPostListingErr, any>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostListingResp, iPostListingErr, any>({
+		mutationFn: async props => {
+			const { listingId } = props;
+			delete props.listingId;
+			return (await api.post(`${API_URL.deleteListing}/${listingId}`, props)).data;
+		},
+		...options
+	});
+
+const usePostChangeListingStatus = (
+	options?: Omit<
+		UseMutationOptions<iPostListingResp, iPostListingErr, any>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostListingResp, iPostListingErr, any>({
+		mutationFn: async props => {
+			const { listingId } = props;
+			delete props.listingId;
+			return (await api.post(`${API_URL.changeListingStatus}/${listingId}`, props)).data;
+		},
+		...options
+	});
+
+const usePostUpdateListing = (
+	options?: Omit<
+		UseMutationOptions<iPostListingResp, iPostListingErr, any>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostListingResp, iPostListingErr, any>({
+		mutationFn: async props => {
+			const { listingId } = props;
+			delete props.listingId;
+			return (await api.post(`${API_URL.updateListing}/${listingId}`, props)).data;
+		},
+		...options
+	});
+
 export type IGetErr = AxiosError<{ status: string }>;
 
 const useGetListingById = (
@@ -105,6 +150,9 @@ const useGetCategoriesDetailed = (
 export {
 	usePostCreateListing,
 	useUploadFiles,
+	usePostUpdateListing,
+	usePostRemoveListing,
+	usePostChangeListingStatus,
 	useGetListingById,
 	useGetListings,
 	useGetCategories,

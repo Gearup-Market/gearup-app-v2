@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CheckoutView.module.scss";
 import { BackNavigation } from "@/shared";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PaymentComp } from "@/components/CartComponent/CheckoutComp";
 import ShippingAddress from "@/components/CartComponent/CheckoutComp/ShippingAddress/ShippingAddress";
 import ShippingType from "@/components/CartComponent/CheckoutComp/ShippingType/ShippingType";
@@ -10,6 +10,7 @@ import ThirdPartyCheck from "@/components/CartComponent/CheckoutComp/ThirdPartyC
 import { useAppSelector } from "@/store/configureStore";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { useStellarWallet, useWallet } from "@/hooks";
+import { useAuth } from "@/contexts/AuthContext";
 
 enum BuyTimeLineEnum {
 	THIRD_PARTY_CHECK = "THIRD_PARTY_CHECK",
@@ -43,7 +44,10 @@ const buyTimeline = [
 
 const CheckoutView = () => {
 	const router = useRouter();
-	const {checkout} = useAppSelector(s => s.checkout);
+	const { isAuthenticated } = useAuth();
+	const pathname = usePathname();
+	const { userId } = useAppSelector(s => s.user);
+	const { checkout } = useAppSelector(s => s.checkout);
 	const [step, setStep] = useState(1);
 
 	const nextStep = () => {
@@ -60,13 +64,22 @@ const CheckoutView = () => {
 		}
 	}, []);
 
-	console.log(checkout, "checkout");
+	useEffect(() => {
+		if (!isAuthenticated || !userId) router.push(`/login?returnUrl=${pathname}`);
+	}, [isAuthenticated]);
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.body}>
 				<BackNavigation />
-				{(checkout?.type === TransactionType.Rental) && <PaymentComp item={checkout.item} amount={checkout.amount} type={checkout.type} />}
+				{checkout?.type === TransactionType.Rental && (
+					<PaymentComp
+						item={checkout.item}
+						amount={checkout.amount}
+						type={checkout.type}
+						rentalPeriod={checkout.rentalPeriod}
+					/>
+				)}
 				<div>
 					{checkout?.type === TransactionType.Sale && (
 						<>
@@ -105,7 +118,13 @@ const CheckoutView = () => {
 										handlePrev={prevStep}
 									/>
 								)}
-								{step === 4 && <PaymentComp item={checkout.item} amount={checkout.amount} type={checkout.type} />}
+								{step === 4 && (
+									<PaymentComp
+										item={checkout.item}
+										amount={checkout.amount}
+										type={checkout.type}
+									/>
+								)}
 							</>
 						</>
 					)}

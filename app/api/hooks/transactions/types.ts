@@ -1,5 +1,8 @@
+import { User } from "@/interfaces/User";
 import { Listing } from "@/store/slices/listingsSlice";
 import { AxiosError } from "axios";
+import { iWTransaction } from "../wallets/types";
+import { TransactionStage, TransactionStageObject, TransactionStageSchema, TransactionStatus } from "@/interfaces";
 
 export enum TransactionType {
 	Rental = "Rental",
@@ -59,13 +62,19 @@ export type iPostCartErr = AxiosError<{
 
 export interface Transaction {
 	_id: string;
-	amount: number;
+	item: Listing;
 	buyer: string;
 	seller: string;
-	item: Listing;
-	status: string;
-	type: TransactionType
-	payment: any;
+	type: TransactionType;
+	status: TransactionStatus;
+	amount: number;
+	rentalPeriod?: RentalPeriod;
+	payment: string;
+	metadata: any;
+	stage: TransactionStageObject;
+    stages: TransactionStageSchema;
+	createdAt: string;
+	updatedAt?: string;
 }
 
 export interface iPostTransactionRes {
@@ -73,7 +82,46 @@ export interface iPostTransactionRes {
 	message: string;
 }
 
+export interface iPostTransactionStageReq {
+	id: string;
+	stage: TransactionStage;
+	authority: {
+		id: string;
+		role: 'seller' | 'buyer'
+	},
+	status?: TransactionStatus
+}
+
+export interface iPostTransactionStatusReq {
+	id: string;
+	status: TransactionStatus;
+	authority: {
+		id: string;
+		role: 'seller' | 'buyer'
+	}
+}
+
 export interface iGetTransactionRes {
 	data: Transaction[];
 	message: string;
+}
+
+export type SingleTransaction = Omit<Transaction, 'buyer' | 'seller' | 'payment' | 'item'> & {
+	buyer: User;
+	seller: User;
+	item: Listing;
+	payment: iWTransaction;
+	updatedAt?: Date
+}
+
+export interface iGetSingleTransactionRes {
+	data: SingleTransaction;
+	message: string;
+}
+
+export enum UserRole {
+	Seller = 'seller',
+	Buyer = 'buyer',
+	Lender = 'lender',
+	Renter = 'renter'
 }

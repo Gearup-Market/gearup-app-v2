@@ -7,11 +7,12 @@ import * as Yup from 'yup'
 import { useRouter } from 'next/navigation'
 import countryList from 'react-select-country-list';
 import { ArrowRight, CautionIcon, WarningIcon } from '@/shared/svgs/dashboard'
+import { TransactionStage, TransactionStatus } from '@/interfaces'
 
 interface Props {
     showPaymentForm: boolean
     setShowPaymentForm: React.Dispatch<React.SetStateAction<boolean>>
-    handleNext: () => void
+    handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 }
 
 interface ShippingDetailsProps {
@@ -47,7 +48,7 @@ const PaymentForm = ({ showPaymentForm, setShowPaymentForm, handleNext }: Props)
         // Handle form submission
         console.log(values);
         setShowPaymentForm(false)
-        handleNext()
+        handleNext(TransactionStage.InitiateReturn)
     };
 
     const countries = countryList().getData()

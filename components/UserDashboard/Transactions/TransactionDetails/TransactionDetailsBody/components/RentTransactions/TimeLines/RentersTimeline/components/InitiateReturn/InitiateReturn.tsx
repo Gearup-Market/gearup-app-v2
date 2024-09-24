@@ -3,8 +3,9 @@ import styles from './InitiateReturn.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import Image from 'next/image'
 import { Button } from '@/shared'
+import { TransactionStage, TransactionStatus } from '@/interfaces'
 interface Props {
-    handleNext: () => void
+    handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 }
 
 const InitiateReturn = ({ handleNext }: Props) => {
@@ -44,7 +45,7 @@ const InitiateReturn = ({ handleNext }: Props) => {
                 </div>
             </div>
             <div className={styles.btn_container}>
-                <Button onClick={handleNext}>Completed</Button>
+                <Button onClick={() => handleNext(TransactionStage.ConfirmReturn)}>Completed</Button>
             </div>
         </div>
     )

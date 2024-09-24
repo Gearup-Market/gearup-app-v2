@@ -8,34 +8,23 @@ import { rentLendersTimeLine } from '../../../utils/data'
 import TimeLine from './components/TimeLine/TimeLine'
 import Modal from '@/shared/modals/modal/Modal'
 import { CustomRatingFeedback } from '../../..'
+import { iTransactionDetails } from '@/interfaces'
+import useTimeline from '@/hooks/useTimeline'
 
 interface Props {
-    timelines?: any
+    item: iTransactionDetails;
     openModal: boolean
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const LendersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
-    const [steps, setSteps] = useState(1)
-    const isTimeElapsed = true
+const LendersTimeline = ({ item, openModal, setOpenModal }: Props) => {
+    const {steps, handleAction} = useTimeline(item)
 
     const handlePrev = () => {
-        if (steps > 1) {
-            setSteps(steps - 1)
-        }
     }
 
     const handleNext = () => {
-        if (steps < rentLendersTimeLine.length) {
-            setSteps(steps + 1)
-        }
     }
-
-    useEffect(() => {
-        if (isTimeElapsed) {
-            setSteps(4)
-        }
-    }, [isTimeElapsed])
 
     return (
         <div>
@@ -49,19 +38,19 @@ const LendersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
                 </div>
                 <div className={styles.right}>
                     {
-                        steps == 1 && <AcceptDecline handleNext={handleNext} />
+                        steps == 1 && <AcceptDecline item={item} handleNext={handleAction} />
                     }
                     {
-                        steps === 2 && <ConfirmHandover handleNext={handleNext} />
+                        steps === 2 && <ConfirmHandover item={item} handleNext={handleAction} />
                     }
                     {
-                        steps === 3 && <AwaitingConfirmation />
+                        steps === 3 && <AwaitingConfirmation  />
                     }
                     {
-                        steps === 4 && <TransactionOngoing isTimeElapsed={isTimeElapsed} />
+                        steps === 4 && <TransactionOngoing isTimeElapsed={false} />
                     }
                     {
-                        steps === 5 && <ConfirmReturn handleNext={handleNext} />
+                        steps === 5 && <ConfirmReturn handleNext={handleAction} />
                     }
                     {
                         steps === 6 && <CustomRatingFeedback />

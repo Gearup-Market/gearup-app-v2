@@ -54,6 +54,8 @@ export interface Listing {
 	averageRating: number | null;
 	totalReviews: number;
 	contractId: string;
+	nftTokenId?: string;
+    transactionId?: string;
 	location: ListingLocation;
 	user: Partial<User>;
 	ownerOtherListings?: Listing[];

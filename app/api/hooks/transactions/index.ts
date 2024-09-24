@@ -8,12 +8,15 @@ import { api } from "../../api";
 import { API_URL } from "../../url";
 import { AxiosError } from "axios";
 import {
+	iGetSingleTransactionRes,
 	iGetTransactionRes,
 	iPostAddCartReq,
 	iPostAddCartRes,
 	iPostCartErr,
 	iPostRemoveCartReq,
-	iPostTransactionRes
+	iPostTransactionRes,
+	iPostTransactionStageReq,
+	iPostTransactionStatusReq
 } from "./types";
 
 const useAddToCart = (
@@ -24,6 +27,17 @@ const useAddToCart = (
 ) =>
 	useMutation<iPostAddCartRes, iPostCartErr, iPostAddCartReq>({
 		mutationFn: async props => (await api.post(API_URL.addCart, props)).data,
+		...options
+	});
+
+const useAddAllToCart = (
+	options?: Omit<
+		UseMutationOptions<iPostAddCartRes, iPostCartErr, iPostAddCartReq[]>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostAddCartRes, iPostCartErr, iPostAddCartReq[]>({
+		mutationFn: async props => (await api.post(API_URL.addCartMultiple, props)).data,
 		...options
 	});
 
@@ -63,16 +77,67 @@ const usePostTransaction = (
 		...options
 	});
 
+const usePostTransactionStage = (
+	options?: Omit<
+		UseMutationOptions<iPostTransactionRes, iPostCartErr, iPostTransactionStageReq>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostTransactionRes, iPostCartErr, iPostTransactionStageReq>({
+		mutationFn: async (props) => { 
+			const { id, ...payload } = props
+			return (await api.post(`${API_URL.changeTxStage}/${id}`, payload)).data
+		},
+		...options
+	});
+
+	const usePostTransactionStatus = (
+		options?: Omit<
+			UseMutationOptions<iPostTransactionRes, iPostCartErr, iPostTransactionStatusReq>,
+			"mutationFn"
+		>
+	) =>
+		useMutation<iPostTransactionRes, iPostCartErr, iPostTransactionStatusReq>({
+			mutationFn: async (props) => { 
+				const { id, ...payload } = props
+				return (await api.post(`${API_URL.changeTxStatus}/${id}`, payload)).data
+			},
+			...options
+		});
+
 const useGetTransactions = (
 	userId?: string,
 	options?: UseQueryOptions<iGetTransactionRes, IGetErr>
 ) =>
 	useQuery<iGetTransactionRes, IGetErr>({
-		queryKey: ["cart"],
+		queryKey: ["getTransactions"],
 		queryFn: async () => (await api.get(`${API_URL.getTransactions}/${userId}`)).data,
 		...options,
 		enabled: !!userId,
 		refetchOnMount: true
 	});
 
-export { useAddToCart, useGetCart, useRemoveFromCart, usePostTransaction, useGetTransactions };
+const useGetSingleTransactions = (
+	transactionId?: string,
+	options?: UseQueryOptions<iGetSingleTransactionRes, IGetErr>
+) =>
+	useQuery<iGetSingleTransactionRes, IGetErr>({
+		queryKey: ["getSingleTransaction"],
+		queryFn: async () =>
+			(await api.get(`${API_URL.getSingleTransaction}/${transactionId}`)).data,
+		...options,
+		enabled: !!transactionId,
+		refetchOnMount: true
+	});
+
+export {
+	useAddToCart,
+	useGetCart,
+	useRemoveFromCart,
+	usePostTransaction,
+	usePostTransactionStage,
+	useGetTransactions,
+	useAddAllToCart,
+	useGetSingleTransactions,
+	usePostTransactionStatus
+};

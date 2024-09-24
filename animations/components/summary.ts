@@ -46,7 +46,7 @@ export class Summary extends Component {
 		cards!.style.overflow = "visible";
 
 		// const end = cards.clientWidth + 64 + 64 + 64;
-		const vpW = window.innerWidth;
+		const vpW = typeof window !== 'undefined' ? window.innerWidth : 400;
 		const end = cards.scrollWidth - vpW + 64 + 64;
 
 		const tl: GSAPTimeline = gsap.timeline({
@@ -90,8 +90,8 @@ export class Summary extends Component {
 		const cards = this.children.cards[0];
 		cards.style.overflow = "visible";
 
-		const vpW = window.innerWidth;
-		const vpH = window.innerHeight;
+		const vpW = typeof window !== 'undefined' ? window.innerWidth : 400;
+		const vpH = typeof window !== 'undefined' ? window.innerHeight : 700;
 
 		// set container height
 		const scrollableWidth = cards.scrollWidth;

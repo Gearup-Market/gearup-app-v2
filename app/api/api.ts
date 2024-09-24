@@ -26,7 +26,7 @@ api.interceptors.request.use((config) => {
 api.defaults.data = {};
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+  defaultOptions: { queries: { refetchOnWindowFocus: true } },
 });
 
 export { api, queryClient };
