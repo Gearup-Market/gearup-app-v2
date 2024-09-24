@@ -12,21 +12,24 @@ export default function Home() {
 
 	const init = useCallback(async () => {
 
-		if (window === undefined) return;
-		// check if device is mobile
-		const width = window.innerWidth;
-		const ismobile: boolean = width <= 650;
+		if (typeof window !== undefined){
 
-		// import animations
-		const App = (await import("@/animations")).App;
-
-		// initialize new animation
-		new App({ ismobile });
+			// check if device is mobile
+			const width = window.innerWidth;
+			const ismobile: boolean = width <= 650;
+			
+			// import animations
+			const App = (await import("@/animations")).App;
+			
+			// initialize new animation
+			new App({ ismobile });
+		}
 	}, []);
 
 	useEffect(() => {
 		init();
 	}, []);
+	
 	if (ssr) return null;
 	return <HomeView />;
 }

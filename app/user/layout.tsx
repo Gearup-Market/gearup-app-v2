@@ -18,7 +18,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 						</div>
 						<div className={styles.body__right}>
 							<AdminNavbar />
-							<aside>{children}</aside>
+							<aside className={styles.body__right__main}>{children}</aside>
 						</div>
 					</div>
 				</main>

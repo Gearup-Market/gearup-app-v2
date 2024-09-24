@@ -2,13 +2,14 @@
 import React, { useState } from 'react'
 import styles from './TransactionDetailsHeader.module.scss'
 import { ChevronIcon } from '@/shared/svgs/dashboard'
-import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Props {
     slug: string
     item: any
+    activeView?: string
+    setActiveView?: any
 }
 
 const list = [
@@ -17,8 +18,9 @@ const list = [
     { id: 3, name: 'Details' },
 ]
 
-const TransactionDetailsHeader = ({ slug, item }: Props) => {
-    const [activeId, setActiveId] = useState(1)
+
+
+const TransactionDetailsHeader = ({ slug, item,activeView,setActiveView }: Props) => {
     const router = useRouter()
     const search = useSearchParams()
     const transaction_type = search.get('transaction_type')
@@ -52,7 +54,7 @@ const TransactionDetailsHeader = ({ slug, item }: Props) => {
                 <ul className={styles.container__children_container}>
                     {
                         list.map((item) => (
-                            <li onClick={() => setActiveId(item.id)} key={item.id} className={styles.container__children_container__filter} data-active={activeId === item.id}>
+                            <li onClick={() => setActiveView(item.name.toLowerCase())} key={item.id} className={styles.container__children_container__filter} data-active={activeView?.toLowerCase() === item.name.toLowerCase()}>
                                 <p>{item.name}</p>
                             </li>
                         ))
