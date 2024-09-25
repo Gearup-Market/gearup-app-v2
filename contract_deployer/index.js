@@ -78,7 +78,7 @@ async function main() {
 	try {
 		const currentDir = __dirname;
 		const contractDir = path.join(currentDir, "contracts");
-		const contractName = 'marketplace.wasm';
+		const contractName = 'agreement.wasm';
 		console.log("Searching for WASM file in:", contractDir);
 
 		const wasmFilePath = await findWasmFile(contractDir, contractName);

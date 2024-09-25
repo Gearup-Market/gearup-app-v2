@@ -11,7 +11,8 @@ use soroban_sdk::{
 #[repr(u32)]
 pub enum Error {
     EscrowNotActive = 11,
-    EscrowNotFound = 12
+    EscrowNotFound = 12,
+    AlreadyInitialized = 13
 }
 
 #[derive(Clone)]
@@ -39,6 +40,7 @@ pub enum DataKey {
 }
 
 pub const MARKETPLACE_CONTRACT: Symbol = symbol_short!("MAR_CA");
+pub const ADMIN: Symbol = symbol_short!("ADMIN");
 
 #[contract]
 pub struct EscrowContract;
@@ -46,17 +48,26 @@ pub struct EscrowContract;
 #[contractimpl]
 impl EscrowContract {
     // Initialize escrow
-    pub fn init(
+    pub fn initialize(
         env: Env,
         admin: Address,
+        marketplace_contract_id: Address,
     ) -> Result<(), Error> {
         admin.require_auth();
-        env.storage().instance().set(&MARKETPLACE_CONTRACT, &admin);
+        if env.storage().instance().has::<Symbol>(&ADMIN) {
+            return Err(Error::AlreadyInitialized);
+        }
+
+        env.storage().instance().set(&ADMIN, &admin);
+        env.storage()
+            .instance()
+            .set(&MARKETPLACE_CONTRACT, &marketplace_contract_id);
+        env.storage().instance().set(&ADMIN, &admin);
         EscrowEvent::Initialized.publish(&env);
         Ok(())
     }
 
-    pub fn require_admin(env: Env) {
+    pub fn require_marketplace(env: Env) {
         let marketplace_address: Address = env
             .storage()
             .instance()
@@ -93,7 +104,7 @@ impl EscrowContract {
         token: Address,
         amount: i128,
     ) -> Result<(), Error> {
-        Self::require_admin(env.clone());
+        Self::require_marketplace(env.clone());
         let escrow: Escrow = Escrow {
             amount,
             token: token.clone(),
@@ -109,7 +120,7 @@ impl EscrowContract {
     // Release funds to the seller
     pub fn release(env: Env, listing_id: u32) -> Result<(), Error> {
         let mut escrow: Escrow = Self::get_escrow(env.clone(), listing_id.clone())?;
-        Self::require_admin(env.clone());
+        Self::require_marketplace(env.clone());
 
         assert!(
             matches!(escrow.status, EscrowStatus::Active),
@@ -133,7 +144,7 @@ impl EscrowContract {
 
     // Refund the buyer
     pub fn refund(env: Env, listing_id: u32) -> Result<(), Error> {
-        Self::require_admin(env.clone());
+        Self::require_marketplace(env.clone());
         let mut escrow: Escrow = Self::get_escrow(env.clone(), listing_id)?;
 
         assert!(

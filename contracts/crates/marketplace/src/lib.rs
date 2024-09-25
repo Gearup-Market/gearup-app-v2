@@ -10,8 +10,8 @@ use crate::types::{
 use events::MarketplaceEvent;
 use soroban_sdk::{
     auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation},
-    contract, contractimpl, panic_with_error, token, vec, Address, Env, IntoVal, String,
-    Symbol, Vec,
+    contract, contractimpl, panic_with_error, token, vec, Address, Env, IntoVal, String, Symbol,
+    Vec,
 };
 
 mod nft_contract_client {
@@ -81,6 +81,21 @@ impl MarketplaceContract {
         } else {
             return false;
         }
+    }
+
+    pub fn update_state(env: Env, state_key: Symbol, state_value: Address) -> Result<(), Error> {
+        let admin: Address = env.storage().instance().get(&ADMIN).unwrap();
+        admin.require_auth();
+
+        if !env.storage().instance().has::<Symbol>(&state_key) {
+            return Err(Error::StateNotAlreadySet);
+        }
+
+        env.storage().instance().set(&state_key, &state_value);
+        env.events()
+            .publish(("state_updated", state_key), state_value);
+
+        Ok(())
     }
 
     // Create a new listing
@@ -238,7 +253,7 @@ impl MarketplaceContract {
                 sub_invocations: vec![&env],
             }),
         ]);
-        
+
         // Call escrow contract to lock the funds
         escrow_client.lock_funds(
             &listing_id,

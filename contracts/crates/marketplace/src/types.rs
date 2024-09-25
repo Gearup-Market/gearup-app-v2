@@ -13,6 +13,7 @@ pub enum Error {
     AgreementNotFound = 7,
     AgreementNotActive = 8,
     AgreementNotOwnedByCaller = 9,
+    StateNotAlreadySet = 10,
 }
 
 #[contracttype]

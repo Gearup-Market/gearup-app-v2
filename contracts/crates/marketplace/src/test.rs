@@ -91,7 +91,7 @@ impl<'a> MarketplaceTest<'a> {
         );
         test.nft_client.initialize(&test.admin, &test.marketplace_client.address);
         test.agreement_client.initialize(&test.admin, &test.marketplace_client.address);
-        test.escrow_client.init(&test.marketplace_client.address);
+        test.escrow_client.initialize(&test.admin, &test.marketplace_client.address);
 
         return test;
     }
