@@ -14,8 +14,12 @@ const Messages = () => {
 			) : (
 				<div className={styles.chat_messages}>
 					<ChatMessageHistory />
-					<ChatBodySection />
-					<UserProfileSection />
+					<div className={styles.chat_body_desktop}>
+						<ChatBodySection />
+					</div>
+					<div className={styles.user_profile_desk}>
+						<UserProfileSection />
+					</div>
 				</div>
 			)}
 		</div>
