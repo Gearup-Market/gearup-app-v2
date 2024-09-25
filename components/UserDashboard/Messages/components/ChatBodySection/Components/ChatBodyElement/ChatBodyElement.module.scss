@@ -5,6 +5,7 @@
     width: 100%;
     height: 100%;
     padding: 4rem 1.6rem;
+   
     
     
     .chat_date{
@@ -67,6 +68,7 @@
     }
 
     @include screenMax("mobile"){
+        position: relative;
         .chat_date{
             top: -2rem;
             

@@ -54,6 +54,7 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				flex-shrink: 0;
 			}
 
 			.name {
@@ -77,10 +78,16 @@
 				.date {
 					font-size: 1.2rem;
 					color: #1b1e21;
+					line-height: normal;
 				}
 				.convo_about {
 					font-size: 1.2rem;
 					color: #a3a7ab;
+					line-height: normal;
+				}
+
+				@include screenMax("mobile"){
+					flex-wrap: wrap;
 				}
 			}
 		}
