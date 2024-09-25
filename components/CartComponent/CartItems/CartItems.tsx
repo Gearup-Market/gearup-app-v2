@@ -5,62 +5,54 @@ import CartItemCardContainer from "../CartItemCard/CartItemCard";
 import { CustomImage, Ratings } from "@/shared";
 import useCart from "@/hooks/useCart";
 import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
+import EmptyCart from "../EmptyCart/EmptyCart";
 
 const CartItems = () => {
 	const { getCartItems, removeItemFromCart } = useCart();
 	const cartItems = getCartItems();
 
-	if (!cartItems) return null;
-
 	const handleDeleteItem = async (id: string) => {
-        await removeItemFromCart(id)
+		await removeItemFromCart(id);
 	};
 
 	return (
 		<div className={styles.container}>
-			{cartItems.items.map((item, index) => {
-				if (item.type === TransactionType.Rental) {
-					return (
-						<CartItemCardContainer
-                            item={item}
-							key={index}
-							name={item?.listing?.productName}
-							handleDeleteItem={handleDeleteItem}
-							type={item?.type}
-							id={item?.listing?._id}
-						>
-							<RentalComp item={item} />
-						</CartItemCardContainer>
-					);
-				}
-				if (item.type === TransactionType.Sale) {
-					return (
-						<CartItemCardContainer
-                            item={item}
-							key={index}
-							name={item?.listing?.productName}
-							handleDeleteItem={handleDeleteItem}
-							type={item?.type}
-							id={item?.listing?._id}
-						>
-							<GearSaleComp item={item} />
-						</CartItemCardContainer>
-					);
-				}
-				// if (item.type === "course") {
-				// 	return (
-				// 		<CartItemCardContainer
-				// 			key={item.id}
-				// 			name={item.name}
-				// 			handleDeleteItem={handleDeleteItem}
-				// 			type={item.type}
-				// 			id={item.id}
-				// 		>
-				// 			<CourseComp item={item} />
-				// 		</CartItemCardContainer>
-				// 	);
-				// }
-			})}
+			{cartItems?.items.length === 0 ? (
+				<EmptyCart />
+			) : (
+				<>
+					{cartItems?.items.map((item, index) => {
+						if (item.type === TransactionType.Rental) {
+							return (
+								<CartItemCardContainer
+									item={item}
+									key={index}
+									name={item?.listing?.productName}
+									handleDeleteItem={handleDeleteItem}
+									type={item?.type}
+									id={item?.listing?._id}
+								>
+									<RentalComp item={item} />
+								</CartItemCardContainer>
+							);
+						}
+						if (item.type === TransactionType.Sale) {
+							return (
+								<CartItemCardContainer
+									item={item}
+									key={index}
+									name={item?.listing?.productName}
+									handleDeleteItem={handleDeleteItem}
+									type={item?.type}
+									id={item?.listing?._id}
+								>
+									<GearSaleComp item={item} />
+								</CartItemCardContainer>
+							);
+						}
+					})}
+				</>
+			)}
 		</div>
 	);
 };
@@ -109,14 +101,14 @@ const RentalComp = ({ item }: { item: CartItem }) => {
 };
 
 const GearSaleComp = ({ item }: { item: CartItem }) => {
-    const price = item.listing?.offer?.forSell?.pricing;
+	const price = item.listing?.offer?.forSell?.pricing;
 	return (
 		<div>
 			<div className={styles.summary_item}>
 				<h4>Author</h4>
 				<div className={styles.owner}>
 					<div className={styles.image}>
-                    {item.listing?.user?.avatar && (
+						{item.listing?.user?.avatar && (
 							<CustomImage
 								height={40}
 								width={50}
