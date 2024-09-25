@@ -1,0 +1,41 @@
+name: CI/CD Pipeline Gear-Up-Backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run build
+      run: npm run build
+
+
+    # - name: Lint code
+    #   run: npm run lint
+
+    # - name: Build Docker image
+    #   run: docker build -t your-dockerhub-username/gearUpBackend:$GITHUB_SHA .
+
+    # - name: Login to DockerHub
+    #   run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    # - name: Push Docker image to DockerHub
+    #   run: docker push your-dockerhub-username/your-app-name:$GITHUB_SHA

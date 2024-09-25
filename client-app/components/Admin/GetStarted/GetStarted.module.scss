@@ -1,0 +1,64 @@
+@import "@/styles/imports";
+
+.container {
+    padding: 2rem;
+    background-color: $col-white;
+    border-radius: 1.6rem;
+    margin-top: 2.4rem;
+
+    &__subtext_container {
+        display: flex;
+        justify-content: space-between;
+
+        &__subtext {
+            font-size: 1.6rem;
+            color: $col-grey-1;
+            font-weight: 700;
+        }
+
+    }
+
+
+
+
+    &__description {
+        font-size: 1.4rem;
+        color: $col-mid-emphasis-text;
+        margin: 1rem 0;
+    }
+
+    &__btn_started {
+        color: $col-orange;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-top: 1.5rem;
+    }
+
+    &__steps_container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 2rem;
+
+        &__step {
+            display: flex;
+            // gap: 0.8rem;
+            align-items: center;
+
+            .step_text {
+                font-size: 1.4rem;
+                color: $col-text-secondary;
+            }
+
+        }
+
+    }
+
+    @include screenMax("tablet") {
+        padding: 1rem;
+    }
+}

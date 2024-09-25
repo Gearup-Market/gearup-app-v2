@@ -1,0 +1,44 @@
+@import "@/styles/imports";
+
+.section {
+	background-color: #fafafa;
+	.center {
+		@extend %center;
+		.title {
+			text-align: center;
+			max-width: 62.8rem;
+			margin-bottom: 6.4rem;
+		}
+	}
+	.top_grid {
+		@include grid(repeat(2, 1fr), 2.4rem, 2.4rem);
+		.high_card {
+			grid-row: span 2;
+			height: 53.4rem;
+		}
+	}
+	.bottom_grid {
+		@include grid(repeat(3, 1fr), 2.4rem, 2.4rem);
+		margin-top: 2.4rem;
+	}
+	.slider {
+		width: 100%;
+		display: none;
+	}
+	@include screenMax("mobile") {
+		.center {
+			place-items: start;
+			.title {
+				text-align: left;
+				max-width: 100%;
+			}
+		}
+		.top_grid,
+		.bottom_grid {
+			display: none;
+		}
+		.slider {
+			display: block;
+		}
+	}
+}

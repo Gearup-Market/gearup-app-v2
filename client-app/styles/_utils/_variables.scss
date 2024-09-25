@@ -1,0 +1,184 @@
+// colors
+
+$col-primary: #0a0a0a;
+$col-secondary: #1a1b20;
+$col-background-shade: #fffaf1;
+$col-white-dull: #cacaca;
+$col-text-secondary: #b1b5c3;
+
+$col-white: #ffffff;
+$col-black: #000;
+
+//Orange
+$col-orange-100: #8d4829;
+$col-orange-200: #a25330;
+$col-orange-300: #e77644;
+$col-orange-400: #eb8d64;
+$col-orange-500: #f1b093;
+$col-orange-600: #f5c7b2;
+$col-orange-700: #fdf1ec;
+
+// Blue
+
+$col-blue-50: #ebf8ff;
+$col-blue-100: #c2e9ff;
+$col-blue-200: #a4deff;
+$col-blue-300: #7acfff;
+$col-blue-400: #61c6ff;
+$col-blue-500: #39b8ff;
+$col-blue-600: #34a7e8;
+$col-blue-700: #2883b5;
+$col-blue-800: #1f658c;
+$col-blue-900: #184d6b;
+$col-blue-gradient: linear-gradient(89.94deg, #5070f0 0.9%, #3dcbf2 99.95%);
+
+// Purple
+$col-purple-1: #24002d;
+$col-purple-2: #33003f;
+$col-purple-3: #3b0049;
+$col-purple-4: #540068;
+$col-purple-5: #9c6ba7;
+$col-purple-6: #b996c1;
+$col-purple-7: #eee6f0;
+$col-purple-8: #8c549a;
+
+// Yellow
+$col-yellow-100: #685318;
+$col-yellow-200: #967929;
+$col-yellow-300: #ac8b30;
+$col-yellow-400: #f6c644;
+$col-yellow-500: #fade93;
+$col-yellow-600: #fbe8b2;
+$col-yellow-700: #fef9ec;
+
+// Grey
+$col-grey-1: #121212;
+$col-grey-50: #f8fafc;
+$col-grey-100: #f3f4f6;
+$col-grey-200: #eaecf0;
+$col-grey-300: #d0d5dd;
+$col-grey-400: #444444;
+$col-grey-500: #c4c6c9;
+$col-grey-600: #a3a3a3;
+$col-grey-700: #7b8086;
+$col-grey-800: #2a2a2a;
+$col-grey-900: #0b0a0a;
+$col-grey-light: #4f4f4f;
+
+// Error
+$col-error-100: #541814;
+$col-error-200: #902922;
+$col-error-300: #c0362d;
+$col-error-400: #f04438;
+$col-error-500: #e41c11;
+$col-error-600: #ff7770;
+$col-error-700: #fac5c1;
+$col-error-800: #fde3e1;
+$col-error-900: #feeceb;
+
+// Warning
+$col-warning-100: #523300;
+$col-warning-200: #865503;
+$col-warning-300: #f3a218;
+$col-warning-400: #f5b546;
+$col-warning-500: #f7d394;
+$col-warning-600: #fbe2b7;
+$col-warning-700: #fef6e7;
+
+// Success
+$col-success-100: #24380f;
+$col-success-200: #3d5f19;
+$col-success-300: #527f22;
+$col-success-400: #669f2a;
+$col-success-500: #edfade;
+$col-success-600: #d0e1bd;
+$col-success-700: #e8f1df;
+$col-success-800: #f0f5ea;
+$col-success-900: #e0f1cc;
+
+// dashboard
+$col-border: #DEDFE0;
+$col-profile-container-bg: #FBFBFD;
+$col-high-emphasis-text: #1B1E21;
+$col-mid-emphasis-text: #4B525A;
+$col-low-emphasis-text: #A3A7AB;
+$col-active-nav-bg: #FFF7E7;
+$col-error: #FF3729;
+$col-warning: #FFC107;
+$col-orange: #FFB30F;
+$col-percentage-bg:#F2F4F7;
+$col-bg:#FbFbFD;
+
+
+
+// fonts
+$font: "Source Sans 3", sans-serif;
+$font-good: "Good";
+$font-cera: "Cera";
+
+$z-indexes: (
+	"level-four",
+	"level-three",
+	"level-two",
+	"level-one"
+);
+
+//transition
+$all-transition: all 0.3s ease-out;
+
+//gradient
+$orange-grad: linear-gradient(76.89deg, #ffb30f 11.85%, #edcb00 100.03%);
+
+$elastic-out: linear(0,
+		0.2178 2.1%,
+		1.1144 8.49%,
+		1.2959 10.7%,
+		1.3463 11.81%,
+		1.3705 12.94%,
+		1.3726,
+		1.3643 14.48%,
+		1.3151 16.2%,
+		1.0317 21.81%,
+		0.941 24.01%,
+		0.8912 25.91%,
+		0.8694 27.84%,
+		0.8698 29.21%,
+		0.8824 30.71%,
+		1.0122 38.33%,
+		1.0357,
+		1.046 42.71%,
+		1.0416 45.7%,
+		0.9961 53.26%,
+		0.9839 57.54%,
+		0.9853 60.71%,
+		1.0012 68.14%,
+		1.0056 72.24%,
+		0.9981 86.66%,
+		1);
+$elastic-in-out: linear(0,
+		0.0009 8.51%,
+		-0.0047 19.22%,
+		0.0016 22.39%,
+		0.023 27.81%,
+		0.0237 30.08%,
+		0.0144 31.81%,
+		-0.0051 33.48%,
+		-0.1116 39.25%,
+		-0.1181 40.59%,
+		-0.1058 41.79%,
+		-0.0455,
+		0.0701 45.34%,
+		0.9702 55.19%,
+		1.0696 56.97%,
+		1.0987 57.88%,
+		1.1146 58.82%,
+		1.1181 59.83%,
+		1.1092 60.95%,
+		1.0057 66.48%,
+		0.986 68.14%,
+		0.9765 69.84%,
+		0.9769 72.16%,
+		0.9984 77.61%,
+		1.0047 80.79%,
+		0.9991 91.48%,
+		1);

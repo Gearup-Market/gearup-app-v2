@@ -1,0 +1,130 @@
+#nprogress {
+	.bar {
+		background-color: $col-white !important;
+		height: 4px !important;
+	}
+
+	.peg {
+		box-shadow: none !important;
+	}
+}
+
+.swiper {
+	position: static !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+	top: 9rem !important;
+	opacity: 0 !important;
+	right: 12.5rem !important;
+	&::after {
+		font-size: 3.34rem !important;
+	}
+	width: 3.34rem !important;
+	height: 3.34rem !important;
+}
+.swiper-button-prev {
+	left: inherit !important;
+	right: 21rem !important;
+}
+.swiper-pagination {
+	position: static !important;
+	margin-top: 2rem;
+}
+.swiper-pagination-bullet-active {
+	background: $orange-grad !important;
+}
+.rr--group {
+	display: flex;
+}
+.rr--box {
+	width: 1.6rem;
+	height: 1.6rem;
+}
+
+.rr--svg {
+	cursor: pointer;
+}
+
+.rr--off {
+	svg {
+		fill: #d9d9d9;
+	}
+}
+
+.rr--on {
+	svg {
+		fill: #fec84b;
+	}
+}
+
+.reviews_slider {
+	.swiper-pagination-bullet {
+		width: 2.9rem !important;
+		border-radius: 0.4rem !important;
+	}
+	.rr--group {
+		gap: 0.4rem;
+	}
+	.rr--box {
+		width: 2rem;
+		height: 2rem;
+	}
+}
+.listing-smaller-slide {
+	margin-top: 2rem;
+	.swiper-wrapper {
+		flex-wrap: wrap;
+		gap: 0.8rem;
+		.swiper-slide {
+			width: 8rem !important;
+			height: 8rem !important;
+			border-radius: 0.8rem;
+			overflow: hidden;
+			cursor: pointer !important;
+		}
+		.swiper-slide-thumb-active {
+			border: 0.3rem solid #ffb30f !important;
+		}
+	}
+	@include screenMax("mobile") {
+		.swiper-wrapper {
+			.swiper-slide {
+				width: 5rem !important;
+				height: 5rem !important;
+			}
+		}
+	}
+}
+
+// Date picker
+
+.rdrDateRangeWrapper {
+	width: 100%;
+	.rdrMonth {
+		width: 100%;
+	}
+}
+
+img {
+	width: 100%;
+	height: 100%;
+}
+
+section {
+	padding: 9.6rem 8rem !important;
+	@include screenMax("tablet") {
+		padding: 6.4rem 1.6rem !important;
+	}
+}
+
+.flex-between {
+	@include flex(space-between, center);
+	width: 100%;
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}

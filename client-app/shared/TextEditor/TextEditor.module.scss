@@ -1,0 +1,13 @@
+@import "@/styles/imports";
+
+.container{
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+
+	
+	.input_label {
+		@extend %text-14;
+		color: #1b1e21;
+	}
+}

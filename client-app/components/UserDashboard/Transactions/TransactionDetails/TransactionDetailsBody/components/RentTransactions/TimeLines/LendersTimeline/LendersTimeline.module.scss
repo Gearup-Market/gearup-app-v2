@@ -1,0 +1,51 @@
+@import "@/styles/imports";
+
+.container {
+  flex: 1;
+  min-width: 60rem;
+  border: 1px solid $col-border;
+  display: flex;
+  border-radius: 1.6rem;
+  height: fit-content;
+
+  .desktop_timelines {
+    @include screenMax("mobile") {
+      display: none;
+    }
+  }
+
+  .left {
+    background-color: #fff;
+    padding: 3.2rem 1.6rem;
+    max-width: 50%;
+    min-width: 27rem;
+    border-top-left-radius: 1.6rem;
+    border-bottom-left-radius: 1.6rem;
+
+  
+  }
+
+  .right {
+    background: #fbfbfd;
+    width: 100%;
+    border-top-right-radius: 1.6rem;
+    border-bottom-right-radius: 1.6rem;
+    border-left: 1px solid $col-border;
+  }
+
+  @include screenMax("mobile") {
+    flex-direction: column;
+    min-width: 100%;
+    border-radius: 1.6rem;
+    gap: 2rem;
+
+    .right {
+      border-left: none;
+      border-top-left-radius: 1.6rem;
+      border-bottom-left-radius: 1.6rem;
+    }
+  
+    
+  }
+
+}

@@ -1,0 +1,151 @@
+@import "@/styles/imports";
+
+.container {
+	margin-bottom: 2rem;
+	.row {
+		@include flex(flex-start);
+		gap: 0.8rem;
+		flex-wrap: nowrap;
+		margin-top: 0.7rem;
+	}
+	.row_block {
+		@include flex(flex-start);
+		gap: 0.8rem;
+		.button {
+			gap: 1.6rem;
+			.closeModal {
+				min-width: auto;
+				min-height: auto;
+				width: 1.4rem;
+				height: 1.4rem;
+				position: relative;
+				transition: all 0.3s linear;
+				cursor: pointer;
+				span {
+					height: 1.4rem;
+					width: 0.1rem;
+					border-radius: 25%;
+					background-color: #1b1e21;
+					transform: rotate(45deg);
+					display: block;
+					padding: 0;
+					margin-left: 0.4rem;
+				}
+				span:last-child {
+					transform: rotate(-45deg);
+					margin-top: -1.4rem;
+				}
+			}
+		}
+	}
+	.label {
+		@extend %text-14;
+		color: #1b1e21;
+		font-weight: 500;
+		margin-bottom: 1.2rem;
+	}
+	.select_button {
+		padding: 1rem 2.4rem;
+		border: 0.1rem solid #dedfe0;
+		color: #a3a7ab;
+		border-radius: 10rem;
+	}
+	.modal_container {
+		position: fixed;
+		z-index: 12;
+		inset: 0;
+		width: 100%;
+		height: 100vh;
+		overflow-y: hidden;
+		background-color: rgba(27, 30, 33, 0.5);
+		cursor: default;
+		display: none;
+		@include flex(center, center, column);
+		.modal {
+			min-height: 30rem;
+			max-height: 90vh;
+			width: 95.4rem;
+			background-color: $col-white;
+			border-radius: 1.6rem;
+			padding: 4rem;
+			position: relative;
+			.header {
+				margin-bottom: 3.2rem;
+				.title {
+					h4 {
+						@extend %text-16;
+						font-weight: 600;
+					}
+				}
+				.closeModal_container {
+					position: absolute;
+					// top: 2rem;
+					right: 2.4rem;
+					top: 2.4rem;
+					// background-color: $col-primary-lighten1;
+					width: 2.4rem;
+					height: 2.4rem;
+					@extend %center;
+					.closeModal {
+						min-width: auto;
+						min-height: auto;
+						width: 1.4rem;
+						height: 1.4rem;
+						position: relative;
+						transition: all 0.3s linear;
+						cursor: pointer;
+						span {
+							height: 1.4rem;
+							width: 0.1rem;
+							border-radius: 25%;
+							background-color: #1b1e21;
+							transform: rotate(45deg);
+							display: block;
+							// position: absolute;
+							// left: 0;
+							padding: 0;
+							margin-left: 0.4rem;
+						}
+						span:last-child {
+							transform: rotate(-45deg);
+							margin-top: -1.4rem;
+							// left: 1rem;
+						}
+					}
+				}
+			}
+			.body {
+				@include flex(center);
+				gap: 1.6rem;
+				max-height: 40vh;
+				overflow-y: scroll;
+				@include noScrollBar;
+				.button {
+					padding: 1rem 2.4rem;
+					border: 0.1rem solid #dedfe0;
+					color: #1b1e21;
+					border-radius: 10rem;
+					font-weight: 400;
+				}
+			}
+			.footer {
+				@include flex(center);
+				margin-top: 2.4rem;
+				.button {
+					padding: 1.6rem 4rem;
+				}
+			}
+		}
+	}
+	.text {
+		text-align: center;
+		h1 {
+			@extend %text-24;
+			font-weight: 700;
+			color: #1b1e21;
+		}
+		p {
+			color: #a3a7ab;
+		}
+	}
+}

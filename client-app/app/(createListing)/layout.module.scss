@@ -1,0 +1,10 @@
+@import "@/styles/imports";
+
+.main {
+	background-color: white;
+	width: 100%;
+	min-height: 100vh;
+	@include screenMax("mobile") {
+		padding-bottom: 10rem;
+	}
+}

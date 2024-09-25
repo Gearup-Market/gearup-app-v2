@@ -1,0 +1,178 @@
+@import "@/styles/imports";
+
+.wrapper{
+    
+
+
+.container {
+        padding: 3.2rem;
+        border: 1px solid $col-border;
+        border-radius: 1.6rem;
+        margin: 2rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+
+        .btns_container{
+            display: flex;
+            gap: 1.6rem;
+
+            .view_profile{
+                background-color: transparent;
+                border-color: $col-border;
+                color: #4B525A;
+                font-weight: 700;
+                width: 17rem;
+            }
+
+            .deactivate_btn{
+                background-color: transparent;
+                border-color: $col-border;
+                color: #FF3729;
+                width: 17rem;
+            }
+
+            @include screenMax('mobile'){
+                width: 100%;
+                flex-direction: column;
+
+            .view_profile,.deactivate_btn{
+                    width: 100%;
+                }
+           
+            }
+        }
+
+        &__left{
+
+            .left_top{
+                display: flex;
+                gap: 2.4rem;
+                align-items: center;
+                margin-bottom: 2rem;
+
+                .image_container{
+                    position: relative;
+                    
+                    
+                    .user_image{
+                        height: 15rem;
+                        width: 15rem;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        font-size: 1.6rem;
+                    }
+
+                    .active_status{
+                        height: 2.4rem;
+                        width: 2.4rem;
+                        border-radius: 50%;
+                        background-color: #2DD760;
+                        position: absolute;
+                        bottom: 1.6rem;
+                        right: 1.6rem;
+                    }
+                    
+                    @include screenMax('mobile'){
+                        .user_image{
+                            height: 10rem;
+                            width: 10rem;
+
+                        }
+                        .active_status{
+                            height: 1.6rem;
+                            width: 1.6rem;
+                            bottom: 1rem;
+                            right: 1.1rem;
+                        
+                        }
+                    }
+                
+                }
+
+                .name_container{
+                    display: flex;
+                    align-items: center;
+                    gap: 2rem;
+
+                    .user_name{
+                        font-size: 1.8rem;
+                    font-weight: 700;
+                    color: #1B1E21;
+                }
+
+                .verification_status{
+                    font-size: 1.6rem;
+                    font-weight: 700;
+                    background-color: #ECFDF3;
+                    color: #027A48;
+                    padding: 0.5rem 1rem;
+                    border-radius: 1.6rem;
+                }
+                }
+
+                .faded_text{
+                    font-size: 1.2rem;
+                    font-weight: 400;
+                    color: #7B8086;
+                }
+
+                .flex_item{
+                    display: flex;
+                    gap: 1.6rem;
+                    align-items: center;
+
+                    .divider{
+                        height: 2rem;
+                        width: 1px;
+                        color: $col-border;
+                    }
+
+                    .rating_item{
+                        display: flex;
+                        gap: 0.5rem;
+                        align-items: center;
+                    
+                    }
+
+                    .date_text{
+                        font-size: 1.2rem;
+                        font-weight: 400;
+                        color: #1B1E21;
+                    
+                    }
+                }
+
+            }
+          
+
+            .socials_container{
+                display: flex;
+                gap: 1.6rem;
+                background-color: #fff;
+                padding: 1.6rem;
+                border-radius: 1rem;
+                width: fit-content;
+
+                @include screenMax('mobile'){
+                    width: 100%;
+                    justify-content: center;
+               
+                }
+            }
+            @include screenMax('mobile'){
+                width: 100%;
+           
+            }
+          
+        }
+
+        @include screenMax('mobile'){
+            flex-direction: column;
+            padding: 1.6rem;
+            align-items: center;
+        }
+
+}
+}

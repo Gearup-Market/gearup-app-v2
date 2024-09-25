@@ -1,0 +1,76 @@
+@import "@/styles/imports";
+
+.input {
+	width: 100%;
+	row-gap: 0.7rem;
+	@include flex(flex-start, flex-start, column);
+}
+
+.input_label {
+	@extend %text-14;
+	color: #1b1e21;
+}
+.error {
+	color: #ff3729;
+	@extend %text-12;
+}
+
+.input_wrapper {
+	position: relative;
+	padding: 1.6rem 1.2rem;
+	width: 100%;
+	column-gap: 0.4rem;
+	background-color: transparent;
+	border: 0.1rem solid #dedfe0;
+	border-radius: 0.8rem;
+	transition: all 0.1s ease-in;
+
+	@include flex(flex-start, center, row nowrap);
+
+	&:focus-within {
+		transition: all 0.3s linear;
+		// border-color: $col-gold-500;
+	}
+	&[data-error="true"] {
+		border-color: #ff3729;
+		transition: all 0.1s ease-in;
+	}
+}
+
+.input_icon {
+	position: relative;
+	// bottom: 0.3rem;
+	width: 1.6rem;
+	height: 1.6rem;
+	flex-shrink: 0;
+
+	&[data-click='true']{
+		cursor: pointer;
+	}
+}
+
+.input_field {
+	all: unset;
+	flex-grow: 1;
+	height: 100%;
+	font-size: 1.4rem;
+	line-height: 2.5rem;
+	font-weight: 500;
+	font-family: $font;
+	// color: $col-primary-darken2;
+	width: 100%;
+	&::placeholder {
+		font-size: 1.4rem;
+		line-height: 2.5rem;
+		color: #a3a7ab;
+	}
+}
+
+.icon {
+	position: relative;
+	width: 1.6rem;
+	height: 1.6rem;
+	cursor: pointer;
+	border: none !important;
+	padding: none !important;
+}

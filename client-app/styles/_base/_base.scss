@@ -1,0 +1,51 @@
+* {
+	outline: none;
+	box-sizing: border-box;
+	// scroll-behavior: smooth;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-decoration: none;
+}
+
+html {
+	font-size: calc(100vw / 1440 * 10);
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	& {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+	@include flex(stretch, stretch, column);
+	@include screenMax("tablet") {
+		font-size: calc(100vw / 950 * 10);
+	}
+
+	@include screenMax("mobile") {
+		font-size: calc(100vw / 450 * 10);
+	}
+	@include screenMax("ssm-mobile") {
+		font-size: calc(100vw / 380 * 10);
+	}
+}
+
+body {
+	line-height: 1;
+	flex-grow: 1;
+	margin: 0;
+	overflow-x: hidden;
+	scroll-behavior: smooth;
+	font-family: $font;
+	color: $col-grey-1;
+	background-color: white;
+	@include flex(stretch, stretch, column);
+}
+
+#__next {
+	flex-grow: 1;
+
+	@include flex(stretch, stretch, column);
+}

@@ -1,0 +1,22 @@
+@import "@/styles/imports";
+
+.container {
+
+    .title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: $col-grey-1;
+        text-transform: capitalize;
+
+        &[data-variant = 'main']{
+            font-size: 2.8rem;
+        }
+    }
+
+    .description {
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 1rem;
+        color: #4B525A;
+    }
+}

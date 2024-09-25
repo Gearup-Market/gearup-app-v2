@@ -1,0 +1,202 @@
+@import "@/styles/imports";
+
+.section {
+	position: relative;
+	height: 300vh;
+	width: 100%;
+	.row {
+		@include flex();
+		flex-wrap: nowrap;
+		gap: 2.4rem;
+		overflow-x: scroll;
+		position: sticky;
+		top: 12.6rem;
+		@include noScrollBar();
+	}
+	.card,
+	.mob_card {
+		width: 100%;
+		border-radius: 1.6rem;
+		padding: 4rem 6.4rem 6.4rem;
+		background-color: #1b1e21;
+		flex-shrink: 0;
+		.header {
+			width: 100%;
+			border-bottom: 0.1rem solid #484848;
+			padding-bottom: 4rem;
+			.indicators {
+				position: relative;
+				width: 15.2rem;
+				@include grid(repeat(3, 1fr), 1.2rem);
+				height: 0.8rem;
+				.indicator {
+					width: 100%;
+					height: 100%;
+					border-radius: 0.4rem;
+					background-color: #4b525a;
+				}
+				.indicator_active {
+					width: 30%;
+					height: 100%;
+					position: absolute;
+					border-radius: 0.4rem;
+					left: 0;
+					transition: all 0.3s linear;
+					background: $orange-grad;
+				}
+			}
+		}
+		.body {
+			margin-top: 8rem;
+			@include flex(flex-start, center);
+			gap: 3.2rem;
+			.image {
+				position: relative;
+				width: 53rem;
+				height: 39.4rem;
+				overflow: hidden;
+				border-radius: 0.8rem;
+				.line {
+					width: 100%;
+					height: 0.8rem;
+					position: absolute;
+					top: calc(50% - 0.4rem);
+					background-color: #1b1e21;
+					&:last-child {
+						height: 100%;
+						width: 0.8rem;
+						left: calc(50% - 0.4rem);
+						top: 0;
+					}
+				}
+			}
+			.details {
+				max-width: 59rem;
+				.alert_container {
+					border-bottom: 0.2rem solid #ffb30f;
+					@include flex(flex-start, center);
+					padding-bottom: 1.6rem;
+					gap: 0.8rem;
+					margin-bottom: 2.4rem;
+					display: inline-flex;
+					.icon {
+						position: relative;
+						width: 3.2rem;
+						height: 3.2rem;
+					}
+				}
+				.text {
+					h2 {
+						@extend %title-34;
+						color: $col-white;
+						font-family: $font-good;
+						font-weight: 700;
+						margin-bottom: 0.8rem;
+					}
+					h3 {
+						@extend %text-16;
+						font-weight: 700;
+						color: $col-white;
+					}
+					p {
+						@extend %text-16;
+						color: #c4c6c9;
+					}
+				}
+				.button {
+					margin-top: 4rem;
+					background-color: $col-white;
+					color: #1b1e21;
+					border-radius: 10rem;
+					padding: 1.6rem 2.4rem;
+				}
+			}
+		}
+		&[data-active="true"] {
+			background-color: #ffb30f;
+			.header {
+				border-color: #e8a30e;
+				.indicators {
+					.indicator {
+						background-color: #ffcc5e;
+					}
+					.indicator_active {
+						background: transparent;
+						background-color: $col-white;
+					}
+				}
+			}
+			.body {
+				.image {
+					.line {
+						background-color: #ffb30f;
+					}
+				}
+				.details {
+					.alert_container {
+						border-color: $col-white;
+					}
+					.text {
+						h2,
+						h3,
+						p {
+							color: #1b1e21;
+						}
+					}
+				}
+			}
+		}
+	}
+	.mob_card {
+		display: none;
+	}
+	@include screenMax("tablet") {
+		.card {
+			padding: 4rem;
+			.body {
+				.image {
+					width: 35rem;
+					height: 30rem;
+				}
+				.details {
+					max-width: 40rem;
+				}
+			}
+		}
+	}
+	@include screenMax("mobile") {
+		height: auto;
+		.row {
+			display: none;
+		}
+		.mob_card {
+			display: block;
+			position: relative;
+			padding: 5.6rem 1.6rem;
+			.body {
+				flex-direction: column-reverse;
+				margin-top: 0;
+				.image {
+					height: 23.1rem;
+					width: 100%;
+					.line {
+						height: 0.4rem;
+						top: calc(50% - 0.2rem);
+						&:last-child {
+							height: 100%;
+							width: 0.4rem;
+							left: calc(50% - 0.2rem);
+							top: 0;
+						}
+					}
+				}
+				.button {
+					width: 100%;
+				}
+			}
+			&:not(:last-child) {
+				margin-bottom: 12.8rem;
+			}
+		}
+	}
+}

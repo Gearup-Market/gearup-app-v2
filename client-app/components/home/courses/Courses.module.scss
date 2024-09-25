@@ -1,0 +1,57 @@
+@import "@/styles/imports";
+
+.section {
+	background-color: #fafafa;
+	.title {
+		max-width: 73.8rem;
+		margin-bottom: 6.4rem;
+	}
+	.flex_row {
+		@include flex(space-between);
+	}
+	.button {
+		@include flex(flex-start, center);
+		gap: 0.8rem;
+		.icon {
+			position: relative;
+			width: 1.6rem;
+			height: 1.6rem;
+		}
+		p {
+			color: #1b1e21;
+		}
+	}
+	.row {
+		@include grid(repeat(4, 1fr), 2.4rem);
+	}
+	@include screenMax("tablet") {
+		.title {
+			max-width: 65.8rem;
+		}
+		.row {
+			@include grid(repeat(3, 1fr), 2.4rem);
+			.course {
+				&:last-child {
+					display: none;
+				}
+			}
+		}
+	}
+	@include screenMax("mobile") {
+		.title {
+			max-width: 100%;
+			margin-bottom: 4rem;
+		}
+		.row {
+			grid-template-columns: 1fr;
+			.course {
+				&:last-child {
+					display: block;
+				}
+			}
+		}
+		.button {
+			display: none;
+		}
+	}
+}

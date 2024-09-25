@@ -1,0 +1,139 @@
+@import "@/styles/imports";
+
+
+.container{
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    // width: 100%;
+    padding: 2rem 0;
+    box-sizing: border-box;
+    overflow: hidden;
+
+
+
+    &__filters{
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+
+    &__parent_container{
+        display: flex;
+        gap: 2rem;
+        padding: 0.5rem 0.5rem;
+        border-radius: 10rem;
+        background-color: white;
+        border: 1px solid $col-border;
+        width:fit-content;
+        transition: all 0.3s ease-in-out;
+
+       
+
+        
+
+
+        &__filter{
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 3rem;
+            background-color: $col-white;
+            font-size: 1.4rem;
+            border-radius: 10rem;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+
+            &[data-active='true']{
+                background-color: #ffb30f;
+                font-weight: 700;
+            }
+        
+        }
+    }
+
+    &__children_container{
+        display: flex;
+        gap: 2rem;
+        padding: 1rem 0;
+        overflow: scroll;
+        width: 100%;
+        // flex-wrap: wrap;
+        row-gap: 1rem;
+
+        &__filter{
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: $col-white;
+            font-size: 1.4rem;
+            border-radius: 10rem;
+            cursor: pointer;
+            border: 1px solid $col-border;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+            min-width: 10rem;
+            justify-content: center;
+            // max-width: 50%;
+            
+            
+
+            &[data-active='true']{
+                background-color: #FFF7E7;
+                font-weight: 700;
+                border: 1px solid #ffb30f;
+            }
+        
+        }
+
+    }
+    
+}
+@include screenMax("mobile") {
+    padding: 2rem 0rem;
+    gap: 1rem;
+    width: 100%;
+    
+    &__filters{
+        row-gap: 1rem;
+        width: 100%;
+        padding: 0;
+        overflow: scroll;
+        
+        &__parent_container{
+            width: 100%;
+
+            &__filter{
+                flex: 1 1 auto;
+                width: 100%;
+            }
+           
+        }
+
+        
+
+
+        &__children_container{
+            gap: 1rem;
+            justify-content: space-between;
+            width: 100%;
+
+            &__filter{
+                gap: 1rem;
+                min-width: fit-content;
+                flex-wrap: nowrap;
+                
+                flex: 1;
+                
+    
+
+             
+            
+            }
+        
+        }
+    
+    }
+}
+}

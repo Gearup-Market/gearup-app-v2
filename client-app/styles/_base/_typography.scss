@@ -1,0 +1,32 @@
+// @import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap");
+@font-face {
+	font-family: "Good";
+	src: url("/fonts/good-timing.otf");
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+@font-face {
+	font-family: "Cera";
+	src: url("/fonts/cera-pro/Cera-Pro-Medium.otf");
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+}
+
+section,
+article,
+blockquote,
+div,
+span,
+nav,
+p,
+ul,
+li,
+a {
+	font-size: 1.6rem;
+	line-height: 2.4rem;
+	@include screenMax("mobile") {
+		font-size: 1.4rem;
+	}
+}

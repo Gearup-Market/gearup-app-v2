@@ -1,0 +1,29 @@
+@import "@/styles/imports";
+
+.container {
+	border: 0.1rem solid #dedfe0;
+	border-radius: 0.8rem;
+	padding: 1.2rem 1.6rem;
+	@include flex(space-between, center);
+	gap: 1.6rem;
+	position: relative;
+	margin-bottom: 1.6rem;
+	.small_row {
+		@include flex(flex-start, center);
+		gap: 1.6rem;
+		.row_button {
+			padding: 0.6rem 1.2rem;
+		}
+	}
+	.button {
+		position: relative;
+		width: 3.2rem;
+		height: 3.2rem;
+		rotate: 45deg;
+	}
+	.text {
+		p {
+			color: #1b1e21;
+		}
+	}
+}

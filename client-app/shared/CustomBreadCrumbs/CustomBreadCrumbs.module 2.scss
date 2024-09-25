@@ -1,0 +1,26 @@
+@import "@/styles/imports";
+
+.breadcrumb_container {
+	margin-bottom: 2.4rem;
+	.text_container {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		.path1 {
+			@extend %text-14;
+			text-decoration: underline;
+			text-transform: capitalize;
+			color: #7b8086;
+		}
+		.path2 {
+			@extend %text-14;
+			text-transform: capitalize;
+			color: #1b1e21;
+		}
+		.icon {
+			width: 1.6rem;
+			height: 1.6rem;
+			transform: rotate(90deg);
+		}
+	}
+}

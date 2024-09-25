@@ -1,0 +1,67 @@
+@import "@/styles/imports";
+
+.accordion {
+	width: 100%;
+	border-radius: 0.8rem;
+	border: 0.1rem solid rgba(18, 18, 18, 0.12);
+	padding-inline: 1.6rem;
+	//   height: 7.7rem;
+	overflow: hidden;
+	margin-bottom: 0.4rem;
+	.header {
+		cursor: pointer;
+		@include flex(space-between, center);
+		padding-block: 1.4rem;
+		.text {
+			max-width: 90%;
+			p {
+				text-transform: uppercase;
+			}
+		}
+	}
+	.body {
+		width: 100%;
+		max-height: 0;
+		overflow: hidden;
+		transition: all 0.5s ease-in-out;
+
+		@include screenMax("mobile") {
+			width: 90%;
+		}
+	}
+	// transition: all 0.5s ease-in-out;
+	.chevron {
+		position: relative;
+		width: 1.6rem;
+		height: 1.6rem;
+		display: block;
+		margin-right: 1.6rem;
+		transition: rotate 0.5s ease-in-out;
+	}
+	&[data-active="true"] {
+		transition: all 0.5s ease-in-out;
+		// height: auto;
+		.body {
+			max-height: 1000rem;
+			padding-block: 2.4rem;
+			min-height: 10rem;
+			transition: all 0.5s ease-in-out;
+		}
+		.chevron {
+			rotate: 180deg;
+			transition: rotate 0.5s ease-in-out;
+		}
+	}
+	@include screenMax("mobile") {
+		padding: 1.6rem;
+		margin-bottom: 1.6rem;
+		.header {
+			padding-block: 0;
+			.text {
+				p {
+					font-size: 1.4rem;
+				}
+			}
+		}
+	}
+}

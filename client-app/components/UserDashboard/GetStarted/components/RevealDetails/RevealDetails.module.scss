@@ -1,0 +1,45 @@
+@import "@/styles/imports";
+
+.container{
+    background: #FFF7E7;
+    padding: 2rem;
+    border-radius: 0.8rem;
+
+    &__question{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+            .rotate{
+                transform: rotate(180deg);
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+            }
+            
+            .image{
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+                transform: rotate(0deg);
+            }
+            
+            &__item{
+                font: 500;
+            font-size: 1.4rem;
+            color: #1B1E21;
+        }
+        
+    }
+
+    &__answer{
+        font-size: 1.4rem;
+        color: #A3A7AB;
+        margin-top: 1rem;
+        display: none;
+        transition: all 0.3s ease-in-out;
+
+        &[data-visible='true']{
+            display: block;
+        }
+    }
+
+}

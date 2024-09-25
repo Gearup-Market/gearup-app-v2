@@ -1,0 +1,27 @@
+@import '@/styles/imports';
+
+.nav_container{
+    @include flex;
+    gap: 1rem;
+    font-weight: 700;
+    color: #4B525A;
+    align-items: center;
+    cursor: pointer;
+    width: fit-content;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+
+    .icon{
+        @include flex;
+        width: 2.6rem;
+        height: 2.6rem;
+        transform: rotate(90deg);
+        border-radius: 50%;
+        border: 1px solid $col-border;
+        padding: 0.5rem;
+        cursor: pointer;
+    }
+
+}

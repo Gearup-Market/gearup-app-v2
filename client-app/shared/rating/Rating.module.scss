@@ -1,0 +1,12 @@
+@import "@/styles/imports";
+
+.container {
+	@include flex(flex-start, center);
+	gap: 0.8rem;
+	.text {
+		h5 {
+			@extend %text-14;
+			font-weight: 700;
+		}
+	}
+}

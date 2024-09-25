@@ -1,0 +1,59 @@
+@import "@/styles/imports";
+
+.section {
+	.title {
+		max-width: 73.8rem;
+		margin-bottom: 6.4rem;
+	}
+	.flex_row {
+		@include flex(space-between);
+	}
+	.button {
+		@include flex(flex-start, center);
+		gap: 0.8rem;
+		.icon {
+			position: relative;
+			width: 1.6rem;
+			height: 1.6rem;
+		}
+		p {
+			color: #1b1e21;
+		}
+	}
+	.grid {
+		@include grid(repeat(2, 1fr), 2.4rem, 2.4rem);
+		.high_card {
+			grid-row: span 2;
+			height: 53.4rem;
+		}
+	}
+	.slider {
+		width: 100%;
+		display: none;
+	}
+	@include screenMax("tablet") {
+		.title {
+			max-width: 65.8rem;
+		}
+	}
+	@include screenMax("mobile") {
+		.title {
+			max-width: 100%;
+			margin-bottom: 2.4rem;
+		}
+		.grid {
+			display: none;
+		}
+		.slider {
+			display: block;
+		}
+		a {
+			width: 100%;
+		}
+		.button {
+			width: 100%;
+			margin-bottom: 4rem;
+			justify-content: center;
+		}
+	}
+}

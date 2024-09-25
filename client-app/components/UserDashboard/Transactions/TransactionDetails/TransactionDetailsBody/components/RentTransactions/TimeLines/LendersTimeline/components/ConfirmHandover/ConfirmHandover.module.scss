@@ -1,0 +1,44 @@
+@import "@/styles/imports";
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    
+    .container_top{
+        padding: 3rem;
+
+
+    .details_container{
+        background: #FFFFFF;
+        padding: 1.6rem;
+        margin-bottom: 2rem;
+        .details{
+            color: #7B8086;
+            font-size: 1.4rem;
+
+            .bold{
+                font-weight: 700;
+                color: #1B1E21;
+            }
+
+        }
+    }
+
+}
+    .btn_container{
+        @include flex;
+        justify-content: flex-end;
+        gap: 3rem;
+        border-top: 1px solid $col-border;
+        padding: 2rem;
+        align-items: center;
+        height: 100%;
+
+        button{
+            padding: 1.6rem 2rem;
+            font-weight: 700;
+        }
+    }
+}

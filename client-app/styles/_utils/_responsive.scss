@@ -1,0 +1,21 @@
+// $breakpoints: (
+//   'phone': 768px,
+//   'tablet': 1024px,
+//   'desktop': 1920px,
+// ) !default;
+
+$breakpoints: (
+	// 'xxsm-mobile': 350px,
+	// 'xsm-mobile': 380px,
+	"ssm-mobile": 425px,
+	// 'sm-mobile': 550px,
+	"mobile": 450px,
+	// 'sm-tablet': 700px,
+	// 'md-tablet': 770px,
+	"tablet": 950px,
+	// 'lg-tablet': 1025px,
+	// 'sm-desktop': 1200px,
+	// 'desktop': 1366px,
+) !default;
+
+// @import '../../node_modules/include-media/dist/_include-media.scss';

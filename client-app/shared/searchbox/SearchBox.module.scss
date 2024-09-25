@@ -1,0 +1,122 @@
+@import "@/styles/imports";
+
+.searchBox {
+	width: 100%;
+	border-radius: 0.4rem;
+	transition: $all-transition;
+	// z-index: 2;
+	position: relative;
+	@include screenMax("tablet") {
+		width: 100%;
+	}
+	&:focus-within {
+		// border-color: $col-primary-50;
+		transition: $all-transition;
+	}
+	.input {
+		@include flex(flex-start, center);
+		width: 40rem;
+		padding: 2rem 2.4rem;
+		width: 100%;
+		row-gap: 0.7rem;
+		&:first-child {
+			border-right: 0.1rem solid #dedfe0;
+		}
+		.input_wrapper {
+			position: relative;
+			width: 100%;
+			column-gap: 0.4rem;
+			background-color: transparent;
+			transition: all 0.1s ease-in;
+			@include flex(flex-start, center, row nowrap);
+		}
+		.input_icon {
+			position: relative;
+			width: 1.6rem;
+			height: 1.6rem;
+			flex-shrink: 0;
+		}
+		.input_field {
+			all: unset;
+			flex-grow: 1;
+			height: 100%;
+			font-size: 1.4rem;
+			line-height: 2.5rem;
+			font-weight: 500;
+			font-family: $font;
+			width: 100%;
+			&::placeholder {
+				font-size: 1.4rem;
+				line-height: 2.5rem;
+				color: #a3a7ab;
+			}
+		}
+	}
+	.row {
+		@include flex(space-between, center);
+		width: 100%;
+		padding: 1.2rem 2.4rem 1.2rem 0;
+		background-color: $col-white;
+		border-top-right-radius: 1.6rem;
+		border-bottom-right-radius: 1.6rem;
+		border-bottom-left-radius: 1.6rem;
+	}
+	.button {
+		padding: 1.6rem 2.4rem;
+	}
+	.small_row {
+		@include flex();
+		flex-wrap: nowrap;
+		position: relative;
+		flex-grow: 1;
+	}
+	.small_button_container {
+		@include flex();
+		.small_button {
+			background-color: #171717;
+			color: $col-white;
+			padding: 1.4rem 2.3rem;
+			font-weight: 400;
+			&:first-child {
+				border-top-left-radius: 1.6rem;
+			}
+			&:last-child {
+				border-top-right-radius: 1.6rem;
+			}
+			&[data-active="true"] {
+				background: $orange-grad;
+				color: #1b1e21;
+				font-weight: 700;
+			}
+		}
+	}
+	@include screenMax("tablet") {
+		.input {
+			width: 30rem;
+		}
+	}
+	@include screenMax("mobile") {
+		.input {
+			min-width: none;
+			width: 100%;
+			&:first-child {
+				border-right: none;
+			}
+		}
+		.small_row {
+			flex-wrap: wrap;
+			background-color: $col-white;
+			border-top-right-radius: 1.6rem;
+			border-bottom-right-radius: 1.6rem;
+			border-bottom-left-radius: 1.6rem;
+		}
+		.row {
+			background-color: transparent;
+			padding: 0;
+		}
+		.button {
+			width: 100%;
+			margin-top: 2.4rem;
+		}
+	}
+}

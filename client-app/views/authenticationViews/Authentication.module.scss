@@ -1,0 +1,181 @@
+@import "@/styles/imports";
+
+.section {
+	width: 100%;
+	@include flex(flex-start, center, column);
+	padding: 0;
+	padding-top: 7.2rem;
+	background-color: #060606;
+	border-radius: 1rem;
+	height: 100%;
+	.logo_mob {
+		display: none;
+	}
+	.container {
+		background-color: #fff;
+		width: 70.8rem;
+		padding: 5.6rem 4rem;
+		border-radius: 0.8rem;
+		@include flex(flex-start, center, column);
+		margin-top: 7.3rem;
+		.image {
+			position: relative;
+			width: 15rem;
+			height: 15rem;
+			margin-bottom: 2.4rem;
+		}
+		.text {
+			text-align: center;
+		}
+		.input {
+			margin-top: 2.4rem;
+		}
+		.otp_container {
+			@include flex(space-between, center, nowrap);
+			gap: 0.8rem;
+			width: 100%;
+			margin-top: 2.4rem;
+			border: none;
+			.otp_input {
+				all: unset;
+				flex-grow: 0;
+				flex-shrink: 0;
+				height: 4.4rem;
+				font-size: 3.2rem;
+				text-align: center;
+				font-weight: 500;
+				border-radius: 0.8rem;
+				width: 6.8rem;
+				@extend %center;
+				border: 0.1rem solid #dedfe0;
+				padding: 1rem 1.2rem;
+				&:focus {
+					border-color: #ffb30f;
+				}
+			}
+		}
+		.button {
+			width: 100%;
+			margin-top: 2.4rem;
+			margin-bottom: 1.6rem;
+			padding: 1.6rem;
+		}
+	}
+	@include screenMax("mobile") {
+		padding-inline: 0 !important;
+		background-color: white;
+		.logo_mob {
+			width: 10rem;
+			height: 2.5rem;
+			display: block;
+		}
+		.logo {
+			display: none;
+		}
+		.logo_section {
+			display: none;
+		}
+		.container {
+			width: 100%;
+			padding: 0;
+			margin-top: 8rem;
+			.otp_container {
+				.otp_input {
+					width: 2.5rem;
+					height: 3rem;
+					font-size: 2rem;
+				}
+			}
+		}
+	}
+}
+.text {
+	h1 {
+		@extend %title-34;
+		font-family: $font-good;
+		font-weight: 700;
+		color: #fff;
+		margin-bottom: 0.8rem;
+	}
+	h3 {
+		@extend %title-34;
+		font-weight: 700;
+		margin-bottom: 0.8rem;
+	}
+	h5 {
+		color: #c4c6c9;
+		@extend %text-18;
+	}
+	p {
+		color: #7b8086;
+		margin-bottom: 1.6rem;
+	}
+	a {
+		color: #ffb30f;
+		text-decoration: underline;
+		font-weight: 700;
+	}
+}
+.row {
+	width: 100%;
+	@include flex(flex-start, center);
+	height: 100%;
+	background-color: $col-white;
+	gap: 8rem;
+	.logo_section {
+		width: 65rem;
+		background-color: #060606;
+		border-radius: 1rem;
+		height: 100%;
+		padding: 4rem;
+		@include flex(space-between, flex-start, column);
+		.logo {
+			width: 15rem;
+			height: 3.75rem;
+			margin-bottom: 4rem;
+		}
+		.image {
+			position: relative;
+			width: 58.4rem;
+			height: 37.7rem;
+			margin-right: -4rem;
+			margin-bottom: -4rem;
+			align-self: flex-end;
+		}
+	}
+	.container {
+		width: 61rem;
+	}
+	.input_block {
+		.input {
+			margin-bottom: 1.6rem;
+		}
+	}
+	.button {
+		margin-top: 2.4rem;
+		width: 100%;
+		padding: 1.6rem;
+	}
+	.logo_mob {
+		display: none;
+	}
+	.checkbox {
+		margin-right: 3rem;
+	}
+	@include screenMax("mobile") {
+		.logo_mob {
+			width: 10rem;
+			height: 2.5rem;
+			display: block;
+			margin-bottom: 4.2rem;
+		}
+		display: block;
+		margin-top: 2.4rem;
+		.logo_section {
+			display: none;
+		}
+		.container {
+			width: 100%;
+		}
+	}
+}

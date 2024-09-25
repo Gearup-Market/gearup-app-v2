@@ -1,0 +1,77 @@
+@import "@/styles/imports";
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #FFF7E7;
+    padding: 2rem;
+    border-radius: 1.6rem;
+
+   
+
+    &__left {
+        display: flex;
+        gap: 1rem;
+
+        .icon_container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 50%;
+            height: 5rem;
+            width: 5rem;
+        }
+
+
+        .image_icon{
+            height: 4rem;
+            width: 4rem;
+        }
+
+        &__welcome {
+            font-weight: 700;
+            font-size: 2rem;
+            color: $col-grey-1;
+        }
+
+        &__question {
+            color: #4B525A;
+            font-size: 1.6rem;
+        }
+    }
+
+    .btn{
+        gap: 0.5rem;
+
+    }
+
+    @include screenMax("mobile") {
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+
+        &__left {
+            display: flex;
+            width: 100%;
+            gap: 1rem;
+    
+    
+            &__question {
+                font-size: 1.2rem;
+            }
+        }
+
+        .create_listing{
+            width: 100%;
+
+            button{
+                width: 100%;
+            }
+        }
+
+    }
+
+}

@@ -1,0 +1,80 @@
+@import "@/styles/imports";
+
+.slider {
+	width: 100%;
+	.slide {
+		width: 100%;
+		height: 46.6rem;
+		position: relative;
+		.button_container {
+			position: absolute;
+			z-index: 1;
+			left: 2.4rem;
+			bottom: 2.4rem;
+			.button {
+				border-radius: 0.4rem;
+				text-transform: capitalize;
+				// padding: 0.4rem 1.2rem;
+				padding: 0;
+				width: 5.4rem;
+				height: 2.4rem;
+				@extend %center;
+				@extend %text-14;
+				&:nth-child(2) {
+					margin-top: 0.8rem;
+				}
+			}
+			&[data-active="true"] {
+				.button {
+					&:first-child {
+						background: unset;
+						background-color: #072ac8;
+						color: #ffffff;
+					}
+				}
+			}
+		}
+	}
+	.smaller_slide {
+		position: relative;
+		width: 8rem;
+		height: 8rem;
+	}
+	.slide_more {
+		position: absolute;
+		width: 8rem;
+		height: 8rem;
+		background-color: rgba(9, 3, 3, 0.7);
+		z-index: 1;
+		@extend %center;
+		p {
+			color: white;
+			@extend %text-14;
+			font-weight: 700;
+		}
+	}
+	.show_less {
+		margin-top: 2rem;
+		max-width: 8rem;
+		p {
+			@extend %text-14;
+			font-weight: 700;
+			cursor: pointer;
+		}
+	}
+	@include screenMax("mobile") {
+		.slide {
+			height: 34rem;
+		}
+		.smaller_slide,
+		.slide_more {
+			width: 5rem;
+			height: 5rem;
+		}
+		.slide_more {
+			p {
+				font-size: 1.2rem;
+			}
+		}
+	}
+}

@@ -1,0 +1,58 @@
+@import "@/styles/imports";
+
+.container {
+	.title {
+		font-weight: 700;
+		h1,
+		span {
+			@extend %title-34;
+			margin-bottom: 0.8rem;
+			font-family: $font-good;
+		}
+		h1 {
+			color: #1b1e21;
+		}
+		&[data-type="small"] {
+			h1,
+			span {
+				@extend %title-24;
+				margin-bottom: 0.6rem;
+			}
+		}
+	}
+	.description {
+		margin-top: 1.6rem;
+		p {
+			font-weight: 500;
+			color: $col-grey-400;
+		}
+		&[data-type="small"] {
+			p {
+				@extend %text-16;
+			}
+		}
+	}
+	@include screenMax("mobile") {
+		.title {
+			h1,
+			span {
+				font-size: 1.8rem;
+				line-height: 2.4rem;
+			}
+			&[data-type="medium"] {
+				h1,
+				span {
+					font-size: 2rem;
+					line-height: 3.6rem;
+				}
+			}
+			&[data-type="large"] {
+				h1,
+				span {
+					font-size: 2.6rem;
+					line-height: 3.2rem;
+				}
+			}
+		}
+	}
+}

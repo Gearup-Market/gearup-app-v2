@@ -1,0 +1,70 @@
+@import "@/styles/imports";
+
+.container {
+	width: 100%;
+	.image {
+		position: relative;
+		width: 100%;
+		height: 24.4rem;
+		overflow: hidden;
+		border-radius: 0.4rem;
+		margin-bottom: 1.2rem;
+		.button {
+			position: absolute;
+			z-index: 1;
+			left: 0.8rem;
+			bottom: 0.8rem;
+			border-radius: 0.4rem;
+			text-transform: capitalize;
+			padding: 0.4rem 1.2rem;
+		}
+	}
+	.text {
+		h2,
+		h3,
+		h4 {
+			@extend %text-16;
+			font-weight: 700;
+			color: #1b1e21;
+		}
+		h2 {
+			margin-bottom: 0.8rem;
+		}
+		h3 {
+			font-weight: 600;
+			margin-bottom: 2.4rem;
+		}
+		h4 {
+			@extend %text-14;
+		}
+		p {
+			@extend %text-12;
+			font-family: $font-cera;
+			text-transform: capitalize;
+		}
+		span {
+			@extend %text-12;
+			color: #4b525a;
+		}
+	}
+	.divider {
+		width: 100%;
+		height: 0.1rem;
+		background-color: #dedfe0;
+		margin-bottom: 1.2rem;
+	}
+	.small_row {
+		@include flex(flex-start, center);
+		gap: 0.8rem;
+	}
+	.row {
+		@include flex(space-between, center);
+	}
+	.avatar {
+		position: relative;
+		width: 3.2rem;
+		height: 3.2rem;
+		overflow: hidden;
+		border-radius: 50%;
+	}
+}

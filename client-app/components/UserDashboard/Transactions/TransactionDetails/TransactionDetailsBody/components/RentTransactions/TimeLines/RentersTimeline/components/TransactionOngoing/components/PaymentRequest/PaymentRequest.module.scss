@@ -1,0 +1,122 @@
+@import "@/styles/imports";
+
+.container{
+    width: 50.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+   
+
+    &__header{
+        @include flex;
+        gap: 1.6rem;
+        align-items: center;
+        border-top: 1px solid $col-border;
+        padding-top: 1rem;
+        margin-top: 2rem;
+
+        img{
+            height: 4rem;
+            width: 4rem;
+            border-radius: 50%;
+        }
+        
+        h3{
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1B1E21;
+        }
+    }
+
+    .icon{
+        height: 2rem;
+        width: 2rem;
+    }
+
+    &__summary_container{
+        background-color: #FBFBFD;
+        padding: 2.4rem;
+        border-radius: 1rem;
+
+        .summary_item{
+            @include flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 1.2rem;
+
+            h4{
+                font-size: 1.4rem;
+                font-weight: 400;
+                color: #7B8086;
+            }
+
+            p{
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: #1B1E21;
+            }
+
+            .edit{
+                color: #FFC107;
+                cursor: pointer;
+           
+            }
+
+            .type_container{
+                background:#F2F4F7;
+                padding: .2rem 1rem;
+                border-radius: 1rem;
+            }
+
+            .renter_name{
+                @include flex;
+                gap: .5rem;
+                align-items:center;
+
+                img{
+                    height: 3rem;
+                    width: 3rem;
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        .input_container{
+            margin-bottom: 2rem;
+        }
+
+        .button{
+            flex:1;
+            width:100%;
+            margin-top: 3rem;
+        }
+
+    }
+
+    .notification_container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .icon{
+            height: 10rem;
+            width: 10rem;
+            margin-bottom: 2rem;
+        }
+
+        p{
+            text-align: center;
+            font-size: 1.4rem;
+            color: #4B525A;
+        }
+
+        
+        .button{
+            flex:1;
+            width:100%;
+            margin-top: 2rem;
+        }
+    }
+
+    
+}

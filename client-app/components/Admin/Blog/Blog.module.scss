@@ -1,0 +1,83 @@
+@import "@/styles/imports";
+
+
+.container {
+    padding: 4rem 3rem;
+
+    &__title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: $col-grey-1;
+    }
+
+    &__download_filter{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &__download_btn{
+            text-decoration: underline;
+            font-size:1.6rem;
+            font-weight: 700;
+            color: #4B525A;
+            padding: 1rem 0;
+            text-underline-offset: 0.2rem;
+            cursor: pointer;
+        }
+    
+
+    .parent_container{
+        display: flex;
+        gap: 2rem;
+        padding: 0.5rem 0.5rem;
+        width:fit-content;
+
+        .filter{
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 0.6rem 3rem;
+            font-size: 1.4rem;
+            border-radius: 10rem;
+            cursor: pointer;
+            border: 1px solid $col-border;
+            transition: all 0.3s ease-in-out;
+
+            &[data-active='true']{
+                background-color: #FFF7E7;
+                font-weight: 700;
+                border: 1px solid #ffb30f;
+            }
+            
+        }
+    }
+}
+
+
+@include screenMax("mobile"){
+    padding: 3rem 1.6rem;
+
+    .parent_container{
+        gap: 0;
+        width: 100%;
+        justify-content: space-between;
+
+        .filter{
+            border: none;
+            flex: 1;
+            border-radius: 0;
+            border-bottom: 1px solid $col-border;
+            &[data-active='true']{
+                border: none;
+                background-color: transparent;
+                font-weight: 700;
+                border-bottom: 1px solid #ffb30f;
+               
+            }
+        
+        }
+    }
+}
+
+}

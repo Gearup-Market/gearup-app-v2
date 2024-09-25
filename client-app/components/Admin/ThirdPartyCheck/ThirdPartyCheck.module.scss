@@ -1,0 +1,94 @@
+@import "@/styles/imports";
+
+
+.container {
+    padding: 4rem 3rem;
+
+  
+    &__title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: $col-grey-1;
+    }
+
+    &__download_filter{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+       
+
+        &__download_btn{
+            text-decoration: underline;
+            font-size:1.6rem;
+            font-weight: 700;
+            color: #4B525A;
+            padding: 1rem 0;
+            text-underline-offset: 0.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            
+
+            img{
+                display: none;
+
+                @include screenMax("mobile"){
+                    display: block;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                }
+            }
+        
+        }
+    
+
+    .parent_container{
+        display: flex;
+        gap: 2rem;
+        padding: 0;
+        width:fit-content;
+        overflow: scroll;
+        padding-bottom: 0.5rem;
+
+        .filter{
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 0.6rem 3rem;
+            font-size: 1.4rem;
+            border-radius: 10rem;
+            cursor: pointer;
+            border: 1px solid $col-border;
+            transition: all 0.5s ease-in-out;
+
+            &[data-active='true']{
+                background-color: #FFF7E7;
+                font-weight: 700;
+                border: 1px solid #ffb30f;
+            }
+        
+        }
+
+    }
+}
+@include screenMax("mobile"){
+padding: 3rem 1.6rem;
+    &__download_filter{
+        flex-direction: column;
+        align-items: flex-start;
+
+        .parent_container{
+            width: 100%;
+
+            .filter{
+                flex: 1;
+            }
+        }
+    }
+}
+
+}

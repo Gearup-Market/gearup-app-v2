@@ -1,0 +1,70 @@
+@import "@/styles/imports";
+
+.container {
+	display: block;
+	position: relative;
+	padding-left: 3rem;
+	margin-bottom: 2.5rem;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	@extend %text-16;
+	color: #1b1e21;
+	text-transform: capitalize;
+	input {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+	}
+	.checkmark {
+		position: absolute;
+		top: 0.2rem;
+		left: 0.1rem;
+		height: 2rem;
+		width: 2rem;
+		background-color: $col-white;
+		border: 0.2rem solid #8c9196;
+		border-radius: 0.4rem;
+		transition: $all-transition;
+	}
+	&[data-type="true"] {
+		cursor: not-allowed;
+		pointer-events: none;
+		opacity: 0.5;
+		.input {
+			cursor: not-allowed;
+		}
+	}
+}
+
+.container input:checked ~ .checkmark {
+	background: $orange-grad;
+	border: none;
+	// background: linear-gradient(0deg, #d1fdff 0%, #fddb92 100%);
+}
+
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+.container input:checked ~ .checkmark:after {
+	display: block;
+}
+
+.container .checkmark:after {
+	left: 0.6rem;
+	top: 0.4rem;
+	width: 0.4rem;
+	height: 0.7rem;
+	border: solid $col-white;
+	border-width: 0 0.3rem 0.3rem 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}

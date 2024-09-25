@@ -1,0 +1,125 @@
+@import "@/styles/imports";
+
+.container{
+display: flex;
+flex-direction: column;
+gap: 1.6rem;
+
+    .nav_container{
+        @include flex;
+        gap: 1rem;
+        font-weight: 700;
+        color: #4B525A;
+        align-items: center;
+        cursor: pointer;
+        width: fit-content;
+        margin-bottom: 1rem;
+
+        .icon{
+            @include flex;
+            width: 2.6rem;
+            height: 2.6rem;
+            transform: rotate(90deg);
+            border-radius: 50%;
+            border: 1px solid $col-border;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+    }
+
+    .item_details{
+        @include flex;
+        align-items: flex-start;
+        gap: 1rem;
+
+
+        .left{
+            @include flex;
+            gap: 1rem;
+            align-items: stretch;
+
+            img{
+            width: 5.6rem;
+            height: 5.6rem;
+            border-radius: 0.4rem;
+
+
+        }
+
+        .right{
+            @include flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            h2{
+                font-size: 2.4rem;
+                font-weight: 700;
+                color: #1B1E21;
+            }
+
+            p{
+                color: #1B1E21;
+                font-size: 1.4rem;
+            }
+        }
+
+    }
+    .status{
+        @include flex;
+        gap: 1rem;
+        align-items: center;
+        padding: 0.4rem 1.5rem;
+        justify-content: center;
+        border-radius: 1.6rem;
+
+        &[data-status='pending']{
+            background-color: #FFFAEB;
+            color: #B54708;
+        }
+
+        &[data-status='completed']{
+            background-color: #ECFDF3;
+            color: #2E8540;
+        }
+
+        &[data-status='declined']{
+            background-color: #FEF3F2;
+            color: #B42318;
+        }
+
+        &[data-status='ongoing']{
+            background-color: #F0F9FF;
+            color: #026AA2;
+        }
+    
+    }
+}
+
+    &__children_container{
+        display: flex;
+        gap: 2rem;
+        margin-top: 1rem;
+
+        &__filter{
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 0.6rem 1.5rem;
+            background-color: $col-white;
+            font-size: 1.4rem;
+            border-radius: 10rem;
+            cursor: pointer;
+            border: 1px solid $col-border;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.2s ease-in-out;
+
+            &[data-active='true']{
+                background-color: #FFF7E7;
+                font-weight: 700;
+                border: 1px solid #ffb30f;
+            }
+        
+        }
+    }
+}

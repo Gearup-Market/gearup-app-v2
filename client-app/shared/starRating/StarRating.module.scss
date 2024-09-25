@@ -1,0 +1,21 @@
+// components/StarRating.module.scss
+.starRating {
+    display: flex;
+    cursor: pointer;
+    font-size: 5rem;
+    
+    .filledStar {
+        color: #FEC84B;
+        font-size: 3.5rem;
+        }
+        
+        .emptyStar {
+            color: gray;
+            font-size: 3.5rem;
+    }
+  
+    span {
+      margin-right: 5px;
+    }
+  }
+  

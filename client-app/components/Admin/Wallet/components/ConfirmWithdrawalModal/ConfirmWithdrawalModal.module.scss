@@ -1,0 +1,26 @@
+@import "@/styles/imports";
+
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 60rem;
+    min-width: 45rem;
+
+    .sub_text{
+        color: #7B8086;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .border_container{
+        border: 1px solid #DEDFE0;
+        padding: 2rem 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    
+        
+}

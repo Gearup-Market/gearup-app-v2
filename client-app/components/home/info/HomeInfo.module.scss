@@ -1,0 +1,34 @@
+@import "@/styles/imports";
+
+.section {
+	@include flex(space-between);
+	gap: 2.2rem;
+	.box {
+		background-color: #fafafa;
+		padding: 4rem;
+		border-radius: 0.8rem;
+		width: 41.1rem;
+		.icon {
+			position: relative;
+			width: 5.6rem;
+			height: 5.6rem;
+		}
+		.text {
+			margin-top: 4rem;
+			h3 {
+				@extend %title-24;
+				color: #1b1e21;
+				font-family: $font-good;
+				margin-bottom: 0.8rem;
+			}
+			p {
+				color: #4b525a;
+			}
+		}
+	}
+	@include screenMax("mobile") {
+		.box {
+			width: 100%;
+		}
+	}
+}

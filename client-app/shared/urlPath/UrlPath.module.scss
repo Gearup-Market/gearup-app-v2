@@ -1,0 +1,14 @@
+@import "@/styles/imports";
+
+.container{
+display: flex;
+gap: 1rem;
+
+.close_icon{
+    cursor: pointer;
+}
+
+    @include screenMax("mobile") {
+        padding:  1.6rem;
+    }
+}

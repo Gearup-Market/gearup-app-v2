@@ -1,0 +1,80 @@
+@import "@/styles/imports";
+
+.container {
+    margin-top: 2rem;
+    
+    .title{
+        font-weight: 700;
+        font-size: 2.8rem;
+        margin-bottom: 2.4rem;
+
+    }
+
+    .body{
+        border: 1px solid #DEDFE0;
+        border-radius: 1.6rem;
+        padding: 2.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+
+        &__top{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #FBFBFD;
+            padding: 2.4rem;
+            border-radius: 1.6rem;
+
+            .left{
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+
+                .shield_icon{
+                    height: 4rem;
+                    width: 4rem;
+                }
+
+                .gray_error{
+                    height: 1.6rem;
+                    width: 1.6rem;
+                }
+
+                .text{
+                    color: #1B1E21;
+                    font-weight: 400;
+                    font-size: 1.6rem;
+                }
+            }
+
+            .right{
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+
+                .amount{
+                    color: #1B1E21;
+                    font-weight: 700;
+                    font-size: 1.8rem;
+                }
+            }
+        }
+
+        .button_container, .top_container{
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            gap: 1.6rem;
+            button{
+                gap: 0.8rem;
+                height: 5.2rem;
+            }
+        }
+
+        .curcular_check{
+            border-radius: 50%;
+        }
+
+    }
+}
