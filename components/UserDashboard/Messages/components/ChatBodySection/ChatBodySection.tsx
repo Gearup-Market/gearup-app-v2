@@ -1,18 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./ChatBodySection.module.scss";
 import { VerifyIcon } from "@/shared/svgs/dashboard";
 import Image from "next/image";
-import { Button, InputField } from "@/shared";
-import MessageReceived from "./Components/MessageReceived/MessageReceived";
-import MessageSent from "./Components/MessageSent/MessageSent";
+import ChatBodyElement from "./Components/ChatBodyElement/ChatBodyElement";
 
 interface ChatBodySectionProps {
 	showAllBorder?: boolean;
 }
 
 const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
-	const [value, setValue] = useState("");
+
 	return (
 		<div className={styles.container} data-borders={showAllBorder}>
 			<div className={styles.header}>
@@ -52,24 +50,7 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 					</span>
 				</div>
 			</div>
-			<div className={styles.chat_body}>
-				<p className={styles.chat_date}>Sun, Dec 17(Today)</p>
-				<div className={styles.chat_content}>
-					<div className={styles.chats}>
-						<MessageReceived/>
-						<MessageSent/>
-					</div>
-					<form action="" className={styles.form_container}>
-						<InputField placeholder="Write a message..." inputClassName={styles.input_field} />
-						<Button
-							buttonType="transparent"
-							iconPrefix=""
-						>
-							<Image src="/svgs/submit-icon.svg" alt="send" height={24} width={24} />
-						</Button>
-					</form>
-				</div>
-			</div>
+			<ChatBodyElement/>
 		</div>
 	);
 };
