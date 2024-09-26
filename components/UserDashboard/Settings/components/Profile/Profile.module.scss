@@ -2,9 +2,9 @@
 @import "@/styles/imports";
 
 .container {
-display: flex;
-flex-direction: column;
-gap: 4rem;
-
-
+	display: flex;
+	flex-direction: column;
+	gap: 4rem;
+    padding-bottom: 4rem;
+    overflow: auto;
 }

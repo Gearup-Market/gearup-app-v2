@@ -217,6 +217,39 @@
 						}
 					}
 				}
+
+				.location_container{
+					position: relative;
+					margin-top: 1.6rem;
+
+					.location_btn_container{
+						position: absolute;
+						top: -1rem;
+						right: -2rem;
+						margin-bottom: 1rem;
+
+						button{
+							color: #FFB30F;
+							font-size: 1.2rem;
+						}
+
+						.error{
+							border-color: #FF3729;
+						}
+					}
+
+					.update_text{
+						color: #FF3729;
+						font-size: 1.2rem;
+						
+						span{
+							font-size: 1.2rem;
+							text-decoration: underline;
+							font-weight: 700;
+							cursor: pointer;
+						}
+					}
+				}
 			}
 			.button {
 				gap: 0.8rem;
