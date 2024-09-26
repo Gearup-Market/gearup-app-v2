@@ -7,6 +7,7 @@ import styles from "./PersonalInfo.module.scss";
 import { Button, ImageUploader, InputField, Select, TextArea } from "@/shared";
 import HeaderSubText from "@/components/Admin/HeaderSubText/HeaderSubText";
 import { useAppSelector } from "@/store/configureStore";
+import { Map } from "@/components/listing";
 
 interface PayoutFormValues {
 	firstName: string;
@@ -153,7 +154,9 @@ const PersonalInfoForm: React.FC = () => {
 										)}
 									</Field>
 								</div>
-								<div className={styles.map_container}>map</div>
+								<div className={styles.map_container}>
+									<Map showTitle={false}/>
+								</div>
 								<div className={styles.text_area_container}>
 									<Field name="about">
 										{({ field }: FieldProps) => (

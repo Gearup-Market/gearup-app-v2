@@ -17,11 +17,15 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { useGetCategories } from "@/app/api/hooks/listings";
 import { iCategory } from "@/app/api/hooks/listings/types";
+import { Input } from "@mui/material";
+import Link from "next/link";
+import AddLocationModal from "./Modals/AddLocationModal";
 
 const ListingDetailsView = () => {
 	const router = useRouter();
 	const { isFetching: loading, data: allCategories } = useGetCategories();
-
+	const [showAddLocationModal, setShowAddLocationModal] = useState(false);
+	const [locationError, setLocationError] = useState(false);
 	const dispatch = useDispatch();
 	const [category, setCategory] = useState<iCategory>();
 	const [subCategory, setSubCategory] = useState<iCategory>();
@@ -62,6 +66,8 @@ const ListingDetailsView = () => {
 
 	const disabledButton =
 		!inputValues.description || !inputValues.title || !category || !subCategory;
+
+	console.log(showAddLocationModal, "showAddLocationModal");
 
 	return (
 		<div className={styles.section}>
@@ -157,6 +163,32 @@ const ListingDetailsView = () => {
 							label="Description"
 							placeholder="Enter Description"
 						/>
+						<div className={styles.location_container}>
+							<div className={styles.location_btn_container}>
+								<Button
+									onClick={() => setLocationError(true)}
+									buttonType="transparent"
+								>
+									Use my location
+								</Button>
+							</div>
+							<InputField
+								inputClassName={locationError ? styles.error : ""}
+								label="Listing location"
+								placeholder="Enter location"
+								iconPosition="prefix"
+								icon="/svgs/icon-location.svg"
+								error={locationError ? <p className={styles.update_text}>
+								Please Update your{" "}
+								<span onClick={() => setShowAddLocationModal(true)}>
+									{" "}
+									profile location
+								</span>{" "}
+								to continue.
+							</p> : undefined}
+							/>
+							
+						</div>
 					</div>
 				</div>
 				<div className={styles.image_container}>
@@ -181,6 +213,10 @@ const ListingDetailsView = () => {
 					Continue
 				</Button>
 			</div>
+			<AddLocationModal
+				openModal={showAddLocationModal}
+				setOpenModal={setShowAddLocationModal}
+			/>
 		</div>
 	);
 };

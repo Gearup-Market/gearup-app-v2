@@ -7,7 +7,9 @@
 	width: 100%;
 	box-sizing: border-box;
 	padding-bottom: 8rem;
-	overflow: hidden;
+	// overflow: hidden;
+	
+
 
 	.body {
 		display: flex;
@@ -41,7 +43,7 @@
 
 			&__main{
 				height: 100%;
-				
+				overflow: auto;
 				@include noScrollBar;
 			}
 		}
