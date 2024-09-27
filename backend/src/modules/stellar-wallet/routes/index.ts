@@ -7,7 +7,7 @@ import adminMiddleware from '@/lib/middlewares/admin.middleware';
 
 class AuthRoute implements Routes {
   public path = '/stellar/wallets';
-  public router = Router();
+  public router: Router = Router();
   public stellarWalletController = new StellarWalletController();
 
   constructor() {

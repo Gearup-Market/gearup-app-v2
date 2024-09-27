@@ -7,7 +7,7 @@ import TransactionController from "../controllers/walletTransaction.controller";
 
 class TransactionRoute implements Routes {
 	public path = "/wallet/transactions";
-	public router = Router();
+	public router: Router = Router();
 	public transactionController = new TransactionController();
 
 	constructor() {

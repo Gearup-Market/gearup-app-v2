@@ -12,6 +12,8 @@ import ListingService from "@/modules/listings/services/listing.service";
 import { ListingStatus } from "@/modules/listings/types";
 import { Types } from "mongoose";
 import WalletService from "@/modules/wallet/services/wallet.service";
+import escrowQueue from "../queues/escrow";
+import serviceEvents from "@/lib/events";
 
 class TransactionService {
 	private transaction = transactionModel;
@@ -47,7 +49,10 @@ class TransactionService {
 			// check if the transaction has already been recorded for user
 			const trxExist = await this.transaction.findOne({ buyer, seller, item });
 			if (trxExist && trxExist.status === TransactionStatus.Pending)
-				throw new HttpException(400, "You have already requested for this item");
+				throw new HttpException(
+					400,
+					"You have already requested for this item and it's still pending"
+				);
 
 			const transactionId = new Types.ObjectId();
 
@@ -56,11 +61,14 @@ class TransactionService {
 				amount,
 				description:
 					type === TransactionType.Rental
-						? "Rented a listing"
-						: "Purchased listing",
-				reference: reference || transactionId.toString(),
+						? "Rent listing"
+						: "Purchase listing",
+				reference,
 				method,
+				transactionId: transactionId.toString(),
+				seller,
 			});
+
 			const trx = await this.transaction.create({
 				_id: transactionId,
 				buyer,
@@ -69,19 +77,30 @@ class TransactionService {
 				amount,
 				payment: txn._id,
 				type,
-				status: TransactionStatus.Pending,
+				status: TransactionStatus.Confirming,
 				reference: reference || transactionId.toString(),
 				rentalPeriod,
 				metadata,
 			});
 
-			await this.listingService.changeListingStatus(
+			await this.transaction.updateStage(transactionId.toString(), TransactionStage.AwaitingPayment, {
+				id: buyer,
+				role: 'buyer'
+			})
+
+			this.listingService.changeListingStatus(
 				{
-					status: ListingStatus.Unavailable,
+					status: ListingStatus.Inuse,
 					userId: seller,
 				},
 				item
 			);
+			escrowQueue.addEscrowInitializationJob({
+				amount,
+				transactionId: transactionId.toString(),
+				buyer,
+				seller,
+			}, 2000);
 			return trx;
 		} catch (error) {
 			throw new HttpException(500, error?.message);
@@ -170,6 +189,7 @@ class TransactionService {
 				status,
 				authority
 			);
+			serviceEvents.emit('statusUpdated', transaction);
 			return transaction;
 		} catch (error) {
 			throw new HttpException(500, error?.message);
@@ -193,29 +213,15 @@ class TransactionService {
 				status
 			);
 
-			if (stage === TransactionStage.ConfirmHandover) {
-				await this.walletService.finalizeCharge(
-					transaction.buyer,
-					transaction.amount
-				);
-				await this.walletService.lockFunds(
-					transaction.seller,
-					transaction.amount
-				);
-				await this.paymentService.completePayment(
-					transaction.reference,
-					transaction.seller
-				);
-			}
+			serviceEvents.emit('stageUpdated', {transaction, stage})
 			return transaction;
 		} catch (error) {
 			throw new HttpException(500, error?.message);
 		}
 	}
 
-	public async submitReview(){
+	public async submitReview() {
 		try {
-			
 		} catch (error) {
 			throw new HttpException(error?.status || 500, error?.message);
 		}

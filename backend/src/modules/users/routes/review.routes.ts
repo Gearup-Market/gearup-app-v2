@@ -6,7 +6,7 @@ import { addReviewSchema, getReviewsSchema } from "../validations/review";
 
 class ReviewRoute implements Routes {
 	public path = "/reviews";
-	public router = Router();
+	public router: Router = Router();
 	public reviewController = new ReviewController();
 
 	constructor() {

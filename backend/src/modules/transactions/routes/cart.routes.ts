@@ -6,7 +6,7 @@ import { addItemsToCartSchema, addItemToCartSchema, getUserCartItemSchema, getUs
 
 class CartRoute implements Routes {
 	public path = "/cart";
-	public router = Router();
+	public router: Router = Router();
 	public cartController = new CartController();
 
 	constructor() {

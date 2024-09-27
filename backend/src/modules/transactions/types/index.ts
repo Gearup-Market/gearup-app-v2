@@ -7,6 +7,7 @@ export enum TransactionType {
 }
 
 export enum TransactionStatus {
+	Confirming = 'confirming',
 	Pending = "pending",
 	Ongoing = "ongoing",
 	Completed = "completed",
@@ -15,36 +16,18 @@ export enum TransactionStatus {
 }
 
 export enum TransactionStage {
+	AwaitingPayment = 'AwaitingPayment',
 	PendingApproval = 'PendingApproval',
     ConfirmHandover = 'ConfirmHandover',
     AwaitingConfirmation = 'AwaitingConfirmation',
     TransactionOngoing = 'TransactionOngoing',
     InitiateReturn = 'InitiateReturn',
     ConfirmReturn = 'ConfirmReturn',
+    StatusReport = 'StatusReport',
     Completed = 'Completed',
     ReviewAndFeedback = 'ReviewAndFeedback',
     Declined = 'Declined'
 }
-
-/*
-Let's review the stages again for both buyers, renters, lenders and sellers and corresponding actions
-
-Lender:
-1. Pending approval -> action -> accept/declined
-2. confirm handover -> action -> confirm item shipped to renter
-3. Awaiting confirmation -> no action from lender
-4. Transaction ongoing -> no action from lender
-5. confirm return -> action -> confirms lender has received back the item (this stage also sets status as completed)
-6. review and feedback
-
-Renter: 
-1. Awaiting approval -> no action
-2. confirm handover -> action -> confirms item receipt from lender (triggered when lender confirm handover)
-3. Transaction ongoing -> action -> moves to next step
-4. Initiate return -> action -> confirm has delivered item to lender
-5. Awaiting confirmation -> no action
-6. Review and feedback
-*/
 
 export interface TransactionConfirmations {
 	sellerAccept: boolean;
@@ -53,9 +36,24 @@ export interface TransactionConfirmations {
 	sellerReturnConfirmation: boolean;
 }
 
-export type StageSchema = { updatedAt: Date; stage: TransactionStage };
-export type TransactionStageSchema = { buyer: StageSchema; seller: StageSchema };
+export enum ShippingType {
+	Shipping = 'shipping',
+	LocalPickup = 'localpickup'
+}
 
+export type StageSchema = { updatedAt: Date; stage: TransactionStage, transactionHash: string; isCurrent: boolean  };
+export type TransactionStageSchema = { buyer: StageSchema; seller: StageSchema };
+export type MetadataSchema = {
+	thirdPartyCheckup?: boolean;
+	shippingType?: ShippingType;
+	country?: string;
+	name?: string;
+	company?: string;
+	address?: string;
+	city?: string;
+	postalCode?: string;
+	phoneNumber?: string;
+} 
 
 export interface Transaction extends Document {
 	item: string;
@@ -66,12 +64,9 @@ export interface Transaction extends Document {
 	amount: number;
 	rentalPeriod?: RentalPeriod;
 	payment: string;
-	metadata: any;
+	metadata?: MetadataSchema;
 	reference: string;
-	stage: {
-		stage: TransactionStage;
-		updatedAt: Date;
-	};
+	stages: StageSchema[];
     reviews: {
 		buyerReviewed: boolean;
 		sellerReviewed: boolean;

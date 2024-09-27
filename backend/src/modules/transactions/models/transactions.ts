@@ -1,9 +1,10 @@
 import { model, Schema, Model } from "mongoose";
 import {
+	MetadataSchema,
+	ShippingType,
 	StageSchema,
 	Transaction,
 	TransactionStage,
-	TransactionStageSchema,
 	TransactionStatus,
 	TransactionType,
 } from "../types";
@@ -11,18 +12,37 @@ import { HttpException } from "@/core/exceptions/HttpException";
 import { isEmpty } from "@/core/utils";
 
 const stageSchema = new Schema<StageSchema>({
-	updatedAt: { type: Schema.Types.Date, default: Date.now() },
 	stage: {
 		type: Schema.Types.String,
 		enum: Object.values(TransactionStage),
-		default: TransactionStage.PendingApproval,
+		required: true,
+	},
+	updatedAt: {
+		type: Schema.Types.Date,
+		default: Date.now(),
+	},
+	isCurrent: {
+		type: Schema.Types.Boolean,
+		default: false,
+	},
+	transactionHash: {
+		type: Schema.Types.String,
+		required: false,
 	},
 });
 
-const transactionStageSchema = new Schema<TransactionStageSchema>({
-	buyer: stageSchema,
-	seller: stageSchema,
-});
+const metadataSchema = new Schema<MetadataSchema>({
+	shippingType: { type: Schema.Types.String, enum: Object.values(ShippingType), default: ShippingType.LocalPickup },
+	thirdPartyCheckup: { type: Schema.Types.Boolean, default: false },
+	name: { type: Schema.Types.String },
+	phoneNumber: { type: Schema.Types.String },
+	company: { type: Schema.Types.String },
+	address: { type: Schema.Types.String },
+	postalCode: { type: Schema.Types.String },
+	city: { type: Schema.Types.String },
+	country: { type: Schema.Types.String },
+
+})
 
 const transactionSchema = new Schema<Transaction>({
 	item: { type: Schema.Types.String, ref: "Listing", required: true, index: true },
@@ -40,28 +60,18 @@ const transactionSchema = new Schema<Transaction>({
 		default: TransactionStatus.Pending,
 		index: true,
 	},
-	stage: {
-		stage: {
-			type: Schema.Types.String,
-			enum: Object.values(TransactionStage),
-			default: TransactionStage.PendingApproval,
-			index: true,
-		},
-		updatedAt: {
-			type: Schema.Types.Date, default: Date.now()
-		}
-	},
+	stages: [stageSchema],
 	reviews: {
-		buyerReviewed: { type: Schema.Types.Boolean, default: false},
-		sellerReviewed: { type: Schema.Types.Boolean, default: false},
+		buyerReviewed: { type: Schema.Types.Boolean, default: false },
+		sellerReviewed: { type: Schema.Types.Boolean, default: false },
 	},
 	amount: { type: Schema.Types.Number, required: true },
 	rentalPeriod: {
 		start: { type: Schema.Types.Date },
 		end: { type: Schema.Types.Date },
 	},
-	reference: {type: Schema.Types.String},
-	metadata: { type: Schema.Types.Mixed },
+	reference: { type: Schema.Types.String },
+	metadata: { type: metadataSchema, required: false },
 	payment: {
 		type: Schema.Types.String,
 		ref: "WalletTransaction",
@@ -86,6 +96,23 @@ interface TransactionModel extends Model<Transaction> {
 	): Promise<Transaction>;
 }
 
+function updateStage(trx: Transaction, newStage: TransactionStage): Transaction {
+	trx.stages.forEach((s: any) => {
+		if (s.isCurrent) s.isCurrent = false;
+	});
+
+	trx.stages.push({
+		stage: newStage,
+		updatedAt: new Date(),
+		isCurrent: true,
+		transactionHash: "",
+	});
+
+	trx.updatedAt = new Date();
+
+	return trx;
+}
+
 transactionSchema.statics.updateStage = async function (
 	id: string,
 	newStage: TransactionStage,
@@ -103,14 +130,12 @@ transactionSchema.statics.updateStage = async function (
 
 	const { id: authorityId, role } = authority;
 
-	const trx: Transaction = await this.findById(id);
+	let trx: Transaction = await this.findById(id);
 	if (!trx) throw new HttpException(404, "Transaction with id not found");
 	if (trx[role] !== authorityId)
 		throw new HttpException(401, `${role} not authorized to complete this action`);
 
-	trx.stage = {stage: newStage, updatedAt: new Date()}
-
-	trx.updatedAt = new Date();
+	trx = updateStage(trx, newStage);
 
 	if (newStage === TransactionStage.Completed) {
 		trx.status = TransactionStatus.Completed;
@@ -143,7 +168,7 @@ transactionSchema.statics.updateStatus = async function (
 
 	const { id: authorityId, role } = authority;
 
-	const trx: Transaction = await this.findById(id);
+	let trx: Transaction = await this.findById(id);
 	if (!trx) throw new HttpException(404, "Transaction with id not found");
 	if (trx[role] !== authorityId)
 		throw new HttpException(401, `${role} not authorized to complete this action`);
@@ -152,7 +177,7 @@ transactionSchema.statics.updateStatus = async function (
 	trx.updatedAt = new Date();
 
 	if (status === TransactionStatus.Declined) {
-		trx.stage = {stage: TransactionStage.Declined, updatedAt: new Date() };
+		trx = updateStage(trx, TransactionStage.Declined);
 	}
 	await trx.save();
 	return trx;

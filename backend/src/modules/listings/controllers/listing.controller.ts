@@ -69,6 +69,19 @@ class ListingController {
 		}
 	}
 
+	public async searchListings(req: Request, res: Response, next: NextFunction) {
+		try {
+			const payload = req.body;
+			const listings = await this.listingService.searchListings(payload);
+			res.status(200).json({
+				data: listings,
+				message: "Listings retrieved successfully",
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
 	public async getListings(req: Request, res: Response, next: NextFunction) {
 		try {
 			const listings = await this.listingService.getListings();

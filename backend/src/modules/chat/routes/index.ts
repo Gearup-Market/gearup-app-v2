@@ -8,7 +8,7 @@ import { Server as SocketIOServer } from 'socket.io';
 import { logger } from '@/core/utils/logger';
 class ChatModule implements Routes {
     public path = '/chats';
-    public router = Router();
+    public router: Router = Router();
     private io?: SocketIOServer;
     private chatService?: ChatService;
     private chatController?: ChatController;

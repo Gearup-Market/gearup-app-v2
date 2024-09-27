@@ -44,6 +44,16 @@ class WalletController {
 		}
 	}
 
+	public async creditWalletSilently(req: Request, res: Response, next: NextFunction) {
+		try {
+			const payload = req.body;
+			const wallet = await this.walletService.creditWalletSilently(payload);
+			res.json({ data: wallet, message: "success" }).status(200);
+		} catch (error) {
+			next(error);
+		}
+	}
+
     public async debitWallet(req: Request, res: Response, next: NextFunction) {
 		try {
 			const payload = req.body;

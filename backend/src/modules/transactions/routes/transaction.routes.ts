@@ -3,10 +3,10 @@ import { Routes } from "@/types";
 import TransactionController from "../controllers/transaction.controller";
 import { validationMiddleware } from "@/lib";
 import { changeTransactionStageSchema, changeTransactionStatusSchema, createTransactionSchema, getTransactionSchema, getUserTransactionSchema } from "../validations";
-
+import '../listeners/transactionListeners';
 class TransactionRoute implements Routes {
 	public path = "/transactions";
-	public router = Router();
+	public router: Router = Router();
 	public transactionController = new TransactionController();
 
 	constructor() {

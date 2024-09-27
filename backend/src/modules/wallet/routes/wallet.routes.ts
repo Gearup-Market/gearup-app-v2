@@ -7,7 +7,7 @@ import { createOrFindWalletSchema, creditOrDebitWalletSchema, updateWalletSchema
 
 class WalletRoute implements Routes {
 	public path = "/wallets";
-	public router = Router();
+	public router: Router = Router();
 	public walletController = new WalletController();
 
 	constructor() {
@@ -19,6 +19,7 @@ class WalletRoute implements Routes {
 		this.router.post(`${this.path}/create/:userId`, validationMiddleware(createOrFindWalletSchema), this.walletController.createWallet.bind(this.walletController));
 		this.router.post(`${this.path}/save-bank-details`, validationMiddleware(updateWalletSchema), this.walletController.saveAccountDetails.bind(this.walletController));
 		this.router.post(`${this.path}/credit`, validationMiddleware(creditOrDebitWalletSchema), this.walletController.creditWallet.bind(this.walletController));
+		this.router.post(`${this.path}/credit-silently`, this.walletController.creditWalletSilently.bind(this.walletController));
 		this.router.post(`${this.path}/debit`, validationMiddleware(creditOrDebitWalletSchema), this.walletController.debitWallet.bind(this.walletController));
 	}
 }

@@ -16,12 +16,6 @@ import { errorMiddleware } from '@/lib';
 import { Routes } from '@/types';
 import { ChatModule } from '@/modules';
 import { Server as SocketIOServer } from 'socket.io';
-//import debug from "debug";
-
-
-
-
-
 class App {
     public app: express.Application;
     public env: string;
@@ -93,7 +87,7 @@ class App {
         this.app.use(compression({
             threshold: 0, // Compress everything regardless of size
         }));
-        this.app.use(express.json({limit: '20mb'}));
+        this.app.use(express.json({limit: '30mb'}));
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cookieParser());
     }

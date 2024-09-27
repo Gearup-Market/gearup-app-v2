@@ -43,6 +43,7 @@ const offerForRentSchema = new Schema<OfferForRent>({
 const offerForSellSchema = new Schema<OfferForSell>({
 	currency: { type: Schema.Types.String }, // Correct usage of Schema.Types.String
 	pricing: { type: Schema.Types.Number },
+	acceptOffers: { type: Schema.Types.Boolean },
 	shipping: {
 		shippingOffer: { type: Schema.Types.Boolean },
 		offerLocalPickup: { type: Schema.Types.Boolean },
@@ -106,21 +107,27 @@ const listingSchema = new Schema<Listing>({
 	},
 	offer: {
 		forRent: offerForRentSchema,
-		forSale: offerForSellSchema,
+		forSell: offerForSellSchema,
 	},
 	perks: perksSchema,
 	items: [itemsSchema],
 	amount: { type: Schema.Types.Number },
 	contractId: { type: Schema.Types.String, index: true },
+	transactionId: { type: Schema.Types.String, index: true },
+	nftTokenId: { type: Schema.Types.String, index: true },
 	status: {
 		type: Schema.Types.String,
 		enum: Object.values(ListingStatus),
-		default: ListingStatus.Draft,
+		default: ListingStatus.Available,
 	},
 	location: locationSchema,
 	createdAt: { type: Schema.Types.Date, default: Date.now() },
 	updatedAt: { type: Schema.Types.Date },
 });
+
+listingSchema.set("strict", "throw");
+listingSchema.set("strictQuery", "throw");
+
 export interface ListingModel extends Model<Listing> {
 	createListingPipeline(match: any): PipelineStage[];
 	findByIdWithOwnerReviews(listingId: string): Promise<AggregatedListing>;
@@ -128,6 +135,8 @@ export interface ListingModel extends Model<Listing> {
 		page?: number;
 		limit?: number;
 		filters?: any;
+		pipeline?: PipelineStage[];
+		overridePipeline?: PipelineStage[];
 		paginate?: boolean;
 	}): Promise<{
 		listings: AggregatedListing[];
@@ -139,7 +148,6 @@ export interface ListingModel extends Model<Listing> {
 
 function createListingPipeline(match: any = {}): PipelineStage[] {
 	return [
-		// Match the specific listing
 		{ $match: match },
 		{
 			$addFields: {
@@ -148,6 +156,9 @@ function createListingPipeline(match: any = {}): PipelineStage[] {
 				},
 				subCategoryObjectId: {
 					$toObjectId: "$subCategory", // Convert subCategory string to ObjectId
+				},
+				userObjectId: {
+					$toObjectId: "$user", // Convert user string to ObjectId
 				},
 			},
 		},
@@ -160,7 +171,7 @@ function createListingPipeline(match: any = {}): PipelineStage[] {
 				as: "category",
 			},
 		},
-		{ $unwind: "$category" },
+		{ $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
 		{
 			$lookup: {
 				from: "category",
@@ -169,17 +180,17 @@ function createListingPipeline(match: any = {}): PipelineStage[] {
 				as: "subCategory",
 			},
 		},
-		{ $unwind: "$subCategory" },
+		{ $unwind: { path: "$subCategory", preserveNullAndEmptyArrays: true } },
 		// Lookup the owner details
 		{
 			$lookup: {
 				from: "users",
-				localField: "user",
-				foreignField: "userId",
+				localField: "userObjectId",
+				foreignField: "_id",
 				as: "user",
 			},
 		},
-		{ $unwind: "$user" },
+		{ $unwind: { path: "$user", preserveNullAndEmptyArrays: true } },
 
 		{
 			$lookup: {
@@ -200,8 +211,7 @@ function createListingPipeline(match: any = {}): PipelineStage[] {
 							as: "reviewer",
 						},
 					},
-					{ $unwind: "$reviewer" },
-					// Project only necessary fields from the review and reviewer
+					{ $unwind: { path: "$reviews", preserveNullAndEmptyArrays: true } },
 					{
 						$project: {
 							_id: 1,
@@ -253,6 +263,8 @@ function createListingPipeline(match: any = {}): PipelineStage[] {
 				items: 1,
 				amount: 1,
 				contractId: 1,
+				transactionId: 1,
+				nftTokenId: 1,
 				status: 1,
 				location: 1,
 				createdAt: 1,
@@ -271,7 +283,7 @@ function createListingPipeline(match: any = {}): PipelineStage[] {
 	];
 }
 
-listingSchema.statics.createListingPipeline = createListingPipeline
+listingSchema.statics.createListingPipeline = createListingPipeline;
 listingSchema.statics.findByIdWithOwnerReviews = async function (
 	listingId: string
 ): Promise<AggregatedListing | null> {
@@ -313,11 +325,15 @@ listingSchema.statics.findAllWithOwnerReviews = async function ({
 	page = 1,
 	limit = 10,
 	filters = {},
+	pipeline = [],
+	overridePipeline = undefined,
 	paginate = true,
 }: {
 	page?: number;
 	limit?: number;
 	filters?: any;
+	pipeline?: PipelineStage[];
+	overridePipeline?: PipelineStage[];
 	paginate?: boolean;
 } = {}): Promise<{
 	listings: AggregatedListing[];
@@ -325,11 +341,13 @@ listingSchema.statics.findAllWithOwnerReviews = async function ({
 	page?: number;
 	totalPages?: number;
 }> {
-	let pipeline = createListingPipeline(filters);
+	let lookupPipeline = createListingPipeline(filters);
+	if(pipeline) lookupPipeline = [...lookupPipeline, ...pipeline];
+	if(overridePipeline && Array.isArray(overridePipeline)) lookupPipeline = overridePipeline;
 	if (paginate) {
 		const skip = (page - 1) * limit;
-		pipeline = [
-			...pipeline,
+		lookupPipeline = [
+			...lookupPipeline,
 			{
 				$facet: {
 					metadata: [{ $count: "total" }, { $addFields: { page: page } }],
@@ -338,7 +356,7 @@ listingSchema.statics.findAllWithOwnerReviews = async function ({
 			},
 		];
 
-		const [result] = await this.aggregate(pipeline);
+		const [result] = await this.aggregate(lookupPipeline);
 		const listings = result.data;
 		const metadata = result.metadata[0];
 
@@ -349,8 +367,8 @@ listingSchema.statics.findAllWithOwnerReviews = async function ({
 			totalPages: metadata ? Math.ceil(metadata.total / limit) : 0,
 		};
 	} else {
-		// If not paginating, simply execute the pipeline and count the results
-		const listings = await this.aggregate(pipeline);
+		// If not paginating, simply execute the lookupPipeline and count the results
+		const listings = await this.aggregate(lookupPipeline);
 		return {
 			listings,
 			total: listings.length,

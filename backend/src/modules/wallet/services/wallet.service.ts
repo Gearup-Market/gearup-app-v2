@@ -111,6 +111,28 @@ class WalletService {
 		}
 	}
 
+	public async creditWalletSilently({
+		userId,
+		amount,
+	}: {
+		userId: string;
+		amount: number;
+	}) {
+		try {
+			const walletModel = await this.wallet.findOne({ userId });
+			const wallet = walletModel.toJSON();
+			if (!wallet)
+				throw new HttpException(404, "No active wallet found");
+
+			walletModel.balance += amount;
+			await walletModel.save();
+			return walletModel.toJSON();
+		} catch (error) {
+			logger.error(`Error crediting wallet: ${error.message}`);
+			throw new HttpException(500, error.message);
+		}
+	}
+
 	public async lockFunds(userId: string, amount: number, isDebit: boolean = true) {
 		try {
 			if (isEmpty(userId)) throw new HttpException(400, "UserId is required");

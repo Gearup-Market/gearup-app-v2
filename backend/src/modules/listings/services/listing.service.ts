@@ -1,5 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Listing, ListingCondition, ListingType } from "../types";
+import {
+	Listing,
+	ListingCondition,
+	ListingStatus,
+	ListingType,
+	SearchQuery,
+} from "../types";
 import { HttpException } from "@/core/exceptions/HttpException";
 import listingModel from "../models/listing";
 import { isEmpty } from "@/core/utils/isEmpty";
@@ -9,9 +15,11 @@ import { uploadImagesToCloudinary } from "@/shared/utils";
 import userModel from "@/modules/users/models/users";
 import { slugifyText } from "@/shared/utils/slugify";
 import { isNil, omitBy } from "lodash";
+import MarketplaceClient from "../lib/marketplace/web3";
 
 class ListingService {
 	private listing = listingModel;
+	private marketplaceClient = new MarketplaceClient();
 
 	public async createListings(listingData: any): Promise<Listing> {
 		try {
@@ -53,8 +61,8 @@ class ListingService {
 				_id,
 				productSlug,
 				productName,
-				category,
-				subCategory,
+				category: new Types.ObjectId(category),
+				subCategory: new Types.ObjectId(subCategory),
 				productionType,
 				fieldValues,
 				description,
@@ -63,6 +71,20 @@ class ListingService {
 				offer,
 				listingPhotos,
 				user: new Types.ObjectId(userId),
+			});
+			const price = (
+				listingType === ListingType.Rent
+					? offer.forRent?.day1Offer
+					: offer.forSell?.pricing
+			) as number;
+			console.log(newListing, "new listing");
+			this.marketplaceClient.createListing({
+				userId,
+				listingId: _id.toString(),
+				type: listingType,
+				duration: 0,
+				price,
+				metadata: `https://gearup.market/listings/${_id.toString()}`,
 			});
 
 			return newListing;
@@ -109,6 +131,11 @@ class ListingService {
 			if (listing.user.toString() !== userId)
 				throw new HttpException(401, "Unauthorized to update this listing");
 
+			if (listing.status === ListingStatus.Inuse)
+				throw new HttpException(
+					402,
+					"A transaction is ongoing for this listing so not possible to modify state"
+				);
 			listing.status = status;
 			listing.updatedAt = new Date();
 			await listing.save();
@@ -123,7 +150,7 @@ class ListingService {
 			if (isEmpty(listingId)) throw new HttpException(400, "Invalid listing ID");
 			const listing = await this.listing.findById(listingId);
 			if (!listing)
-				throw new HttpException(404, "No listing found for orovided ID");
+				throw new HttpException(404, "No listing found for provided ID");
 
 			if (listing.user.toString() !== userId)
 				throw new HttpException(401, "Unauthorized to delete this listing");
@@ -131,6 +158,91 @@ class ListingService {
 			await listing.delete();
 		} catch (error) {
 			throw new HttpException(error?.status || 500, error?.message);
+		}
+	}
+
+	public async deleteAllListing(userId: string) {
+		try {
+			if (isEmpty(userId)) throw new HttpException(400, "Invalid listing ID");
+			const listing = await this.listing.deleteMany({
+				user: new Types.ObjectId(userId),
+			});
+		} catch (error) {
+			throw new HttpException(error?.status || 500, error?.message);
+		}
+	}
+
+	public async searchListings({
+		category,
+		description,
+		productName,
+		listingType,
+		location,
+	}: SearchQuery): Promise<Listing[]> {
+		try {
+			const filters: any = {};
+			if (productName) {
+				filters.productName = { $regex: productName, $options: "i" }; // 'i' for case-insensitive
+			}
+			if (productName) {
+				filters.description = { $regex: description, $options: "i" }; // 'i' for case-insensitive
+			}
+			if (listingType) {
+				filters.listingType = listingType;
+			}
+
+			if (location) {
+				if (location.city) {
+					filters["location.city"] = { $regex: location.city, $options: "i" };
+				}
+				if (location.state) {
+					filters["location.state"] = { $regex: location.state, $options: "i" };
+				}
+				if (location.country) {
+					filters["location.country"] = {
+						$regex: location.country,
+						$options: "i",
+					};
+				}
+				if (location?.coords) {
+					filters["location.coords"] = {
+						$geoWithin: {
+							$centerSphere: [
+								[location.coords.longitude, location.coords.latitude],
+								60 / 6371, // 60km search radius in radians
+							],
+						},
+					};
+				}
+			}
+			let pipeline = [];
+			if (category) {
+				pipeline = [
+					{
+						$match: category
+							? {
+									"category.name": {
+										$regex: category,
+										$options: "i",
+									},
+									"subCategory.name": {
+										$regex: category,
+										$options: "i",
+									},
+							  }
+							: {},
+					},
+				];
+			}
+
+			const { listings } = await this.listing.findAllWithOwnerReviews({
+				filters,
+				paginate: false,
+				pipeline,
+			});
+			return listings as Listing[];
+		} catch (error) {
+			throw new HttpException(error?.status || 500, error.message);
 		}
 	}
 
@@ -149,7 +261,9 @@ class ListingService {
 		try {
 			const { listings } = await this.listing.findAllWithOwnerReviews({
 				paginate: false,
-				filters: { user: userId },
+				filters: {
+					$or: [{ user: new Types.ObjectId(userId) }, { user: userId }],
+				},
 			});
 			return listings;
 		} catch (error) {

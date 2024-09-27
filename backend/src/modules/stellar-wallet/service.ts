@@ -60,6 +60,7 @@ class StellarWalletService {
 				encryptedKey,
 				password,
 			});
+			fundWithFriendbot(publicKey);
 			this.user.findOneAndUpdate({ userId }, { stellarWallet: _stellar._id });
 			return _stellar.toJSON();
 		} catch (error) {

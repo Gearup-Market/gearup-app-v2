@@ -7,7 +7,7 @@ import { registerKycSchema, resendKycOtpSchema, updateKycSchema, updateWalletSch
 
 class UserRoute implements Routes {
 	public path = "/users";
-	public router = Router();
+	public router: Router = Router();
 	public userController = new UserController();
 
 	constructor() {

@@ -35,6 +35,7 @@ export interface OfferForRent {
 export interface OfferForSell {
 	currency: string;
 	pricing: number;
+	acceptOffers: boolean;
 	shipping: {
 		shippingOffer: boolean;
 		offerLocalPickup: boolean;
@@ -59,6 +60,7 @@ export interface Items {
 export enum ListingStatus {
 	Available = "available",
 	Unavailable = "unavailable",
+	Inuse = "inuse",
 	Draft = "draft",
 }
 
@@ -73,25 +75,25 @@ export enum ListingCondition {
 }
 
 export enum ListingType {
-    Rent = 'rent',
-    Sell = 'sell',
-    Both = 'both'
+	Rent = "rent",
+	Sell = "sell",
+	Both = "both",
 }
 
 export interface ListingLocation {
-    address?: string;
-    city?: string;
-    state: string;
-    country: string;
-    coords: {
-        longitude: number;
-        latitude: number;
-    }
+	address?: string;
+	city?: string;
+	state: string;
+	country: string;
+	coords: {
+		longitude: number;
+		latitude: number;
+	};
 }
 export interface Listing extends Document {
 	user: Types.ObjectId;
 	productName: string;
-    productSlug: string;
+	productSlug: string;
 	category: Types.ObjectId;
 	subCategory: Types.ObjectId;
 	fieldValues: subCategoryFields;
@@ -105,14 +107,22 @@ export interface Listing extends Document {
 		forSell?: OfferForSell;
 		//both?: OfferBoth;
 	};
-    perks: Perks;
+	perks: Perks;
 	items: Items[];
 	amount: number;
 	contractId?: string;
-    nftTokenId?: string;
-    transactionId?: string;
+	nftTokenId?: string;
+	transactionId?: string;
 	status: ListingStatus;
-    location: ListingLocation;
+	location: ListingLocation;
 	createdAt: Date;
 	updatedAt: Date;
+}
+
+export interface SearchQuery {
+	category?: string;
+	description?: string;
+	productName?: string;
+	listingType?: string;
+	location?: Partial<ListingLocation>
 }

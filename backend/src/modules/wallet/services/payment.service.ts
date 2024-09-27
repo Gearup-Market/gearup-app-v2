@@ -13,6 +13,7 @@ import {
 	WTransactionType,
 } from "../types";
 import WalletTransactionService from "./walletTransaction.service";
+import EscrowService from "./escrow.service";
 
 type PaystackEvent = {
 	event: string;
@@ -35,7 +36,13 @@ type PaystackEvent = {
 	};
 };
 
+type PaymentPayload = Pick<WTransaction, 'amount' | 'userId' | 'description' | 'reference' |'method'> & {
+	transactionId: string;
+	seller: string;
+}
+
 class PaymentService {
+	private escrowService = new EscrowService()
 	private walletService = new WalletService();
 	private wTransactions = wTransactionModel;
 	private wTransactionService = new WalletTransactionService();
@@ -48,17 +55,10 @@ class PaymentService {
 		}
 	}
 
-	public async recordPayment(payload: Omit<WTransaction, "_id" | "type" | "status">) {
+	public async recordPayment(payload: PaymentPayload) {
 		try {
 			const { amount, userId, description, reference, method } = payload;
-			let txn: WTransaction;
-			if (reference) {
-				const txnExist = await this.wTransactions.findOne({ reference }).lean();
-				txn = txnExist;
-			}
-			await this.walletService.lockFunds(userId, amount, true);
 
-			if (txn) return txn;
 			const trx = await this.wTransactionService.addTransaction({
 				userId,
 				amount,

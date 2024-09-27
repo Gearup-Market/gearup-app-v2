@@ -93,12 +93,12 @@ function getApplicableRate(offer: Listing["offer"], durationInDays: number) {
 }
 
 function calculateItemPrice(item: CartItem, listing: Listing): number {
-	const { price, rentalPeriod } = item;
+	const { price, type, rentalPeriod } = item;
 	if (price) {
 		return price;
 	}
 
-	if (rentalPeriod) {
+	if (rentalPeriod && type === TransactionType.Rental) {
 		const durationInDays = Math.ceil(
 			(rentalPeriod.end.getTime() - rentalPeriod.start.getTime()) /
 				(1000 * 3600 * 24)
@@ -106,7 +106,7 @@ function calculateItemPrice(item: CartItem, listing: Listing): number {
 		return getApplicableRate(listing.offer, durationInDays) * durationInDays;
 	}
 
-	if (listing.offer.forSell) {
+	if (listing?.offer?.forSell) {
 		return listing.offer.forSell.pricing;
 	}
 	return 0;

@@ -116,6 +116,27 @@ export const updateListingSchema = {
 	}),
 };
 
+export const searchListingsSchema = {
+	body: Joi.object({
+		listingType: Joi.string()
+			.valid(...Object.values(ListingType))
+			.optional(),
+		productName: Joi.string().optional(),
+		description: Joi.string().optional(),
+		category: Joi.string().optional(),
+		location: Joi.object({
+			address: Joi.string().optional(),
+			city: Joi.string().optional(),
+			state: Joi.string().optional(),
+			country: Joi.string().optional(),
+			coords: Joi.object({
+				longitude: Joi.number().required(),
+				latitude: Joi.number().required(),
+			}).optional(),
+		}).optional(),
+	}).unknown(false)
+};
+
 export const changeListingStatusSchema = {
 	body: Joi.object({
 		status: Joi.string()

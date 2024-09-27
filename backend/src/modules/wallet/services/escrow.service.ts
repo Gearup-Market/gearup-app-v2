@@ -6,11 +6,17 @@ import {
 import walletModel from "../models/wallet";
 import escrowModel from "../models/escrow";
 
+type InitEscrow = {
+	amount: number;
+	transaction: string;
+	buyer: string;
+	seller: string;
+}
 class EscrowService {
 	private escrow = escrowModel;
 	private wallet = walletModel;
 
-	public async initialize(payload: Escrow) {
+	public async initialize(payload: InitEscrow) {
 		try {
 			const { amount, transaction, buyer, seller } = payload;
 			const buyerWallet = await this.wallet.findOne({ userId: buyer });
@@ -28,7 +34,7 @@ class EscrowService {
 
 			escrow.save();
 
-			buyerWallet.balance -= amount;
+			// buyerWallet.balance -= amount;
 			buyerWallet.pendingDebit += amount;
 			buyerWallet.save();
 
@@ -55,7 +61,7 @@ class EscrowService {
 	public async confirmDelivery(transaction: string) {
 		try {
 			const escrow = await this.escrow.findOne({ transaction });
-			if (!escrow || escrow.status !== EscrowStatus.APPROVED) {
+			if (!escrow ) {
 				throw new HttpException(400, "Escrow not in approved state");
 			}
 
@@ -75,7 +81,7 @@ class EscrowService {
 	public async settleTransaction(transaction: string) {
         try {
             const escrow = await this.escrow.findOne({ transaction });
-            if (!escrow || escrow.status !== EscrowStatus.AWAITING_DELIVERY) {
+            if (!escrow) {
                 throw new HttpException(400, "Transaction not yet ready for release");
             }
     

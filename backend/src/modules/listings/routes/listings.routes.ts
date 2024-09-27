@@ -6,13 +6,14 @@ import {
     changeListingStatusSchema,
 	createListingSchema,
     deleteListingSchema,
+    searchListingsSchema,
     updateListingSchema,
 } from "../validation";
 import upload from "@/lib/middlewares/multer.middleware";
 import ListingController from "../controllers/listing.controller";
 class ListingRoute implements Routes {
 	public path = "/listings";
-	public router = Router();
+	public router: Router = Router();
 	public listingController = new ListingController();
 
 	constructor() {
@@ -31,14 +32,14 @@ class ListingRoute implements Routes {
 			this.listingController.updateListing.bind(this.listingController)
 		);
         this.router.post(
+			`${this.path}/search`,
+			validationMiddleware(searchListingsSchema),
+			this.listingController.searchListings.bind(this.listingController)
+		);
+		this.router.post(
 			`${this.path}/change-status/:listingId`,
 			validationMiddleware(changeListingStatusSchema),
 			this.listingController.changeListingStatus.bind(this.listingController)
-		);
-        this.router.post(
-			`${this.path}/:listingId`,
-            validationMiddleware(deleteListingSchema),
-			this.listingController.deleteListing.bind(this.listingController)
 		);
 		this.router.get(
 			`${this.path}/all`,
@@ -56,6 +57,12 @@ class ListingRoute implements Routes {
 			`${this.path}/upload`,
 			upload.array("images", 10),
 			this.listingController.uploadImages.bind(this.listingController)
+		);
+
+		this.router.post(
+			`${this.path}/delete/:listingId`,
+            validationMiddleware(deleteListingSchema),
+			this.listingController.deleteListing.bind(this.listingController)
 		);
 
 	}

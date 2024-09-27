@@ -6,7 +6,7 @@ import adminMiddleware from "@/lib/middlewares/admin.middleware";
 
 class UserRoute implements Routes {
 	public path = "/admin";
-	public router = Router();
+	public router: Router = Router();
 	public userController = new UserController();
 
 	constructor() {

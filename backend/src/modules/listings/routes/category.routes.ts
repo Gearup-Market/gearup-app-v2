@@ -6,7 +6,7 @@ import CategoryController from "../controllers/category.controller";
 
 class CategoryRoute implements Routes {
 	public path = "/listings";
-	public router = Router();
+	public router: Router = Router();
 	public categoryController = new CategoryController();
 
 	constructor() {

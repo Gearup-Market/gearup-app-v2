@@ -7,7 +7,7 @@ import AuthController from "../controllers/auth.controller";
 
 class AuthRoute implements Routes {
     public path = "/auth";
-    public router = Router();
+    public router: Router = Router();
     public authController = new AuthController();
 
     constructor() {
