@@ -22,7 +22,8 @@ const SuccessModal = ({ openModal, setOpenModal }: Props) => {
 				<div className={styles.border_container}>
 					<h2 className={styles.title}>Payment successful</h2>
 					<p className={styles.sub_text}>
-						Yay! 🥳 your payment was successful
+						Yay! 🥳 your payment was successful and your request has been
+						submitted
 					</p>
 				</div>
 				<div className={styles.btn_container}>

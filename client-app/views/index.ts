@@ -5,6 +5,7 @@ import VerifiedView from "./authenticationViews/VerifiedView";
 import VerifyView from "./authenticationViews/VerifyView";
 import HomeView from "./homeView/HomeView";
 import ListingView from "./listingView/ListingView";
+import SearchListingsView from "./searchListingsView/SearchListingsView";
 import ListingsView from "./listingsView/ListingsView";
 import ForgotPasswordView from "./authenticationViews/ForgotPasswordView";
 import NewPasswordView from "./authenticationViews/NewPasswordView";
@@ -25,6 +26,7 @@ export {
 	HomeView,
 	ListingsView,
 	ListingView,
+	SearchListingsView,
 	LoginView,
 	SignupView,
 	VerifyView,

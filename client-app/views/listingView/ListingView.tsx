@@ -10,7 +10,7 @@ import {
 	Map,
 	ProfileCard
 } from "@/components/listing";
-import { useAppDispatch, useAppSelector } from "@/store/configureStore";
+import { useAppSelector } from "@/store/configureStore";
 import { useParams } from "next/navigation";
 import { useSingleListing } from "@/hooks/useListings";
 import { getIdFromSlug } from "@/utils";
@@ -21,7 +21,7 @@ const ListingView = () => {
 	const { currentListing } = useAppSelector(s => s.listings);
 	const { productSlug } = useParams();
 	const productId = getIdFromSlug(productSlug.toString());
-	const { refetch, isFetching } = useSingleListing(productId);
+	const { isFetching } = useSingleListing(productId);
 
 	if (!currentListing && isFetching) return <PageLoader />;
 	if (!currentListing) return null;

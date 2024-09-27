@@ -153,6 +153,7 @@ export interface Item {
 
 
 export interface ListingState {
+	_id?: string;
 	productName: string;
 	items: Item[];
 	category?: iCategory;
@@ -160,7 +161,7 @@ export interface ListingState {
 	productionType: string;
 	description: string;
 	listingPhotos: string[];
-	tempPhotos: File[];
+	tempPhotos?: File[];
 	listingType: string;
 	condition: string;
 	userId: string;

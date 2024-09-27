@@ -119,7 +119,7 @@ const useGetTransactions = (
 
 const useGetSingleTransactions = (
 	transactionId?: string,
-	options?: UseQueryOptions<iGetSingleTransactionRes, IGetErr>
+	options?: Omit<UseQueryOptions<iGetSingleTransactionRes, IGetErr>, 'queryKey'>
 ) =>
 	useQuery<iGetSingleTransactionRes, IGetErr>({
 		queryKey: ["getSingleTransaction"],

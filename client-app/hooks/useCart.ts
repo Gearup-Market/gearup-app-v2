@@ -37,7 +37,7 @@ export default function useCart() {
 		useRemoveFromCart();
 	const dispatch = useAppDispatch();
 	const cart = useAppSelector(s => s.cart);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const addItemToCart = async (payload: CartPayload) => {
 		try {
@@ -55,11 +55,9 @@ export default function useCart() {
 					toast.success("Item added to cart");
 					return res.data;
 				}
-
-				toast.error(res.message || "could not add to cart");
 			} else {
 				// user not signed in so use localstorage
-                setIsSubmitting(true);
+				setIsSubmitting(true);
 				dispatch(
 					addCart({
 						listing,
@@ -76,11 +74,10 @@ export default function useCart() {
 				toast.success("Item added to cart");
 			}
 		} catch (error: any) {
-			toast.error(error?.data?.response?.message || "Could not add to cart");
-			console.log(error, "error from cart");
+			toast.error(error?.response?.data?.message || "Could not add to cart");
 		} finally {
-            setIsSubmitting(false)
-        }
+			setIsSubmitting(false);
+		}
 	};
 
 	const removeItemFromCart = async (listingId: string) => {
@@ -92,17 +89,19 @@ export default function useCart() {
 				});
 
 				if (res.data._id) {
-					toast.success("Item removed from cart");
 					return res.data;
 				}
 
-				toast.error(res.message || "could not add to cart");
+				toast.error(res.message || "could not remove item from cart");
 			} else {
 				// user not signed in so use localstorage
 				dispatch(removeCartItem(listingId));
+				return listingId
 			}
 		} catch (error: any) {
-			toast.error(error?.message || "Could not add to cart");
+			toast.error(
+				error?.response?.data?.message || "Could not remove item from cart"
+			);
 			console.log(error, "error from cart");
 		}
 	};
@@ -116,44 +115,44 @@ export default function useCart() {
 	}, [userId, cartItems, cart]);
 
 	const syncCartItems = useCallback(async () => {
-        try {
-            if (userId && cart.items.length > 0) {
-                const preparedPayload: CartReq[] = cart.items.map(
-                    ({ listing, type, rentalPeriod, price }) => ({
-                        listingId: listing._id,
-                        type,
-                        userId,
-                        rentalPeriod: rentalPeriod
-                            ? {
-                                    start: new Date(rentalPeriod.start),
-                                    end: new Date(rentalPeriod.start)
-                              }
-                            : undefined,
-                        customPrice: price
-                    })
-                );
-                const res = await syncLocalCart(preparedPayload);
-    
-                if (res.data._id) {
-                    toast.success("Your cart has been synced");
-                    dispatch(clearCart())
-                }else if(res.message.includes("already in cart")){
-                    dispatch(clearCart())
-                }
-            }
-        } catch (error:any) {
-            console.log(error?.response?.data)
-            if(error?.response?.data?.message.includes("already in cart")){
-                dispatch(clearCart())
-            }
-        }
+		try {
+			if (userId && cart.items.length > 0) {
+				const preparedPayload: CartReq[] = cart.items.map(
+					({ listing, type, rentalPeriod, price }) => ({
+						listingId: listing._id,
+						type,
+						userId,
+						rentalPeriod: rentalPeriod
+							? {
+									start: new Date(rentalPeriod.start),
+									end: new Date(rentalPeriod.start)
+							  }
+							: undefined,
+						customPrice: price
+					})
+				);
+				const res = await syncLocalCart(preparedPayload);
+
+				if (res.data._id) {
+					toast.success("Your cart has been synced");
+					dispatch(clearCart());
+				} else if (res.message.includes("already in cart")) {
+					dispatch(clearCart());
+				}
+			}
+		} catch (error: any) {
+			console.log(error?.response?.data);
+			if (error?.response?.data?.message.includes("already in cart")) {
+				dispatch(clearCart());
+			}
+		}
 	}, [userId, cart]);
 
 	return {
 		addItemToCart,
 		removeItemFromCart,
 		getCartItems,
-        syncCartItems,
+		syncCartItems,
 		isPending: isPending || isSubmitting
 	};
 }

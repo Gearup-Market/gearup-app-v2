@@ -1,31 +1,28 @@
 import { RentingOffer, SellingOffer } from "@/interfaces/Listing";
-import { Listing } from "@/store/slices/listingsSlice";
+import { Listing, ListingLocation } from "@/store/slices/listingsSlice";
 import { AxiosError } from "axios";
 
-
-export interface Product  {
-  productName: string;
-  category?: string;
-  subCategory?: string;
-  productionType: string;
-  subCategoryFields: {
-    brand: string;
-    model: string;
-    sensorType: string;
-    megapixels: string;
-    videoResolution: string;
-  };
-  description: string;
-  listingPhotos: string[];
-  listingType: string;
-  gearCondition: string;
-  offer?: SellingOffer | RentingOffer;
-  user: string;
+export interface Product {
+	productName: string;
+	category?: string;
+	subCategory?: string;
+	productionType: string;
+	subCategoryFields: {
+		brand: string;
+		model: string;
+		sensorType: string;
+		megapixels: string;
+		videoResolution: string;
+	};
+	description: string;
+	listingPhotos: string[];
+	listingType: string;
+	gearCondition: string;
+	offer?: SellingOffer | RentingOffer;
+	user: string;
 }
 
-
 export type iPostListingReq = Product;
-
 
 export interface iPostListingResp {
 	data: {
@@ -55,12 +52,12 @@ export interface iPostListingResp {
 
 export interface iGetListingsResp {
 	data: Listing[];
-	message: string
+	message: string;
 }
 
 export interface iGetListingResp {
 	data: Listing;
-	message: string
+	message: string;
 }
 
 export interface iCategory {
@@ -68,17 +65,17 @@ export interface iCategory {
 	id: string;
 	name: string;
 	image: string;
-	fields: Field[]
-	subCategories: iCategory[]
+	fields: Field[];
+	subCategories: iCategory[];
 }
 
 export interface Field {
-    name: string;
-    fieldType: 'single' | 'multiple',
-    values: {
-        id: string;
-        name: string;
-    }
+	name: string;
+	fieldType: "single" | "multiple";
+	values: {
+		id: string;
+		name: string;
+	};
 }
 
 export interface iCategoryDetailed {
@@ -101,6 +98,13 @@ export type iPostListingErr = AxiosError<{
 	error: string;
 }>;
 
-	export interface iUploadImagesResp {
-		imageUrls: string[];
-	}
+export interface iUploadImagesResp {
+	imageUrls: string[];
+}
+
+export interface SearchQuery {
+	category?: string;
+	productName?: string;
+	listingType?: string;
+	location?: Partial<ListingLocation>
+}

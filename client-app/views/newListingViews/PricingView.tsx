@@ -99,7 +99,7 @@ const PricingView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }} onClick={() => router.push('/user/dashboard')}>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -202,7 +202,7 @@ const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: Sellin
 						label="Amount"
 						type="number"
 						value={forSellDetails?.pricing}
-						onChange={(e: any) => setForSellDetails((prev) => ({ ...prev, pricing: e.target.value ?? 0 }))}
+						onChange={(e: any) => setForSellDetails((prev) => ({ ...prev, pricing: +e.target.value ?? 0 }))}
 						className={styles.input}
 					/>
 					<ListingType

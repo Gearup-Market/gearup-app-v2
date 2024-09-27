@@ -246,7 +246,7 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 									<p className={styles.view_explorer_title}>
 										Transaction ID
 									</p>
-									<Link href={getExplorerUrl(`transaction/${listing.transactionId}`)} className={styles.view_explorer}>
+									<Link href={getExplorerUrl(`txns/${listing.transactionId}`)} target="_blank" className={styles.view_explorer}>
 										View explorer
 									</Link>
 								</div>

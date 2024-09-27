@@ -1,36 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styles from "./NewListingViews.module.scss";
 import { Button, LoadingSpinner, Logo } from "@/shared";
 import Image from "next/image";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/store/configureStore";
-import { useUploadFiles } from "@/app/api/hooks/listings";
+import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import toast from "react-hot-toast";
 
 const ImagesView = () => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
+	const newListing = useAppSelector(s => s.newListing);
 	const [displayedImages, setDisplayedImages] = useState<File[]>([]);
 
-	const handleIconChange = (e: any) => {
-		const file = e.target.files[0];
-		const localArr = [...displayedImages, file];
-		setDisplayedImages(localArr);
-		// if (file) {
-		// 	const reader = new FileReader();
-		// 	reader.onloadend = () => {
-		// 		const baseUrl: any = reader.result;
-		// 		const baseUrlString: any = baseUrl!.split("base64,")[1];
-		// 		setInputValues({
-		// 			...inputValues,
-		// 			image: baseUrlString,
-		// 		});
-		// 	};
-		// 	reader.readAsDataURL(file);
-		// }
+	const handleClose = () => {
+		router.replace("/user/dashboard");
+	};
+
+	const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const files = e.target.files;
+		if (files && files.length > 0) {
+			const validFiles = Array.from(files).filter(file => file instanceof File);
+			if (validFiles.length > 0) {
+				const localArr = [...displayedImages, ...validFiles];
+				setDisplayedImages(localArr);
+			} else {
+				toast.error("No valid File objects were selected");
+			}
+		} else {
+			toast.error("No files selected");
+		}
 	};
 
 	const deleteImage = (image: File) => {
@@ -39,13 +40,30 @@ const ImagesView = () => {
 		setDisplayedImages(filteredImages);
 	};
 
-	const nextPage = async () => {
-		const newListingData = { listingPhotos: displayedImages.map((c) => URL.createObjectURL(c)), tempPhotos: displayedImages };
-		dispatch(updateNewListing(newListingData));
-		router.push("/new-listing/type");
+	const removeExistingImage = (image: string) => {
+		const images = [...newListing.listingPhotos.filter(x => x !== image)];
+		dispatch(
+			updateNewListing({
+				listingPhotos: images
+			})
+		);
 	};
 
-	const disabledButton = !displayedImages.length;
+	const nextPage = useCallback(async () => {
+		const newListingData = {
+			listingPhotos: (newListing.listingPhotos || []).concat(
+				displayedImages.map(c => URL.createObjectURL(c))
+			),
+			tempPhotos: displayedImages
+		};
+
+		dispatch(updateNewListing(newListingData));
+		router.push("/new-listing/type");
+	}, [newListing.listingPhotos, displayedImages]);
+
+	const disabledButton =
+		displayedImages.length === 0 && newListing.listingPhotos.length === 0;
+
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>
@@ -57,7 +75,10 @@ const ImagesView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+				<div
+					style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}
+					onClick={handleClose}
+				>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -85,7 +106,7 @@ const ImagesView = () => {
 								onChange={handleIconChange}
 								accept="image/*"
 								multiple
-							// required
+								// required
 							/>
 							<div className={styles.add_image}>
 								<Image
@@ -103,6 +124,20 @@ const ImagesView = () => {
 							</div>
 						</div>
 						<div className={styles.image_row}>
+							{newListing.listingPhotos.map((photo: string, index) => (
+								<div key={index} className={styles.image}>
+									<Image src={photo} alt="" fill sizes="100vw" />
+									<div
+										className={styles.closeModal_container}
+										onClick={() => removeExistingImage(photo)}
+									>
+										<div className={styles.closeModal}>
+											<span></span>
+											<span></span>
+										</div>
+									</div>
+								</div>
+							))}
 							{displayedImages.map((displayedImage: File) => (
 								<div key={displayedImage.name} className={styles.image}>
 									<Image

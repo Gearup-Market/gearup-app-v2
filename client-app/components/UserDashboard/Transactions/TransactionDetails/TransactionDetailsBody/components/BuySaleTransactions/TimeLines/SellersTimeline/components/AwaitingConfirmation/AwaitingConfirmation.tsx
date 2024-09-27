@@ -2,10 +2,14 @@ import React from 'react'
 import styles from './AwaitingConfirmation.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import { useSearchParams } from 'next/navigation'
+import { iTransactionDetails } from '@/interfaces';
 
-const AwaitingConfirmation = () => {
-  const search = useSearchParams()
-  const thirdPartyVerification = search.get('third_party')
+interface Props {
+  item: iTransactionDetails;
+}
+const AwaitingConfirmation = ({item}: Props) => {
+  const {metadata} = item;
+  const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
   return (
     <div className={styles.container}>
       <HeaderSubText title="Awaiting Confirmation" />

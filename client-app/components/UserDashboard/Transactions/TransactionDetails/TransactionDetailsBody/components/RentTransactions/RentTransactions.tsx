@@ -4,17 +4,15 @@ import DetailsSummary from "../DetailsSummary/DetailsSummary";
 import { LendersTimeline, RentersTimeline } from "./TimeLines";
 import HeaderSubText from "@/components/UserDashboard/HeaderSubText/HeaderSubText";
 import { MoreIcon } from "@/shared/svgs/dashboard";
-import { iTransactionDetails } from "@/interfaces";
 import { UserRole } from "@/app/api/hooks/transactions/types";
-import useTimeline from "@/hooks/useTimeline";
+import { useAppSelector } from "@/store/configureStore";
 
-interface Props {
-	item: iTransactionDetails;
-}
-
-const RentTransactions = ({ item }: Props) => {
+const RentTransactions = () => {
+	const { transaction } = useAppSelector(s => s.transaction);
 	const [openModal, setOpenModal] = useState(false);
-	const timeline = item.userRole;
+
+	if(!transaction) return null;
+	const timeline = transaction.userRole;
 
 	return (
 		<div className={styles.container}>
@@ -30,12 +28,12 @@ const RentTransactions = ({ item }: Props) => {
 					</span>
 				</div>
 				{timeline === UserRole.Lender ? (
-					<LendersTimeline item={item} openModal={openModal} setOpenModal={setOpenModal} />
+					<LendersTimeline openModal={openModal} setOpenModal={setOpenModal} />
 				) : (
-					<RentersTimeline item={item} openModal={openModal} setOpenModal={setOpenModal} />
+					<RentersTimeline openModal={openModal} setOpenModal={setOpenModal} />
 				)}
 			</div>
-			<DetailsSummary item={item} />
+			<DetailsSummary item={transaction} />
 		</div>
 	);
 };

@@ -172,7 +172,7 @@ const PersonalInfoForm: React.FC = () => {
 								</div>
 							</div>
 							<div className={styles.submit_btn_container}>
-								<Button disabled buttonType="primary" type="submit">
+								<Button disabled={isSubmitting} buttonType="primary" type="submit">
 									Save changes
 								</Button>
 							</div>

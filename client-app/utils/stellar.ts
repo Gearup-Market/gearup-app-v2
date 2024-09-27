@@ -35,5 +35,5 @@ export async function calculateTotalCost(
 
 export const getExplorerUrl = (path: string) =>
 	process.env.NEXT_APP_STELLAR_MAINNET
-		? `https://stellar.expert/explorer/public/${path}`
-		: `https://stellar.expert/explorer/testnet/${path}`;
+		? `https://lumenscan.io/${path}`
+		: `https://testnet.lumenscan.io/${path}`;

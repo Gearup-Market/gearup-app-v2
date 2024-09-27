@@ -12,7 +12,7 @@ import {
 } from "@/shared";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "@/store/configureStore";
+import { AppState, useAppSelector } from "@/store/configureStore";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { useGetCategories } from "@/app/api/hooks/listings";
@@ -21,7 +21,7 @@ import { iCategory } from "@/app/api/hooks/listings/types";
 const ListingDetailsView = () => {
 	const router = useRouter();
 	const { isFetching: loading, data: allCategories } = useGetCategories();
-
+	const newListing = useAppSelector(s => s.newListing);
 	const dispatch = useDispatch();
 	const [category, setCategory] = useState<iCategory>();
 	const [subCategory, setSubCategory] = useState<iCategory>();
@@ -29,7 +29,7 @@ const ListingDetailsView = () => {
 	const [inputValues, setInputValues] = useState<{
 		title: string;
 		description: string;
-	}>({ title: "", description: "" });
+	}>({ title: newListing.productName || "", description: newListing.description || "" });
 
 	const convertArrToObj = (arr: any[]) => {
 		return arr?.reduce((acc, field) => {
@@ -60,6 +60,18 @@ const ListingDetailsView = () => {
 		router.push("/new-listing/images");
 	};
 
+	useEffect(() => {
+		let _c: iCategory | undefined
+		if (newListing.category){
+			_c = allCategories?.data.find(c => c._id === newListing.category?._id)
+			setCategory(_c)
+		}
+		if (newListing.subCategory){
+			const _b = _c?.subCategories.find(c => c._id === newListing.subCategory?._id)
+			setSubCategory(_b)
+		}
+	}, [newListing, allCategories]);
+
 	const disabledButton =
 		!inputValues.description || !inputValues.title || !category || !subCategory;
 
@@ -74,7 +86,7 @@ const ListingDetailsView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }} onClick={() => router.push('/user/dashboard')}>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -110,12 +122,14 @@ const ListingDetailsView = () => {
 							<AdvanceSelect
 								label="Category"
 								options={allCategories?.data ?? []}
+								defaultOption={category?.name}
 								onOptionChange={setCategory}
 								valueType="name"
 							/>
 							<AdvanceSelect
 								label="SubCategory"
 								options={category ? category.subCategories : []}
+								defaultOption={subCategory?.name}
 								onOptionChange={setSubCategory}
 								valueType="name"
 							/>

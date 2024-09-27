@@ -2,7 +2,7 @@ import { User } from "@/interfaces/User";
 import { Listing } from "@/store/slices/listingsSlice";
 import { AxiosError } from "axios";
 import { iWTransaction } from "../wallets/types";
-import { TransactionStage, TransactionStageObject, TransactionStatus } from "@/interfaces";
+import { MetadataSchema, Stage, TransactionStage, TransactionStatus } from "@/interfaces";
 
 export enum TransactionType {
 	Rental = "Rental",
@@ -70,8 +70,8 @@ export interface Transaction {
 	amount: number;
 	rentalPeriod?: RentalPeriod;
 	payment: string;
-	metadata: any;
-	stage: TransactionStageObject;
+	metadata: MetadataSchema;
+	stages: Stage[];
 	createdAt: string;
 	updatedAt?: string;
 }

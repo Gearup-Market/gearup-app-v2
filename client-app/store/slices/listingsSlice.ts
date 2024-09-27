@@ -65,12 +65,14 @@ export interface Listing {
 type ListingState = {
 	owned: Listing[];
 	listings: Listing[];
+	searchedListings: Listing[];
 	currentListing: Listing | null;
 };
 
 const initialState: ListingState = {
 	owned: [],
 	listings: [],
+	searchedListings: [],
 	currentListing: null
 };
 

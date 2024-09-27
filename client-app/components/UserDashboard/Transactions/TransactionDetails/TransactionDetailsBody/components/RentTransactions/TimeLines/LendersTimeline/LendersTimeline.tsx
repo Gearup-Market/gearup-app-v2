@@ -10,21 +10,18 @@ import Modal from '@/shared/modals/modal/Modal'
 import { CustomRatingFeedback } from '../../..'
 import { iTransactionDetails } from '@/interfaces'
 import useTimeline from '@/hooks/useTimeline'
+import { useAppSelector } from '@/store/configureStore'
 
 interface Props {
-    item: iTransactionDetails;
     openModal: boolean
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const LendersTimeline = ({ item, openModal, setOpenModal }: Props) => {
-    const {steps, handleAction} = useTimeline(item)
+const LendersTimeline = ({ openModal, setOpenModal }: Props) => {
+    const { transaction } = useAppSelector(s => s.transaction);
+    if(!transaction) return null;
 
-    const handlePrev = () => {
-    }
-
-    const handleNext = () => {
-    }
+    const {steps, handleAction} = useTimeline(transaction)
 
     return (
         <div>
@@ -38,10 +35,10 @@ const LendersTimeline = ({ item, openModal, setOpenModal }: Props) => {
                 </div>
                 <div className={styles.right}>
                     {
-                        steps == 1 && <AcceptDecline item={item} handleNext={handleAction} />
+                        steps == 1 && <AcceptDecline item={transaction} handleNext={handleAction} />
                     }
                     {
-                        steps === 2 && <ConfirmHandover item={item} handleNext={handleAction} />
+                        steps === 2 && <ConfirmHandover item={transaction} handleNext={handleAction} />
                     }
                     {
                         steps === 3 && <AwaitingConfirmation  />

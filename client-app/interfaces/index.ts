@@ -79,8 +79,6 @@ export enum ListingType {
 	Both = "both"
 }
 
-export type StageSchema = { updatedAt: Date; stage: TransactionStage };
-
 export enum TransactionStage {
 	PendingApproval = 'PendingApproval',
     ConfirmHandover = 'ConfirmHandover',
@@ -92,11 +90,22 @@ export enum TransactionStage {
     ReviewAndFeedback = 'ReviewAndFeedback',
     Declined = 'Declined',
 }
-
-export interface TransactionStageObject {
-	stage: TransactionStage;
-	updatedAt: Date;
+export enum ShippingType {
+	Shipping = 'shipping',
+	LocalPickup = 'localpickup'
 }
+export type Stage = { updatedAt: Date; stage: TransactionStage, transactionHash: string; isCurrent: boolean  };
+export type MetadataSchema = {
+	thirdPartyCheckup?: boolean;
+	shippingType?: ShippingType;
+	country?: string;
+	name?: string;
+	company?: string;
+	address?: string;
+	city?: string;
+	postalCode?: string;
+	phoneNumber?: string;
+} 
 
 export interface iTransactionDetails {
 	id: string;
@@ -112,7 +121,8 @@ export interface iTransactionDetails {
 	listing: Listing;
 	isBuyer: boolean;
 	payment: iWTransaction;
-	stage: TransactionStageObject;
+	stages: Stage[];
+	metadata?: MetadataSchema
 	rentalPeriod?: RentalPeriod;
 }
 

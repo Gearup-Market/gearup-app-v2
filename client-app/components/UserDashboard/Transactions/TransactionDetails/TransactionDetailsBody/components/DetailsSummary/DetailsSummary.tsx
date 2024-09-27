@@ -37,7 +37,7 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 					</div>
 				) : null}
 				<div className={styles.summary_item}>
-					<h4>Rental price</h4>
+					<h4>Price</h4>
 					<p>₦{formatNum(unitPrice)}</p>
 				</div>
 				<div className={styles.summary_item}>

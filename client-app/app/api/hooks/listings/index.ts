@@ -71,8 +71,20 @@ const usePostChangeListingStatus = (
 		mutationFn: async props => {
 			const { listingId } = props;
 			delete props.listingId;
-			return (await api.post(`${API_URL.changeListingStatus}/${listingId}`, props)).data;
+			return (await api.post(`${API_URL.changeListingStatus}/${listingId}`, props))
+				.data;
 		},
+		...options
+	});
+
+const usePostSearchListing = (
+	options?: Omit<
+		UseMutationOptions<iGetListingsResp, iPostListingErr, any>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iGetListingsResp, iPostListingErr, any>({
+		mutationFn: async props => (await api.post(API_URL.searchListings, props)).data,
 		...options
 	});
 
@@ -153,6 +165,7 @@ export {
 	usePostUpdateListing,
 	usePostRemoveListing,
 	usePostChangeListingStatus,
+	usePostSearchListing,
 	useGetListingById,
 	useGetListings,
 	useGetCategories,

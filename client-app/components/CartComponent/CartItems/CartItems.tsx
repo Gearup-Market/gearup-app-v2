@@ -5,6 +5,8 @@ import CartItemCardContainer from "../CartItemCard/CartItemCard";
 import { CustomImage, Ratings } from "@/shared";
 import useCart from "@/hooks/useCart";
 import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
+import { formatNum } from "@/utils";
+import toast from "react-hot-toast";
 
 const CartItems = () => {
 	const { getCartItems, removeItemFromCart } = useCart();
@@ -13,7 +15,8 @@ const CartItems = () => {
 	if (!cartItems) return null;
 
 	const handleDeleteItem = async (id: string) => {
-        await removeItemFromCart(id)
+		const res = await removeItemFromCart(id);
+		if (res) toast.success("Item removed from cart");
 	};
 
 	return (
@@ -22,7 +25,7 @@ const CartItems = () => {
 				if (item.type === TransactionType.Rental) {
 					return (
 						<CartItemCardContainer
-                            item={item}
+							item={item}
 							key={index}
 							name={item?.listing?.productName}
 							handleDeleteItem={handleDeleteItem}
@@ -36,7 +39,7 @@ const CartItems = () => {
 				if (item.type === TransactionType.Sale) {
 					return (
 						<CartItemCardContainer
-                            item={item}
+							item={item}
 							key={index}
 							name={item?.listing?.productName}
 							handleDeleteItem={handleDeleteItem}
@@ -102,21 +105,21 @@ const RentalComp = ({ item }: { item: CartItem }) => {
 			</div> */}
 			<div className={`${styles.summary_item} ${styles.total_amount}`}>
 				<h4>Total</h4>
-				<p>NGN {price}</p>
+				<p>NGN {formatNum(price)}</p>
 			</div>
 		</div>
 	);
 };
 
 const GearSaleComp = ({ item }: { item: CartItem }) => {
-    const price = item.listing?.offer?.forSell?.pricing;
+	const price = item.listing?.offer?.forSell?.pricing;
 	return (
 		<div>
 			<div className={styles.summary_item}>
 				<h4>Author</h4>
 				<div className={styles.owner}>
 					<div className={styles.image}>
-                    {item.listing?.user?.avatar && (
+						{item.listing?.user?.avatar && (
 							<CustomImage
 								height={40}
 								width={50}
@@ -143,7 +146,7 @@ const GearSaleComp = ({ item }: { item: CartItem }) => {
 			</div> */}
 			<div className={`${styles.summary_item} ${styles.total_amount}`}>
 				<h4>Total</h4>
-				<p>NGN {price}</p>
+				<p>NGN {formatNum(price)}</p>
 			</div>
 		</div>
 	);

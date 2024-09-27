@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CheckoutView.module.scss";
 import { BackNavigation } from "@/shared";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ShippingAddress from "@/components/CartComponent/CheckoutComp/ShippingAddress/ShippingAddress";
 import ShippingType from "@/components/CartComponent/CheckoutComp/ShippingType/ShippingType";
 import ThirdPartyCheck from "@/components/CartComponent/CheckoutComp/ThirdPartyCheck/ThirdPartyCheck";
 import { useAppSelector } from "@/store/configureStore";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
-import { useStellarWallet, useWallet } from "@/hooks";
 import { useAuth } from "@/contexts/AuthContext";
 import dynamic from 'next/dynamic';
 
@@ -52,12 +51,12 @@ const CheckoutView = () => {
 	const { checkout } = useAppSelector(s => s.checkout);
 	const [step, setStep] = useState(1);
 
-	const nextStep = () => {
-		setStep(prev => prev + 1);
+	const nextStep = (e: any, skip: boolean = false) => {
+		setStep(prev => prev + (skip ? 2 : 1));
 	};
 
 	const prevStep = () => {
-		setStep(prev => prev + 1);
+		setStep(prev => prev - 1);
 	};
 
 	useEffect(() => {

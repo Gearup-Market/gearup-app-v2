@@ -16,13 +16,18 @@ enum TransactionType {
 export default function useTimeline(item: iTransactionDetails) {
 	const { userId } = useAppSelector(s => s.user);
 	const { mutateAsync: postTransactionStage, isPending } = usePostTransactionStage();
+	const {transaction, currentStage} = useAppSelector(s => s.transaction);
 	const [steps, setSteps] = useState(1);
-	const { isBuyer, stage: stages, id, userRole, transactionType } = item;
+	
+	
+	const { isBuyer, id, userRole, transactionType } = transaction!;
+	const stage = currentStage?.stage
+	console.log(stage);
+	
 
 	useEffect(() => {
 		if (userRole === UserRole.Renter && transactionType === TransactionType.Rental) {
-			const {stage} = stages
-			if (stage === TransactionStage.PendingApproval) {
+			if (!stage || stage === TransactionStage.PendingApproval) {
 				setSteps(1);
 			} else if (stage === TransactionStage.AwaitingConfirmation) {
 				setSteps(2);
@@ -39,8 +44,7 @@ export default function useTimeline(item: iTransactionDetails) {
 			userRole === UserRole.Lender &&
 			transactionType === TransactionType.Rental
 		) {
-			const {stage} = stages
-			if (stage === TransactionStage.PendingApproval) {
+			if (!stage || stage === TransactionStage.PendingApproval) {
 				setSteps(1);
 			} else if (stage === TransactionStage.ConfirmHandover) {
 				setSteps(2);
@@ -52,6 +56,24 @@ export default function useTimeline(item: iTransactionDetails) {
 				setSteps(5);
 			} else if (stage === TransactionStage.ReviewAndFeedback) {
 				setSteps(6);
+			}
+		} else if(userRole === UserRole.Buyer && ['Purchase', 'Sale'].includes(transactionType)){
+			if (!stage || stage === TransactionStage.PendingApproval) {
+				setSteps(1);
+			} else if (stage === TransactionStage.AwaitingConfirmation) {
+				setSteps(2);
+			} else if (stage === TransactionStage.ReviewAndFeedback) {
+				setSteps(3);
+			}
+		}  else if(userRole === UserRole.Seller && ['Purchase', 'Sale'].includes(transactionType)){
+			if (!stage || stage === TransactionStage.PendingApproval) {
+				setSteps(1);
+			}else if (stage === TransactionStage.ConfirmHandover) {
+				setSteps(2);
+			} else if (stage === TransactionStage.AwaitingConfirmation) {
+				setSteps(3);
+			} else if (stage === TransactionStage.ReviewAndFeedback) {
+				setSteps(4);
 			}
 		}
 	}, [item]);

@@ -4,9 +4,10 @@ import styles from './StatusReport.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText';
 import { Button } from '@/shared';
 import RefundModal from './RefundModal/RefundModal';
+import { TransactionStage, TransactionStatus } from '@/interfaces';
 
 interface Props {
-    handleNext: () => void
+    handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 }
 
 const StatusReport = ({ handleNext }: Props) => {

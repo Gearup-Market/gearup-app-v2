@@ -2,9 +2,10 @@ import React from 'react'
 import styles from './ConfirmShipment.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import { Button } from '@/shared'
+import { TransactionStage, TransactionStatus } from '@/interfaces';
 
 interface Props {
-    handleNext: () => void
+    handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 }
 const ConfirmShipment = ({ handleNext }: Props) => {
     return (

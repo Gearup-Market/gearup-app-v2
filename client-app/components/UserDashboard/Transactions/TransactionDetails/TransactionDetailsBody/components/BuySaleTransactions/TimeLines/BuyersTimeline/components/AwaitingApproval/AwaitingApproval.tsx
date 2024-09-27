@@ -1,24 +1,38 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import styles from './AwaitingApproval.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import Link from 'next/link'
 import { Button } from '@/shared'
+import { iTransactionDetails, TransactionStage, TransactionStatus } from '@/interfaces'
+import { formatNum } from '@/utils'
 
 interface Props {
-  handleNext: () => void
+  handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
+  item: iTransactionDetails;
   thirdPartyVerification?: boolean
 }
-const AwaitingApproval = ({ handleNext, thirdPartyVerification }: Props) => {
+const AwaitingApproval = ({ handleNext, item, thirdPartyVerification }: Props) => {
+  const { isBuyer, id, amount, transactionStatus, listing, rentalPeriod } = item;
+
+	const isCancelled = useMemo(
+		() => transactionStatus === TransactionStatus.Cancelled,
+		[transactionStatus]
+	);
+	const isDeclined = useMemo(
+		() => transactionStatus === TransactionStatus.Declined,
+		[transactionStatus]
+	);
+
   return (
     <div className={styles.container}>
       <HeaderSubText title="Awaiting approval" />
       {
-        thirdPartyVerification ?
+        !thirdPartyVerification ?
           <>
             <div className={styles.details_container}>
               <p className={styles.details}>
-                You have successfully paid the sum of <span className={styles.bold}>$400</span> for the purchase of Canon EOS R5 Camera and the money is in escrow protection .</p>
+                You have successfully paid the sum of <span className={styles.bold}>₦{formatNum(amount)}</span> for the purchase of {listing.productName} and the money is in escrow protection .</p>
             </div>
             <div className={styles.details_container}>
               <p className={styles.details}>
@@ -34,13 +48,12 @@ const AwaitingApproval = ({ handleNext, thirdPartyVerification }: Props) => {
                 According to our <span className={styles.policy_text}>48hours return policy</span>, you have until 48 hours to initiate a return request if a fault(s) is identified with the equipment.d to you.
               </p>
             </div>
-            <Button onClick={handleNext}>Proceed</Button>
           </>
           :
           <>
             <div className={styles.details_container}>
               <p className={styles.details}>
-              <span className={styles.bold}>Wade Warren</span> has successfully paid the sum of <span className={styles.bold}>$400</span> for the purchase of Canon EOS R5 Camera, and the money is in escrow protection, which will be released to you once the transaction is completed</p>
+              <span className={styles.bold}>{listing.user?.name || listing.user?.userName}</span> has successfully paid the sum of <span className={styles.bold}>₦{formatNum(amount)}</span> for the purchase of {listing.productName}, and the money is in escrow protection, which will be released to you once the transaction is completed</p>
             </div>
             <div className={styles.details_container}>
               <p className={styles.details}>

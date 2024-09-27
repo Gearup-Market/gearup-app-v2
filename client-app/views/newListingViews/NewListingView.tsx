@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./NewListingViews.module.scss";
 import { Button, Logo } from "@/shared";
 import Image from "next/image";
 import { AddSearchbox, AddedItem } from "@/components/newListing";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
-import {  updateNewListing } from "@/store/slices/addListingSlice";
+import {  clearNewListing, updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { Item } from "@/interfaces/Listing";
 
@@ -17,6 +17,10 @@ const NewListingView = () => {
 	const dispatch = useDispatch();
 	const {items=[]} = newListing;
 	const [isProduct, setIsProduct] = useState<boolean>(false);
+
+	useEffect(() => {
+		dispatch(clearNewListing())
+	}, [])
 
 	const addProduct = () => {
 		setIsProduct(true);
@@ -31,7 +35,7 @@ const NewListingView = () => {
 		const _items = [...items, item];
 		dispatch(updateNewListing({ items: _items }));
 		setIsProduct(false);
-	};
+	};	
 
 	const disabledButton = !items?.length;
 	return (

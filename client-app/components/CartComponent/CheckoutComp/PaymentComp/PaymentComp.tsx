@@ -16,6 +16,7 @@ import { resetCheckout } from "@/store/slices/checkoutSlice";
 import useCart from "@/hooks/useCart";
 import { PaystackPaymentButton } from "@/shared";
 import { PaystackProps } from "react-paystack/dist/types";
+import { formatNum } from "@/utils";
 
 export enum PaymentMethod {
 	Wallet = "wallet",
@@ -41,9 +42,9 @@ const PaymentComp = ({
 	const { walletResult, isFetching } = useWallet();
 	const { data: xlmWallet, isFetching: xlmWalletFetching } = useStellarWallet();
 	const user = useAppSelector(s => s.user);
-	const { mutateAsync: postTransaction } = usePostTransaction();
+	const { mutateAsync: postTransaction, isPending } = usePostTransaction();
 	const { removeItemFromCart } = useCart();
-	// const initializePayment = usePaystackPayment(paystackConfig);
+	const saleProps = useAppSelector(s => s.checkout.saleProps);
 	const dispatch = useAppDispatch();
 
 	const preparedPayload = {
@@ -52,7 +53,8 @@ const PaymentComp = ({
 		buyer: user.userId,
 		amount,
 		type,
-		rentalPeriod
+		rentalPeriod,
+		metadata: saleProps
 	};
 
 	const walletBalance = useMemo(
@@ -64,27 +66,25 @@ const PaymentComp = ({
 
 	const onPaystackSuccess = async ({ reference, status }: any) => {
 		if (status === "success") {
-			setTimeout(async function () {
-				try {
-					const res = await postTransaction({
-						...preparedPayload,
-						reference,
-						method: PaymentMethod.Paystack
-					});
+			try {
+				const res = await postTransaction({
+					...preparedPayload,
+					reference,
+					method: PaymentMethod.Paystack
+				});
 
-					if (res.data) {
-						toast.success("Request submitted");
-						dispatch(resetCheckout());
-						removeItemFromCart(item._id);
-						setOpenModal(true);
-					}
-				} catch (error: any) {
-					toast.error(
-						error?.response?.data?.message ||
-							"Could not complete transaction. Your funds will be deposited to wallet"
-					);
+				if (res.data) {
+					toast.success("Request submitted");
+					dispatch(resetCheckout());
+					removeItemFromCart(item._id);
+					setOpenModal(true);
 				}
-			}, 2000);
+			} catch (error: any) {
+				toast.error(
+					error?.response?.data?.message ||
+						"Could not complete transaction. Your funds will be deposited to wallet"
+				);
+			}
 		}
 	};
 
@@ -108,30 +108,45 @@ const PaymentComp = ({
 		[user, amount]
 	);
 
+	const payWithWallet = async () => {
+		if (walletBalance < amount) {
+			toast.error("Insufficient funds in wallet");
+			return;
+		}
+
+		const res = await postTransaction({
+			...preparedPayload,
+			method: PaymentMethod.Wallet,
+			reference: new Date().getTime().toString()
+		});
+
+		if (res.data) {
+			console.log(res.data, "res.data");
+			toast.success("Request submitted");
+			dispatch(resetCheckout());
+			removeItemFromCart(item._id);
+			setOpenModal(true);
+		}
+	};
+
 	const handlePayment = async (type: "fiat" | "xlm" | "paystack") => {
 		try {
-			if (type === "xlm") {
-				toast.error("Crypto payment will be supported soon!");
-			} else {
-				if (walletBalance < amount) {
-					toast.error("Insufficient funds in wallet");
-					return;
-				}
-
-				const res = await postTransaction({
-					...preparedPayload,
-					method: PaymentMethod.Wallet
-				});
-
-				if (res.data) {
-					console.log(res.data, "res.data");
-					toast.success("Request submitted");
-					dispatch(resetCheckout());
-					removeItemFromCart(item._id);
-				}
+			switch (type) {
+				case "xlm":
+					toast.error("Crypto payment via ramp will be supported soon!");
+					break;
+				case "fiat":
+					payWithWallet();
+					break;
+				default:
+					console.log("select a payment stype");
 			}
 		} catch (error: any) {
-			toast.error(error?.data?.response?.message || error?.message);
+			toast.error(
+				error?.data?.response?.message ||
+					error?.message ||
+					"An unexpected error occurred"
+			);
 		}
 	};
 
@@ -145,6 +160,7 @@ const PaymentComp = ({
 					icon="/svgs/fiat-wallet.svg"
 					isLoading={isFetching}
 					hasBalance
+					disabled={isPending || amount <= 0}
 					onClick={() => handlePayment("fiat")}
 				/>
 				<PaymentOption
@@ -176,6 +192,7 @@ interface PaymentOptionsProps {
 	readonly icon: string;
 	readonly isLoading?: boolean;
 	onClick?: () => void;
+	disabled?: boolean;
 }
 
 function PaymentOption({
@@ -184,27 +201,37 @@ function PaymentOption({
 	icon,
 	hasBalance,
 	isLoading,
-	onClick
+	onClick,
+	disabled
 }: PaymentOptionsProps) {
+
 	return (
-		<div className={styles.payment_container} onClick={onClick}>
+		<div
+			className={styles.payment_container}
+			onClick={() => {
+				if(disabled) return;
+
+				onClick?.();
+			}}
+			aria-disabled={disabled}
+		>
 			<div className={styles.payment_container__left}>
 				<Image src={icon} alt="icon-payment" height={30} width={30} />
 				<div className={styles.name_amount}>
 					<h2 className={styles.name}>{title}</h2>
 					{hasBalance && (
-						<p className={styles.balance_container}>
+						<div className={styles.balance_container}>
 							Wallet balance:{" "}
-							<span className={styles.balance}>
-								{Number(balance) >= 0 ? (
-									balance
-								) : isLoading ? (
-									<SmallLoader />
-								) : (
-									""
-								)}
-							</span>
-						</p>
+							{Number(balance) >= 0 ? (
+								<span className={styles.balance}>
+									{formatNum(balance)}
+								</span>
+							) : isLoading ? (
+								<SmallLoader />
+							) : (
+								""
+							)}
+						</div>
 					)}
 				</div>
 			</div>

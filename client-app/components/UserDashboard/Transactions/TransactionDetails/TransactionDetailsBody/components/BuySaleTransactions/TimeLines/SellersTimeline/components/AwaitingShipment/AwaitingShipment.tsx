@@ -1,9 +1,10 @@
 import React from 'react'
 import styles from './AwaitingShipment.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
+import { TransactionStage, TransactionStatus } from '@/interfaces';
 
 interface Props {
-    handleNext: () => void
+    handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 }
 
 const AwaitingShipment = ({ handleNext }: Props) => {

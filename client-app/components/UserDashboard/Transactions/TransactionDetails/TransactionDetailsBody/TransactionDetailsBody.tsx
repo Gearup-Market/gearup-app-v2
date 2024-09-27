@@ -1,27 +1,24 @@
-import React from 'react'
-import styles from './TransactionDetailsBody.module.scss'
-import RentTransactions from './components/RentTransactions/RentTransactions'
-import BuyTransactions from './components/BuySaleTransactions/BuySaleTransactions'
-import CourseTransactions from './components/CoursesTransactions/CourseTransactions'
-import { iTransactionDetails } from '@/interfaces'
-interface Props {
-    item: iTransactionDetails
-}
-const TransactionDetailsBody = ({ item }: Props) => {
-    const transactionType = item.transactionType;
-    return (
-        <div className={styles.container}>
-            {
-                transactionType === 'Rental' && <RentTransactions item={item} />
-            }
-            {
-                transactionType === 'Purchase' || transactionType === 'Sale' && <BuyTransactions item={item}/>
-            }
-            {
-                transactionType === 'courses' && <CourseTransactions item={item}/>
-            }
-        </div>
-    )
-}
+import React from "react";
+import styles from "./TransactionDetailsBody.module.scss";
+import RentTransactions from "./components/RentTransactions/RentTransactions";
+import BuyTransactions from "./components/BuySaleTransactions/BuySaleTransactions";
+import CourseTransactions from "./components/CoursesTransactions/CourseTransactions";
+import { useAppSelector } from "@/store/configureStore";
 
-export default TransactionDetailsBody
+const TransactionDetailsBody = () => {
+	const { transaction } = useAppSelector(s => s.transaction);
+	if (!transaction) return null;
+
+	const transactionType = transaction.transactionType;
+	return (
+		<div className={styles.container}>
+			{transactionType === "Rental" && <RentTransactions />}
+			{(transactionType === "Purchase" || transactionType === "Sale") && (
+				<BuyTransactions />
+			)}
+			{transactionType === "courses" && <CourseTransactions item={transaction} />}
+		</div>
+	);
+};
+
+export default TransactionDetailsBody;

@@ -121,16 +121,25 @@ const ListingTable = ({
 	};
 
 	const onClickEdit = (listingId: string) => {
-		const listing = listings.find(l => (l._id = listingId));
+		const listing = listings.find(l => l._id === listingId);
+		const { productName, description, category, subCategory, condition, offer, listingPhotos, _id } =
+			listing!;
 		const payload = {
-			...listing,
+			_id,
+			productName,
+			description,
+			category,
+			subCategory,
+			condition,
+			offer,
+			listingPhotos,
 			fieldValues: [],
 			tempPhotos: [],
 			userId
 		};
 
 		dispatch(updateNewListing(payload));
-		router.push(`/new-listing?id=${listingId}`);
+		router.push(`/new-listing/listing-details`);
 	};
 
 	const { mutateAsync: postChangeListingStatus, isPending: isPendingUpdate } =
@@ -139,13 +148,13 @@ const ListingTable = ({
 	const onToggleHideListing = async (listingId: string, status: string) => {
 		try {
 			const res = await postChangeListingStatus({
-				status: status === 'available' ? "unavailable" : "available",
+				status: status === "available" ? "unavailable" : "available",
 				userId,
 				listingId
 			});
 			if (res.data) {
 				toast.success("Status updated");
-				window.location.reload()
+				window.location.reload();
 			}
 		} catch (error) {}
 	};
@@ -197,7 +206,10 @@ const ListingTable = ({
 			minWidth: 150,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__status_container}>
-					<ToggleSwitch checked={value?.toLowerCase() === "available"} onChange={() => onToggleHideListing(row.id, row.status)} />
+					<ToggleSwitch
+						checked={value?.toLowerCase() === "available"}
+						onChange={() => onToggleHideListing(row.id, row.status)}
+					/>
 					<p
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status}
@@ -215,7 +227,7 @@ const ListingTable = ({
 			headerClassName: styles.table_header,
 			headerName: "Price",
 			minWidth: 150,
-			renderCell: ({value}) => '₦' + formatNum(value)
+			renderCell: ({ value }) => "₦" + formatNum(value)
 		},
 		{
 			...sharedColDef,
