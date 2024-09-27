@@ -1,0 +1,50 @@
+@import '@/styles/imports';
+
+.progress {
+	position: relative;
+	overflow: hidden;
+}
+
+.progress_inner {
+	width: 100%;
+	height: 100%;
+	// border: 1px solid $colblack-700;
+	overflow: hidden;
+	/* background: linear-gradient(
+		297.24deg,
+		rgba(150, 230, 161, 0.05) 8.25%,
+		rgba(212, 252, 121, 0.05) 91.76%
+	); */
+
+
+&[data-type='default']{
+	background: linear-gradient(
+		297.24deg,
+		rgba(150, 230, 161, 0.05) 8.25%,
+		rgba(212, 252, 121, 0.05) 91.76%
+	);
+}
+
+&[data-type='customized']{
+	background: #FFF7E7;
+	
+}
+
+
+@include flex(stretch, stretch, nowrap);
+}
+
+
+.progress_bar {
+	width: 100%;
+	height: 100%;
+
+	&[data-type='default']{
+		background: linear-gradient(297.24deg, #96e6a1 8.25%, #d4fc79 91.76%);
+	}
+	
+	&[data-type='customized']{
+		background-color: #FFB30F;
+		
+	}
+}

@@ -1,0 +1,58 @@
+@import "@/styles/imports";
+
+.container {
+	width: 100%;
+	padding: 0.6rem 0;
+	@include flex(space-between, center);
+	.row {
+		@include flex(flex-start, center);
+	}
+	.icon {
+		position: relative;
+		width: 2.17rem;
+		height: 2.17rem;
+		margin-left: 0.3rem;
+		.info_container {
+			position: absolute;
+			max-width: 20rem;
+			top: -150%;
+			left: 50%;
+			padding: 1rem;
+			border-radius: 0.4rem;
+			background-color: $col-secondary;
+			display: none;
+		}
+		&:hover {
+			.info_container {
+				display: block;
+			}
+		}
+	}
+	.text {
+		h3 {
+			@extend %text-18;
+			font-weight: 700;
+		}
+		p {
+			color: #4b525a;
+		}
+		p,
+		h6,
+		h5 {
+			@extend %text-14;
+			text-transform: capitalize;
+		}
+		h5 {
+			font-weight: 700;
+			color: #1b1e21;
+		}
+	}
+}
+
+.description {
+	@extend %text-14;
+	color: #4b525a;
+	border: 1px solid #dedfe0;
+	border-radius: 0.8rem;
+	padding: 1.6rem;
+}

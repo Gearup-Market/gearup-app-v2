@@ -1,0 +1,64 @@
+@import "@/styles/imports";
+
+.card {
+	width: 100%;
+	background-color: #fbfbfd;
+	padding: 2.4rem 2.4rem 3.2rem 2.4rem;
+	border-radius: 1.6rem;
+	margin-top: 3.2rem;
+	.row {
+		@include flex(space-between, center);
+		margin-bottom: 1.6rem;
+		.block {
+			display: block;
+		}
+		.small_row {
+			@include flex(flex-start, center);
+			gap: 1.2rem;
+			.avatar {
+				position: relative;
+				width: 10rem;
+				height: 10rem;
+			}
+			.verified {
+				position: relative;
+				width: 2.4rem;
+				height: 2.4rem;
+			}
+		}
+	}
+	.text {
+		margin-bottom: 1.6rem;
+		h3 {
+			font-weight: 700;
+			@extend %text-14;
+			letter-spacing: 0.08rem;
+		}
+		p {
+			color: #4b525a;
+		}
+		span {
+			color: #ffb30f;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	}
+	.button {
+		@include flex(flex-start, center);
+		gap: 0.8rem;
+		border: 0.1rem solid #dedfe0;
+		border-radius: 10rem;
+		.icon {
+			position: relative;
+			width: 2.4rem;
+			height: 2.4rem;
+		}
+	}
+	@include screenMax("mobile") {
+		.button {
+			width: 100%;
+			margin-top: 1.6rem;
+			justify-content: center;
+		}
+	}
+}

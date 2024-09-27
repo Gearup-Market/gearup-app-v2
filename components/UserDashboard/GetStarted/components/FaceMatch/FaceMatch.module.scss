@@ -1,0 +1,47 @@
+@import "@/styles/imports";
+
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 60rem;
+
+    .image_container{
+        height: 30rem;
+        width: 100%;
+        border-radius: 2rem;
+        border: 1px solid #DEDFE0;
+        display: block;
+        position: relative;
+        
+        img{
+            border-radius: 2rem;
+        }
+    }
+
+    .btn_text_container{
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        width:100%;
+
+        .button{
+            width: 100%;
+        }
+    }
+
+    .caution_container{
+        background-color: #FEF5E6;
+        padding: 1.6rem;
+        border-radius: 0.5rem;
+        display: flex;
+        gap: 1.6rem;
+        align-items: center;
+
+        .icon{
+            height: 2.5rem;
+            width: 2.5rem;
+        }
+    }
+}

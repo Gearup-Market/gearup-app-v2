@@ -1,0 +1,46 @@
+@import "@/styles/imports";
+
+.section {
+	.row {
+		@include grid(repeat(3, 1fr));
+		margin-top: 6.4rem;
+	}
+	.flex_row {
+		@include flex(space-between, center);
+	}
+	.desk {
+		display: block;
+	}
+	.mob {
+		display: none;
+	}
+	.button {
+		@include flex(flex-start, center);
+		gap: 0.8rem;
+		.icon {
+			position: relative;
+			width: 1.6rem;
+			height: 1.6rem;
+		}
+		p {
+			color: #1b1e21;
+		}
+	}
+	@include screenMax("mobile") {
+		.row {
+			grid-template-columns: 1fr;
+			margin-top: 4rem;
+		}
+		.button {
+			width: 100%;
+			margin-top: 4rem;
+			justify-content: center;
+		}
+		.mob {
+			display: block;
+		}
+		.desk {
+			display: none;
+		}
+	}
+}

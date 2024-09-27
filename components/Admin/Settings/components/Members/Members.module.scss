@@ -1,0 +1,164 @@
+@import "@/styles/imports";
+
+.container {
+display: flex;
+flex-direction: column;
+gap: 4rem;
+
+.body{
+    border: 1px solid $col-border;
+    padding: 2.5rem;
+    border-radius: 2rem;
+    background-color: #fff;
+
+    .btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1.6rem 2rem;
+        font-size: 1.5rem;
+        .icon {
+            height: 2rem;
+            width: 2rem;
+        }
+    }
+    
+
+
+    .header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        
+            }
+
+    .members_list{
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+        background-color: #FAFAFB;
+        margin-top: 2.4rem;
+
+        .member{
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            box-sizing: border-box;
+            border-radius: 1rem;
+            flex: 1;
+            transition: all 0.3s linear;
+
+            &:hover{
+                background: $col-active-nav-bg;
+            }
+
+            .avatar {
+                height: 4rem;
+                width: 4rem;
+                border-radius: 50%;
+            }
+
+            .title {
+                font-size: 1.4rem;
+                font-weight: 400;
+                color: #A4A6A7;
+            }
+
+            .amount{
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: #0F1011;
+            }
+
+
+            
+        }
+
+        .member:nth-child(even){
+            border-left: 1px solid #E3E6E9;
+            border-right: 1px solid #E3E6E9;
+        }
+    
+
+    }
+
+    .no_members{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        padding: 2rem;
+        flex-direction: column;
+        background-color: #fff;
+        color: #A4A6A7;
+        height: 40rem;
+
+        .icon{
+            height: 5.6rem;
+            width: 5.6rem;
+        }
+
+        .add_icon{
+            height: 2rem;
+            width: 2rem;
+        
+        }
+
+        h3{
+            text-align: center;
+            color:#1B1E21;
+            font-weight: 700;
+            font-size: 1.6rem;
+        }
+
+        p{
+            text-align: center;
+            font-size: 1.4rem;
+            color: #A4A6A7;
+            font-weight: 400;
+
+        }
+    }
+
+    @include screenMax("mobile"){
+        padding: 0;
+        border: none;
+        background-color: transparent;
+
+        .btn{
+            width: 100%;
+        }
+
+        .header_title{
+
+            display: none;
+          }
+        .members_list{
+            flex-direction: column;
+            gap: 1.6rem;
+            padding: 1rem 0;
+            background-color: none;
+
+            .member{
+        
+                gap: 1rem;
+                padding: 2rem;
+                border: 1px solid $col-border;
+
+                .amount{
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    color: #0F1011;
+                }
+            }
+        }
+    }
+
+
+}
+
+
+}

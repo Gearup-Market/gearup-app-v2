@@ -1,0 +1,54 @@
+@import '@/styles/imports.scss';
+
+.container{
+    width: 55rem;
+
+    &__form_container {
+        background-color: #fff;
+
+
+        .image_container{
+            @include flex;
+            gap: 2rem;
+            align-items: center;
+
+            p{
+                font-size: 1.6rem;
+                color: #FFB30F;
+                font-weight: 400;
+            
+            }
+          }
+    
+        &__form {
+          display: grid;
+          grid-template-columns: repeat(1, minmax(0, 1fr));
+          gap: 1rem;
+          margin-top: 1rem;
+
+         
+    
+          .phone_field{
+            display: flex;
+          }
+          
+          .disabled_field{
+            background-color: #FAFAFB;
+      
+          }
+    
+    
+    
+        }
+        .submit_btn_container {
+          display: flex;
+          justify-content: flex-start;
+          margin-top: 4rem;
+          width: 100%;
+          button{
+            width: 100%;
+          }
+        }
+      }
+        
+}

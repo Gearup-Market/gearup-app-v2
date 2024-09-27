@@ -1,0 +1,84 @@
+@import "@/styles/imports";
+
+.container {
+	border: 0.1rem solid #dedfe0;
+	border-radius: 0.8rem;
+	padding: 1.2rem 1.6rem;
+	@include flex(space-between, center);
+	gap: 1.6rem;
+	position: relative;
+	.small_row {
+		@include flex(flex-start, center);
+		gap: 1.6rem;
+		.icon {
+			position: relative;
+			width: 3.2rem;
+			height: 3.2rem;
+			cursor: pointer;
+		}
+	}
+	.input {
+		all: unset;
+		flex-grow: 1;
+		height: 100%;
+		font-size: 1.6rem;
+		line-height: 2.5rem;
+		font-weight: 500;
+		font-family: $font;
+		width: auto;
+		&::placeholder {
+			font-size: 1.4rem;
+			line-height: 2.5rem;
+			color: #a3a7ab;
+		}
+	}
+	.button {
+		padding: 1.2rem 2.4rem;
+		.check {
+			position: relative;
+			width: 2.4rem;
+			height: 2.4rem;
+		}
+	}
+	.body {
+		min-width: 100%;
+		border-radius: 0.4rem;
+		min-height: 2rem;
+		position: absolute;
+		top: 8rem;
+		left: 0;
+		background-color: $col-white;
+		border-radius: 0.8rem;
+		box-shadow: 0px 0.2rem 3rem 0px rgba(18, 14, 6, 0.08);
+		z-index: 2;
+		max-height: 30rem;
+		overflow-y: scroll;
+		@include noScrollBar;
+		@include screenMax("tablet") {
+			// left: -1rem;
+			top: 3.5rem;
+		}
+	}
+
+	.select_listItem {
+		border-bottom: 0.1rem solid #dedfe0;
+		padding: 0.8rem 1.6rem;
+		cursor: pointer;
+	}
+
+	.select_row {
+		@include flex(flex-start, center);
+		// padding-bottom: 2rem;
+		p {
+			font-weight: 500;
+			@extend %text-14;
+			text-transform: capitalize;
+			white-space: nowrap;
+		}
+	}
+	.text {
+		p {
+			color: #1b1e21;
+		}
+	}
+}

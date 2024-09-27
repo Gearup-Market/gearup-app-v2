@@ -1,0 +1,78 @@
+@import '@/styles/imports';
+
+.container {
+    padding: 2rem 3rem;
+    position: relative;
+
+    &__filters_container{
+        display:flex;
+        justify-content:space-between;
+        width: 100%;
+        align-items: flex-start;
+
+        &__listings_container{
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        @include screenMax("mobile") {
+            flex-direction: column-reverse;
+
+            &__listings_container{
+                position: absolute;
+                right: 1.6rem;
+                top: -4.5rem;
+                padding: 0;
+            }
+        }
+    }
+
+    &__title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: $col-grey-1;
+    }
+
+    &__input_filter_container{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 2rem 0;
+
+       
+
+        &__input{
+            padding: 0.5rem;
+            border: 1px solid $col-grey-300;
+            border-radius: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: $col-grey-1;
+        }
+
+        &__filter{
+            padding: 0.5rem 1rem;
+            border: 1px solid $col-grey-300;
+            border-radius: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: $col-grey-1;
+            background-color: $col-grey-50;
+        }
+
+        @include screenMax("mobile") {
+            display: none;
+        }
+    }
+
+
+    @include screenMax("mobile") {
+        padding: 0rem 1.6rem;
+
+    }
+
+
+}

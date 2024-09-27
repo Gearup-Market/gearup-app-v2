@@ -1,0 +1,115 @@
+@import "@/styles/imports";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border-radius: 1.6rem;
+    margin-top: 2.4rem;
+    margin-bottom: 1.6rem;
+
+
+    &__date_container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width:37.9rem;
+
+        .date_picker_container{
+            width: auto;
+        }
+
+
+        &__date_display {
+
+
+        .input_field {
+			width: 19.5rem;
+			border-radius: 0.8rem;
+			padding: 1.6rem;
+		    min-height: 2rem;
+			background-color: #fff;
+			border: 0.1rem solid #dedfe0;
+			@include flex(flex-start, center);
+			gap: 0.8rem;
+				p {
+					@extend %text-14;
+					color: #7b8086;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    width: 100%;
+				}
+			
+		}
+        
+    }
+    
+            @include screenMax("tablet") {
+                width: 100%;
+             
+    
+                .input_field {
+                    width: 100%;
+                    padding: 0.7rem 1rem;
+                }
+            }
+    }
+
+    &__cards_container {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+
+
+        &__item {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            padding: 2rem 1rem;
+
+            &__left {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                flex: 1 1 0;
+
+                img {
+                    width: 5rem;
+                    height: 5rem;
+                }
+
+                .title {
+                    text-decoration: underline;
+                    font-size: 1.4rem;
+                    color: $col-low-emphasis-text;
+                    margin-bottom: 1rem;
+                }
+
+                .amount {
+                    font-weight: 700;
+                    color: $col-grey-1;
+                    font-size: 2.8rem;
+                }
+            }
+
+            &__right {
+                display: flex;
+                align-items: flex-end;
+
+                .percentage{
+                    background-color:#F2F4F7;
+                    padding: 0.05rem 0.4rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 1.2rem;
+                    border-radius: 1rem;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+}

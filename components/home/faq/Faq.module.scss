@@ -1,0 +1,156 @@
+@import "@/styles/imports";
+
+.section {
+	@include flex(space-between);
+	.title {
+		max-width: 44.8rem;
+	}
+	.faq_section {
+		display: block;
+		width: 76.8rem;
+	}
+	.text {
+		h3 {
+			color: #1b1e21;
+			@extend %text-18;
+			font-weight: 700;
+		}
+		p {
+			@extend %text-16;
+		}
+	}
+
+	.accordion {
+		width: 100%;
+		border-radius: 1.6rem;
+		padding: 2.4rem 3.2rem;
+		//   height: 7.7rem;
+		overflow: hidden;
+		.header {
+			@include flex(space-between, flex-start);
+			margin-bottom: 0.8rem;
+			.text {
+				max-width: 64.8rem;
+			}
+		}
+		.body {
+			width: 91.5%;
+			max-height: 0;
+			overflow: hidden;
+			transition: all 0.5s ease-in-out;
+			@include screenMax("mobile") {
+				width: 90%;
+			}
+		}
+		&[data-active="true"] {
+			transition: all 0.5s ease-in-out;
+			background-color: $col-grey-200;
+
+			height: auto;
+			.body {
+				max-height: 100rem;
+				transition: all 0.5s ease-in-out;
+			}
+		}
+		transition: all 0.5s ease-in-out;
+		margin-bottom: 1.6rem;
+		@include screenMax("mobile") {
+			padding: 2.4rem;
+		}
+	}
+
+	.accordion_button_container {
+		width: 2.7rem;
+		height: 2.7rem;
+		border-radius: 50%;
+		// background-color: $col-grey-700;
+		outline: none;
+		border: 0.15rem solid $col-grey-700;
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+		@include flex(center, center);
+		transition: all 0.3s ease-in-out;
+		cursor: pointer;
+		&[data-active="true"] {
+			transition: all 0.3s ease-in-out;
+			.accordion_button,
+			.accordion_button__open {
+				&Bar {
+					background-color: $col-grey-700;
+				}
+			}
+		}
+		.accordion_button,
+		.accordion_button__open {
+			position: relative;
+			height: fit-content;
+			background: transparent;
+			border: none;
+			// width: 4.5rem;
+			rotate: 45deg;
+			@include flex(center, flex-end, column nowrap);
+			&Bar {
+				width: 1.1rem;
+				height: 0.15rem;
+				background-color: $col-grey-700;
+				margin: 0.4rem 0;
+				opacity: 0.8;
+				transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+				// &:nth-child(2) {
+				// 	width: 3rem;
+				// }
+			}
+			.accordion_buttonBar:first-child {
+				margin-bottom: -0.1rem;
+				transform: rotate(45deg);
+			}
+
+			.accordion_buttonBar:last-child {
+				margin-top: -0.1rem;
+				transform: rotate(-45deg);
+			}
+			.accordion_buttonBar {
+				width: 1.1rem;
+			}
+		}
+
+		.accordion_button__open {
+			min-height: 1rem;
+			position: relative;
+			.accordion_buttonBar:first-child {
+				margin-bottom: -0.1rem;
+				transform: rotate(-45deg);
+			}
+
+			.accordion_buttonBar:last-child {
+				margin-top: -0.1rem;
+				transform: rotate(-45deg);
+			}
+			.accordion_buttonBar {
+				width: 1.1rem;
+			}
+		}
+	}
+
+	@include screenMax("mobile") {
+		.title {
+			margin-bottom: 4rem;
+		}
+		.title_classname {
+			h1 {
+				font-size: 2.8rem !important;
+				line-height: 3.6rem !important;
+			}
+		}
+		.accordion {
+			.header {
+				.text {
+					max-width: 90%;
+				}
+			}
+		}
+	}
+}

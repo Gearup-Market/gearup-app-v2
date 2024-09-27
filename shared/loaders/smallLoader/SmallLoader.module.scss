@@ -1,0 +1,25 @@
+@import "@/styles/imports";
+
+.smallLoader {
+	@include flex(center, center, nowrap);
+	width: 10rem;
+	height: 2rem;
+	&:after {
+		content: " ";
+		display: block;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		border: 0.1rem solid #1b1e21;
+		border-color: #1b1e21 transparent #1b1e21 transparent;
+		animation: rotate 1.2s linear infinite;
+	}
+}
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

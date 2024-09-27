@@ -1,0 +1,40 @@
+@import "@/styles/imports";
+
+.container{
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    padding-bottom: 4rem;
+
+    .title_more_icon{
+        display: none;
+    }
+
+
+
+    @include screenMax("mobile") {
+        flex-direction: column;
+        gap: 2rem;
+
+        .title_more_icon{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: space-between;
+
+            .icon_container{
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                background-color: #fff;
+                padding: 0.3rem;
+                border-radius: 50%;
+                border: 1px solid $col-border;
+                margin-bottom: 1rem;
+
+            }
+        }
+
+  
+    }
+}

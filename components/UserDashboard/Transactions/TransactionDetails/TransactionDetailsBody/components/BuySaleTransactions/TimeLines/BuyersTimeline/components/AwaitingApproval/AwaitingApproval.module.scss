@@ -1,0 +1,33 @@
+@import "@/styles/imports";
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 3rem;
+
+
+    .details_container{
+        background: #FFFFFF;
+        padding: 1.6rem;
+        margin-bottom: 2rem;
+        .details{
+            color: #7B8086;
+            font-size: 1.4rem;
+
+            .policy_text{
+                color: #FFB30F;
+                cursor: pointer;
+                font-weight: 700;
+            }
+
+            .bold{
+                font-weight: 700;
+                color: #1B1E21;
+            }
+
+        }
+
+}
+}

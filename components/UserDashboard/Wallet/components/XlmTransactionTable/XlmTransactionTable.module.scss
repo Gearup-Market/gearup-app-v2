@@ -1,0 +1,165 @@
+@import '@/styles/imports.scss';
+
+.container{
+    margin-top: 2rem;
+    width: 38rem;
+
+
+    &__input_filter_container{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 2rem 0;
+
+
+        .filter_icon_container{
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 1px solid $col-border;
+            border-radius: 0.5rem;
+        
+            img{
+                width: 2rem;
+                height: 2rem;
+        
+            }
+        }
+
+        &__input{
+            padding: 0.5rem;
+            border: 1px solid $col-grey-300;
+            border-radius: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: $col-grey-1;
+        }
+
+        &__filter{
+            padding: 0.5rem 1rem;
+            border: 1px solid $col-grey-300;
+            border-radius: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: $col-grey-1;
+            background-color: $col-grey-50;
+        }
+
+        @include screenMax("mobile") {
+            display: none;
+        }
+    }
+
+    &__table{
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        overflow: auto;
+        
+        &__row{
+            display: flex;
+            justify-content: space-between;
+            background-color: #FBFBFD;
+            border-radius: 1rem;
+            padding: 1.6rem;
+
+            &__left{
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                &__avatar{
+                    width: 4rem;
+                    height: 4rem;
+                    border-radius: 50%;
+                }
+
+                &__name_amount{
+                    display: flex;
+                    flex-direction: column;
+
+                .type{
+                        font-size: 1.4rem;
+                        font-weight: 600;
+                        color: #1B1E21;
+                    }
+
+                    .amount{
+                        font-size: 1.4rem;
+                        font-weight: 400;
+                        
+                    }
+                
+                }
+            }
+
+            &__right{
+                .type{
+                    font-size: 1.4rem;
+                    font-weight: 700;
+                    color: #1B1E21;
+                    padding: 0.1rem 1rem;
+
+                    &[data-type="deposit"]{
+                        color: #027A48;
+                        
+                    }
+
+                    &[data-type="transfer"]{
+                        color: #FF3729;
+                    
+                     
+                    }
+
+                }
+
+                .date{
+                    font-size: 1.6rem;
+                    font-weight: 400;
+                    color: #1B1E21;
+                }
+
+            }
+        }
+
+        
+        .table_header{
+         
+            width: 100%;
+            font-weight: 700;
+        }
+
+        .table_cell{
+            font-size: 1.2rem;
+            background-color: $col-white;
+        }
+
+        .dataGridOverlay {
+            background-color: $col-grey-50;
+            color: #333;
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+          }
+    }
+
+    &__cards_container{
+        display: none;
+
+        @include screenMax("mobile") {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-top: 2rem;
+            border-radius: 1.6rem;
+        }
+    }
+
+    @include screenMax("mobile") {
+        width: 100%;
+    }
+    
+
+}

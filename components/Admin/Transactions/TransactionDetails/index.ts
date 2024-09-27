@@ -1,0 +1,2 @@
+export {default as TransactionDetailsHeader} from './TransactionDetailsHeader/TransactionDetailsHeader'
+export {default as TransactionDetailsBody} from './TransactionDetailsBody/TransactionDetailsBody'

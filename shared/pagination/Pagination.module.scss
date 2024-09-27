@@ -1,0 +1,115 @@
+.pagination_container {
+	list-style-type: none;
+	border-top: 0.1rem solid #dedfe0;
+	padding: 2.4rem 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 0.7rem;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+.row {
+	display: flex;
+}
+.text p {
+	font-size: 1.6rem;
+	line-height: 2.4rem;
+}
+
+// .container {
+// 	background-color: #24272f;
+// }
+
+.pagination_item {
+	padding: 0 1.2rem;
+	text-align: center;
+	margin: auto 0.4rem;
+	color: rgba(18, 18, 18, 0.64);
+	letter-spacing: 0.01071em;
+	border-radius: 0.8rem;
+	font-size: 1.4rem;
+	line-height: 2.4rem;
+	font-weight: 500;
+	min-width: 3.2rem;
+	display: flex;
+	align-items: center;
+	gap: 1.6rem;
+	cursor: pointer;
+}
+.pagination_item .dots:hover {
+	background-color: transparent;
+	cursor: default;
+}
+.pagination_item:not(:has(.arrow)):hover {
+	background: linear-gradient(76.89deg, #ffb30f 11.85%, #edcb00 100.03%);
+	cursor: pointer;
+}
+
+.pagination_item.selected {
+	background: linear-gradient(76.89deg, #ffb30f 11.85%, #edcb00 100.03%);
+}
+
+.arrow {
+	font-size: 1rem;
+	line-height: 2.4rem;
+	color: rgba(18, 18, 18, 0.64);
+	font-weight: 500;
+	&::before {
+		position: relative;
+		content: "";
+		display: inline-block;
+		width: 1rem;
+		height: 1rem;
+		border-right: 0.2rem solid rgba(18, 18, 18, 0.64);
+		border-top: 0.2rem solid rgba(18, 18, 18, 0.64);
+	}
+
+	&.left {
+		transform: rotate(-135deg);
+		margin-left: 0.2rem;
+	}
+
+	&.right {
+		margin-left: -0.2rem;
+		transform: rotate(45deg);
+	}
+}
+
+.pagination_item.disabled {
+	pointer-events: none;
+	opacity: 0.5;
+	.arrow::before {
+		border-right: 0.12rem solid #7f8290;
+		border-top: 0.12rem solid #7f8290;
+	}
+
+	&:hover {
+		cursor: not-allowed;
+		background-color: transparent;
+	}
+}
+.sub_list {
+	display: flex;
+	margin: 0 2rem;
+}
+
+@media screen and (max-width: 450px) {
+	.pagination_container {
+		flex-direction: column-reverse;
+	}
+	.row {
+		width: 100%;
+		justify-content: space-between;
+	}
+	.text {
+		margin-top: 2rem;
+		display: none;
+	}
+	.pagination_item {
+		p {
+			display: none;
+		}
+	}
+}

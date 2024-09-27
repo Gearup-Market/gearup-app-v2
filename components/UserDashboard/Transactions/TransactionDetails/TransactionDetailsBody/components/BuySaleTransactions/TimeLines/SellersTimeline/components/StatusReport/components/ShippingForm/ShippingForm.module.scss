@@ -1,0 +1,34 @@
+/* components/PayoutForm.module.scss */
+@import "@/styles/imports";
+
+.container{
+    padding-bottom: 10rem;
+    min-width: 60rem;
+   
+    .form {
+        display: grid;
+        overflow: auto;
+      gap: 2rem;
+      height: 100%;
+     
+
+      .grid_Styles{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      
+      }
+
+    }
+    .submit_btn_container {
+      column-span: 2;
+      display: flex;
+      margin-top: 2rem;
+      width: 100%;
+
+      button{
+        width:100%;
+      }
+    }
+  }
+

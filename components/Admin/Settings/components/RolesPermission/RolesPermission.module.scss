@@ -1,0 +1,119 @@
+@import "@/styles/imports";
+
+.container {
+display: flex;
+flex-direction: column;
+gap: 4rem;
+
+.body{
+    border: 1px solid $col-border;
+    padding: 2.5rem;
+    border-radius: 2rem;
+    background-color: #fff;
+
+    .header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            
+            .icon {
+                height: 2rem;
+                width: 2rem;
+            }
+        }
+        
+    }
+
+    .members_list{
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+        background-color: #FAFAFB;
+        margin-top: 2.4rem;
+        width: 100%;
+        box-sizing: border-box;
+        .member{
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            box-sizing: border-box;
+            border-radius: 1rem;
+            flex: 1;
+            transition: all 0.3s linear;
+
+            .avatar {
+                height: 4rem;
+                width: 4rem;
+                border-radius: 50%;
+            }
+
+            .title {
+                font-size: 1.4rem;
+                font-weight: 400;
+                color: #A4A6A7;
+            }
+
+            .amount{
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: #0F1011;
+            }
+
+
+            
+        }
+
+        .member:nth-child(even){
+            border-left: 1px solid #E3E6E9;
+            border-right: 1px solid #E3E6E9;
+        }
+
+    }
+
+    @include screenMax("mobile"){
+        padding: 0;
+        border: none;
+        background-color: transparent;
+
+        .btn{
+            width: 100%;
+        }
+
+        .header_title{
+
+            display: none;
+          }
+        .members_list{
+            flex-direction: column;
+            gap: 1.6rem;
+            padding: 1rem 0;
+            background-color: none;
+
+            .member{
+        
+                gap: 1rem;
+                padding: 2rem;
+                border: 1px solid $col-border;
+
+                .amount{
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    color: #0F1011;
+                }
+            }
+        }
+    }
+
+}
+
+
+}

@@ -1,0 +1,178 @@
+@import '@/styles/imports.scss';
+
+.container{
+    margin-top: 2rem;
+
+
+    &__name_container{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 100%;
+        font-size: 1.2rem;
+        
+        .blogs_img{
+            width: 4rem;
+            height: 3rem;
+            border-radius: 0.4rem;
+        }
+
+        &__name{
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: $col-grey-1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    
+    }
+
+    &__title{
+        font-size: 2.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: $col-grey-1;
+    }
+    .tag_container{
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        align-items: center;
+        
+        p{
+            
+            background-color: #FFF7E7;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1B1E21;
+        }
+
+    }
+    &__action_btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    &__status_container{
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+        height: 100%;
+        font-weight: 400;
+        font-size: 1.2rem;
+        justify-content: center;
+
+       p{
+        font-size: 1.2rem;
+        text-transform: capitalize;
+       }
+    }
+
+    &__input_filter_container{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 2rem 0;
+
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            
+            width: 15rem;
+            
+            
+            .icon {
+                height: 2rem;
+                width: 2rem;
+            }
+        }
+        
+        .filter_icon_container{
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 1px solid $col-border;
+            border-radius: 0.5rem;
+        
+            img{
+                width: 2rem;
+                height: 2rem;
+        
+            }
+        }
+
+        &__input{
+            padding: 0.5rem;
+            border: 1px solid $col-grey-300;
+            border-radius: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: $col-grey-1;
+        }
+
+        &__filter{
+            padding: 0.5rem 1rem;
+            border: 1px solid $col-grey-300;
+            border-radius: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: $col-grey-1;
+            background-color: $col-grey-50;
+        }
+
+        @include screenMax("mobile") {
+            display: none;
+        }
+    }
+
+    &__table{
+        overflow: auto;
+        @include screenMax("mobile") {
+            display: none;
+        }
+
+        
+        .table_header{
+         
+            width: 100%;
+            font-weight: 700;
+        }
+
+        .table_cell{
+            font-size: 1.2rem;
+            background-color: $col-white;
+        }
+
+        .dataGridOverlay {
+            background-color: $col-grey-50;
+            color: #333;
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+          }
+    }
+
+    &__cards_container{
+        display: none;
+
+        @include screenMax("mobile") {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-top: 2rem;
+            border: 1px solid $col-border;
+            border-radius: 1.6rem;
+        }
+    }
+    
+
+}

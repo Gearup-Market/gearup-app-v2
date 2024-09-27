@@ -1,0 +1,35 @@
+@import "@/styles/imports";
+
+.container{
+    width: 40rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 2rem;
+
+    img{
+        width: 10rem;
+        height: 10rem;
+        margin-bottom: 1rem;
+    }
+
+    &__main_text{
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: $col-grey-1;
+        text-align: center;
+    }
+
+    &__sub_text{
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: #4B525A;
+    }
+
+    button{
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+}

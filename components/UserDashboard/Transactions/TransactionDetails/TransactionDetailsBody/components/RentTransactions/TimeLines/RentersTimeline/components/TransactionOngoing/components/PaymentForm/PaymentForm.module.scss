@@ -1,0 +1,59 @@
+/* components/PayoutForm.module.scss */
+@import "@/styles/imports";
+
+.container{
+    min-width: 40rem;
+    max-width: 60rem;
+   
+    .form {
+        display: grid;
+      gap: 2rem;
+      height: 100%;
+     
+
+      .grid_Styles{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      
+      }
+
+      .warning_container{
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin: 1.6rem 0;
+
+        .icon{
+            width: 3rem;
+            height: 3rem;
+            
+        }
+
+        p{
+            color: #A3A7AB;
+            font-size: 1.4rem;
+        }
+      }
+
+    }
+    .submit_btn_container {
+      column-span: 2;
+      display: flex;
+      margin-top: 2rem;
+      width: 100%;
+
+      button{
+        width:100%;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .icon{
+            width: 2rem;
+            height: 2rem;
+        }
+      }
+    }
+  }
+

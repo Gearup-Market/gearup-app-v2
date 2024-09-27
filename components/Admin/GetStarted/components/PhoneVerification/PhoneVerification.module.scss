@@ -1,0 +1,17 @@
+@import "@/styles/imports";
+
+.container{
+
+    .field{
+        margin: 2rem 0;
+    }
+
+    .resend_token{
+        color: #7B8086;
+        font-weight: 700;
+        margin-top:1rem;
+        font-size: 1.4rem;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+}

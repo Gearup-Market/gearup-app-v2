@@ -1,0 +1,44 @@
+@import '@/styles/imports.scss';
+
+.container{
+    width: 50rem;
+
+    &__form_container {
+        background-color: #fff;
+    
+        &__form {
+          display: grid;
+          grid-template-columns: repeat(1, minmax(0, 1fr));
+          gap: 2rem;
+          margin-top: 1rem;
+    
+          .phone_field{
+            display: flex;
+          }
+          
+          .disabled_field{
+            background-color: #FAFAFB;
+      
+          }
+    
+    
+    
+        }
+        .submit_btn_container {
+          display: flex;
+          justify-content: flex-start;
+          margin-top: 2.5rem;
+          width: 100%;
+          button{
+            width: 100%;
+          }
+        }
+      }
+
+      @include screenMax("mobile"){
+        width: 100%;
+        padding: 1.6rem;
+         
+      }
+        
+}

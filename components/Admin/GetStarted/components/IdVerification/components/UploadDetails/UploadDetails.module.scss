@@ -1,0 +1,73 @@
+@import "@/styles/imports";
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #DEDFE0;
+    padding-bottom: 1rem ;
+    align-items: center;
+
+    &__left{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        align-items: center;
+
+        .name_container{
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+            justify-content: center;
+
+            .name{
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: #0F1011;
+            }
+        }
+
+        .document{
+            font-weight: 500;
+            color: #0F1011;
+            padding:  0.8rem;
+            border-radius: 50%;
+            border: 3px solid #DEDFE0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &[data-status='uploading']{
+                border-color: #FFB30F;
+                color: #FFB30F;
+                
+            }
+
+            &[data-status='success']{
+                border-color: #40B773;
+                color: #40B773;
+                
+            
+                
+            }
+
+            &[data-status='error']{
+                border-color: #FF4D4F;
+                color: #FF4D4F;
+                
+                
+            }
+        }
+
+    }
+
+    .document_icon{
+        height: 4rem;
+        width: 4rem;
+    }
+
+    .icon{
+        height: 2.5rem;
+        width: 2.5rem;
+        cursor: pointer;
+    }
+}

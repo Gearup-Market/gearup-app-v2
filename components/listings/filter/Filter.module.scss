@@ -1,0 +1,184 @@
+@import "@/styles/imports";
+
+.container {
+	// width: 100%;
+	width: 30.2rem;
+	max-height: 10000rem;
+	.header {
+		border: 0.1rem solid #dedfe0;
+		border-radius: 0.8rem 0.8rem 0 0;
+		@include flex(space-between, center);
+		padding: 2.4rem 1.6rem;
+		.small_row {
+			@include flex();
+		}
+		.text {
+			h3 {
+				font-weight: 700;
+				@extend %text-16;
+			}
+		}
+		.button_container {
+			width: 2.4rem;
+			height: 2.4rem;
+			border-radius: 0.8rem;
+			outline: none;
+			&:focus {
+				outline: none;
+				box-shadow: none;
+			}
+			@include flex(center, center);
+			transition: all 0.3s ease-in-out;
+			cursor: pointer;
+			&[data-active="true"] {
+				background-color: $col-white;
+				transition: all 0.3s ease-in-out;
+				.button,
+				.button__open {
+					&Bar {
+						background-color: $col-grey-700;
+					}
+				}
+			}
+			.button {
+				position: relative;
+				height: fit-content;
+				background: transparent;
+				border: none;
+				// width: 4.5rem;
+				// rotate: 45deg;
+				@include flex(center, flex-end, column nowrap);
+				&Bar {
+					width: 1.3rem;
+					height: 0.2rem;
+					background-color: #4b525a;
+					margin: 0.4rem 0;
+					opacity: 0.8;
+					transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+					&:nth-child(2) {
+						width: 3rem;
+					}
+				}
+				.buttonBar:first-child {
+					margin-bottom: -0.1rem;
+					transform: rotate(45deg);
+				}
+
+				.buttonBar:last-child {
+					margin-top: -0.1rem;
+					transform: rotate(-45deg);
+				}
+				.buttonBar {
+					width: 2rem;
+				}
+			}
+
+			.button__open {
+				min-height: 1rem;
+				position: relative;
+				.buttonBar:first-child {
+					margin-bottom: -0.1rem;
+					transform: rotate(-45deg);
+				}
+
+				.buttonBar:last-child {
+					margin-top: -0.1rem;
+					transform: rotate(-45deg);
+				}
+				.buttonBar {
+					width: 2rem;
+				}
+			}
+		}
+		.icon {
+			position: relative;
+			width: 2.4rem;
+			height: 2.4rem;
+			margin-right: 0.5rem;
+			display: none;
+		}
+	}
+	.body {
+		width: 100%;
+	}
+	&[data-hidden="true"] {
+		// animation: 5s closeFilter;
+		width: 10.9rem;
+		max-height: 5.6rem;
+		overflow: hidden;
+		border: 0.1rem solid #dedfe0;
+		border-radius: 1.6rem;
+		position: absolute;
+		// transition: all 3s linear;
+		// transition: height 0.5s ease-out, position 0.5s ease-out,
+		// 	border-radius 0.5s ease-out;
+		cursor: pointer;
+		.header {
+			padding: 1.6rem;
+			height: 100%;
+			width: 100%;
+			border: none;
+			.button_container {
+				display: none;
+			}
+			.icon {
+				display: block;
+			}
+		}
+	}
+	@include screenMax("mobile") {
+		max-height: unset;
+		overflow: hidden;
+		// border: 0.1rem solid #dedfe0;
+		border-radius: 1.6rem;
+		background-color: white;
+		position: fixed;
+		width: 100vw;
+		height: calc(100dvh - 7rem);
+		left: 0;
+		top: 7rem;
+		z-index: 3;
+		.header {
+			height: auto;
+			border: none;
+			.button_container {
+				display: flex;
+			}
+			.icon {
+				display: none;
+			}
+		}
+		.body {
+			height: 90%;
+			overflow-x: scroll;
+			padding-inline: 1.6rem;
+		}
+		&[data-hidden="true"] {
+			position: absolute;
+			top: 11rem;
+			left: 0;
+			width: 10.9rem;
+			max-height: 5.6rem;
+			overflow: hidden;
+			border: 0.1rem solid #dedfe0;
+			border-radius: 1.6rem;
+			z-index: 1;
+			.header {
+				padding: 1.6rem;
+				height: 100%;
+				width: 100%;
+				border: none;
+				.button_container {
+					display: none;
+				}
+				.icon {
+					display: block;
+				}
+			}
+			.body {
+				padding-inline: 1.6rem;
+			}
+		}
+	}
+}

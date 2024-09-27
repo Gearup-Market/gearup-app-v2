@@ -1,0 +1,23 @@
+import React from 'react'
+
+interface Props {
+    bg?: string
+    subBg?: string
+    color?: string
+}
+
+const CustomWalletIcon = ({ bg = "#D1D1FA", subBg = "#ECECFD", color="#0505B3" }: Props) => {
+    return (
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="48" height="48" rx="24" fill={bg} />
+            <rect x="4" y="4" width="48" height="48" rx="24" stroke={subBg} strokeWidth="8" />
+            <path d="M25.5 29.7483C25.5 30.7183 26.25 31.4983 27.17 31.4983H29.05C29.85 31.4983 30.5 30.8183 30.5 29.9683C30.5 29.0583 30.1 28.7283 29.51 28.5183L26.5 27.4683C25.91 27.2583 25.51 26.9383 25.51 26.0183C25.51 25.1783 26.16 24.4883 26.96 24.4883H28.84C29.76 24.4883 30.51 25.2683 30.51 26.2383" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M28 23.5V32.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M38 28C38 33.52 33.52 38 28 38C22.48 38 18 33.52 18 28C18 22.48 22.48 18 28 18" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M38 22V18H34" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M33 23L38 18" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    )
+}
+
+export default CustomWalletIcon

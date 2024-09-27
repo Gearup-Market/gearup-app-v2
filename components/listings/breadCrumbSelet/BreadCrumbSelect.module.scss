@@ -1,0 +1,84 @@
+@import "@/styles/imports";
+
+.container {
+	margin-bottom: 2rem;
+	.row {
+		@include flex();
+		gap: 1rem;
+		align-items: flex-end;
+	}
+	.slash {
+		font-size: 2.8rem;
+		color: #a3a7ab;
+		margin-bottom: 1rem;
+	}
+	.titleClassName,
+	.titleClassName_light {
+		font-size: 2.8rem !important;
+		line-height: 3.6rem !important;
+	}
+	.titleClassName_light {
+		color: #a3a7ab !important;
+	}
+	.select_container {
+		display: block;
+	}
+	.text,
+	.text_light {
+		h5,
+		span {
+			@extend %text-16;
+		}
+		h5 {
+			margin-top: 1.6rem;
+		}
+		p {
+			@extend %text-14;
+			color: #1b1e21;
+			margin-bottom: 1.3rem;
+		}
+		span {
+			font-weight: 700;
+		}
+	}
+	.text_light {
+		p {
+			color: #a3a7ab;
+		}
+	}
+	.select_body {
+		top: 4.5rem;
+	}
+	.option_text {
+		color: #1b1e21 !important;
+	}
+	@include screenMax("mobile") {
+		margin-bottom: 0;
+		.row {
+			gap: 0;
+		}
+		.select_container {
+			width: 100%;
+		}
+		.select {
+			width: 100%;
+			border-radius: 0.8rem;
+			padding: 1.6rem 2.4rem;
+			background-color: $col-white;
+		}
+		.slash {
+			display: none;
+		}
+		.text_light,
+		.text {
+			display: none;
+		}
+		.titleClassName,
+		.titleClassName_light {
+			font-size: 1.4rem !important;
+			line-height: 2.4rem !important;
+			font-weight: 400 !important;
+			color: #1b1e21 !important;
+		}
+	}
+}

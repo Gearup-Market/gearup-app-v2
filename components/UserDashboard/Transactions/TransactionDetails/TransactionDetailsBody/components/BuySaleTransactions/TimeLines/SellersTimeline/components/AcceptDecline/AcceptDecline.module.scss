@@ -1,0 +1,59 @@
+@import "@/styles/imports";
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    
+    .container_top{
+        padding: 3rem;
+
+
+    .details_container{
+        background: #FFFFFF;
+        padding: 1.6rem;
+        margin-bottom: 2rem;
+        .details{
+            color: #7B8086;
+            font-size: 1.4rem;
+            
+            .learn_more{
+                font-size: 1.4rem;
+                color: #FFB30F;
+                cursor: pointer;
+                font-weight: 500;
+            }
+
+            .bold{
+                font-weight: 700;
+                font-size: 1.4rem;
+                color: #1B1E21;
+            }
+
+        }
+    }
+
+}
+
+.btn_container{
+    @include flex;
+    justify-content: space-between;
+    gap: 3rem;
+    border-top: 1px solid $col-border;
+    padding: 2rem;
+    align-items: center;
+    height: 100%;
+    .cancel_btn{
+        background: transparent;
+        color: #FF3729;
+        border: 1px solid $col-border;
+    }
+
+    button{
+        padding: 1.3rem;
+        font-weight: 700;
+        flex:1;
+    }
+}
+}

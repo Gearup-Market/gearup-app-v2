@@ -1,0 +1,44 @@
+@import "@/styles/imports";
+
+.loader {
+	width: 100%;
+	height: 10rem;
+	background-color: #0a0a0b;
+	border-radius: 0.8rem;
+	border: 0.1rem solid #21201b;
+	padding: 1rem 3rem;
+	@include flex(space-between, flex-start, column);
+	animation: flick 4s linear infinite;
+	.container {
+		height: 45%;
+		background-color: #0a0a0b;
+		background-color: #171713;
+		border-radius: 0.8rem;
+		border: 0.1rem solid #21201b;
+		&:nth-child(1) {
+			width: 50%;
+		}
+		&:nth-child(2) {
+			width: 100%;
+			// margin-top: 1rem;
+		}
+	}
+}
+
+@keyframes flick {
+	0% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 0.7;
+	}
+	50% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 0.7;
+	}
+	100% {
+		opacity: 1;
+	}
+}

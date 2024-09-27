@@ -1,0 +1,46 @@
+@import "@/styles/imports";
+
+.wrapper{
+    padding: 4rem 3rem;
+    width: 100%;
+    .title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: $col-grey-1;
+    }
+    .container {
+        width: 100%;
+    display: flex;
+    gap: 2.4rem;
+
+    .header_title{
+        display: none;
+    }
+   
+    
+    .content{
+        flex: 1 1 auto;
+        max-width: 70%;
+    }
+
+    
+}
+@include screenMax("mobile"){
+    padding: 3rem 1.6rem;
+    .container{
+        flex-direction: column;
+        gap: 1.6rem;
+
+        .header_title{
+            display: block;
+        }
+
+      .content{
+        max-width: 100%;
+    }
+    }
+
+  
+}
+}

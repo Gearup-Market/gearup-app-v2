@@ -1,0 +1,140 @@
+@import "@/styles/imports";
+
+.container {
+	display: flex;
+	flex-direction: column;
+	// max-width: 70rem;
+	min-width: 55rem;
+	width: 100%;
+
+	.divider {
+		width: 100%;
+		height: 1px;
+		background-color: #dedfe0;
+		border-color: #dedfe0;
+	}
+
+	.header {
+		text-align: center;
+		color: #4b525a;
+		font-weight: 400;
+		font-size: 1.4rem;
+
+		.bold {
+			font-weight: 700;
+		}
+	}
+
+	&__details {
+		width: 100%;
+		padding: 1rem;
+		// background-color: #FAFAFA;
+		animation: 0.5s fadeIn ease-in-out;
+		border-radius: 0.8rem;
+
+		@keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+
+		&__detail_container {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 0.5rem 1rem;
+			gap: 0.5rem;
+
+			.key {
+				font-size: 1.2rem;
+				font-weight: 400;
+				color: $col-grey-1;
+			}
+
+			.value {
+				font-size: 1.4rem;
+				font-weight: 700;
+				color: $col-grey-1;
+			}
+		}
+	}
+	&__bank_details {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.6rem;
+		padding: 2rem 0;
+
+		&__option {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			width: 100%;
+			padding: 2rem 1.6rem;
+			background: #fbfbfd;
+			border-radius: 1rem;
+			cursor: pointer;
+			justify-content: space-between;
+
+			.left {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
+
+			.icon {
+				height: 4rem;
+				width: 4rem;
+			}
+
+			.text {
+				font-size: 1.6rem;
+				font-weight: 600;
+				color: #1f222b;
+			}
+		}
+	}
+
+	.form_container {
+		display: flex;
+		flex-direction: column;
+		gap: 1.6rem;
+		margin-top: 2rem;
+
+		.max_btn {
+			color: #ffb30f;
+			font-weight: 700;
+			font-size: 1.4rem;
+			cursor: pointer;
+		}
+
+		.total_amount {
+			color: #7b8086;
+			font-size: 1.2rem;
+			font-weight: 400;
+		}
+
+		.submit_btn {
+			width: 100%;
+			margin-top: 2rem;
+		}
+	}
+
+	.bank_details_container {
+		background: #fff;
+
+		.submit_btn {
+			width: 100%;
+			margin-top: 2rem;
+		}
+	}
+
+	@include screenMax("mobile") {
+		min-width: 100%;
+	}
+}

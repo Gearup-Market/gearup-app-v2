@@ -1,0 +1,16 @@
+@import "@/styles/imports";
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 3rem;
+    border-bottom: 1px solid $col-border;
+    flex-direction: column;
+    gap: 2.4rem;
+
+    @include screenMax("mobile"){
+        padding: 2rem 1.6rem;
+    }
+
+
+}

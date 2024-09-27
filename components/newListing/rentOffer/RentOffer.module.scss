@@ -1,0 +1,113 @@
+@import "@/styles/imports";
+
+.container {
+	position: relative;
+	width: 100%;
+	padding: 1.6rem 2.4rem;
+	border-radius: 1.6rem;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border: 0.1rem solid #dedfe0;
+		border-radius: 1.6rem;
+		pointer-events: none;
+	}
+
+	&[data-disabled="true"] {
+		opacity: 0.5;
+	}
+
+	* {
+		position: relative;
+	}
+
+	.header {
+		@include flex(space-between, center);
+		margin-bottom: 1.6rem;
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 3.9rem;
+			height: 2.6rem;
+			border-radius: 1.6rem;
+			// overflow: hidden;
+		}
+
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #fff;
+			border: 0.1rem solid #f0f0f1;
+			-webkit-transition: 0.4s;
+			border-radius: 1.6rem;
+			transition: 0.4s;
+		}
+
+		.slider:before {
+			position: absolute;
+			content: "";
+			height: 2.1rem;
+			width: 2.1rem;
+			left: 0.1rem;
+			top: 0.077rem;
+			border: 0.1rem solid #dedfe0;
+			background-color: #f0f0f1;
+			-webkit-transition: 0.4s;
+			transition: 0.4s;
+			border-radius: 50%;
+		}
+
+		input:checked + .slider {
+			background-color: #ffeaba;
+		}
+
+		input:checked + .slider:before {
+			-webkit-transform: translateX(1.3rem);
+			-ms-transform: translateX(1.3rem);
+			transform: translateX(1.3rem);
+			background: $orange-grad;
+			transition: 0.4s;
+		}
+	}
+	.footer {
+		background-color: #fbfbfd;
+		border-radius: 0.8rem;
+		height: 6.7rem;
+		margin-top: 1.6rem;
+		padding: 1.3rem;
+		@include flex(center, center, column);
+		.details {
+			border-radius: 10rem;
+			padding: 0.4rem 0.8rem;
+			background-color: #f0f0f1;
+			color: #4b525a;
+			@extend %text-12;
+		}
+	}
+	.text {
+		h3 {
+			color: #1b1e21;
+			@extend %text-20;
+			font-weight: 700;
+		}
+		p {
+			color: #4b525a;
+			@extend %text-10;
+		}
+	}
+}

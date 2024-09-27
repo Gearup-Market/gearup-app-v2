@@ -1,0 +1,80 @@
+@import "../_utils/responsive";
+
+%center {
+	display: grid;
+	place-items: center;
+}
+%flex-align {
+	display: flex;
+	align-items: center;
+}
+%flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin noScrollBar {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	& {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+}
+
+// flexbox
+@mixin flex($justify: flex-start, $align: flex-start, $flow: row wrap) {
+	flex-flow: $flow;
+	display: flex;
+	justify-content: $justify;
+	align-items: $align;
+}
+
+// grid
+@mixin grid(
+	$columns: repeat(auto-fit, minmax(20%, 1fr)),
+	$column-gap: 2.4rem,
+	$row-gap: 3.2rem
+) {
+	display: grid;
+	grid-template-columns: $columns;
+	column-gap: $column-gap;
+	row-gap: $row-gap;
+}
+@mixin boxShadow($x: 0.3, $y: 0.3, $color: $col-grey-400) {
+	box-shadow: $x + rem $y + rem $color;
+}
+
+@mixin screenMin($breakpoint) {
+	// If the key exists in the map
+	@if map-has-key($breakpoints, $breakpoint) {
+		// Prints a media query based on the value
+		@media (min-width: map-get($breakpoints, $breakpoint)) {
+			@content;
+		}
+	}
+
+	// If the key doesn't exist in the map
+	@else {
+		@warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+      + "Available breakpoints are: #{map-keys($breakpoints)}.";
+	}
+}
+
+@mixin screenMax($breakpoint) {
+	// If the key exists in the map
+	@if map-has-key($breakpoints, $breakpoint) {
+		// Prints a media query based on the value
+		@media (max-width: map-get($breakpoints, $breakpoint)) {
+			@content;
+		}
+	}
+
+	// If the key doesn't exist in the map
+	@else {
+		@warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+      + "Available breakpoints are: #{map-keys($breakpoints)}.";
+	}
+}

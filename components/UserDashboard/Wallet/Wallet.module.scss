@@ -1,0 +1,271 @@
+@import "@/styles/imports";
+
+.wallet_wrapper{
+    padding: 2rem 3rem;
+
+    .toggle_btns_container, .mobile_title_container{
+        display: none;
+    }
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+
+  
+
+    .account_balance_container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        background-color: #FBFBFD;
+        padding: 2.4rem 1.6rem;
+        width: 100%;
+        border-radius: 1.6rem;
+        flex-direction: column;
+
+        p{
+            color: #A3A7AB;
+            font-size: 1.4rem;
+            font-weight: 400;
+
+        }
+
+        h2{
+            color: #121212;
+            font-size: 2.8rem;
+            font-weight: 700;
+        }
+    }
+.fiat_wallet{
+    grid-column: span 2;
+    padding: 2.5rem 2rem;
+    border-radius: 1.6rem;
+    background-color: #fff;
+
+    .mobile_btns{
+        display: flex;
+        justify-content: center;
+    
+    }
+}
+
+.xlm_wallet{
+    grid-column: span 1;
+    padding: 2.5rem 2rem;
+    border-radius: 1.6rem;
+    background-color: #fff;
+    max-width: 36rem;
+    width: 100%;
+    box-sizing: border-box;
+
+    .xlm_btn{
+        width: 100%;
+        margin-top: 1rem;
+         display: flex;
+         justify-content: center;
+    }
+}
+
+.btn_container{
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+
+
+    
+
+    .btn{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .icon{
+           height: 2rem;
+            width: 2rem;
+        }
+
+    }
+
+    .transparent_btn{
+        border: 1px solid #DEDFE0;
+        background: transparent;
+    }
+
+    .withdraw_btn{
+        background: #000;
+        color: #FFB30F;
+    }
+}
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+
+        
+
+    }
+
+    &__cards_container {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+
+
+        &__item {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            padding: 2rem 1rem;
+
+            &__left {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                flex: 1 1 0;
+
+                .icon_container{
+                    height: 4.8rem;
+                    width:  4.8rem;
+                    
+                }
+
+                .title {
+                    font-size: 1.4rem;
+                    color: $col-low-emphasis-text;
+                }
+
+                .amount {
+                    font-weight: 700;
+                    color: $col-grey-1;
+                    font-size: 2.8rem;
+                }
+            }
+
+            &__right {
+                display: flex;
+                align-items: flex-end;
+
+                .percentage{
+                    background-color:#F2F4F7;
+                    padding: 0.05rem 0.4rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 1.2rem;
+                    border-radius: 1rem;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    .table_section{
+        margin-top: 4rem;
+    }
+
+    
+}
+@include screenMax("mobile"){
+    padding: 1rem 1.6rem;
+
+    .fiat_wallet{
+        display: none;
+
+
+
+        &[data-active='true']{
+            display: block;
+        }
+    }
+
+    .xlm_wallet{
+        display: none;
+
+        &[data-active='true']{
+            display: block;
+        }
+    }
+
+    .toggle_btns_container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        margin: 2rem 0;
+        padding: 1rem;
+        border-radius: 10rem;
+
+        button{
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #515B6F;
+            font-size: 1.4rem;
+            font-weight: 400;
+            width: 100%;
+            
+        }
+        .active{
+            font-weight: 700;
+            box-shadow: 0px 4px 40px 0px #0000001F;
+            background: #fff;
+            color:#FFB30F;
+        }
+
+    }
+
+    .mobile_title_container{
+        display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    
+    button{
+        background: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: #4B525A;
+        font-size: 1.4rem;
+        font-weight: 700;
+        
+        .icon{
+            height: 2rem;
+            width: 2rem;
+            
+        }
+    }
+}
+    .container{
+
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1rem;
+        
+
+    
+    .btn_container{
+        margin-top: 1rem;
+        
+        
+        .transparent_btn{
+            border: none;
+        }
+        
+    }
+    .container__header{
+        display: none;
+        
+        
+    }
+    
+}
+}
+}

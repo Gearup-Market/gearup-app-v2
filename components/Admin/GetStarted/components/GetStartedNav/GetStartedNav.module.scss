@@ -1,0 +1,84 @@
+/* components/Navbar.module.scss */
+@import "@/styles/imports";
+
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    width: 100%;
+  
+
+    &__top{
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 3rem;
+        width: 100%;
+        padding: 2rem;
+        padding-left: 8rem;
+
+        &__left{
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+
+            .logo img {
+              height: 25px;
+              display: flex;
+              align-items: center;
+            }
+            
+
+            .steps_container {
+              display: flex;
+              gap: 1rem;
+              align-items: center;
+
+              .step_count {
+                font-size: 1.6rem;
+                color: #4B525A;
+                font-weight: 400;
+              }
+              
+              .step_names {
+                font-size: 1.6rem;
+                color: #4B525A;
+                font-weight: 400;
+              }
+          
+            }
+
+           
+        }
+
+        &__right{
+            display: flex;
+            align-items: center;
+            padding:0 8rem;
+            padding-right: 4rem;
+
+            .close_button {
+              background: none;
+              border: none;
+              cursor: pointer;
+              padding: 0;
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+              font-weight: 700;
+              font-size: 1.6rem;
+              color: #4B525A;
+            }
+        }
+    
+    }
+
+    .progress_bar{
+      height: 4px;
+      width: 100%;
+    }
+     
+
+  }
+ 
+  

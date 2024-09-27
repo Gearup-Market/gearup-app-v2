@@ -1,0 +1,105 @@
+@import "@/styles/imports";
+
+    .container {
+        border: 1px solid $col-border;
+    padding: 2.5rem;
+    border-radius: 2rem;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__left{
+        @include flex;
+        gap: 2rem;
+
+
+        &__image{
+            background-color: #E3E6E9;
+            width: 10rem;
+            height: 10rem;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .online_indicator{
+                position: absolute;
+                bottom: 0;
+                right: 1rem;
+                width: 2rem;
+                height: 2rem;
+                border-radius: 50%;
+
+                &[data-status="online"]{
+                    background-color: #40B773;
+                }
+
+                &[data-status="offline"]{
+                    background-color: #7B8086;
+                }
+
+            
+            }
+
+            .member_icon{
+                width: 4rem;
+                height: 4rem;
+                object-fit: contain;
+            }
+
+            
+            .member_img {
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
+
+        &__details{
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            &__name {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #1B1E21;
+                margin: 0;
+            }
+            
+            &__email,&__role ,&__phone {
+                margin: 0;
+                padding: 0;
+                font-size: 1.2rem;
+                font-weight: 400;
+                color: #7B8086;
+                line-height: 1.4rem
+            }
+        }
+
+    }
+
+    &__right{
+        @include flex;
+        gap: 2rem;
+
+        button{
+            background: none;
+            border: 1px solid $col-border;
+            width: 17rem;
+            font-weight: 700;
+        }
+
+        .deactivate_btn {
+            color: #FF3729;
+            
+        }
+
+        .edit_btn{
+            color: #4B525A;
+         
+        }
+    }
+
+}

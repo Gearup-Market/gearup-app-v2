@@ -1,0 +1,28 @@
+@import "@/styles/imports";
+
+.icon {
+	position: relative;
+	border-radius: 50%;
+	overflow: hidden;
+	width: 2.4rem;
+	height: 2.4rem;
+	margin-right: 0.8rem;
+}
+
+.icon_not {
+	width: 1.6rem;
+	height: 1.6rem;
+	position: relative;
+	place-self: center;
+	border-radius: 50%;
+}
+
+.container {
+	width: 2.4rem;
+	height: 2.4rem;
+	margin-right: 0.8rem;
+	border: 0.1rem solid white;
+	border-radius: 50%;
+	background-color: black;
+	display: grid;
+}

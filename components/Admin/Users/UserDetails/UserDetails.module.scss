@@ -1,0 +1,77 @@
+@import "@/styles/imports";
+
+.container {
+    padding: 3rem 0;
+
+    .breadcrumbs{
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1.6rem;
+        font-size: 1.4rem;
+        padding: 0 3rem;
+
+        a{
+            text-decoration: none;
+            font-weight: 400; 
+            color: #A3A7AB;
+            font-size: 1.6rem;
+        }
+
+
+        .icon{
+            height: 1.6rem;
+            width: 1.6rem;
+            transform: rotate(-90deg);
+        }
+
+        p{
+            font-weight: 400; 
+            color: #1B1E21;
+            font-size: 1.6rem;
+        }
+    }
+
+    .nav_container{
+        @include flex;
+        gap: 1rem;
+        font-weight: 700;
+        color: #4B525A;
+        align-items: center;
+        cursor: pointer;
+        width: fit-content;
+        margin-bottom: 1rem;
+        padding: 0 3rem;
+
+        .icon{
+            @include flex;
+            width: 2.6rem;
+            height: 2.6rem;
+            transform: rotate(90deg);
+            border-radius: 50%;
+            border: 1px solid $col-border;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+    }
+
+    .about_document{
+        padding: 0 3rem;
+    }
+
+    @include screenMax("mobile") {
+        padding:  3rem 0;
+
+        .about_document{
+            padding: 1.6rem;
+        }
+
+        .breadcrumbs{
+            padding: 0 1.6rem;
+        }
+
+
+    }
+
+}

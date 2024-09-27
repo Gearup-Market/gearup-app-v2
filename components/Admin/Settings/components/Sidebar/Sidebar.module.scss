@@ -1,0 +1,102 @@
+@import "@/styles/imports";
+
+.wrapper{
+   
+.sidebar_container {
+    box-sizing: border-box;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 20rem;
+    
+    
+    .navlinks_container {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            
+            &__item {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+                padding: 1rem;
+                cursor: pointer;
+                box-sizing: border-box;
+                border-left: 3px solid $col-border;
+                color: #4E5054;
+                padding-right: 4rem;
+
+
+                &[data-active='true'] {
+                    background: $col-active-nav-bg;
+                    border-left: 4px solid $col-orange;
+                    
+                    h2{
+                        font-weight: 700;
+
+                    }
+                    
+                }
+
+                .icon {
+                    height: 2rem;
+                    width: 2rem;
+                }
+
+                .title {
+                    font-size: 1.4rem;
+                    
+                }
+
+                .description{
+                    font-size: 1.4rem;
+                }
+
+                .logout_text {
+                    color: $col-error;
+                }
+
+            }
+
+    }
+
+    @include screenMax("mobile"){
+        display: none;
+    }
+
+
+}
+
+.parent_container{
+    display: none;
+    @include screenMax("mobile"){
+        display: flex;
+        gap: 2rem;
+        padding: 1.5rem 0.5rem;
+        width:100%;
+        overflow: scroll;
+        
+        .filter{
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 0.6rem 2rem;
+            font-size: 1.4rem;
+            border-radius: 10rem;
+            cursor: pointer;
+            border: 1px solid $col-border;
+            width: fit-content;
+            min-width: fit-content;
+            transition: all 0.3s ease-in-out;
+            
+            &[data-active='true']{
+                background-color: #FFF7E7;
+                font-weight: 700;
+                border: 1px solid #ffb30f;
+            }
+            
+        }
+    }
+}
+
+}

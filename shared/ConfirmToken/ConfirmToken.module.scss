@@ -1,0 +1,28 @@
+/* components/TokenConfirm.module.scss */
+.tokenContainer {
+    display: flex;
+  }
+  
+  .token_input {
+    width: 8.8rem;
+    height: 6.4rem;
+    margin-right: 8px;
+    font-size: 2.4rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    font-size: 700;
+    color: #1B1E21;
+    font-weight: 700;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:focus{
+        border-color: #FFB30F;
+    }
+
+  }
+  

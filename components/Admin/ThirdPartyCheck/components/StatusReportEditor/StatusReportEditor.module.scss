@@ -1,0 +1,14 @@
+
+@import '@/styles/imports.scss';
+
+.form_container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 60rem;
+
+  @include screenMax("mobile") {
+    width: 100%;
+  }
+}

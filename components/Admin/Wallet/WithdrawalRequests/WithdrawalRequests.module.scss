@@ -1,0 +1,163 @@
+@import "@/styles/imports";
+
+
+.container {
+    padding: 4rem 3rem;
+    @include flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .nav_container{
+        @include flex;
+        gap: 1rem;
+        font-weight: 700;
+        color: #4B525A;
+        align-items: center;
+        cursor: pointer;
+        width: fit-content;
+
+        .icon{
+            @include flex;
+            width: 2.6rem;
+            height: 2.6rem;
+            transform: rotate(90deg);
+            border-radius: 50%;
+            border: 1px solid $col-border;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+    }
+
+    
+
+    .table_header{
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 2rem;
+
+        p{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: underline;
+            color: #7B8086;
+            font-weight: 700;
+            
+            .icon{
+                width: 1.6rem;
+                height: 1.6rem;
+            }
+        }
+    }
+
+    .requests_container{
+        @include flex; display: flex;
+        flex-direction: column;
+        border: 1px solid $col-border;
+        width: 100%;
+        background: $col-white;
+        border-radius: 1.6rem;
+
+        .request_item{
+            @include flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0.7rem 1.5rem;
+           
+
+            .item_details{
+                @include flex;
+                align-items: flex-start;
+                gap: 1rem;
+        
+        
+                .left{
+                    @include flex;
+                    gap: 1rem;
+                    align-items: center;
+
+                    .right{
+
+                        
+                        p{
+                            font-size: 1.4rem;
+                            color: #1B1E21;
+                            font-weight: 400;
+                        
+                            
+                        }
+                        
+                        h2{
+                            font-size: 1.4rem;
+                            color: #1B1E21;
+                            font-weight: 700;
+                        }
+                    }
+        
+                    img{
+                    width: 3.6rem;
+                    height: 3.6rem;
+                    border-radius: 50%;
+        
+        
+                }
+            }
+        }
+
+            .action_btns{
+                @include flex;
+                align-items: center;
+                gap: 1rem;
+                font-size: 1.4rem;
+
+                .accept_text{
+                    @include flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    color:#40B773;
+                    font-weight: 700;
+                    .icon{
+                        height: 1.4rem;
+                        width: 1.4rem;
+                    }
+                }
+                
+                .decline_text{
+                    @include flex;
+                    align-items: center;
+                    font-weight: 700;
+                    gap: 0.5rem;
+                    color: #FF3729;
+                    .icon{
+                        height: 1.4rem;
+                        width: 1.4rem;
+                    }
+                }
+
+               
+            }
+        }
+        .request_item:not(:last-child){
+            border-bottom: 1px solid $col-border;
+        }
+    }
+
+    @include screenMax("mobile") {
+        padding:  3rem 1.6rem;
+
+        .action_btns{
+
+            p{
+                display: none;
+            }
+        }
+    }
+
+  
+
+}
