@@ -202,7 +202,7 @@ const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: Sellin
 						label="Amount"
 						type="number"
 						value={forSellDetails?.pricing}
-						onChange={(e: any) => setForSellDetails((prev) => ({ ...prev, pricing: +e.target.value ?? 0 }))}
+						onChange={(e: any) => setForSellDetails((prev) => ({ ...prev, pricing: +e.target.value }))}
 						className={styles.input}
 					/>
 					<ListingType

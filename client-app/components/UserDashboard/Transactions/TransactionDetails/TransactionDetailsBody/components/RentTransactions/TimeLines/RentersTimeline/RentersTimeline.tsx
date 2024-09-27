@@ -16,8 +16,8 @@ interface Props {
 
 const RentersTimeline = ({ openModal, setOpenModal }: Props) => {
     const { transaction } = useAppSelector(s => s.transaction);
+    const {steps, handleAction} = useTimeline(transaction!)
 	if(!transaction) return null;
-    const {steps, handleAction} = useTimeline(transaction)
 
     return (
         <div className={styles.container}>

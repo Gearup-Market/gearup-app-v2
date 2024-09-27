@@ -36,11 +36,8 @@ const SellersTimeline = ({ openModal, setOpenModal }: Props) => {
 	const [newTimelines, setNewTimelines] = useState<Timeline[]>([]);
 
 	const { transaction } = useAppSelector(s => s.transaction);
-    if(!transaction) return null;
-
-    const {steps, handleAction} = useTimeline(transaction);
-
-    const { metadata } = transaction;
+    const {steps, handleAction} = useTimeline(transaction!);    
+    const { metadata } = transaction!;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
     const shouldReturn = false
 
@@ -57,6 +54,8 @@ const SellersTimeline = ({ openModal, setOpenModal }: Props) => {
 			setNewTimelines(sellersReturnTimeline);
 		}
 	}, [shouldReturn]);
+
+    if(!transaction) return null;
 
 	return (
 		<>

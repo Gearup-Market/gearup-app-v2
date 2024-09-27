@@ -22,20 +22,20 @@ interface Props {
 const BuyersTimeline = ({ openModal, setOpenModal }: Props) => {
 	const [newTimelines, setNewTimelines] = useState<Timeline[]>([]);
 	const { transaction } = useAppSelector(s => s.transaction);
+	const { steps, handleAction } = useTimeline(transaction!);
 
-	if (!transaction) return null;
-	const { steps, handleAction } = useTimeline(transaction);
-	const { metadata } = transaction;
+	const { metadata } = transaction!;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
-
+    
 	useEffect(() => {
-		if (thirdPartyVerification) {
-			setNewTimelines(saleBuyersTimelineThirdParty);
+        if (thirdPartyVerification) {
+            setNewTimelines(saleBuyersTimelineThirdParty);
 		} else {
-			setNewTimelines(saleBuyersTimeline);
+            setNewTimelines(saleBuyersTimeline);
 		}
 	}, [thirdPartyVerification]);
-
+    
+    if (!transaction) return null;
 	return (
 		<div className={styles.container}>
 			<div className={styles.desktop_timelines}>
