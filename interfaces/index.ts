@@ -1,5 +1,10 @@
 // navlink interfaces
 
+import { iWTransaction } from "@/app/api/hooks/wallets/types";
+import { User } from "./User";
+import { RentalPeriod, UserRole } from "@/app/api/hooks/transactions/types";
+import { Listing } from "@/store/slices/listingsSlice";
+
 export interface NavLinkMenu {
 	label: string;
 	id?: string;
@@ -71,5 +76,60 @@ export interface Courses {
 export enum ListingType {
 	Buy = "buy",
 	Rent = "rent",
-	Both = 'both'
+	Both = "both"
+}
+
+export enum TransactionStage {
+	PendingApproval = 'PendingApproval',
+    ConfirmHandover = 'ConfirmHandover',
+    AwaitingConfirmation = 'AwaitingConfirmation',
+    TransactionOngoing = 'TransactionOngoing',
+    InitiateReturn = 'InitiateReturn',
+    ConfirmReturn = 'ConfirmReturn',
+    Completed = 'Completed',
+    ReviewAndFeedback = 'ReviewAndFeedback',
+    Declined = 'Declined',
+}
+export enum ShippingType {
+	Shipping = 'shipping',
+	LocalPickup = 'localpickup'
+}
+export type Stage = { updatedAt: Date; stage: TransactionStage, transactionHash: string; isCurrent: boolean  };
+export type MetadataSchema = {
+	thirdPartyCheckup?: boolean;
+	shippingType?: ShippingType;
+	country?: string;
+	name?: string;
+	company?: string;
+	address?: string;
+	city?: string;
+	postalCode?: string;
+	phoneNumber?: string;
+} 
+
+export interface iTransactionDetails {
+	id: string;
+	gearName: string;
+	amount: number;
+	transactionDate: string;
+	transactionType: string;
+	transactionStatus: TransactionStatus;
+	gearImage: string;
+	userRole: UserRole;
+	buyer: User;
+	seller: User;
+	listing: Listing;
+	isBuyer: boolean;
+	payment: iWTransaction;
+	stages: Stage[];
+	metadata?: MetadataSchema
+	rentalPeriod?: RentalPeriod;
+}
+
+export enum TransactionStatus {
+	Pending = "pending",
+	Ongoing = "ongoing",
+	Completed = "completed",
+	Cancelled = "cancelled",
+	Declined = "declined",
 }

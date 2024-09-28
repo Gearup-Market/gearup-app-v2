@@ -9,6 +9,7 @@ import { useGetUser } from "@/app/api/hooks/users";
 import { api, queryClient } from "@/app/api";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateUser } from "@/store/slices/userSlice";
+import useCart from "@/hooks/useCart";
 
 // ** Defaults
 export const defaultAuthProvider: DefaultProviderType = {
@@ -16,7 +17,7 @@ export const defaultAuthProvider: DefaultProviderType = {
 	isOtpVerified: false,
 	user: null,
 	loading: false,
-	logout: async () => { }
+	logout: async () => {}
 };
 
 const AuthContext = createContext(defaultAuthProvider);
@@ -40,6 +41,7 @@ export const AuthProvider = (params: AuthProviderProps) => {
 	const { isFetching: loading, data: userData } = useGetUser({
 		token: token
 	});
+	const { syncCartItems } = useCart();
 
 	useEffect(() => {
 		const token = getAuthToken() ?? "";
@@ -73,6 +75,12 @@ export const AuthProvider = (params: AuthProviderProps) => {
 		}
 	}, [userData]);
 
+	useEffect(() => {
+		if(user?.userId){
+			syncCartItems()
+		}
+	}, [user?.userId])
+
 	const values = useMemo(
 		() => ({
 			isAuthenticated: user !== null && isTokenValid,
@@ -93,7 +101,9 @@ export const useAuth = () => useContext(AuthContext);
 export const ProtectRoute = (props: ProtectRouteProps) => {
 	const pathname = usePathname();
 	const { isAuthenticated, loading, user } = useAuth();
+	const searchParams = useSearchParams();
 	const router = useRouter();
+	const returnUrl = searchParams.get("returnUrl") ?? "/user/dashboard";
 
 	const unprotectedRoutes = useMemo(
 		() => [
@@ -108,28 +118,27 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 		[]
 	);
 
+	if (loading) {
+		return (
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					height: "400px"
+				}}
+			>
+				<CircularProgress style={{ color: "#FFB30F" }} />
+			</Box>
+		);
+	}
 
-	// if (loading) {
-	// 	return (
-	// 		<Box
-	// 			sx={{
-	// 				display: "flex",
-	// 				justifyContent: "center",
-	// 				alignItems: "center",
-	// 				height: "400px"
-	// 			}}
-	// 		>
-	// 			<CircularProgress style={{ color: "#FFB30F" }} />
-	// 		</Box>
-	// 	);
-	// }
+	if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
+		router.replace(`/login?returnUrl=${pathname}`);
+		return null;
+	}
 
-	// if (!isAuthenticated && !unprotectedRoutes.includes(pathname)) {
-	// 	router.replace(`/login?returnUrl=${pathname}`);
-	// 	return null;
-	// }
-
-	if (!isAuthenticated || unprotectedRoutes.includes(pathname)) {
+	if (isAuthenticated || unprotectedRoutes.includes(pathname)) {
 		return <>{props.children}</>;
 	}
 

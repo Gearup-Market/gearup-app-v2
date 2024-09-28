@@ -434,5 +434,6 @@ const PersonalIdentification = forwardRef<
 	);
 });
 
+PersonalIdentification.displayName = 'PersonalIdentification'
+
 export default PersonalIdentification;
-PersonalIdentification.displayName = "PersonalIdentification";

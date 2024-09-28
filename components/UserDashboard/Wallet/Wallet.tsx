@@ -17,7 +17,6 @@ import {
 	WalletWithdrawalModal,
 	XlmDepositModal,
 	XlmWithdrawalModal,
-	WalletDepositModal
 } from "./components";
 import AlertModal from "./components/AlertModal/AlertModal";
 import { GridAddIcon } from "@mui/x-data-grid";
@@ -28,6 +27,9 @@ import { formatNumber } from "@/utils";
 import { WalletStatus } from "@/app/api/hooks/wallets/types";
 import { useStellarWallet } from "@/hooks";
 import { SmallLoader } from "@/shared/loaders";
+import dynamic from 'next/dynamic';
+
+const WalletDepositModal = dynamic(() => import('./components').then(mod => mod.WalletDepositModal), { ssr: false });
 
 enum ToggleType {
 	FIAT = "Fiat",
@@ -65,6 +67,8 @@ const Wallet = () => {
 		() => wallet?.status === WalletStatus.Frozen,
 		[wallet?.status]
 	);
+
+  const walletBalance = useMemo(() => (wallet.balance || 0) - (wallet.pendingDebit || 0), [wallet])
 
 	return (
 		<div className={styles.wallet_wrapper}>
@@ -137,7 +141,7 @@ const Wallet = () => {
 
 					<div className={styles.account_balance_container}>
 						<p>Wallet balance</p>
-						<h2>NGN {formatNumber(wallet.balance)}</h2>
+						<h2>NGN {formatNumber(walletBalance || 0)}</h2>
 					</div>
 					<div className={`${styles.btn_container} ${styles.mobile_btns}`}>
 						<Button

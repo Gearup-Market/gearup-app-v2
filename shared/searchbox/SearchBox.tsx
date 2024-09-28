@@ -4,6 +4,11 @@ import InputField from "../inputField/InputField";
 import styles from "./SearchBox.module.scss";
 import { Button } from "..";
 import Image from "next/image";
+import toast from "react-hot-toast";
+import { usePostSearchListing } from "@/app/api/hooks/listings";
+import { useAppDispatch } from "@/store/configureStore";
+import { setListings } from "@/store/slices/listingsSlice";
+import { useRouter } from "next/navigation";
 
 interface Props {
 	className?: string;
@@ -13,13 +18,40 @@ interface Props {
 
 enum ActiveButton {
 	RENT = "rent",
-	BUY = "buy",
+	BUY = "buy"
 }
 
 const SearchBox = ({ className, onClick }: Props) => {
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const [activeButton, setActiveButton] = useState<ActiveButton>(ActiveButton.RENT);
+	const {mutateAsync: searchListing, isPending} = usePostSearchListing()
+	const dispatch = useAppDispatch();
+	const router = useRouter();
 
+	const handleSearch = async () => {
+		try {
+			if(!searchTerm) {
+				toast.error('Enter a search query');
+				return;
+			};
+			const payload = {
+				productName: searchTerm,
+				description: searchTerm,
+				listingType: activeButton === ActiveButton.BUY ? "sell" : "rent"
+			};
+			
+
+			const res = await searchListing(payload);
+			if(res.data) {
+				dispatch(setListings({
+					searchedListings: res.data
+				}))
+				router.push(`/listings?type=${activeButton}`)
+			}
+		} catch (error: any) {
+			toast.error(error?.response?.data?.message || 'Failed to search')
+		}
+	}
 	return (
 		<div className={`${styles.searchBox} ${className}`} onClick={onClick}>
 			<div className={styles.small_button_container}>
@@ -57,6 +89,7 @@ const SearchBox = ({ className, onClick }: Props) => {
 								type="text"
 								autoComplete="off"
 								placeholder="Try e.g Nikon SR ..."
+								onChange={(e) => setSearchTerm(e.target.value)}
 							/>
 						</div>
 					</div>
@@ -79,7 +112,7 @@ const SearchBox = ({ className, onClick }: Props) => {
 						</div>
 					</div>
 				</div>
-				<Button className={styles.button}>Search</Button>
+				<Button className={styles.button} onClick={handleSearch} disabled={isPending}>Search</Button>
 			</div>
 		</div>
 	);

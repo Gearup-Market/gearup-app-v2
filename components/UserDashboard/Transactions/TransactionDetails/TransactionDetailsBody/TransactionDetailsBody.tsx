@@ -1,28 +1,24 @@
-import React from 'react'
-import styles from './TransactionDetailsBody.module.scss'
-import { useSearchParams } from 'next/navigation'
-import RentTransactions from './components/RentTransactions/RentTransactions'
-import BuyTransactions from './components/BuySaleTransactions/BuySaleTransactions'
-import CourseTransactions from './components/CoursesTransactions/CourseTransactions'
-interface Props {
-    item: any
-}
-const TransactionDetailsBody = ({ item }: Props) => {
-    const search = useSearchParams()
-    const transactionType = search.get('transaction_type')
-    return (
-        <div className={styles.container}>
-            {
-                transactionType === 'rent' && <RentTransactions item={item} />
-            }
-            {
-                transactionType === 'buy' && <BuyTransactions item={item}/>
-            }
-            {
-                transactionType === 'courses' && <CourseTransactions item={item}/>
-            }
-        </div>
-    )
-}
+import React from "react";
+import styles from "./TransactionDetailsBody.module.scss";
+import RentTransactions from "./components/RentTransactions/RentTransactions";
+import BuyTransactions from "./components/BuySaleTransactions/BuySaleTransactions";
+import CourseTransactions from "./components/CoursesTransactions/CourseTransactions";
+import { useAppSelector } from "@/store/configureStore";
 
-export default TransactionDetailsBody
+const TransactionDetailsBody = () => {
+	const { transaction } = useAppSelector(s => s.transaction);
+	if (!transaction) return null;
+
+	const transactionType = transaction.transactionType;
+	return (
+		<div className={styles.container}>
+			{transactionType === "Rental" && <RentTransactions />}
+			{(transactionType === "Purchase" || transactionType === "Sale") && (
+				<BuyTransactions />
+			)}
+			{transactionType === "courses" && <CourseTransactions item={transaction} />}
+		</div>
+	);
+};
+
+export default TransactionDetailsBody;

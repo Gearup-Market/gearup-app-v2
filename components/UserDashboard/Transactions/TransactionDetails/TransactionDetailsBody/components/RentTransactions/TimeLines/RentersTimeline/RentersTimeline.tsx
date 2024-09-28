@@ -1,43 +1,23 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styles from './RentersTimeline.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import { AwaitingApproval, AwaitingConfirmation, ConfirmHandover, InitiateReturn, TransactionOngoing } from './components'
-import { rentRentersTimeline } from '../../../utils/data'
 import Modal from '@/shared/modals/modal/Modal'
 import TimeLine from './components/TimeLine/TimeLine'
 import { CustomRatingFeedback } from '../../..'
+import useTimeline from '@/hooks/useTimeline'
+import { useAppSelector } from '@/store/configureStore'
 
 interface Props {
-    timelines?: any
     openModal: boolean
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const RentersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
-
-
-    const [steps, setSteps] = useState(1)
-    const isTimeElapsed = true
-
-
-    const handlePrev = () => {
-        if (steps > 1) {
-            setSteps(steps - 1)
-        }
-    }
-
-    const handleNext = () => {
-        if (steps < rentRentersTimeline.length) {
-            setSteps(steps + 1)
-        }
-    }
-
-    useEffect(() => {
-        if (isTimeElapsed) {
-            setSteps(3)
-        }
-    }, [isTimeElapsed])
+const RentersTimeline = ({ openModal, setOpenModal }: Props) => {
+    const { transaction } = useAppSelector(s => s.transaction);
+    const {steps, handleAction} = useTimeline(transaction!)
+	if(!transaction) return null;
 
     return (
         <div className={styles.container}>
@@ -49,16 +29,16 @@ const RentersTimeline = ({ timelines, openModal, setOpenModal }: Props) => {
             </div>
             <div className={styles.right}>
                 {
-                    steps == 1 && <AwaitingApproval handleNext={handleNext} />
+                    steps == 1 && <AwaitingApproval item={transaction} handleNext={handleAction} />
                 }
                 {
-                    steps === 2 && <ConfirmHandover handleNext={handleNext} />
+                    steps === 2 && <ConfirmHandover item={transaction} handleNext={handleAction} />
                 }
                 {
-                    steps === 3 && <TransactionOngoing handleNext={handleNext} isTimeElapsed={isTimeElapsed} />
+                    steps === 3 && <TransactionOngoing item={transaction} handleNext={handleAction} isTimeElapsed={false} />
                 }
                 {
-                    steps === 4 && <InitiateReturn handleNext={handleNext} />
+                    steps === 4 && <InitiateReturn handleNext={handleAction} />
                 }
                 {
                     steps === 5 && <AwaitingConfirmation />

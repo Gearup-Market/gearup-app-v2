@@ -6,9 +6,11 @@ import Image from 'next/image'
 import { Button } from '@/shared'
 import PaymentRequest from './components/PaymentRequest/PaymentRequest'
 import PaymentForm from './components/PaymentForm/PaymentForm'
+import { iTransactionDetails, TransactionStage, TransactionStatus } from '@/interfaces'
 
 interface Props {
-    handleNext: () => void
+    handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
+	item: iTransactionDetails;
     isTimeElapsed?: boolean
 }
 
@@ -47,7 +49,13 @@ const TransactionOngoing = ({ handleNext, isTimeElapsed }: Props) => {
                 </div>
             </div>
             <div className={styles.btn_container}>
-                <Button buttonType='primary' onClick={isTimeElapsed ? handleInitiateReturn : handleNext}>
+                <Button buttonType='primary' onClick={() => {
+                    if(isTimeElapsed){
+                        handleInitiateReturn()
+                    }else {
+                        handleNext(TransactionStage.InitiateReturn)
+                    } 
+                }}>
                     {
                         isTimeElapsed ? "Review payment request" : "Initiate return"
                     }

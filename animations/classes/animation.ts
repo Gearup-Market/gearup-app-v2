@@ -18,8 +18,8 @@ export class Animation extends Component {
 
 	// calculate inital distance between center of element and center of viewport height
 	setUtils(): void {
-		this.vh = window.innerHeight;
-		this.vw = window.innerWidth;
+		this.vh = typeof window !== 'undefined' && window.innerHeight;
+		this.vw =typeof window !== 'undefined' &&  window.innerWidth;
 		this.rect = this.element.getBoundingClientRect();
 	}
 

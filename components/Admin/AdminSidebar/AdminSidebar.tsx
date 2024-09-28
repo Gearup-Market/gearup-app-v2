@@ -82,7 +82,9 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 	return (
 		<div className={styles.sidebar_container}>
 			<div className={styles.sidebar_container__header}>
-				<Logo type="dark" />
+				<Link href="/">
+					<Logo type="dark" />
+				</Link>
 				{isMobile && (
 					<span onClick={onClose}>
 						<CloseIcon />

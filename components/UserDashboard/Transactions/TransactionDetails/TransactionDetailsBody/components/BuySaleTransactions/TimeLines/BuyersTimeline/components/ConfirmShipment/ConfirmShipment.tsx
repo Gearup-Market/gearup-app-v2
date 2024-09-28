@@ -2,9 +2,10 @@ import React from 'react'
 import styles from './ConfirmShipment.module.scss'
 import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText'
 import { Button } from '@/shared'
+import { TransactionStage, TransactionStatus } from '@/interfaces';
 
 interface Props {
-  handleNext: () => void
+  handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
   thirdPartyVerification?: boolean
 }
 const ConfirmShipment = ({ handleNext, thirdPartyVerification }: Props) => {
@@ -36,7 +37,7 @@ const ConfirmShipment = ({ handleNext, thirdPartyVerification }: Props) => {
         </div>
       </div>
       <div className={styles.btn_container}>
-        <Button onClick={handleNext}>Confirm Shipment</Button>
+        <Button onClick={() => handleNext(TransactionStage.ReviewAndFeedback, TransactionStatus.Completed)}>Confirm Shipment</Button>
       </div>
     </div>
   )

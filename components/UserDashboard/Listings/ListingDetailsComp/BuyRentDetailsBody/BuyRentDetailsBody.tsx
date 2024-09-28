@@ -1,92 +1,96 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import styles from "./BuyRentDetailsBody.module.scss";
-import { Button, DetailContainer, InputField, LoadingSpinner, Logo } from "@/shared";
+import { Button, DetailContainer } from "@/shared";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "@/store/configureStore";
-import { mockListing, updateNewListing } from "@/store/slices/addListingSlice";
-import { useRouter } from "next/navigation";
 import { ImageSlider } from "@/components/listing";
 import { formatNum } from "@/utils";
 import HeaderSubText from "@/components/UserDashboard/HeaderSubText/HeaderSubText";
+import { Listing } from "@/store/slices/listingsSlice";
+import { ListingType } from "@/interfaces";
+import Link from "next/link";
+import { getExplorerUrl } from "@/utils/stellar";
 
 interface Props {
-	detailsType: string;
+	listing: Listing;
 }
 
-const images = [
-	"https://plus.unsplash.com/premium_photo-1721133227473-55856ce60871?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2FtZXJhJTIwZ2VhcnN8ZW58MHx8MHx8fDA%3D",
-	"https://images.unsplash.com/photo-1593935308260-d47509d56370?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2FtZXJhJTIwZ2VhcnN8ZW58MHx8MHx8fDA%3D",
-	"https://images.unsplash.com/photo-1627987992810-7b6ddae33a93?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhbWVyYSUyMGdlYXJzfGVufDB8fDB8fHww",
-	"https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNhbWVyYSUyMGdlYXJzfGVufDB8fDB8fHww"
-];
+const BuyRentDetailsBody = ({ listing }: Props) => {
+	const {
+		offer,
+		listingPhotos,
+		listingType,
+		fieldValues,
+		description,
+		productName,
+		category,
+		subCategory
+	} = listing;
 
-const BuyRentDetailsBody = ({ detailsType }: Props) => {
-	const newListing = mockListing;
-	const fieldValues = Object.entries(newListing?.fieldValues);
+	const [mainGroup, subGroup] = useMemo(() => {
+		if (!fieldValues) return [[], []];
+		const mainGroup: { key: string; value: string }[] = [];
+		const subGroup: { key: string; value: string[] }[] = [];
+
+		Object.entries(fieldValues).forEach(([key, value]) => {
+			if (Array.isArray(value)) {
+				subGroup.push({ key, value });
+			} else {
+				mainGroup.push({ key, value });
+			}
+		});
+		return [mainGroup, subGroup];
+	}, [fieldValues]);
 
 	return (
 		<div className={styles.section}>
 			<div className={styles.body}>
 				<div className={styles.details}>
 					<div className={styles.container}>
-						<ImageSlider images={images as unknown as string[]} type={newListing.listingType}/>
+						<ImageSlider images={listingPhotos} type={listingType} />
 						<div className={styles.block}>
 							<div className={styles.text}>
-								<h2>{newListing?.productName}</h2>
+								<h2>{productName}</h2>
 							</div>
-							<DetailContainer
-								title="Category"
-								value={newListing?.category?.name}
-							/>
+							<DetailContainer title="Category" value={category?.name} />
 							<DetailContainer
 								title="Sub category"
-								value={newListing?.subCategory?.name}
+								value={subCategory?.name}
 							/>
-							{fieldValues?.map(([key, value]) => {
-								return typeof value === "string" ? (
-									<DetailContainer
-										title={key}
-										value={value}
-										key={key}
-									/>
-								) : null;
-							})}
+							{mainGroup?.map(({ key, value }) => (
+								<DetailContainer title={key} value={value} key={key} />
+							))}
 							<DetailContainer
 								title="Description"
-								description={newListing.description}
+								description={description}
 							/>
 							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								{fieldValues?.map(([key, value]) => {
-									return typeof value === "object" ? (
-										<div key={key}>
-											<p>{key}</p>
-											<div className={styles.row}>
-												{(value as unknown as string[])?.map(
-													(val: string, index: number) => (
-														<Button
-															key={`${key}-${index}`}
-															className={styles.button}
-														>
-															{val}
-															<Image
-																src="/svgs/field-values-check.svg"
-																alt="checks"
-																width={10}
-																height={10}
-															/>
-														</Button>
-													)
-												)}
-											</div>
+								{subGroup.map(({ key, value }) => (
+									<div key={key}>
+										<p>{key}</p>
+										<div className={styles.row}>
+											{value.map((val: string, index: number) => (
+												<Button
+													key={`${key}-${index}`}
+													className={styles.button}
+												>
+													{val}
+													<Image
+														src="/svgs/field-values-check.svg"
+														alt="checks"
+														width={10}
+														height={10}
+													/>
+												</Button>
+											))}
 										</div>
-									) : null;
-								})}
+									</div>
+								))}
 							</div>
 
-							{detailsType === "gear-sale" && (
+							{(listingType === ListingType.Buy ||
+								listingType === ListingType.Both) && (
 								<>
 									<div
 										className={styles.text}
@@ -99,7 +103,7 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 											{" "}
 											FOR SALE PERKS
 										</h6>
-										{newListing.offer?.forSell?.acceptOffers && (
+										{offer?.forSell?.acceptOffers ? (
 											<p
 												className={styles.perks}
 												style={{ marginBottom: "0.6rem" }}
@@ -113,9 +117,8 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 												/>
 												Accepts offers
 											</p>
-										)}
-										{newListing.offer?.forSell?.shipping
-											?.shippingOffer && (
+										) : null}
+										{offer?.forSell?.shipping?.shippingOffer ? (
 											<p
 												className={styles.perks}
 												style={{ marginBottom: "0.6rem" }}
@@ -129,9 +132,8 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 												/>
 												Offers shipping
 											</p>
-										)}
-										{newListing.offer?.forSell?.shipping
-											?.shippingCosts && (
+										) : null}
+										{offer?.forSell?.shipping?.shippingCosts ? (
 											<p
 												className={styles.perks}
 												style={{ marginBottom: "0.6rem" }}
@@ -145,9 +147,8 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 												/>
 												Cover shipping costs
 											</p>
-										)}
-										{newListing.offer?.forSell?.shipping
-											?.offerLocalPickup && (
+										) : null}
+										{offer?.forSell?.shipping?.offerLocalPickup ? (
 											<p
 												className={styles.perks}
 												style={{ marginBottom: "0.6rem" }}
@@ -161,7 +162,7 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 												/>
 												Offer local pick up
 											</p>
-										)}
+										) : null}
 									</div>
 									<div
 										className={styles.text}
@@ -173,15 +174,14 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 									</div>
 									<DetailContainer
 										title="Amount(including VAT)"
-										value={formatNum(
-											newListing?.offer?.forSell?.pricing ?? 0
-										)}
+										value={formatNum(offer?.forSell?.pricing ?? 0)}
 										prefix="₦"
 									/>
 									<div className={styles.divider}></div>
 								</>
 							)}
-							{detailsType === "rent" && (
+							{(listingType === ListingType.Rent ||
+								listingType === ListingType.Both) && (
 								<>
 									<div
 										className={styles.text}
@@ -196,34 +196,30 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 										</h6>
 										<DetailContainer
 											title="Daily price(including VAT)"
-											value={formatNum(
-												+newListing.offer?.forRent?.day1Offer
-											)}
+											value={formatNum(offer?.forRent?.day1Offer)}
 											prefix="₦"
 										/>
-										{newListing.offer?.forRent?.day3Offer && (
+										{offer?.forRent?.day3Offer ? (
 											<DetailContainer
 												title="3 days offer(including VAT)"
-												value={formatNum(
-													+newListing.offer?.forRent.day3Offer
-												)}
+												value={formatNum(offer.forRent.day3Offer)}
 												prefix="₦"
 											/>
-										)}
-										{newListing.offer?.forRent?.day7Offer && (
+										) : null}
+										{offer?.forRent?.day7Offer ? (
 											<DetailContainer
 												title="7 days offer(including VAT)"
 												value={formatNum(
-													+newListing.offer?.forRent.day7Offer
+													offer?.forRent.day7Offer
 												)}
 												prefix="₦"
 											/>
-										)}
-										{newListing.offer?.forRent?.day30Offer && (
+										) : null}
+										{offer?.forRent?.day30Offer && (
 											<DetailContainer
 												title="30 days offer(including VAT)"
 												value={formatNum(
-													+newListing.offer?.forRent.day30Offer
+													offer?.forRent.day30Offer
 												)}
 												prefix="₦"
 											/>
@@ -232,8 +228,7 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 									<DetailContainer
 										title="Total replacement amount (Including VAT):"
 										value={formatNum(
-											newListing.offer?.forRent
-												?.totalReplacementValue
+											offer?.forRent?.totalReplacementValue
 										)}
 										prefix="₦"
 									/>
@@ -245,27 +240,37 @@ const BuyRentDetailsBody = ({ detailsType }: Props) => {
 
 					<HeaderSubText title="Blockchain information" />
 					<div className={styles.blockchain_info_container}>
-						<div className={styles.blockchain_label_container}>
-							<p className={styles.view_explorer_title}>Transaction ID</p>
-							<p className={styles.view_explorer}>View explorer</p>
-						</div>
-						<div className={styles.blockchain_number_container}>
-							<p className={styles.blockchain_number}>
-								0x3a79d68b913a5f4e5e29e24d6c5f2ff64d6eec7a39edffca23494c7b1b6e77d5
-							</p>
-							<p className={styles.blockchain_copy_icon}>
-								<Image
-									src="/svgs/copy.svg"
-									alt="copy-icon"
-									width={10}
-									height={10}
-								/>
-							</p>
-						</div>
-						<div className={styles.blockchain_token_container}>
-							<p className={styles.token_id_title}>Token ID</p>
-							<p className={styles.token_id}>40</p>
-						</div>
+						{listing?.transactionId ? (
+							<>
+								<div className={styles.blockchain_label_container}>
+									<p className={styles.view_explorer_title}>
+										Transaction ID
+									</p>
+									<Link href={getExplorerUrl(`txns/${listing.transactionId}`)} target="_blank" className={styles.view_explorer}>
+										View explorer
+									</Link>
+								</div>
+								<div className={styles.blockchain_number_container}>
+									<p className={styles.blockchain_number}>
+										{listing.transactionId}
+									</p>
+									<p className={styles.blockchain_copy_icon}>
+										<Image
+											src="/svgs/copy.svg"
+											alt="copy-icon"
+											width={10}
+											height={10}
+										/>
+									</p>
+								</div>
+							</>
+						) : null}
+						{listing?.nftTokenId ? (
+							<div className={styles.blockchain_token_container}>
+								<p className={styles.token_id_title}>Token ID</p>
+								<p className={styles.token_id}>{listing?.nftTokenId}</p>
+							</div>
+						) : null}
 					</div>
 					<div></div>
 				</div>

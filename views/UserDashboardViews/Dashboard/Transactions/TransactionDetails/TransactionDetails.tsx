@@ -1,8 +1,16 @@
-'use client'
-import React, { useEffect } from 'react'
-import styles from './TransactionDetails.module.scss'
-import { TransactionDetailsBody, TransactionDetailsHeader } from '@/components/UserDashboard/Transactions/TransactionDetails'
-import { transactions } from '@/mock/transactions.mock'
+"use client";
+import React, { useMemo } from "react";
+import styles from "./TransactionDetails.module.scss";
+import {
+	TransactionDetailsBody,
+	TransactionDetailsHeader
+} from "@/components/UserDashboard/Transactions/TransactionDetails";
+import { useTransaction } from "@/hooks/useTransactions";
+import { useAppSelector } from "@/store/configureStore";
+import { TransactionType, UserRole } from "@/app/api/hooks/transactions/types";
+import { PageLoader } from "@/shared/loaders";
+import { iWTransaction } from "@/app/api/hooks/wallets/types";
+import { iTransactionDetails } from "@/interfaces";
 import ChatBodySection from '@/components/UserDashboard/Messages/components/ChatBodySection/ChatBodySection'
 import GearDetailsSection from '@/components/UserDashboard/Transactions/TransactionDetails/TransactionDetailsBody/GearDetailsSection/GearDetailsSection'
 
@@ -17,19 +25,56 @@ enum DetailsView {
     DETAILS = 'details'
 }
 
-const TransactionDetails = ({ slug }: Props) => {
-    const [item, setItem] = React.useState<any>()
-    const [activeView, setActiveView] = React.useState(DetailsView.OVERVIEW)
+interface Props {
+	transactionId: string;
+}
 
-    useEffect(() => {
-        setItem(transactions.find((item) => item.id.toString() === slug))
-    }, [slug])
+const TransactionDetails = ({ transactionId }: Props) => {
+	const { isFetching } = useTransaction(transactionId);
+	const { transaction } = useAppSelector(s => s.transaction);
+	const [activeView, setActiveView] = React.useState(DetailsView.OVERVIEW)
 
-    return (
-        <div className={styles.container}>
-            <TransactionDetailsHeader slug={slug} item={item} activeView={activeView} setActiveView={setActiveView} />
-            {
-                activeView === DetailsView.OVERVIEW && <TransactionDetailsBody item={item} />
+	// const transaction: iTransactionDetails | undefined = useMemo(() => {
+	//     if (data) {
+	//         const { _id, item, buyer, type, status, createdAt, rentalPeriod } = data
+	// 		const isBuyer = userId === buyer.userId;
+	// 		const transactionType =
+	// 			type === TransactionType.Sale && isBuyer
+	// 				? "Purchase"
+	// 				: type === TransactionType.Sale && !isBuyer
+	// 				? "Sale"
+	// 				: TransactionType.Rental;
+	// 		const userRole =
+	// 			transactionType === "Purchase"
+	// 				? UserRole.Buyer
+	// 				: transactionType === "Sale"
+	// 				? UserRole.Seller
+	// 				: transactionType === "Rental" && isBuyer
+	// 				? UserRole.Renter
+	// 				: UserRole.Lender;
+	//         return {
+	//             ...data,
+	//             id: _id,
+	//             gearName: item.productName,
+	//             transactionDate: createdAt,
+	//             transactionType,
+	//             transactionStatus: status,
+	//             gearImage: item.listingPhotos[0],
+	//             userRole,
+	//             listing: item,
+	//             isBuyer,
+	// 			rentalPeriod
+	//         }
+	// 	}
+	// }, [data, isFetching]);
+	return (
+		<div className={styles.container}>
+			{!transaction && <PageLoader />}
+			{transaction && (
+				<>
+					<TransactionDetailsHeader />
+					{
+                activeView === DetailsView.OVERVIEW && <TransactionDetailsBody />
             }
             {
                 activeView === DetailsView.MESSAGES && <div className={styles.chat_body_section}> <ChatBodySection showAllBorder={true} /></div>
@@ -37,9 +82,10 @@ const TransactionDetails = ({ slug }: Props) => {
             {
                 activeView === DetailsView.DETAILS && <GearDetailsSection/>
             }
-            
-        </div>
-    )
-}
+				</>
+			)}
+		</div>
+	);
+};
 
-export default TransactionDetails
+export default TransactionDetails;

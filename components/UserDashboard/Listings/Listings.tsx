@@ -8,7 +8,6 @@ import HeaderSubText from "../HeaderSubText/HeaderSubText";
 import ReuseableFilters from "../ReuseableFilter/ReuseableFilter";
 import { useRouter } from "next/navigation";
 import { useListingFilters, useListings } from "@/hooks/useListings";
-import { useAppSelector } from "@/store/configureStore";
 
 enum Type {
 	Rent = "Rent",

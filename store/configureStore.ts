@@ -21,6 +21,7 @@ import verificationSlice from "./slices/verificationSlice";
 import walletSlice from "./slices/walletSlice";
 import cartSlice from "./slices/cartSlice";
 import checkoutSlice from "./slices/checkoutSlice";
+import transactionSlice from "./slices/transactionSlice";
 
 const PERSISTED_KEYS: string[] = ["user", "newListing", "verification", "cart"];
 
@@ -49,6 +50,7 @@ const persistedReducer = persistReducer(
 		user: userSlice,
 		verification: verificationSlice,
 		wallet: walletSlice,
+		transaction: transactionSlice
 	})
 );
 

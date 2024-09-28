@@ -8,13 +8,14 @@ import { Button, DatePicker, Logo } from "@/shared";
 import format from "date-fns/format";
 import { Listing } from "@/store/slices/listingsSlice";
 import { formatNumber } from "@/utils";
-import { useAppSelector } from "@/store/configureStore";
 import useCart from "@/hooks/useCart";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
+import { useSearchParams } from "next/navigation";
 
 const PriceContainer = ({ listing }: { listing: Listing }) => {
 	const { addItemToCart } = useCart();
-	const { userId } = useAppSelector(s => s.user);
+	const search = useSearchParams();
+	const actionType = search.get("type");
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
 	const [inputDate, setInputDate] = useState([
 		{
@@ -23,24 +24,24 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 			key: "selection"
 		}
 	]);
-	const { productName, offer } = listing;
+	const { productName, offer, listingType } = listing;
 	const forSale = !!offer?.forSell;
 	const forRent = !!offer?.forRent;
 
 	const currency = forSale ? offer.forSell?.currency : offer.forRent?.currency;
 	const pricing = forRent ? offer.forRent?.day1Offer : offer.forSell?.pricing;
+	const transactionType = actionType == 'buy' ? TransactionType.Sale : TransactionType.Rental
 
 	const handleAddToCart = () => {
 		try {
-			const payload = addItemToCart({
+			addItemToCart({
 				listing,
-				type: TransactionType.Rental,
-				rentalPeriod: {
+				type: transactionType,
+				rentalPeriod: transactionType === TransactionType.Rental ? {
 					start: inputDate[0].startDate,
 					end: inputDate[0].endDate
-				}
+				} : undefined
 			});
-
 		} catch (error) {
 			console.log(error);
 		}
@@ -84,21 +85,35 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 						</div>
 					</div>
 				</div>
-				<div className={styles.input_field}>
-					<div className={styles.icon} onClick={() => setOpenModal(true)}>
-						<Image src="/svgs/calendar.svg" fill alt="" sizes="100vw" />
-					</div>
-					<div className={styles.text}>
-						<p>
-							{isDateSelected
-								? `${format(
-										inputDate[0].startDate,
-										"MM/dd/yyyy"
-								  )} to ${format(inputDate[0].endDate, "MM/dd/yyyy")}`
-								: "Choose pickup / return dates"}
-						</p>
-					</div>
-				</div>
+				{listingType !== "sell" ||
+					(actionType === "rent" && (
+						<div className={styles.input_field}>
+							<div
+								className={styles.icon}
+								onClick={() => setOpenModal(true)}
+							>
+								<Image
+									src="/svgs/calendar.svg"
+									fill
+									alt=""
+									sizes="100vw"
+								/>
+							</div>
+							<div className={styles.text}>
+								<p>
+									{isDateSelected
+										? `${format(
+												inputDate[0].startDate,
+												"MM/dd/yyyy"
+										  )} to ${format(
+												inputDate[0].endDate,
+												"MM/dd/yyyy"
+										  )}`
+										: "Choose pickup / return dates"}
+								</p>
+							</div>
+						</div>
+					))}
 				<div className={styles.buttons}>
 					<Button buttonType="secondary" className={styles.button}>
 						Ask for availability

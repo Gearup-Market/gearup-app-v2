@@ -83,7 +83,6 @@ const ListingsView = () => {
 	);
 
 	useEffect(() => {
-		if(window === undefined) return;
 		const windowWidth = window.innerWidth;
 		if (windowWidth < 450) {
 			setHideFilters(true);

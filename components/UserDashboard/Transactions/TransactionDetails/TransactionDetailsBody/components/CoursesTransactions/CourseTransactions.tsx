@@ -11,7 +11,6 @@ interface Props {
 }
 
 const CourseTransactions = ({ item }: Props) => {
-  console.log(item, 'item')
   return (
     <div className={styles.container}>
       <div className={styles.container__left}>

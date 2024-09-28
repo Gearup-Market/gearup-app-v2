@@ -5,23 +5,30 @@ import { BackNavigation } from "@/shared";
 import {
 	BuyRentDetailsBody,
 	BuyRentDetailsHeader,
-    CourseListingDetails
+	CourseListingDetails
 } from "@/components/UserDashboard/Listings/ListingDetailsComp";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useSingleListing } from "@/hooks/useListings";
+import { PageLoader } from "@/shared/loaders";
+import { useAppSelector } from "@/store/configureStore";
 
 const ListingsDetails = () => {
-	const searchParams = useSearchParams();
+	const { listingId } = useParams();
+	const { currentListing } = useAppSelector(s => s.listings);
+	const { refetch, isFetching } = useSingleListing(listingId.toString());
 
-	const detailsType = searchParams.get("type");
+	if (!currentListing && isFetching) return <PageLoader />;
+	if (!currentListing) return null;
+
 	return (
 		<div className={styles.container}>
 			<BackNavigation />
-			{detailsType === "course" ? (
+			{currentListing.listingType === "course" ? (
 				<CourseListingDetails />
 			) : (
 				<>
-					<BuyRentDetailsHeader />
-					<BuyRentDetailsBody detailsType={detailsType as string} />
+					<BuyRentDetailsHeader listing={currentListing}/>
+					<BuyRentDetailsBody listing={currentListing}/>
 				</>
 			)}
 		</div>

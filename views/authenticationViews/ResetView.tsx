@@ -40,8 +40,10 @@ const ResetView = () => {
 	};
 	return (
 		<section className={styles.section}>
-			<Logo className={styles.logo} />
-			<Logo className={styles.logo_mob} type="dark" />
+			<Link href="/login">
+				<Logo className={styles.logo} />
+				<Logo className={styles.logo_mob} type="dark" />
+			</Link>
 			<div className={styles.container}>
 				<div className={styles.text}>
 					<h3>Reset password</h3>
@@ -63,7 +65,9 @@ const ResetView = () => {
 								handleKeyDown(index, e)
 							}
 							maxLength={1}
-							ref={ref => (inputRefs.current[index] = ref)}
+							ref={el => {
+								inputRefs.current[index] = el;
+							}}
 						/>
 					))}
 				</div>

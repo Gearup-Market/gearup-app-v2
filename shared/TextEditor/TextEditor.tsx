@@ -28,7 +28,7 @@ const CustomTextEditor = ({ value, setValue, placeholder, label, name }: CustomT
                     {label}
                 </label>
             )}
-            <ReactQuill theme="snow" value={value} onChange={setValue} placeholder={placeholder}  />
+            <ReactQuill theme="snow" value={value} onChange={setValue} placeholder={placeholder} />
         </div>
     )
 }

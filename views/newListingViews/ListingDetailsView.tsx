@@ -12,20 +12,16 @@ import {
 } from "@/shared";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "@/store/configureStore";
+import { AppState, useAppSelector } from "@/store/configureStore";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { useGetCategories } from "@/app/api/hooks/listings";
 import { iCategory } from "@/app/api/hooks/listings/types";
-import { Input } from "@mui/material";
-import Link from "next/link";
-import AddLocationModal from "./Modals/AddLocationModal";
 
 const ListingDetailsView = () => {
 	const router = useRouter();
 	const { isFetching: loading, data: allCategories } = useGetCategories();
-	const [showAddLocationModal, setShowAddLocationModal] = useState(false);
-	const [locationError, setLocationError] = useState(false);
+	const newListing = useAppSelector(s => s.newListing);
 	const dispatch = useDispatch();
 	const [category, setCategory] = useState<iCategory>();
 	const [subCategory, setSubCategory] = useState<iCategory>();
@@ -33,7 +29,7 @@ const ListingDetailsView = () => {
 	const [inputValues, setInputValues] = useState<{
 		title: string;
 		description: string;
-	}>({ title: "", description: "" });
+	}>({ title: newListing.productName || "", description: newListing.description || "" });
 
 	const convertArrToObj = (arr: any[]) => {
 		return arr?.reduce((acc, field) => {
@@ -64,10 +60,20 @@ const ListingDetailsView = () => {
 		router.push("/new-listing/images");
 	};
 
+	useEffect(() => {
+		let _c: iCategory | undefined
+		if (newListing.category){
+			_c = allCategories?.data.find(c => c._id === newListing.category?._id)
+			setCategory(_c)
+		}
+		if (newListing.subCategory){
+			const _b = _c?.subCategories.find(c => c._id === newListing.subCategory?._id)
+			setSubCategory(_b)
+		}
+	}, [newListing, allCategories]);
+
 	const disabledButton =
 		!inputValues.description || !inputValues.title || !category || !subCategory;
-
-	console.log(showAddLocationModal, "showAddLocationModal");
 
 	return (
 		<div className={styles.section}>
@@ -80,7 +86,7 @@ const ListingDetailsView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }} onClick={() => router.push('/user/dashboard')}>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -116,12 +122,14 @@ const ListingDetailsView = () => {
 							<AdvanceSelect
 								label="Category"
 								options={allCategories?.data ?? []}
+								defaultOption={category?.name}
 								onOptionChange={setCategory}
 								valueType="name"
 							/>
 							<AdvanceSelect
 								label="SubCategory"
 								options={category ? category.subCategories : []}
+								defaultOption={subCategory?.name}
 								onOptionChange={setSubCategory}
 								valueType="name"
 							/>
@@ -163,32 +171,6 @@ const ListingDetailsView = () => {
 							label="Description"
 							placeholder="Enter Description"
 						/>
-						<div className={styles.location_container}>
-							<div className={styles.location_btn_container}>
-								<Button
-									onClick={() => setLocationError(true)}
-									buttonType="transparent"
-								>
-									Use my location
-								</Button>
-							</div>
-							<InputField
-								inputClassName={locationError ? styles.error : ""}
-								label="Listing location"
-								placeholder="Enter location"
-								iconPosition="prefix"
-								icon="/svgs/icon-location.svg"
-								error={locationError ? <p className={styles.update_text}>
-								Please Update your{" "}
-								<span onClick={() => setShowAddLocationModal(true)}>
-									{" "}
-									profile location
-								</span>{" "}
-								to continue.
-							</p> : undefined}
-							/>
-							
-						</div>
 					</div>
 				</div>
 				<div className={styles.image_container}>
@@ -213,10 +195,6 @@ const ListingDetailsView = () => {
 					Continue
 				</Button>
 			</div>
-			<AddLocationModal
-				openModal={showAddLocationModal}
-				setOpenModal={setShowAddLocationModal}
-			/>
 		</div>
 	);
 };

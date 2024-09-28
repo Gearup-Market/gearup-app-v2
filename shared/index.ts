@@ -39,6 +39,7 @@ import AddBtn from "./addBtn/AddBtn";
 import LoadingSpinner  from "./Spinner/Spinner";
 import ChatBox from "./chatBox/ChatBox";
 import Countdown from "./countdown/Countdown";
+import PaystackPaymentButton from "./paystack/PaystackPaymentButton";
 
 export {
 	Header,
@@ -81,5 +82,6 @@ export {
 	AddBtn,
 	LoadingSpinner,
 	ChatBox,
-	Countdown
+	Countdown,
+	PaystackPaymentButton
 };

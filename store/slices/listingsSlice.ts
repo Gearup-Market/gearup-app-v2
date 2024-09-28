@@ -54,6 +54,8 @@ export interface Listing {
 	averageRating: number | null;
 	totalReviews: number;
 	contractId: string;
+	nftTokenId?: string;
+    transactionId?: string;
 	location: ListingLocation;
 	user: Partial<User>;
 	ownerOtherListings?: Listing[];
@@ -63,12 +65,14 @@ export interface Listing {
 type ListingState = {
 	owned: Listing[];
 	listings: Listing[];
+	searchedListings: Listing[];
 	currentListing: Listing | null;
 };
 
 const initialState: ListingState = {
 	owned: [],
 	listings: [],
+	searchedListings: [],
 	currentListing: null
 };
 

@@ -6,13 +6,18 @@ import { CustomImage, Ratings } from "@/shared";
 import useCart from "@/hooks/useCart";
 import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
 import EmptyCart from "../EmptyCart/EmptyCart";
+import { formatNum } from "@/utils";
+import toast from "react-hot-toast";
 
 const CartItems = () => {
 	const { getCartItems, removeItemFromCart } = useCart();
 	const cartItems = getCartItems();
 
+	if (!cartItems) return null;
+
 	const handleDeleteItem = async (id: string) => {
-		await removeItemFromCart(id);
+		const res = await removeItemFromCart(id);
+		if (res) toast.success("Item removed from cart");
 	};
 
 	return (
@@ -94,7 +99,7 @@ const RentalComp = ({ item }: { item: CartItem }) => {
 			</div> */}
 			<div className={`${styles.summary_item} ${styles.total_amount}`}>
 				<h4>Total</h4>
-				<p>NGN {price}</p>
+				<p>NGN {formatNum(price)}</p>
 			</div>
 		</div>
 	);
@@ -135,7 +140,7 @@ const GearSaleComp = ({ item }: { item: CartItem }) => {
 			</div> */}
 			<div className={`${styles.summary_item} ${styles.total_amount}`}>
 				<h4>Total</h4>
-				<p>NGN {price}</p>
+				<p>NGN {formatNum(price)}</p>
 			</div>
 		</div>
 	);

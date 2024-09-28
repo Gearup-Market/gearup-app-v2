@@ -10,7 +10,7 @@ import { useGlobalContext } from "@/contexts/AppContext";
 import { AppState, useAppSelector } from "@/store/configureStore";
 
 const Listings = () => {
-	const listings = useAppSelector((state: AppState) => state.listings);
+	const { listings } = useAppSelector((state: AppState) => state.listings);
 	return (
 		<section className={styles.section}>
 			<div className={styles.flex_row}>
@@ -25,7 +25,7 @@ const Listings = () => {
 				</Link>
 			</div>
 			<div className={styles.row}>
-				{listings.listings.slice(0, 6).map((listing: any, index: number) => (
+				{listings.slice(0, 6).map((listing: any, index: number) => (
 					<Listing props={listing} key={index} />
 				))}
 			</div>

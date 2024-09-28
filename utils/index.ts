@@ -16,6 +16,8 @@ import { arraysAreEqual } from "./compareArrays";
 import { isEmpty } from "./isEmpty";
 import { buildUrlQuery } from "./buildQuery";
 
+export * from './getDaysFactor';
+export * from './formatTime';
 export * from './stringUtils';
 
 export {

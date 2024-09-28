@@ -17,3 +17,10 @@ export function getDaysFactor(datetime: string | number) {
         return '0 hours';
     }
 }
+
+export function getDaysDifference(startDate?: Date | string, endDate?: Date | string): number {
+    if(!startDate || !endDate) return 0;
+    const diffInTime = new Date(endDate).getTime() - new Date(startDate).getTime();
+    const diffInDays = diffInTime / (1000 * 3600 * 24);
+    return Math.abs(Math.ceil(diffInDays));
+  }

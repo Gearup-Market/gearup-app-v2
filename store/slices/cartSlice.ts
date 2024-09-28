@@ -6,13 +6,13 @@ export interface CartState {
 	user?: string;
 	items: CartItem[];
 	totalAmount: number;
-	createdAt: any
-	updatedAt?: Date;
+	createdAt: string;
+	updatedAt?: string;
 	_id: string;
 }
 const initialState: CartState = {
 	totalAmount: 0,
-	createdAt: new Date(),
+	createdAt: "",
 	_id: "",
 	items: []
 

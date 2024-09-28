@@ -20,14 +20,15 @@ const SuccessModal = ({ openModal, setOpenModal }: Props) => {
 					<SuccessCheck />
 				</span>
 				<div className={styles.border_container}>
-					<h2 className={styles.title}>Payment successfully</h2>
+					<h2 className={styles.title}>Payment successful</h2>
 					<p className={styles.sub_text}>
-						Yay! 🥳 your payment was successfull
+						Yay! 🥳 your payment was successful and your request has been
+						submitted
 					</p>
 				</div>
 				<div className={styles.btn_container}>
 					<Button onClick={() => setOpenModal(false)} className={styles.button}>
-						<Link href="/admin/wallet">Go back to dashboard</Link>
+						<Link href="/user/wallet">Go back to dashboard</Link>
 					</Button>
 				</div>
 			</div>

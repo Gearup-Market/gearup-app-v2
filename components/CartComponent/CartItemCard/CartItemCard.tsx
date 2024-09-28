@@ -30,17 +30,24 @@ const CartItemCardContainer = ({
 	const [showDetails, setShowDetails] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const amount = type === TransactionType.Rental ? item.listing?.offer?.forRent?.day1Offer : item.listing?.offer?.forSell?.pricing; 
+	const amount =
+		type === TransactionType.Rental
+			? item.listing?.offer?.forRent?.day1Offer
+			: item.listing?.offer?.forSell?.pricing;
 
 	const placeOrder = () => {
-		dispatch(updateCheckout({
-			item: item.listing,
-			type,
-			amount: amount || 0,
-			rentalPeriod: item.rentalPeriod
-		}))
-		router.push('/checkout')
-	}
+		dispatch(
+			updateCheckout({
+				checkout: {
+					item: item.listing,
+					type,
+					amount: amount || 0,
+					rentalPeriod: item.rentalPeriod
+				}
+			})
+		);
+		router.push("/checkout");
+	};
 
 	return (
 		<div className={styles.cart_item_card}>

@@ -32,3 +32,8 @@ export async function calculateTotalCost(
 		throw error;
 	}
 }
+
+export const getExplorerUrl = (path: string) =>
+	process.env.NEXT_APP_STELLAR_MAINNET
+		? `https://lumenscan.io/${path}`
+		: `https://testnet.lumenscan.io/${path}`;

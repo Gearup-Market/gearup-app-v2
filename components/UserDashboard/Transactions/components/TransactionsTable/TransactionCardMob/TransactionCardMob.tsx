@@ -8,9 +8,10 @@ interface Props {
     item: any
     ind?: number
     lastEle?: boolean
+    loading: boolean
 }
 
-const TransactionCardMob = ({ item, ind, lastEle }: Props) => {
+const TransactionCardMob = ({ item, ind, lastEle, loading }: Props) => {
     return (
         <MobileCard mainHeaderText={item.gear_name} subHeaderText={item.amount} mainHeaderImage="/images/admin-img.jpg" lastEle={lastEle} ind={ind} >
             <div className={styles.container__details__detail_container}>

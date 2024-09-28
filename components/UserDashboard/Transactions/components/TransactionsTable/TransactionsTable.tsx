@@ -1,13 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./TransactionTable.module.scss";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Image from "next/image";
-import { Button, InputField, MobileCardContainer, Pagination } from "@/shared";
+import { InputField, MobileCardContainer, Pagination } from "@/shared";
 import { customisedTableClasses } from "@/utils/classes";
 import Link from "next/link";
-import { transactions } from "@/mock/transactions.mock";
 import TransactionCardMob from "./TransactionCardMob/TransactionCardMob";
+import useTransactions from "@/hooks/useTransactions";
+import { TransactionType, UserRole } from "@/app/api/hooks/transactions/types";
+import { useAppSelector } from "@/store/configureStore";
 
 interface Props {
 	transactionType: string;
@@ -16,40 +18,83 @@ interface Props {
 const TransactionTable = ({ transactionType }: Props) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(5);
-	
-	const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
-		transactions.slice(0, limit)
+	const { data, isFetching } = useTransactions();
+	const { userId } = useAppSelector(s => s.user);
+
+	const transactions = useMemo(
+		() =>
+			data.map(({ _id, item, buyer, amount, type, status, createdAt }) => {
+				const isBuyer = userId === buyer;
+				const transactionType =
+					type === TransactionType.Sale && isBuyer
+						? "Purchase"
+						: type === TransactionType.Sale && !isBuyer
+						? "Sale"
+						: TransactionType.Rental;
+
+				const userRole =
+					transactionType === "Purchase"
+						? UserRole.Buyer
+						: transactionType === "Sale"
+						? UserRole.Seller
+						: transactionType === "Rental" && isBuyer
+						? UserRole.Renter
+						: UserRole.Lender;
+				return {
+					id: _id,
+					gearName: item.productName,
+					amount,
+					transactionDate: createdAt,
+					transactionType,
+					transactionStatus: status,
+					gearImage: item.listingPhotos[0],
+					userRole
+				};
+			}),
+		[data]
+	);
+
+	const [paginatedTransactions, setPaginatedTransactions] = useState<number>(limit);
+
+	const filteredTransactions = useMemo(
+		() => transactions.slice(page - 1 * limit, paginatedTransactions),
+		[transactions, paginatedTransactions]
 	);
 
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,
-		flex: 1,
+		flex: 1
 	};
 
 	const handlePagination = (page: number) => {
 		const start = (page - 1) * limit;
 		const end = start + limit;
-		setPaginatedTransactions(transactions.slice(start, end));
+		setPaginatedTransactions(end);
 		setPage(page);
 	};
 
 	const columns: GridColDef[] = [
 		{
 			...sharedColDef,
-			field: "gear_name",
+			field: "gearName",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Name",
 			minWidth: 250,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
-					<Image src={row.gear_image} alt={value || "image-trans"} width={16} height={16} />
+					<Image
+						src={row.gearImage}
+						alt={value || "image-trans"}
+						width={16}
+						height={16}
+					/>
 					<p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
 						{value}
 					</p>
 				</div>
-			),
+			)
 		},
 		{
 			...sharedColDef,
@@ -57,27 +102,27 @@ const TransactionTable = ({ transactionType }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Amount",
-			minWidth: 200,
+			minWidth: 200
 		},
 		{
 			...sharedColDef,
-			field: "transaction_date",
+			field: "transactionDate",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Transaction Date",
-			minWidth: 150,
+			minWidth: 150
 		},
 		{
 			...sharedColDef,
-			field: "transaction_type",
+			field: "transactionType",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Type",
-			minWidth: 150,
+			minWidth: 150
 		},
 		{
 			...sharedColDef,
-			field: "transaction_status",
+			field: "transactionStatus",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Status",
@@ -92,7 +137,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 						{value}
 					</p>
 				</div>
-			),
+			)
 		},
 		{
 			...sharedColDef,
@@ -105,13 +150,13 @@ const TransactionTable = ({ transactionType }: Props) => {
 			minWidth: 150,
 			renderCell: ({ row, value }) => (
 				<Link
-					href={`/user/transactions/${row.id}?transaction_type=${transactionType}&user_role=${row.user_role}&third_party=${row.third_party_verification}&timeElapsed=${row.timeElapsed}`}
+					href={`/user/transactions/${row.id}`}
 					className={styles.container__action_btn}
 				>
-					view details
+					view details.
 				</Link>
-			),
-		},
+			)
+		}
 	];
 
 	return (
@@ -129,18 +174,25 @@ const TransactionTable = ({ transactionType }: Props) => {
 				style={{ width: "100%", height: "100%" }}
 			>
 				<DataGrid
-					rows={paginatedTransactions}
+					rows={filteredTransactions}
 					columns={columns}
 					paginationMode="server"
 					sx={customisedTableClasses}
 					hideFooter
 					autoHeight
+					loading={isFetching}
 				/>
 			</div>
 
 			<MobileCardContainer>
-				{paginatedTransactions.map((item, ind) => (
-					<TransactionCardMob key={item.id} item={item} ind={ind} lastEle={(ind + 1) === paginatedTransactions.length ? true : false} />
+				{filteredTransactions.map((item, ind) => (
+					<TransactionCardMob
+						key={item.id}
+						item={item}
+						ind={ind}
+						lastEle={ind + 1 === filteredTransactions.length ? true : false}
+						loading={isFetching}
+					/>
 				))}
 			</MobileCardContainer>
 			<Pagination
@@ -149,7 +201,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 				totalCount={transactions.length}
 				pageSize={limit}
 			/>
-		</div >
+		</div>
 	);
 };
 
