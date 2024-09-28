@@ -20,7 +20,7 @@ const signupSchema = Yup.object().shape({
 		.oneOf([Yup.ref("password")], "Passwords must match")
 		.required("Confirm password is required"),
 	terms: Yup.bool().oneOf([true], "You must accept the terms and conditions"),
-	name: Yup.string().required("Name is required"),
+	name: Yup.string().required("Name is required")
 });
 
 const initialValues = {
@@ -29,7 +29,7 @@ const initialValues = {
 	password: "",
 	name: "Ezekiel",
 	confirmPassword: "",
-	terms: false,
+	terms: false
 };
 
 const SignupView = () => {
@@ -43,15 +43,20 @@ const SignupView = () => {
 			toast.success("Account created successfully");
 			router.push("/verify");
 		} catch (error: any) {
-			toast.error(error.response.data.message || "An error occurred while creating your account, please try again");
+			toast.error(
+				error.response.data.message ||
+					"An error occurred while creating your account, please try again"
+			);
 		}
 	};
-	
+
 	return (
 		<div className={styles.row}>
 			<div className={styles.logo_section}>
 				<div>
-					<Logo className={styles.logo} />
+					<Link href="/login">
+						<Logo className={styles.logo} />
+					</Link>
 					<div className={styles.text}>
 						<h1>
 							The Marketplace For African Creators to Rent, Buy & Sell Gears
@@ -167,7 +172,7 @@ const SignupView = () => {
 										<p
 											style={{
 												marginLeft: "3rem",
-												fontSize: "1.4rem",
+												fontSize: "1.4rem"
 											}}
 										>
 											I have read, understood and I agree to Gearup{" "}

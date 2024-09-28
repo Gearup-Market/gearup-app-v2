@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import styles from "./Authentication.module.scss";
 import { Button, Logo } from "@/shared";
@@ -7,12 +7,14 @@ import Link from "next/link";
 
 const VerifyView = () => {
 	const openEmailClient = () => {
-    window.location.href = 'mailto:';
-  };
+		window.location.href = "mailto:";
+	};
 	return (
 		<section className={styles.section}>
-			<Logo className={styles.logo} />
-			<Logo className={styles.logo_mob} type="dark" />
+			<Link href="/login">
+				<Logo className={styles.logo} />
+				<Logo className={styles.logo_mob} type="dark" />
+			</Link>
 			<div className={styles.container}>
 				<div className={styles.image}>
 					<Image src="/svgs/verify-email.svg" alt="" fill sizes="100vw" />

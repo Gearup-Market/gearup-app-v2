@@ -60,8 +60,6 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 	];
 	const [active, setActive] = useState("/user/dashboard");
 
-	console.log(pathname);
-
 	useEffect(() => {
 		const absPath = pathname.split("?")[0].split("/").slice(0, 3).join("/");
 		console.log(absPath);
@@ -71,7 +69,9 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 	return (
 		<div className={styles.sidebar_container}>
 			<div className={styles.sidebar_container__header}>
-				<Logo type="dark" />
+				<Link href="/">
+					<Logo type="dark" />
+				</Link>
 				{isMobile && (
 					<span onClick={onClose}>
 						<CloseIcon />

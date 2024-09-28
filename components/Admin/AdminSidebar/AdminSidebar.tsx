@@ -15,7 +15,7 @@ import {
 	ThirdPartyCheckIcon,
 	TransactionNavIcon,
 	UserIcon,
-	WalletNavIcon,
+	WalletNavIcon
 } from "@/shared/svgs/dashboard";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,50 +28,46 @@ interface Props {
 }
 
 const AdminSidebar = ({ isMobile, onClose }: Props) => {
-	const pathname = usePathname()
+	const pathname = usePathname();
 	const { logout } = useAuth();
 	const sidebarItems = [
 		{
-			name: 'Dashboard',
+			name: "Dashboard",
 			icon: <DashboardNavIcon />,
-			link: '/admin/dashboard',
+			link: "/admin/dashboard"
 		},
 		{
-			name: 'Users',
+			name: "Users",
 			icon: <UserIcon />,
-			link: '/admin/users',
+			link: "/admin/users"
 		},
 		{
-			name: 'Wallet',
+			name: "Wallet",
 			icon: <WalletNavIcon />,
-			link: '/admin/wallet',
+			link: "/admin/wallet"
 		},
 		{
-			name: 'Transactions',
+			name: "Transactions",
 			icon: <TransactionNavIcon />,
-			link: '/admin/transactions',
+			link: "/admin/transactions"
 		},
 		{
-			name: 'Listings',
+			name: "Listings",
 			icon: <ListingsNavIcon />,
-			link: '/admin/listings',
+			link: "/admin/listings"
 		},
 		{
-			name: 'Third party check',
+			name: "Third party check",
 			icon: <ThirdPartyCheckIcon />,
-			link: '/admin/third-party-check',
+			link: "/admin/third-party-check"
 		},
 		{
-			name: 'Blog',
+			name: "Blog",
 			icon: <BlogIcon />,
-			link: '/admin/blog',
-		},
-
-
-	]
-	const [active, setActive] = useState('/admin/dashboard')
-
-	console.log(pathname)
+			link: "/admin/blog"
+		}
+	];
+	const [active, setActive] = useState("/admin/dashboard");
 
 	useEffect(() => {
 		const absPath = pathname.split("?")[0].split("/").slice(0, 3).join("/");
@@ -82,7 +78,9 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 	return (
 		<div className={styles.sidebar_container}>
 			<div className={styles.sidebar_container__header}>
-				<Logo type="dark" />
+				<Link href="/">
+					<Logo type="dark" />
+				</Link>
 				{isMobile && (
 					<span onClick={onClose}>
 						<CloseIcon />
