@@ -22,7 +22,7 @@ const lists = [
     {
         id: 3,
         title: 'Admin',
-        icon: '/svgs/admin-svg.svg'
+        icon: '/svgs/admin-svg 2.svg'
     },
 ]
 

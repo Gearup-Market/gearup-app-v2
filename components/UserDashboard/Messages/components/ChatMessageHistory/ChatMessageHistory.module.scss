@@ -1,0 +1,164 @@
+@import "@/styles/imports";
+
+.container {
+	padding: 4rem 0;
+	padding-right: 2.4rem;
+
+	.nav_container{
+		display: none;
+		gap: 1rem;
+		font-weight: 700;
+		color: #4B525A;
+		align-items: center;
+		cursor: pointer;
+		width: fit-content;
+		margin-bottom: 2rem;
+		background-color: transparent;
+		border: none;
+		padding: 0;
+
+		
+	
+		.icon{
+			@include flex;
+			width: 2.6rem;
+			height: 2.6rem;
+			transform: rotate(90deg);
+			border-radius: 50%;
+			border: 1px solid $col-border;
+			padding: 0.5rem;
+			cursor: pointer;
+		}
+	
+	}
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		.see_details {
+			display: none;
+
+			@include screenMax("mobile") {
+				font-size: 1.4rem;
+				color: #ffb30f;
+				font-weight: 700;
+				cursor: pointer;
+
+				&[data-show="true"] {
+					display: block;
+				}
+			}
+		}
+	}
+
+	.chat_history {
+		&[data-show="false"] {
+			display: none;
+		}
+		.chat_items {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			margin-top: 2rem;
+
+			.chat {
+				display: flex;
+				padding: 1.2rem 1.6rem;
+				justify-content: space-between;
+				width: 100%;
+				cursor: pointer;
+
+				&[data-active="true"] {
+					background-color: #ffffff;
+					border-radius: 1.6rem;
+				}
+
+				.left {
+					display: flex;
+					align-items: center;
+					gap: 1rem;
+
+					.chat_image {
+						width: 4rem;
+						height: 4rem;
+						border-radius: 50%;
+					}
+
+					.details {
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+
+						.name {
+							font-size: 1.4rem;
+							font-weight: 700;
+							color: #1b1e21;
+						}
+
+						.message {
+							font-size: 1.2rem;
+							color: #7b8086;
+						}
+					}
+				}
+
+				.right {
+					display: flex;
+					flex-direction: column;
+					// justify-content: center;
+					align-items: center;
+
+					.time {
+						font-size: 1.2rem;
+						color: #4b525a;
+					}
+
+					.chat_count {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						width: 2rem;
+						height: 2rem;
+						background: $orange-grad;
+						border-radius: 50%;
+						font-size: 1.2rem;
+						color: #000;
+					}
+				}
+			}
+		}
+	}
+
+	.chat_body_mob {
+		display: none;
+		@include screenMax("mobile") {
+			&[data-show="true"] {
+				position: relative;
+				display: block;
+			}
+		}
+	}
+
+	.user_profile_mob {
+		display: none;
+		@include screenMax("mobile") {
+			&[data-show="true"] {
+				display: block;
+			}
+		}
+	}
+
+	@include screenMax("mobile") {
+		padding-top: 2rem ;
+		padding: 0;
+
+		.nav_container{
+
+			&[data-show="true"] {
+				display: flex;
+			}
+		}
+	}
+}

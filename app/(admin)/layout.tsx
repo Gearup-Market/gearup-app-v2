@@ -24,13 +24,12 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 				</div>
 				<div className={styles.body__right}>
 					<AdminNavbar />
-
 					<div className={styles.url_path}>
 						<UrlPath checkUrl={true} />
 					</div>
 
 
-					<aside>{children}</aside>
+					<aside className={styles.body__right__main}>{children}</aside>
 				</div>
 			</div>
 		</main>

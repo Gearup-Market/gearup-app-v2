@@ -8,6 +8,7 @@ import {
 	ListingsNavIcon,
 	LocationEllipse,
 	LogoutNavIcon,
+	MessagesNavIcon,
 	SettingsNavIcon,
 	TransactionNavIcon,
 	WalletNavIcon
@@ -36,12 +37,11 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 			icon: <TransactionNavIcon />,
 			link: "/user/transactions"
 		},
-
-		// {
-		//     name: 'Messages',
-		//     icon: <MessagesNavIcon />,
-		//     link: '/user/messages',
-		// },
+		{
+			name: "Messages",
+			icon: <MessagesNavIcon />,
+			link: "/user/messages"
+		},
 		{
 			name: "Listings",
 			icon: <ListingsNavIcon />,
@@ -62,16 +62,13 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 
 	useEffect(() => {
 		const absPath = pathname.split("?")[0].split("/").slice(0, 3).join("/");
-		console.log(absPath);
 		setActive(absPath);
 	}, [pathname]);
 
 	return (
 		<div className={styles.sidebar_container}>
 			<div className={styles.sidebar_container__header}>
-				<Link href="/">
-					<Logo type="dark" />
-				</Link>
+				<Logo type="dark" />
 				{isMobile && (
 					<span onClick={onClose}>
 						<CloseIcon />

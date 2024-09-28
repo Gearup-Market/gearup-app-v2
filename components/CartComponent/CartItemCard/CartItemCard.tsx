@@ -15,7 +15,7 @@ interface CartItemCardContainerProps {
 	handleDeleteItem: (id: string) => void;
 	id: string;
 	type: TransactionType;
-	item: CartItem;
+	item: CartItem
 }
 
 const CartItemCardContainer = ({
