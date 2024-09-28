@@ -10,27 +10,36 @@ import { useRouter } from "next/navigation";
 const ForgotPasswordView = () => {
 	const [email, setEmail] = useState("");
 	const router = useRouter();
-	const { mutateAsync: postResetPassword , isPending, data, isSuccess} = useResetPasswordRequest();
+	const {
+		mutateAsync: postResetPassword,
+		isPending,
+		data,
+		isSuccess
+	} = useResetPasswordRequest();
 
 	const onSubmit = async () => {
 		try {
-		const res=	await postResetPassword({ email });
-		console.log(res,"res");
-		console.log(data,"dta");
-			if(isSuccess){
+			const res = await postResetPassword({ email });
+			console.log(res, "res");
+			console.log(data, "dta");
+			if (isSuccess) {
 				toast.success("Verification code sent successfully");
 			}
 			router.push("/reset");
-		} catch (error:any) {
-			console.log(error,"error");
-			toast.error(error?.response?.data?.message || "Something went wrong, please try again");
+		} catch (error: any) {
+			console.log(error, "error");
+			toast.error(
+				error?.response?.data?.message || "Something went wrong, please try again"
+			);
 		}
 	};
 
 	return (
 		<section className={styles.section}>
-			<Logo className={styles.logo} />
-			<Logo className={styles.logo_mob} type="dark" />
+			<Link href="/login">
+				<Logo className={styles.logo} />
+				<Logo className={styles.logo_mob} type="dark" />
+			</Link>
 			<div className={styles.container}>
 				<div className={styles.text}>
 					<h3>Forgot password</h3>
@@ -40,10 +49,14 @@ const ForgotPasswordView = () => {
 					placeholder="Enter email address"
 					className={styles.input}
 					value={email}
-					onChange={(e) => setEmail(e.target.value)}
+					onChange={e => setEmail(e.target.value)}
 				/>
 				<Button className={styles.button} onClick={onSubmit}>
-					{isPending ?  <LoadingSpinner size="small" /> : "Send verification code"}
+					{isPending ? (
+						<LoadingSpinner size="small" />
+					) : (
+						"Send verification code"
+					)}
 				</Button>
 				<div className={styles.text}>
 					<p>
