@@ -68,7 +68,7 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 					<>
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								You have made payment but we're still confirming the transaction status. This view will be updated immediately your payment is received and verified
+								You have made payment but we are still confirming the transaction status. This view will be updated immediately your payment is received and verified
 							</p>
 						</div>
 					</>
