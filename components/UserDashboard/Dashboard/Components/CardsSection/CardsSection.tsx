@@ -79,7 +79,7 @@ const CardsSection = () => {
                             {format(
                                 inputDate[0].startDate,
                                 "MM/dd/yyyy"
-                            )} - {format(inputDate[0].endDate, "MM/dd/yyyy")}`
+                            )} - {format(inputDate[0].endDate, "MM/dd/yyyy")}
                         </p>
 
                     </div>

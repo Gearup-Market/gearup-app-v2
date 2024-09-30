@@ -68,7 +68,7 @@ const Wallet = () => {
 		[wallet?.status]
 	);
 
-  const walletBalance = useMemo(() => (wallet.balance || 0) - (wallet.pendingDebit || 0), [wallet])
+  const walletBalance = useMemo(() => (wallet?.balance || 0) - (wallet?.pendingDebit || 0), [wallet])
 
 	return (
 		<div className={styles.wallet_wrapper}>
