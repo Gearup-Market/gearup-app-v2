@@ -20,7 +20,7 @@ const VerificationViews = () => {
 	const [currentStep, setCurrentStep] = useState(1);
 	const [isTokenVerified, setIsTokenVerified] = useState(false);
 	const [isTokenVerification, setIsTokenVerification] = useState(false);
-  const verificationState = useAppSelector(s => s.verification)
+  	const verificationState = useAppSelector(s => s.verification)
 	const personalIdentificationRef = useRef<PersonalIdentificationHandle>(null);
 	const phoneNumberFormRef = useRef<PhoneNumberFormHandle>(null);
 
@@ -77,13 +77,13 @@ const VerificationViews = () => {
 			/>
 			<main className={styles.container__main_content}>
 				<div className={styles.container__main_content__left_side}>
-					{currentStep === 1 && (
+					{currentStep === 2 && (
 						<PersonalIdentification
 							ref={personalIdentificationRef}
 							onSubmitSuccess={() => setCurrentStep(currentStep + 1)}
 						/>
 					)}
-					{currentStep === 2 && (
+					{currentStep === 3 && (
 						<PhoneVerification
 							ref={phoneNumberFormRef}
 							onSubmitSuccess={() => setIsTokenVerification(true)}
@@ -91,8 +91,8 @@ const VerificationViews = () => {
 							setIsTokenVerified={setIsTokenVerified}
 						/>
 					)}
-					{currentStep === 3 && <IdVerification />}
-					{currentStep === 4 && <FaceMatch />}
+					{currentStep === 4 && <IdVerification />}
+					{currentStep === 1 && <FaceMatch />}
 				</div>
 				<div className={styles.container__main_content__right_side}>
 					<div className={styles.img_container}>

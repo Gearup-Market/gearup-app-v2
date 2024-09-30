@@ -32,7 +32,7 @@ const GetStartedNav: React.FC<NavbarProps> = ({ stepCount, currentStep, steps, o
                 </div>
                 <div className={styles.container__top__right}>
                     <Link href={'/user/dashboard'} className={styles.close_button} onClick={onClose}>
-                        Exit
+                     <span className={styles.exit_text}>Exit</span> 
                         <CloseIcon />
                     </Link>
                 </div>

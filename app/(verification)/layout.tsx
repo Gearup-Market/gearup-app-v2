@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/contexts/AuthContext";
 import type { Metadata } from "next";
 
 
@@ -8,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function VerficationLayout({ children }: { children: React.ReactNode }) {
     return (
-        <main>
+        <AuthProvider>
             <aside>{children}</aside>
-        </main>
+        </AuthProvider>
     )
 }

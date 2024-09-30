@@ -24,11 +24,12 @@
 		// }
 		min-width: 100%;
 		border: 0.1rem solid #dedfe0;
-		margin-right: 0.8rem;
-		padding: 1.6rem;
-		min-height: 2rem;
+		// margin-right: 0.8rem;
+		padding: 1.2rem;
+		// min-height: 2rem;
 		position: relative;
 		border-radius: 0.8rem;
+		// line-height: 2.5rem;
 
 		.select_header {
 			@include flex(space-between, center, row nowrap);
@@ -139,10 +140,11 @@
 		}
 
 		@include screenMax("tablet") {
+			box-sizing: border-box;
 			width: auto;
-			padding: 0.7rem 1rem;
+			padding: 1.2rem 1rem;
 			// margin-right: 0.5rem;
-			margin: 1rem 0.5rem 1rem 0;
+			// margin: 1rem 0.5rem 1rem 0;
 		}
 	}
 }
