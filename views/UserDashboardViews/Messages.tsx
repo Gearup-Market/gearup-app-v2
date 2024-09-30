@@ -1,10 +1,8 @@
-import React from 'react'
-import { Messages } from '../../components/UserDashboard'
+import React from "react";
+import { Messages } from "../../components/UserDashboard";
 
 const MessagesView = () => {
-  return (
-    <div><Messages /></div>
-  )
-}
+	return <Messages />;
+};
 
-export default MessagesView
+export default MessagesView;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { InputHTMLAttributes, useState } from "react";
+import React, { InputHTMLAttributes, ReactNode, useState } from "react";
 import styles from "./InputField.module.scss";
 
 import Image from "next/image";
@@ -14,7 +14,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	prefix?: string;
 	suffix?: React.ReactNode;
 	iconTitle?: string;
-	error?: string;
+	error?: string | ReactNode;
 	customPrefix?: React.JSX.Element;
 	register?: any;
 	handleSuffixClick?: () => void;

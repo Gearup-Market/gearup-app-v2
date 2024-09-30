@@ -11,6 +11,15 @@ import { TransactionType, UserRole } from "@/app/api/hooks/transactions/types";
 import { PageLoader } from "@/shared/loaders";
 import { iWTransaction } from "@/app/api/hooks/wallets/types";
 import { iTransactionDetails } from "@/interfaces";
+import ChatBodySection from "@/components/UserDashboard/Messages/components/ChatBodySection/ChatBodySection";
+import GearDetailsSection from "@/components/UserDashboard/Transactions/TransactionDetails/TransactionDetailsBody/GearDetailsSection/GearDetailsSection";
+
+enum DetailsView {
+	OVERVIEW = "overview",
+	MESSAGES = "messages",
+	DETAILS = "details"
+}
+
 interface Props {
 	transactionId: string;
 }
@@ -18,6 +27,7 @@ interface Props {
 const TransactionDetails = ({ transactionId }: Props) => {
 	const { isFetching } = useTransaction(transactionId);
 	const { transaction } = useAppSelector(s => s.transaction);
+	const [activeView, setActiveView] = React.useState(DetailsView.OVERVIEW);
 
 	// const transaction: iTransactionDetails | undefined = useMemo(() => {
 	//     if (data) {
@@ -58,7 +68,14 @@ const TransactionDetails = ({ transactionId }: Props) => {
 			{transaction && (
 				<>
 					<TransactionDetailsHeader />
-					<TransactionDetailsBody />
+					{activeView === DetailsView.OVERVIEW && <TransactionDetailsBody />}
+					{activeView === DetailsView.MESSAGES && (
+						<div className={styles.chat_body_section}>
+							{" "}
+							<ChatBodySection showAllBorder={true} />
+						</div>
+					)}
+					{activeView === DetailsView.DETAILS && <GearDetailsSection />}
 				</>
 			)}
 		</div>

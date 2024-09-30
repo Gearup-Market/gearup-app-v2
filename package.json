@@ -44,6 +44,7 @@
 		"redux-persist": "^6.0.0",
 		"sass": "^1.69.7",
 		"slugify": "^1.6.6",
+		"stellar-sdk": "^12.3.0",
 		"swiper": "^11.0.5",
 		"swr": "^2.2.4",
 		"yup": "^1.4.0"

@@ -22,6 +22,12 @@
 			box-sizing: border-box;
 			overflow: auto;
 
+			&__main{
+				height: 100%;
+				overflow: auto;
+				@include noScrollBar;
+			}
+
 			@include screenMax("mobile") {
 				display: none;
 			}
@@ -32,10 +38,17 @@
 		&__right {
 			width: 80%;
 			flex: 1 1 auto;
-			height: 100vh;
 			background-color: $col-bg;
-			overflow-y: auto;
-			@include noScrollBar;
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+
+
+			&__main{
+				height: 100%;
+				overflow: auto;
+				@include noScrollBar;
+			}
 
 			
 			@include screenMax("mobile") {

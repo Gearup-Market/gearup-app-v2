@@ -5,6 +5,7 @@ import CartItemCardContainer from "../CartItemCard/CartItemCard";
 import { CustomImage, Ratings } from "@/shared";
 import useCart from "@/hooks/useCart";
 import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
+import EmptyCart from "../EmptyCart/EmptyCart";
 import { calculateItemPrice, formatNum, getDaysDifference } from "@/utils";
 import toast from "react-hot-toast";
 
@@ -21,49 +22,42 @@ const CartItems = () => {
 
 	return (
 		<div className={styles.container}>
-			{cartItems.items.map((item, index) => {
-				if (item.type === TransactionType.Rental) {
-					return (
-						<CartItemCardContainer
-							item={item}
-							key={index}
-							name={item?.listing?.productName}
-							handleDeleteItem={handleDeleteItem}
-							type={item?.type}
-							id={item?.listing?._id}
-						>
-							<RentalComp item={item} />
-						</CartItemCardContainer>
-					);
-				}
-				if (item.type === TransactionType.Sale) {
-					return (
-						<CartItemCardContainer
-							item={item}
-							key={index}
-							name={item?.listing?.productName}
-							handleDeleteItem={handleDeleteItem}
-							type={item?.type}
-							id={item?.listing?._id}
-						>
-							<GearSaleComp item={item} />
-						</CartItemCardContainer>
-					);
-				}
-				// if (item.type === "course") {
-				// 	return (
-				// 		<CartItemCardContainer
-				// 			key={item.id}
-				// 			name={item.name}
-				// 			handleDeleteItem={handleDeleteItem}
-				// 			type={item.type}
-				// 			id={item.id}
-				// 		>
-				// 			<CourseComp item={item} />
-				// 		</CartItemCardContainer>
-				// 	);
-				// }
-			})}
+			{cartItems?.items.length === 0 ? (
+				<EmptyCart />
+			) : (
+				<>
+					{cartItems?.items.map((item, index) => {
+						if (item.type === TransactionType.Rental) {
+							return (
+								<CartItemCardContainer
+									item={item}
+									key={index}
+									name={item?.listing?.productName}
+									handleDeleteItem={handleDeleteItem}
+									type={item?.type}
+									id={item?.listing?._id}
+								>
+									<RentalComp item={item} />
+								</CartItemCardContainer>
+							);
+						}
+						if (item.type === TransactionType.Sale) {
+							return (
+								<CartItemCardContainer
+									item={item}
+									key={index}
+									name={item?.listing?.productName}
+									handleDeleteItem={handleDeleteItem}
+									type={item?.type}
+									id={item?.listing?._id}
+								>
+									<GearSaleComp item={item} />
+								</CartItemCardContainer>
+							);
+						}
+					})}
+				</>
+			)}
 		</div>
 	);
 };

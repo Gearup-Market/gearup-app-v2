@@ -58,7 +58,9 @@ const LoginView = () => {
 		<div className={styles.row}>
 			<div className={styles.logo_section}>
 				<div>
-					<Logo className={styles.logo} />
+					<Link href="/">
+						<Logo className={styles.logo} />
+					</Link>
 					<div className={styles.text}>
 						<h1>
 							The Marketplace For African Creators to Rent, Buy & Sell Gears
@@ -75,7 +77,9 @@ const LoginView = () => {
 				</div>
 			</div>
 			<div className={styles.container}>
-				<Logo className={styles.logo_mob} type="dark" />
+				<Link href="/">
+					<Logo className={styles.logo_mob} type="dark" />
+				</Link>
 				<div className={styles.text}>
 					<h3>Welcome back!</h3>
 					<p>

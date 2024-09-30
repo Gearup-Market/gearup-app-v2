@@ -7,8 +7,8 @@ export const scrollData = [
 		alert: "Save Cost Renting Gears",
 		icon: "/svgs/scroll-icon-1.svg",
 		button: "Browse available rentals",
-		url: "#",
-		backgroundColor: "#1B1E21",
+		url: "/buy",
+		backgroundColor: "#1B1E21"
 	},
 	{
 		image: "/images/scroll-2.png",
@@ -19,7 +19,7 @@ export const scrollData = [
 		icon: "/svgs/scroll-icon-2.svg",
 		button: "Explore courses",
 		url: "#",
-		backgroundColor: "#FFB30F",
+		backgroundColor: "#FFB30F"
 	},
 	{
 		image: "/images/scroll-3.png",
@@ -29,7 +29,7 @@ export const scrollData = [
 		alert: "Fuel Your Creative Journey",
 		icon: "/svgs/scroll-icon-3.svg",
 		button: "Join now",
-		url: "#",
-		backgroundColor: "#1B1E21",
-	},
+		url: "/login",
+		backgroundColor: "#1B1E21"
+	}
 ];
