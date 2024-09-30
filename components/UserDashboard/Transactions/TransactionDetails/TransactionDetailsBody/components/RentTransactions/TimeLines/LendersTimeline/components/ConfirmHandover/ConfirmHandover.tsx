@@ -30,7 +30,7 @@ const ConfirmHandover = ({ handleNext }: Props) => {
         </div>
       </div>
       <div className={styles.btn_container}>
-        <Button onClick={() => handleNext(TransactionStage.AwaitingConfirmation)}>Confirm handover</Button>
+        <Button onClick={() => handleNext(TransactionStage.SellerShipped)}>Confirm handover</Button>
       </div>
     </div>
   )

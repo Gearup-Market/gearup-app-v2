@@ -7,6 +7,7 @@ import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
 import { useAppDispatch } from "@/store/configureStore";
 import { updateCheckout } from "@/store/slices/checkoutSlice";
 import { useRouter } from "next/navigation";
+import { calculateItemPrice } from "@/utils";
 
 interface CartItemCardContainerProps {
 	mainHeaderImage?: string;
@@ -30,11 +31,7 @@ const CartItemCardContainer = ({
 	const [showDetails, setShowDetails] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const amount =
-		type === TransactionType.Rental
-			? item.listing?.offer?.forRent?.day1Offer
-			: item.listing?.offer?.forSell?.pricing;
-
+	const amount = calculateItemPrice(item)
 	const placeOrder = () => {
 		dispatch(
 			updateCheckout({

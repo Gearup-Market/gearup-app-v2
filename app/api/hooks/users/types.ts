@@ -230,3 +230,25 @@ export type iPostUpdateBankRsq = {
 	accountNumber: string;
 	bankName: string;
 };
+
+export type iPostReviewResp = {
+	data: {
+		_id: string;
+		reviewer: string;
+		reviewed: string;
+		rating: number;
+		comment?: string;
+		transaction: string;
+		isBuyer: boolean;
+		createdAt: string;
+	};
+	message: string;
+};
+
+export type iPostReviewRsq = {
+	reviewer: string;
+	reviewed: string;
+	rating: number;
+	comment?: string;
+	transaction: string;
+};

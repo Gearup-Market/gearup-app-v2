@@ -16,6 +16,7 @@ import { useSingleListing } from "@/hooks/useListings";
 import { getIdFromSlug } from "@/utils";
 import { PageLoader } from "@/shared/loaders";
 import { Listing } from "@/shared";
+import { ListingType } from "@/interfaces";
 
 const ListingView = () => {
 	const { currentListing } = useAppSelector(s => s.listings);
@@ -26,14 +27,15 @@ const ListingView = () => {
 	if (!currentListing && isFetching) return <PageLoader />;
 	if (!currentListing) return null;
 
-	const { offer, listingPhotos, ownerOtherListings } = currentListing;
+	const { offer, listingPhotos, ownerOtherListings, listingType } = currentListing;
 	const forSale = !!offer?.forSell;
+	// const type = listingType === ListingType.Buy
 
 	return (
 		<section className={styles.section}>
 			<div className={styles.row}>
 				<div className={styles.large_block}>
-					<ImageSlider images={listingPhotos} />
+					<ImageSlider images={listingPhotos} type={listingType} />
 					<div className={styles.block_mob}>
 						<PriceContainer listing={currentListing} />
 					</div>

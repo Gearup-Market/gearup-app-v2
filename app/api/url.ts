@@ -36,4 +36,5 @@ export const API_URL = {
     getSingleTransaction: "/transactions",
 	changeTxStage: "/transactions/update-stage",
 	changeTxStatus: "/transactions/update-status",
+	reviews: "/reviews/add",
 };

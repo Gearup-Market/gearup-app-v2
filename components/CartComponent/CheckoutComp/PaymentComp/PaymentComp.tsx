@@ -54,7 +54,10 @@ const PaymentComp = ({
 		amount,
 		type,
 		rentalPeriod,
-		metadata: saleProps
+		metadata: {
+			...saleProps,
+			thirdPartyCheckup: false
+		}
 	};
 
 	const walletBalance = useMemo(

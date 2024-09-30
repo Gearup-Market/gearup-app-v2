@@ -88,7 +88,7 @@ const Shipment = ({ handleNext, item }: Props) => {
 				</div>
 			</div>
 			<div className={styles.btn_container}>
-				<Button onClick={() => handleNext(TransactionStage.AwaitingConfirmation)}>Confirm Shipment</Button>
+				<Button onClick={() => handleNext(TransactionStage.SellerShipped)}>Confirm Shipment</Button>
 			</div>
 		</div>
 	);

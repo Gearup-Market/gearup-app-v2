@@ -19,6 +19,9 @@ const RentersTimeline = ({ openModal, setOpenModal }: Props) => {
     const {steps, handleAction} = useTimeline(transaction!)
 	if(!transaction) return null;
 
+    const isReviewed = !!transaction.reviews.buyerReviewed;
+    const isTimeElapsed = transaction?.rentalPeriod ? Date.now() > new Date(transaction.rentalPeriod.end).getTime() : false
+
     return (
         <div className={styles.container}>
             <div className={styles.desktop_timelines}>
@@ -44,7 +47,7 @@ const RentersTimeline = ({ openModal, setOpenModal }: Props) => {
                     steps === 5 && <AwaitingConfirmation />
                 }
                 {
-                    steps === 6 && <CustomRatingFeedback />
+                    steps === 6 && <CustomRatingFeedback item={transaction} showSuccessWarning={isReviewed} />
                 }
             </div>
             <Modal openModal={openModal} setOpenModal={() => setOpenModal(false)} title='Transaction timeline'>

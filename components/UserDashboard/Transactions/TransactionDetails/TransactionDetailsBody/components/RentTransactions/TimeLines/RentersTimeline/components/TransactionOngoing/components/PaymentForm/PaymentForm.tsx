@@ -48,7 +48,7 @@ const PaymentForm = ({ showPaymentForm, setShowPaymentForm, handleNext }: Props)
         // Handle form submission
         console.log(values);
         setShowPaymentForm(false)
-        handleNext(TransactionStage.InitiateReturn)
+        // handleNext(TransactionStage.AwaitingItemReturn)
     };
 
     const countries = countryList().getData()

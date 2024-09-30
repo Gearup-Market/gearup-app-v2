@@ -29,7 +29,7 @@ interface CheckoutState {
 const initialState: CheckoutState = {
 	checkout: null,
 	saleProps: {
-		thirdPartyCheckup: true,
+		thirdPartyCheckup: false,
 		shippingType: 'shipping',
 		country: 'Nigeria',
 		name: '',

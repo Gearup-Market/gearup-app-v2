@@ -24,7 +24,7 @@ const ConfirmReturn = ({ handleNext }: Props) => {
                 </div>
             </div>
             <div className={styles.btn_container}>
-                <Button onClick={() => handleNext(TransactionStage.ReviewAndFeedback, TransactionStatus.Completed)}>Completed</Button>
+                <Button onClick={() => handleNext(TransactionStage.ReviewAndFeedback)}>Completed</Button>
             </div>
         </div>
     )

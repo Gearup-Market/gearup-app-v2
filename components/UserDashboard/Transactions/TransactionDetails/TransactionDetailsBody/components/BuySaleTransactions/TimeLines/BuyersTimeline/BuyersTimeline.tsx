@@ -4,7 +4,6 @@ import styles from "./BuyersTimeline.module.scss";
 import HeaderSubText from "@/components/Admin/HeaderSubText/HeaderSubText";
 import { AwaitingApproval, ConfirmShipment, StatusReport } from "./components";
 import { saleBuyersTimeline, saleBuyersTimelineThirdParty } from "../../../utils/data";
-import { useSearchParams } from "next/navigation";
 import TimeLine from "./components/TimeLine/TimeLine";
 import Modal from "@/shared/modals/modal/Modal";
 import { CustomRatingFeedback } from "../../..";
@@ -24,18 +23,20 @@ const BuyersTimeline = ({ openModal, setOpenModal }: Props) => {
 	const { transaction } = useAppSelector(s => s.transaction);
 	const { steps, handleAction } = useTimeline(transaction!);
 
-	const { metadata } = transaction!;
+	const { metadata, reviews } = transaction!;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
-    
+
+    const isReviewed = !!reviews.buyerReviewed;
+
 	useEffect(() => {
-        if (thirdPartyVerification) {
-            setNewTimelines(saleBuyersTimelineThirdParty);
+		if (thirdPartyVerification) {
+			setNewTimelines(saleBuyersTimelineThirdParty);
 		} else {
-            setNewTimelines(saleBuyersTimeline);
+			setNewTimelines(saleBuyersTimeline);
 		}
 	}, [thirdPartyVerification]);
-    
-    if (!transaction) return null;
+
+	if (!transaction) return null;
 	return (
 		<div className={styles.container}>
 			<div className={styles.desktop_timelines}>
@@ -57,10 +58,10 @@ const BuyersTimeline = ({ openModal, setOpenModal }: Props) => {
 						{steps === 3 && (
 							<ConfirmShipment
 								handleNext={handleAction}
-								thirdPartyVerification={Boolean(thirdPartyVerification)}
+								thirdPartyVerification={true}
 							/>
 						)}
-						{steps === 4 && <CustomRatingFeedback />}
+						{steps === 4 && <CustomRatingFeedback item={transaction} showSuccessWarning={isReviewed} />}
 					</>
 				) : (
 					<>
@@ -71,7 +72,7 @@ const BuyersTimeline = ({ openModal, setOpenModal }: Props) => {
 							/>
 						)}
 						{steps === 2 && <ConfirmShipment handleNext={handleAction} />}
-						{steps === 3 && <CustomRatingFeedback />}
+						{steps === 3 && <CustomRatingFeedback item={transaction} showSuccessWarning={isReviewed} />}
 					</>
 				)}
 			</div>
