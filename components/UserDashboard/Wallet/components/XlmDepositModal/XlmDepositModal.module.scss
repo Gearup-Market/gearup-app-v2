@@ -131,7 +131,7 @@
         align-items: flex-start;
         gap: 0.5rem;
         flex-direction: column;
-        padding: 2.4rem ;
+        padding: 2.4rem;
         margin: 2rem o;
         background-color: #FBFBFD;
         box-sizing: border-box;
@@ -196,8 +196,17 @@
 
     @include screenMax("mobile"){
         min-width: 100%;
-        max-width: 34rem;
+        max-width: 32rem;
         width: 100%;
+
+        .deposit_address_container{
+            padding: 1.6rem;
+            // margin: 1rem 0;
+        }
+
+        .barcode_container{
+            padding: 1.6rem;
+        }
     }
 
         
