@@ -5,7 +5,7 @@ import CartItemCardContainer from "../CartItemCard/CartItemCard";
 import { CustomImage, Ratings } from "@/shared";
 import useCart from "@/hooks/useCart";
 import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
-import { formatNum } from "@/utils";
+import { calculateItemPrice, formatNum, getDaysDifference } from "@/utils";
 import toast from "react-hot-toast";
 
 const CartItems = () => {
@@ -71,7 +71,7 @@ const CartItems = () => {
 export default CartItems;
 
 const RentalComp = ({ item }: { item: CartItem }) => {
-	const price = item.listing?.offer?.forRent?.day1Offer;
+	const price = calculateItemPrice(item)
 	return (
 		<div>
 			<div className={styles.summary_item}>
@@ -98,11 +98,11 @@ const RentalComp = ({ item }: { item: CartItem }) => {
 			{/* <div className={styles.summary_item}>
 				<h4>Gearup service fee</h4>
 				<p>$400.0</p>
-			</div>
-			<div className={styles.summary_item}>
-				<h4>VAT</h4>
-				<p>10 days</p>
 			</div> */}
+			<div className={styles.summary_item}>
+				<h4>Duration</h4>
+				<p>{getDaysDifference(item.rentalPeriod?.start, item.rentalPeriod?.end)} days</p>
+			</div>
 			<div className={`${styles.summary_item} ${styles.total_amount}`}>
 				<h4>Total</h4>
 				<p>NGN {formatNum(price)}</p>

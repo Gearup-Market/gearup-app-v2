@@ -7,10 +7,11 @@ import Image from "next/image";
 import { Button, DatePicker, Logo } from "@/shared";
 import format from "date-fns/format";
 import { Listing } from "@/store/slices/listingsSlice";
-import { formatNumber } from "@/utils";
+import { formatNumber, getDaysDifference } from "@/utils";
 import useCart from "@/hooks/useCart";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 const PriceContainer = ({ listing }: { listing: Listing }) => {
 	const { addItemToCart } = useCart();
@@ -20,7 +21,7 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 	const [inputDate, setInputDate] = useState([
 		{
 			startDate: new Date(),
-			endDate: addDays(new Date(), 0),
+			endDate: addDays(new Date(), 1),
 			key: "selection"
 		}
 	]);
@@ -30,17 +31,33 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 
 	const currency = forSale ? offer.forSell?.currency : offer.forRent?.currency;
 	const pricing = forRent ? offer.forRent?.day1Offer : offer.forSell?.pricing;
-	const transactionType = actionType == 'buy' ? TransactionType.Sale : TransactionType.Rental
+	const transactionType =
+		["sell", "buy"].includes(actionType!) || listingType !== "rent"
+			? TransactionType.Sale
+			: TransactionType.Rental;
 
 	const handleAddToCart = () => {
+		if (transactionType === TransactionType.Rental) {
+			const daysDifference = getDaysDifference(
+				inputDate[0].startDate,
+				inputDate[0].endDate
+			);
+			if (daysDifference < 1) {
+				toast.error("Minimum rent duration is 0");
+				return;
+			}
+		}
 		try {
 			addItemToCart({
 				listing,
 				type: transactionType,
-				rentalPeriod: transactionType === TransactionType.Rental ? {
-					start: inputDate[0].startDate,
-					end: inputDate[0].endDate
-				} : undefined
+				rentalPeriod:
+					transactionType === TransactionType.Rental
+						? {
+								start: inputDate[0].startDate,
+								end: inputDate[0].endDate
+						  }
+						: undefined
 			});
 		} catch (error) {
 			console.log(error);
@@ -85,35 +102,23 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 						</div>
 					</div>
 				</div>
-				{listingType !== "sell" ||
-					(actionType === "rent" && (
-						<div className={styles.input_field}>
-							<div
-								className={styles.icon}
-								onClick={() => setOpenModal(true)}
-							>
-								<Image
-									src="/svgs/calendar.svg"
-									fill
-									alt=""
-									sizes="100vw"
-								/>
-							</div>
-							<div className={styles.text}>
-								<p>
-									{isDateSelected
-										? `${format(
-												inputDate[0].startDate,
-												"MM/dd/yyyy"
-										  )} to ${format(
-												inputDate[0].endDate,
-												"MM/dd/yyyy"
-										  )}`
-										: "Choose pickup / return dates"}
-								</p>
-							</div>
+				{(listingType !== "sell" || actionType === "rent") && (
+					<div className={styles.input_field}>
+						<div className={styles.icon} onClick={() => setOpenModal(true)}>
+							<Image src="/svgs/calendar.svg" fill alt="" sizes="100vw" />
 						</div>
-					))}
+						<div className={styles.text}>
+							<p>
+								{isDateSelected
+									? `${format(
+											inputDate[0].startDate,
+											"MM/dd/yyyy"
+									  )} to ${format(inputDate[0].endDate, "MM/dd/yyyy")}`
+									: "Choose pickup / return dates"}
+							</p>
+						</div>
+					</div>
+				)}
 				<div className={styles.buttons}>
 					<Button buttonType="secondary" className={styles.button}>
 						Ask for availability

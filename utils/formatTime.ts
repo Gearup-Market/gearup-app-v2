@@ -7,5 +7,5 @@
 
   export const formatDate = (date:any) => {
     const time = new Date(date);
-    return time.toISOString().split('T')[0]
+    return time.toDateString()
   }

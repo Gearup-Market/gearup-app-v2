@@ -4,8 +4,10 @@ import React from 'react'
 import styles from './RefundModal.module.scss'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { TransactionStage } from '@/interfaces'
 
 interface Props {
+    handleNext: (stage: TransactionStage) => Promise<void>
     openModal: boolean
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -15,7 +17,7 @@ enum Type {
     Back_To_Dashboard = 'Back to Dashboard',
 }
 
-const RefundModal = ({ openModal, setOpenModal }: Props) => {
+const RefundModal = ({ handleNext, openModal, setOpenModal }: Props) => {
     const [mainText, setMainText] = React.useState<string>('By continuing, the refund will be credited to your Gearup wallet')
     const [subText, setSubText] = React.useState<string>('The money will be available for withdrawal in your wallet')
     const [type, setType] = React.useState<Type>(Type.Proceed)
@@ -30,6 +32,7 @@ const RefundModal = ({ openModal, setOpenModal }: Props) => {
             setMainText('Refund request  sent successfully')
             setSubText('TYou’ll be notified once your wallet has been credited')
             setType(Type.Back_To_Dashboard)
+            handleNext(TransactionStage.BuyerRequestedRefund)
         } else {
             setMainText('By continuing, the refund will be credited to your Gearup wallet')
             setSubText('The money will be available for withdrawal in your wallet')

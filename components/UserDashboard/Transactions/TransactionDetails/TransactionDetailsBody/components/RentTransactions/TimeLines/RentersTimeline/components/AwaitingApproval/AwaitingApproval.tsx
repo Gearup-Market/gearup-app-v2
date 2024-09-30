@@ -8,6 +8,7 @@ import { iTransactionDetails, TransactionStage, TransactionStatus } from "@/inte
 import { useAppSelector } from "@/store/configureStore";
 import { usePostTransactionStatus } from "@/app/api/hooks/transactions";
 import toast from "react-hot-toast";
+import { formatDate, getDaysDifference } from "@/utils";
 
 interface Props {
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
@@ -15,8 +16,9 @@ interface Props {
 }
 const AwaitingApproval = ({ handleNext, item }: Props) => {
 	const { userId } = useAppSelector(s => s.user);
+	const { currentStage } = useAppSelector(s => s.transaction);
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
-	const { isBuyer, id, amount, transactionStatus, listing, rentalPeriod } = item;
+	const { isBuyer, id, amount, transactionStatus, listing, rentalPeriod, buyer } = item;
 
 	const isCancelled = useMemo(
 		() => transactionStatus === TransactionStatus.Cancelled,
@@ -55,77 +57,112 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.container_top}>
-				<HeaderSubText title="Awaiting approval" />
-				{isCancelled || isDeclined ? (
-					<div className={styles.details_container}>
-						<p className={styles.details}>
-							This transaction was declined, your money in escrow protection
-							will be refunded to you
-						</p>
-					</div>
-				) : (
+				<HeaderSubText
+					title={
+						currentStage?.stage === TransactionStage.AwaitingPayment
+							? "Awaiting payment confirmation"
+							: "Awaiting approval"
+					}
+				/>
+				{currentStage?.stage === TransactionStage.AwaitingPayment ? (
 					<>
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								You have successfully paid the sum of $400 for the rental
-								of Canon EOS R5 Camera from 23 Dec 2024 to 11 Jan 2024 (10
-								days) and the money is in escrow protection .{" "}
-							</p>
-						</div>
-						<div className={styles.details_container}>
-							<p className={styles.details}>
-								Please make sure you review the renter agreement
-								documents, overtime payment policies etc, before
-								proceeding to this transaction. If you are not satisfied
-								with the conditions, cancel the transaction and your money
-								will be refunded to you{" "}
-							</p>
-						</div>
-						<div className={styles.details_container}>
-							<p className={styles.details}>
-								Once the lender accepts the transaction, the handover
-								process will be initiated, and your client is expected to
-								deliver the gear within 12-24hours to your shooting date
-								else the money will be refunded to you
-							</p>
-						</div>
-						<div className={styles.details_container}>
-							<p className={styles.details}>
-								Gearup Global Insurance coverage starts from 17:00 the day
-								before the shoot and ends at 10:00 the day after the
-								shoot..{" "}
-								<Link href="#" className={styles.learn_more}>
-									Learn more
-								</Link>
-							</p>
-						</div>
-						<div className={styles.details_container}>
-							<p className={styles.details}>
-								If the transaction is not approved by the lender, your
-								money will be refunded to you.
-							</p>
-						</div>
-						<div className={styles.details_container}>
-							<p className={styles.details}>
-								You have 12-24hours from when payment was made to cancel
-								the transaction and request for a refund
+								You have made payment but we're still confirming the transaction status. This view will be updated immediately your payment is received and verified
 							</p>
 						</div>
 					</>
+				) : (
+					<>
+						{isCancelled || isDeclined ? (
+							<div className={styles.details_container}>
+								<p className={styles.details}>
+									This transaction was declined, your money in escrow
+									protection will be refunded to you
+								</p>
+							</div>
+						) : (
+							<>
+								<div className={styles.details_container}>
+									<p className={styles.details}>
+										You have successfully paid the sum of{" "}
+										<span className={styles.bold}>₦{amount}</span> for
+										the rental of{" "}
+										<span className={styles.bold}>
+											{listing.productName}
+										</span>{" "}
+										from{" "}
+										<span className={styles.bold}>
+											{formatDate(rentalPeriod?.start)} to{" "}
+											{formatDate(rentalPeriod?.end)} (
+											{getDaysDifference(
+												rentalPeriod?.start,
+												rentalPeriod?.end
+											)}
+											days)
+										</span>{" "}
+										and the money is in escrow protection .{" "}
+									</p>
+								</div>
+								<div className={styles.details_container}>
+									<p className={styles.details}>
+										Please make sure you review the renter agreement
+										documents, overtime payment policies etc, before
+										proceeding to this transaction. If you are not
+										satisfied with the conditions, cancel the
+										transaction and your money will be refunded to you{" "}
+									</p>
+								</div>
+								<div className={styles.details_container}>
+									<p className={styles.details}>
+										Once the lender accepts the transaction, the
+										handover process will be initiated, and your
+										client is expected to deliver the gear within
+										12-24hours to your shooting date else the money
+										will be refunded to you
+									</p>
+								</div>
+								<div className={styles.details_container}>
+									<p className={styles.details}>
+										Gearup Global Insurance coverage starts from 17:00
+										the day before the shoot and ends at 10:00 the day
+										after the shoot..{" "}
+										<Link href="#" className={styles.learn_more}>
+											Learn more
+										</Link>
+									</p>
+								</div>
+								<div className={styles.details_container}>
+									<p className={styles.details}>
+										If the transaction is not approved by the lender,
+										your money will be refunded to you.
+									</p>
+								</div>
+								<div className={styles.details_container}>
+									<p className={styles.details}>
+										You have 12-24hours from when payment was made to
+										cancel the transaction and request for a refund
+									</p>
+								</div>
+							</>
+						)}
+					</>
 				)}
 			</div>
-			{(!isCancelled && !isDeclined) && (
-				<div className={styles.btn_container}>
-					<Button
-						className={styles.cancel_btn}
-						onClick={onClickCancel}
-						buttonType="secondary"
-					>
-						Cancel transaction
-					</Button>
-					{/* <Button onClick={handleNext}>Proceed</Button> */}
-				</div>
-			)}
+			{!isCancelled &&
+				!isDeclined &&
+				currentStage?.stage !== TransactionStage.AwaitingPayment && (
+					<div className={styles.btn_container}>
+						<Button
+							className={styles.cancel_btn}
+							onClick={onClickCancel}
+							buttonType="secondary"
+						>
+							Cancel transaction
+						</Button>
+						{/* <Button onClick={handleNext}>Proceed</Button> */}
+					</div>
+				)}
 		</div>
 	);
 };

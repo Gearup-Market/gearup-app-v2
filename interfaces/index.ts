@@ -79,17 +79,41 @@ export enum ListingType {
 	Both = "both"
 }
 
-export enum TransactionStage {
-	PendingApproval = 'PendingApproval',
-    ConfirmHandover = 'ConfirmHandover',
-    AwaitingConfirmation = 'AwaitingConfirmation',
-    TransactionOngoing = 'TransactionOngoing',
-    InitiateReturn = 'InitiateReturn',
-    ConfirmReturn = 'ConfirmReturn',
-    Completed = 'Completed',
-    ReviewAndFeedback = 'ReviewAndFeedback',
-    Declined = 'Declined',
+
+export enum ThirdPartyCheckupStage {
+	AwaitingThirdPartyDelivery = "awaiting_third_party_delivery",
+	ThirdPartyReceived = "third_party_received",
+	ThirdPartyInspecting = "third_party_inspecting",
+	ThirdPartyReportProvided = "third_party_report_provided",
+	BuyerReviewingReport = "buyer_reviewing_report",
+	BuyerRequestedRefund = "buyer_requested_refund",
+	SellerConfirmingReturn = "seller_confirming_return",
 }
+
+export enum TransactionStage {
+	AwaitingPayment = "awaiting_payment",
+	PendingApproval = "payment_received",
+	SellerPreparingDelivery = "seller_preparing_delivery",
+	SellerShipped = "seller_shipped",
+	BuyerReceivedItem = "buyer_received_item",
+	RentalOngoing = "rental_ongoing",
+	AwaitingItemReturn = "awaiting_item_return",
+	ItemReturned = "item_returned",
+	AwaitingLenderConfirmation = "awaiting_lender_confirmation",
+	ReviewAndFeedback = "review_and_feedback",
+	Declined = "Declined",
+	Cancelled = "cancelled",
+	Completed = "completed",
+
+	AwaitingThirdPartyDelivery = "awaiting_third_party_delivery",
+	ThirdPartyReceived = "third_party_received",
+	ThirdPartyInspecting = "third_party_inspecting",
+	ThirdPartyReportProvided = "third_party_report_provided",
+	BuyerReviewingReport = "buyer_reviewing_report",
+	BuyerRequestedRefund = "buyer_requested_refund",
+	SellerConfirmingReturn = "seller_confirming_return",
+}
+
 export enum ShippingType {
 	Shipping = 'shipping',
 	LocalPickup = 'localpickup'
@@ -122,6 +146,10 @@ export interface iTransactionDetails {
 	isBuyer: boolean;
 	payment: iWTransaction;
 	stages: Stage[];
+	reviews: {
+		buyerReviewed: boolean;
+		sellerReviewed: boolean;
+	}
 	metadata?: MetadataSchema
 	rentalPeriod?: RentalPeriod;
 }
