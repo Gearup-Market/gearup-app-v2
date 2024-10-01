@@ -113,7 +113,9 @@ const ListingDetailsView = () => {
 						</p>
 					</div>
 					<div className={styles.container}>
-						<InputField
+						{
+							newListing.items.length > 1 &&
+							<InputField
 							label="Package title"
 							placeholder="E.g Zhiyun Weebill Lab Creator Accessory Kit"
 							value={inputValues.title}
@@ -123,7 +125,8 @@ const ListingDetailsView = () => {
 									title: e.target.value
 								}))
 							}
-						/>
+							/>
+						}
 						<div className={styles.select_row}>
 							<AdvanceSelect
 								label="Category"

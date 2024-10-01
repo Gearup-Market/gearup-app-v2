@@ -96,7 +96,7 @@ const ListingTypeView = () => {
 							checked={checked.sell}
 							type="listingView"
 						/>
-						{!disabledButton && (
+						{!disabledButton && type.includes("sell") && (
 							<Select
 								label="Gear condition"
 								required={true}

@@ -18,9 +18,9 @@ const NewListingView = () => {
 	const {items=[]} = newListing;
 	const [isProduct, setIsProduct] = useState<boolean>(false);
 
-	useEffect(() => {
-		dispatch(clearNewListing())
-	}, [])
+	// useEffect(() => {
+	// 	dispatch(clearNewListing())
+	// }, [])
 
 	const addProduct = () => {
 		setIsProduct(true);
@@ -73,7 +73,7 @@ const NewListingView = () => {
 						{isProduct ? (
 							<AddSearchbox addItem={addItem} />
 						) : (
-							<Button className={styles.button} onClick={addProduct}>
+							<Button buttonType={!!items.length? "secondary":"primary"} className={styles.button} onClick={addProduct}>
 								<div className={styles.plus}>
 									<span></span>
 									<span></span>

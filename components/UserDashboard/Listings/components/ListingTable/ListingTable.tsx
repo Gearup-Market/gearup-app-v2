@@ -21,6 +21,7 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { usePostChangeListingStatus } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
 import { formatNum } from "@/utils";
+import NoListings from "../../NoListings/NoListings";
 
 interface Props {
 	activeFilter: string;
@@ -45,6 +46,8 @@ const ListingTable = ({
 	const listings = useAppSelector(s => s.listings.owned);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
+
+	console.log(listings,'listings')
 
 	const mappedListings = useMemo(() => {
 		const activeSubFilter = filters
@@ -122,8 +125,16 @@ const ListingTable = ({
 
 	const onClickEdit = (listingId: string) => {
 		const listing = listings.find(l => l._id === listingId);
-		const { productName, description, category, subCategory, condition, offer, listingPhotos, _id } =
-			listing!;
+		const {
+			productName,
+			description,
+			category,
+			subCategory,
+			condition,
+			offer,
+			listingPhotos,
+			_id
+		} = listing!;
 		const payload = {
 			_id,
 			productName,
@@ -428,80 +439,92 @@ const ListingTable = ({
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.container__input_filter_container}>
-				<InputField
-					placeholder="Search"
-					icon="/svgs/icon-search-dark.svg"
-					iconTitle="search-icon"
-				/>
-				<div className={styles.layout_icons}>
-					{listData.map(data => (
-						<span
-							key={data.id}
-							onClick={() => setActiveLayout(data.value)}
-							data-active={activeLayout === data.value}
-							data-type={data.value}
-							className={styles.layout_icons__icon}
-						>
-							{data.icon}
-						</span>
-					))}
-				</div>
-			</div>
-			{activeLayout === "list" ? (
+			{mappedListings.length > 0 ? (
 				<>
-					<div
-						className={styles.container__table}
-						style={{ width: "100%", height: "100%" }}
-					>
-						<DataGrid
-							rows={mappedListings}
-							columns={
-								activeFilter === "courses" ? coursesColumns : columns
-							}
-							hideFooterPagination={true}
-							paginationMode="server"
-							hideFooter
-							autoHeight
-							sx={customisedTableClasses}
+					<div className={styles.container__input_filter_container}>
+						<InputField
+							placeholder="Search"
+							icon="/svgs/icon-search-dark.svg"
+							iconTitle="search-icon"
 						/>
+						<div className={styles.layout_icons}>
+							{listData.map(data => (
+								<span
+									key={data.id}
+									onClick={() => setActiveLayout(data.value)}
+									data-active={activeLayout === data.value}
+									data-type={data.value}
+									className={styles.layout_icons__icon}
+								>
+									{data.icon}
+								</span>
+							))}
+						</div>
 					</div>
+					{activeLayout === "list" ? (
+						<>
+							<div
+								className={styles.container__table}
+								style={{ width: "100%", height: "100%" }}
+							>
+								<DataGrid
+									rows={mappedListings}
+									columns={
+										activeFilter === "courses"
+											? coursesColumns
+											: columns
+									}
+									hideFooterPagination={true}
+									paginationMode="server"
+									hideFooter
+									autoHeight
+									sx={customisedTableClasses}
+								/>
+							</div>
 
-					<MobileCardContainer>
-						{mappedListings.map((item, ind) => (
-							<ListingCardMob
-								activeFilter={activeFilter}
-								key={ind}
-								item={item}
-								ind={ind}
-								lastEle={ind + 1 === mappedListings.length ? true : false}
+							<MobileCardContainer>
+								{mappedListings.map((item, ind) => (
+									<ListingCardMob
+										activeFilter={activeFilter}
+										key={ind}
+										item={item}
+										ind={ind}
+										lastEle={
+											ind + 1 === mappedListings.length
+												? true
+												: false
+										}
+									/>
+								))}
+							</MobileCardContainer>
+							<Pagination
+								currentPage={1}
+								onPageChange={setPage}
+								totalCount={mappedListings.length}
+								pageSize={5}
 							/>
-						))}
-					</MobileCardContainer>
-					<Pagination
-						currentPage={1}
-						onPageChange={setPage}
-						totalCount={mappedListings.length}
-						pageSize={5}
-					/>
-					<div className={styles.btn_container}>
-						<AddBtn onClick={handleAddItem} />
-					</div>
+							<div className={styles.btn_container}>
+								<AddBtn onClick={handleAddItem} />
+							</div>
+						</>
+					) : (
+						<>
+							<div className={styles.container__grid}>
+								{mappedListings.map(item => (
+									<ListingCard
+										key={item.id}
+										props={item}
+										activeFilter={activeFilter}
+										activeRow={selectedRow}
+										setActiveRow={setSelectedRow}
+									/>
+								))}
+							</div>
+						</>
+					)}
 				</>
 			) : (
-				<>
-					<div className={styles.container__grid}>
-						{mappedListings.map(item => (
-							<ListingCard
-								key={item.id}
-								props={item}
-								activeFilter={activeFilter}
-								activeRow={selectedRow}
-								setActiveRow={setSelectedRow}
-							/>
-						))}
-					</div>
-				</>
+				<NoListings />
 			)}
 		</div>
 	);

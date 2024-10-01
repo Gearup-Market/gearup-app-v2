@@ -8,6 +8,7 @@ import HeaderSubText from "../HeaderSubText/HeaderSubText";
 import ReuseableFilters from "../ReuseableFilter/ReuseableFilter";
 import { useRouter } from "next/navigation";
 import { useListingFilters, useListings } from "@/hooks/useListings";
+import { useAppSelector } from "@/store/configureStore";
 
 enum Type {
 	Rent = "Rent",
@@ -22,6 +23,7 @@ const Listings = () => {
 	const [activeFilter, setActiveFilter] = useState<Type>(Type.Rent);
 	const router = useRouter();
 	const { filters: parentFilters } = useListingFilters();
+	const listings = useAppSelector(s => s.listings.owned);
 
 	useEffect(() => {
 		const activeFilter = parentFilters.find(filter => filter.id === activeFilterId);
@@ -53,23 +55,28 @@ const Listings = () => {
 					setActiveFilterId={setActiveFilterId}
 					setActiveSubFilterId={setActiveSubFilterId}
 					activeSubFilterId={activeSubFilterId}
+					showChildrenFilters={!!listings.length}
 				/>
 				<div className={styles.container__filters_container__listings_container}>
-					<p>Hide All Listings</p>
-					<ToggleSwitch />
-					<Button onClick={handleButtonClick}>
-						{" "}
-						<GridAddIcon className={styles.add_icon} />{" "}
-						{activeFilter === Type.Courses
-							? "New Course"
-							: "Create a listing"}
-					</Button>
+					<span>
+						<p>Hide All Listings</p>
+						<ToggleSwitch />
+						{!!listings.length && (
+							<Button onClick={handleButtonClick}>
+								{" "}
+								<GridAddIcon className={styles.add_icon} />{" "}
+								{activeFilter === Type.Courses
+									? "New Course"
+									: "Create a listing"}
+							</Button>
+						)}
+					</span>
 				</div>
 			</div>
 			<ListingTable
 				activeFilter={activeFilter?.toLowerCase()}
-        activeSubFilterId={activeSubFilterId}
-        filters={parentFilters}
+				activeSubFilterId={activeSubFilterId}
+				filters={parentFilters}
 				handleAddItem={handleButtonClick}
 			/>
 		</div>
