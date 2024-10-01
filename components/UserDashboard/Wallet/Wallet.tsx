@@ -149,8 +149,16 @@ const Wallet = () => {
 					</div>
 
 					<div className={styles.account_balance_container}>
-						<BalanceSection balance={walletBalance} text="Wallet balance" loading={isFetchingStellarWallet}/>
-						<BalanceSection balance={stellarWallet?.xlmBalance || 0} text="Escrow Balance" loading={isFetchingStellarWallet}/>
+						<BalanceSection
+							balance={walletBalance}
+							text="Wallet balance"
+							loading={isFetchingStellarWallet}
+						/>
+						<BalanceSection
+							balance={wallet?.pendingDebit || 0}
+							text="Escrow Balance"
+							loading={isFetchingStellarWallet}
+						/>
 					</div>
 					<div className={`${styles.btn_container} ${styles.mobile_btns}`}>
 						<Button
@@ -191,12 +199,13 @@ const Wallet = () => {
 							balance={stellarWallet?.xlmBalance || 0}
 							text="Wallet balance"
 							loading={isFetchingStellarWallet}
+							type="xlm"
 						/>
-						<BalanceSection
+						{/* <BalanceSection
 							balance={stellarWallet?.xlmBalance || 0}
 							text="Escrow Balance"
 							loading={isFetchingStellarWallet}
-						/>
+						/> */}
 					</div>
 					<div className={`${styles.btn_container} ${styles.xlm_btn}`}>
 						<Button
@@ -271,23 +280,32 @@ const Wallet = () => {
 
 export default Wallet;
 
-
-
 const BalanceSection = ({
 	balance = "0.00",
 	text,
-	loading
+	loading,
+	type = "ngn"
 }: {
 	balance: string | number;
 	text: string;
 	loading: boolean;
+	type?: "xlm" | "ngn";
 }) => {
 	return (
 		<div className={styles.balance_section}>
 			<p>{text}</p>
-			{loading ? <SmallLoader /> : <h2>{balance || "0.00"}</h2>}
+			{loading ? (
+				<SmallLoader />
+			) : (
+				<h2>
+					{type !== "xlm" ? (
+						<Image src="/svgs/ngn.svg" alt="cur" height={20} width={20} />
+					) : (
+						"XLM"
+					)}{" "}
+					{balance || "0.00"}
+				</h2>
+			)}
 		</div>
 	);
 };
-
-
