@@ -7,9 +7,9 @@ import { useAppSelector } from "@/store/configureStore";
 
 const TransactionDetailsBody = () => {
 	const { transaction } = useAppSelector(s => s.transaction);
-	if (!transaction) return null;
+	// if (!transaction) return null;
 
-	const transactionType = transaction.transactionType;
+	const transactionType = transaction?.transactionType;
 	return (
 		<div className={styles.container}>
 			{transactionType === "Rental" && <RentTransactions />}
