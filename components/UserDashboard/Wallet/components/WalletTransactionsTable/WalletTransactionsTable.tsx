@@ -7,6 +7,7 @@ import { Button, InputField, Pagination } from "@/shared";
 import { fiatWalletTransactions } from "@/mock/fiatWalletTransactions.mock";
 import { iWTransaction } from "@/app/api/hooks/wallets/types";
 import { useWalletTransactions } from "@/hooks";
+import NoWalletTransactions from "../NoWalletTransactions/NoWalletTransactions";
 
 const WalletTransactionsTable = () => {
 	const [page, setPage] = useState(1);
@@ -36,6 +37,8 @@ const WalletTransactionsTable = () => {
 
 	return (
 		<div className={styles.container}>
+			{data.length > 0 ? 
+			<>
 			<div className={styles.container__input_filter_container}>
 				<InputField
 					placeholder="Search"
@@ -93,7 +96,9 @@ const WalletTransactionsTable = () => {
 					totalCount={pagination.totalCount}
 					pageSize={limit}
 				/>
-			</div>
+				</div>
+			</>
+			: <NoWalletTransactions />}
 		</div>
 	);
 };

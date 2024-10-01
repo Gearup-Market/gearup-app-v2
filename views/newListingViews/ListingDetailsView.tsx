@@ -29,7 +29,10 @@ const ListingDetailsView = () => {
 	const [inputValues, setInputValues] = useState<{
 		title: string;
 		description: string;
-	}>({ title: newListing.productName || "", description: newListing.description || "" });
+	}>({
+		title: newListing.productName || "",
+		description: newListing.description || ""
+	});
 
 	const convertArrToObj = (arr: any[]) => {
 		return arr?.reduce((acc, field) => {
@@ -61,14 +64,14 @@ const ListingDetailsView = () => {
 	};
 
 	useEffect(() => {
-		let _c: iCategory | undefined
-		if (newListing.category){
-			_c = allCategories?.data.find(c => c._id === newListing.category?._id)
-			setCategory(_c)
+		let _c: iCategory | undefined;
+		if (newListing.category) {
+			_c = allCategories?.data.find(c => c._id === newListing.category?._id);
+			setCategory(_c);
 		}
-		if (newListing.subCategory){
-			const _b = _c?.subCategories.find(c => c._id === newListing.subCategory?._id)
-			setSubCategory(_b)
+		if (newListing.subCategory) {
+			const _b = _c?.subCategories.find(c => c._id === newListing.subCategory?._id);
+			setSubCategory(_b);
 		}
 	}, [newListing, allCategories]);
 
@@ -86,7 +89,10 @@ const ListingDetailsView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }} onClick={() => router.push('/user/dashboard')}>
+				<div
+					style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}
+					onClick={() => router.push("/user/dashboard")}
+				>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
