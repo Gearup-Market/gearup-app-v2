@@ -2,6 +2,7 @@
 
 .container {
 	padding: 4rem 3rem;
+	width: 100%;
 
 	.title_toggle {
 		display: flex;
@@ -17,6 +18,7 @@
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
+		box-sizing: border-box;
 
 		&__listings_container {
 			display: flex;
