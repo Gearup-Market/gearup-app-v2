@@ -8,6 +8,7 @@ import { ArrowUpIcon } from '@/shared/svgs/dashboard';
 import { DateRange, DateRangePicker } from 'react-date-range';
 import { addDays } from 'date-fns';
 import format from "date-fns/format";
+import Link from 'next/link';
 
 const CardsSection = () => {
     const [selectedTime, setSelectedTime] = useState<string>()
@@ -94,7 +95,7 @@ const CardsSection = () => {
                                     <div className={styles.container__cards_container__item__left}>
                                         <Image src={card.icon} alt={card.title} width={16} height={16} />
                                         <div>
-                                            <p className={styles.title}>{card.title}</p>
+                                            <Link href={`/user/listings?status=${card.title.toLowerCase()}`} className={styles.title}>{card.title}</Link>
                                             <p className={styles.amount}>{card.amount}</p>
                                         </div>
                                     </div>

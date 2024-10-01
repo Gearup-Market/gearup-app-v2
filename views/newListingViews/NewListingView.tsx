@@ -18,9 +18,9 @@ const NewListingView = () => {
 	const {items=[]} = newListing;
 	const [isProduct, setIsProduct] = useState<boolean>(false);
 
-	useEffect(() => {
-		dispatch(clearNewListing())
-	}, [])
+	// useEffect(() => {
+	// 	dispatch(clearNewListing())
+	// }, [])
 
 	const addProduct = () => {
 		setIsProduct(true);
@@ -64,7 +64,7 @@ const NewListingView = () => {
 				<div className={styles.details}>
 					<div className={styles.text}>
 						<h1>What are you renting or selling?</h1>
-						<p>Add one or more products to be listed</p>
+						<p>List a single item or group multiple components that belong to a set for a complete package</p>
 					</div>
 					<div className={styles.container}>
 						{items.map((item: Item, index: number) => (
@@ -73,7 +73,7 @@ const NewListingView = () => {
 						{isProduct ? (
 							<AddSearchbox addItem={addItem} />
 						) : (
-							<Button className={styles.button} onClick={addProduct}>
+							<Button buttonType={!!items.length? "secondary":"primary"} className={styles.button} onClick={addProduct}>
 								<div className={styles.plus}>
 									<span></span>
 									<span></span>

@@ -1,98 +1,106 @@
-@import '@/styles/imports';
+@import "@/styles/imports";
 
 .container {
-    padding: 4rem 3rem;
+	padding: 4rem 3rem;
+	width: 100%;
 
-    .title_toggle{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+	.title_toggle {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
 
-        .listing_text{
-            display: none;
-        }
-    }
+		.listing_text {
+			display: none;
+		}
+	}
 
-    &__filters_container{
-        display:flex;
-        justify-content:space-between;
-        width: 100%;
+	&__filters_container {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		box-sizing: border-box;
 
-        &__listings_container{
-            display: flex;
-            gap: 1rem;
-            align-items: center;
+		&__listings_container {
+			display: flex;
+			gap: 1rem;
+			align-items: flex-start;
+			padding: 2.4rem 0;
+			// width: 100%;
 
-            .add_icon{
-                width: 2rem;
-                height: 2rem;
-            }
+			span {
+				display: flex;
+				gap: 1rem;
+				align-items: center;
 
-        }
-    }
+				p,
+				button {
+					text-wrap: nowrap;
+				}
 
-    &__title {
-        font-size: 2.8rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: $col-grey-1;
-    }
+				.add_icon {
+					width: 2rem;
+					height: 2rem;
+				}
+			}
+		}
+	}
 
-    &__input_filter_container{
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin: 2rem 0;
+	&__title {
+		font-size: 2.8rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		color: $col-grey-1;
+	}
 
-       
+	&__input_filter_container {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin: 2rem 0;
 
-        &__input{
-            padding: 0.5rem;
-            border: 1px solid $col-grey-300;
-            border-radius: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: $col-grey-1;
-        }
+		&__input {
+			padding: 0.5rem;
+			border: 1px solid $col-grey-300;
+			border-radius: 0.5rem;
+			font-size: 1.2rem;
+			font-weight: 400;
+			color: $col-grey-1;
+		}
 
-        &__filter{
-            padding: 0.5rem 1rem;
-            border: 1px solid $col-grey-300;
-            border-radius: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: $col-grey-1;
-            background-color: $col-grey-50;
-        }
+		&__filter {
+			padding: 0.5rem 1rem;
+			border: 1px solid $col-grey-300;
+			border-radius: 0.5rem;
+			font-size: 1.2rem;
+			font-weight: 400;
+			color: $col-grey-1;
+			background-color: $col-grey-50;
+		}
 
-        @include screenMax("mobile") {
-            display: none;
-        }
-    }
+		@include screenMax("mobile") {
+			display: none;
+		}
+	}
 
-    @include screenMax("mobile"){
-        padding: 3rem 1.6rem;
+	@include screenMax("mobile") {
+		padding: 3rem 1.6rem;
 
-        .title_toggle{
-           
-    
-            .listing_text{
-                display: flex ;
-                align-items: center;
-                gap: 1rem;
-            }
-        }
+		.title_toggle {
+			.listing_text {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
+		}
 
-        &__filters_container{
-            flex-direction: column-reverse;
-            gap: 1rem;
-            width: 100%;
+		&__filters_container {
+			flex-direction: column-reverse;
+			gap: 1rem;
+			width: 100%;
 
-            &__listings_container{
-                display: none;
-            }
-        }
-    }
-
-
+			&__listings_container {
+				display: none;
+			}
+		}
+	}
 }

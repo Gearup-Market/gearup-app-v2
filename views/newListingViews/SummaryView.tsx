@@ -30,8 +30,6 @@ const SummaryView = () => {
 	const dispatch = useDispatch();
 	const pathname = usePathname();
 
-	console.log(newListing.listingPhotos);
-
 	const handleClose = () => {
 		router.replace("/user/dashboard");
 	};

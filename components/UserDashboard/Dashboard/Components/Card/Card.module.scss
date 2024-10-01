@@ -5,17 +5,12 @@
     border-radius: 8px;
     padding: 1.5rem;
     background-color: #fff;
-    // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease-in-out;
+
     min-width: 25rem;
 
     @include screenMax("mobile") {
         min-width: 100%;
         width: 100%;
-    }
-
-    &:hover {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     &__header {

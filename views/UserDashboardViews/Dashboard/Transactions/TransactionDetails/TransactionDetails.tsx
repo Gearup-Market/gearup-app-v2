@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React from "react";
 import styles from "./TransactionDetails.module.scss";
 import {
 	TransactionDetailsBody,
@@ -7,14 +7,11 @@ import {
 } from "@/components/UserDashboard/Transactions/TransactionDetails";
 import { useTransaction } from "@/hooks/useTransactions";
 import { useAppSelector } from "@/store/configureStore";
-import { TransactionType, UserRole } from "@/app/api/hooks/transactions/types";
 import { PageLoader } from "@/shared/loaders";
-import { iWTransaction } from "@/app/api/hooks/wallets/types";
-import { iTransactionDetails } from "@/interfaces";
 import ChatBodySection from "@/components/UserDashboard/Messages/components/ChatBodySection/ChatBodySection";
 import GearDetailsSection from "@/components/UserDashboard/Transactions/TransactionDetails/TransactionDetailsBody/GearDetailsSection/GearDetailsSection";
 
-enum DetailsView {
+export enum DetailsView {
 	OVERVIEW = "overview",
 	MESSAGES = "messages",
 	DETAILS = "details"
@@ -67,7 +64,7 @@ const TransactionDetails = ({ transactionId }: Props) => {
 			{!transaction && <PageLoader />}
 			{transaction && (
 				<>
-					<TransactionDetailsHeader />
+					<TransactionDetailsHeader activeView={activeView} setActiveView={setActiveView} />
 					{activeView === DetailsView.OVERVIEW && <TransactionDetailsBody />}
 					{activeView === DetailsView.MESSAGES && (
 						<div className={styles.chat_body_section}>
@@ -77,7 +74,7 @@ const TransactionDetails = ({ transactionId }: Props) => {
 					)}
 					{activeView === DetailsView.DETAILS && <GearDetailsSection />}
 				</>
-			)}
+			 )} 
 		</div>
 	);
 };

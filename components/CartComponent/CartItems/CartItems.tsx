@@ -13,7 +13,7 @@ const CartItems = () => {
 	const { getCartItems, removeItemFromCart } = useCart();
 	const cartItems = getCartItems();
 
-	if (!cartItems) return null;
+	// if (!cartItems) return null;
 
 	const handleDeleteItem = async (id: string) => {
 		const res = await removeItemFromCart(id);
@@ -22,7 +22,7 @@ const CartItems = () => {
 
 	return (
 		<div className={styles.container}>
-			{cartItems?.items.length === 0 ? (
+			{!cartItems?.items.length ? (
 				<EmptyCart />
 			) : (
 				<>

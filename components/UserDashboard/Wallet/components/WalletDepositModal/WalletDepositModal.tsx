@@ -60,7 +60,7 @@ const WalletDepositModal = ({ openModal, close }: Props) => {
 	);
 
 	return (
-		<Modal title="Withdrawal" openModal={openModal} setOpenModal={onClose}>
+		<Modal title="Deposit" openModal={openModal} setOpenModal={onClose}>
 			<div className={styles.container}>
 				<p className={styles.header}>
 					Transfer money to your <span className={styles.bold}>Gearup</span>{" "}
