@@ -5,7 +5,7 @@ import styles from "./BuyRentDetailsBody.module.scss";
 import { Button, DetailContainer } from "@/shared";
 import Image from "next/image";
 import { ImageSlider } from "@/components/listing";
-import { formatNum } from "@/utils";
+import { copyText, formatNum } from "@/utils";
 import HeaderSubText from "@/components/UserDashboard/HeaderSubText/HeaderSubText";
 import { Listing } from "@/store/slices/listingsSlice";
 import { ListingType } from "@/interfaces";
@@ -260,6 +260,7 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 											alt="copy-icon"
 											width={10}
 											height={10}
+											onClick={()=>copyText(listing?.transactionId ?? "")}
 										/>
 									</p>
 								</div>

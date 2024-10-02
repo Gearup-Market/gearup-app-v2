@@ -1,6 +1,9 @@
+import toast from "react-hot-toast";
+
 const copyText = (text: string) => {
 	if (navigator.clipboard && navigator.permissions) {
 		navigator.clipboard.writeText(text);
+		toast.success("copied successfully")
 	} else if (document.queryCommandSupported("copy")) {
 		const ele = document.createElement("textarea");
 		ele.value = text;
