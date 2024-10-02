@@ -23,6 +23,11 @@
 				&:nth-child(2) {
 					margin-top: 0.8rem;
 				}
+
+				&[data-type="buy"]{
+					background: #072ac8;
+					color: #fff;
+				}
 			}
 			&[data-active="true"] {
 				.button {
@@ -31,6 +36,8 @@
 						background-color: #072ac8;
 						color: #ffffff;
 					}
+					
+				
 				}
 			}
 		}

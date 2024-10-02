@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ListingView.module.scss";
 import {
 	ImageSlider,
@@ -15,29 +15,82 @@ import { useParams } from "next/navigation";
 import { useSingleListing } from "@/hooks/useListings";
 import { getIdFromSlug } from "@/utils";
 import { PageLoader } from "@/shared/loaders";
-import { Listing } from "@/shared";
-import { ListingType } from "@/interfaces";
+import { BackNavigation, Listing } from "@/shared";
+import BuyPriceContainer from "@/components/listing/BuyPriceContainer/BuyPriceContainer";
+import { Box, CircularProgress } from "@mui/material";
+
+const typeView = ["rent", "buy"];
 
 const ListingView = () => {
 	const { currentListing } = useAppSelector(s => s.listings);
 	const { productSlug } = useParams();
 	const productId = getIdFromSlug(productSlug.toString());
 	const { isFetching } = useSingleListing(productId);
+	
+	const [activeType, setActiveType] = useState("");
 
-	if (!currentListing && isFetching) return <PageLoader />;
+	useEffect(() => {
+		if (currentListing) {
+			// If the listingType is "rent" or "buy", set it as the active type
+			if (currentListing.listingType === "rent" || currentListing.listingType === "buy") {
+				setActiveType(currentListing?.listingType);
+			}
+			// If listingType is "both", set the initial activeType to "rent" or any default
+			else if (currentListing.listingType === "both") {
+				setActiveType("rent");
+			}
+		}
+	}, [currentListing]);
+
+	if (isFetching) {
+		return (
+            <Box
+				sx={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					height: "100vh"
+				}}
+			>
+				<CircularProgress style={{ color: "#FFB30F" }} />
+			</Box>
+        )
+	}
 	if (!currentListing) return null;
-
+	
 	const { offer, listingPhotos, ownerOtherListings, listingType } = currentListing;
 	const forSale = !!offer?.forSell;
+	// eslint-disable-next-line react-hooks/rules-of-hooks
 	// const type = listingType === ListingType.Buy
 
 	return (
 		<section className={styles.section}>
+			<BackNavigation />
 			<div className={styles.row}>
 				<div className={styles.large_block}>
-					<ImageSlider images={listingPhotos} type={listingType} />
+					{listingType === "both" && (
+						<ul className={styles.type_container}>
+							{typeView.map(filter => (
+								<li
+									data-active={filter === activeType}
+									onClick={() => {
+										setActiveType(filter);
+									}}
+									key={`${filter}`}
+									className={styles.type}
+								>
+									<p>{filter}</p>
+								</li>
+							))}
+						</ul>
+					)}
+					<ImageSlider images={listingPhotos} type={activeType} />
 					<div className={styles.block_mob}>
-						<PriceContainer listing={currentListing} />
+						{activeType === "rent" ? (
+							<PriceContainer listing={currentListing} />
+						) : (
+							<BuyPriceContainer listing={currentListing} />
+						)}
 					</div>
 					<SpecCard listing={currentListing} />
 					<DescriptionCard description={currentListing.description} />
@@ -47,7 +100,11 @@ const ListingView = () => {
 					<ProfileCard listing={currentListing} />
 				</div>
 				<div className={styles.block_desk}>
-					<PriceContainer listing={currentListing} />
+					{activeType === "rent" ? (
+						<PriceContainer listing={currentListing} />
+					) : (
+						<BuyPriceContainer listing={currentListing} />
+					)}
 				</div>
 			</div>
 			<div className={styles.divider}></div>

@@ -47,7 +47,7 @@
             transition: all 0.3s ease-in-out;
 
             &[data-active='true']{
-                background-color: #ffb30f;
+                background-color: $orange-grad;
                 font-weight: 700;
             }
         

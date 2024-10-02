@@ -1,0 +1,178 @@
+@import "@/styles/imports";
+
+.container {
+	width: 100%;
+	.price_card {
+		width: 100%;
+		background-color: #fbfbfd;
+		padding: 2.4rem 2.4rem 3.2rem 2.4rem;
+		border-radius: 1.6rem;
+		margin-bottom: 3.2rem;
+		.card_header {
+			margin-bottom: 2.4rem;
+
+            .third_party_container{
+                display: flex;
+                justify-content: space-between;
+                background-color: #fff;
+                padding: 2.4rem;
+                border-radius: 1.6rem;
+                margin-top: 2rem;
+                flex-wrap: wrap;
+
+                .flex_items{
+                    @include flex;
+                    gap: 0.2rem;
+                    align-items: center;
+
+                    img{
+                        height: 4rem;
+                        width: 4rem;
+                    }
+
+                    .amount{
+                        font-weight: 700;
+                        font-size: 1.8rem;
+                        color: #1B1E21;
+                    }
+                }
+            }
+		}
+		.insurance_container {
+			padding: 2.4rem 1.6rem;
+			@include flex();
+			gap: 0.8rem;
+			.icon {
+				position: relative;
+				width: 4rem;
+				height: 4rem;
+			}
+			.details {
+				max-width: 39.1rem;
+				.text {
+					h3 {
+						margin-bottom: 0.8rem;
+					}
+					p {
+						color: #4b525a;
+						margin-bottom: 1.6rem;
+					}
+					a {
+						color: #ffb30f;
+						text-decoration: underline;
+					}
+				}
+			}
+		}
+		.input_field {
+			width: 100%;
+			border-radius: 0.8rem;
+			padding: 1.6rem;
+			background-color: #fff;
+			border: 0.1rem solid #dedfe0;
+			@include flex(flex-start, center);
+			gap: 0.8rem;
+			.icon {
+				position: relative;
+				width: 2rem;
+				height: 2rem;
+				cursor: pointer;
+				.date_input {
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					inset: 0;
+					opacity: 0;
+					cursor: pointer;
+					&::-webkit-calendar-picker-indicator {
+						cursor: pointer;
+					}
+				}
+			}
+			.text {
+				p {
+					@extend %text-14;
+					color: #7b8086;
+				}
+			}
+		}
+		.buttons {
+			width: 100%;
+			@include flex();
+			gap: 1.6rem;
+			margin-top: 4rem;
+			.button {
+				width: 100%;
+			}
+
+            .ask_question{
+                color: #4B525A;
+            }
+		}
+	}
+	.text,
+	.title {
+		@extend %text-18;
+		h1 {
+			@extend %title-28;
+			font-weight: 700;
+		}
+		h2 {
+			@extend %text-20;
+			font-weight: 700;
+		}
+		h3 {
+			font-weight: 700;
+			@extend %text-18;
+		}
+	}
+	.title {
+		color: $col-white;
+		h1 {
+			font-family: $font-good;
+			margin-top: 1.6rem;
+			margin-bottom: 0.8rem;
+		}
+	}
+
+    .additional_offers_container{
+        background-color: #FAFAFA;
+        border-radius: 0.8rem;
+        padding: 2.4rem;
+
+        .title{
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #1B1E21;
+            text-transform: uppercase;
+            margin-bottom: 1.4rem;
+        }
+
+        .offers_container{
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+
+            .offer{
+                @include flex;
+                gap: 0.8rem;
+
+                h3{
+                    font-size: 1.4rem;
+                    
+                }
+                a{
+                    font-size: 1.4rem;
+                    font-weight: 700;
+                    text-decoration: underline;
+                    color: #ffb30f;
+                }
+
+                img{
+                    height: 3.2rem;
+                    width: 3.2rem;
+                }
+            }
+        }
+    }
+}

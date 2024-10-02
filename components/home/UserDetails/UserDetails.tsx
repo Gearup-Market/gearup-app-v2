@@ -80,12 +80,14 @@ const UserDetails = ({ userId }: Props) => {
         )
     }
 
+	// if(user?.data) return null
+
 	return (
 		<div className={styles.container}>
 			<BackNavigation />
 			<div className={styles.details_body}>
 				<div>
-					<UserDetailsProfile user={user.data} />
+					<UserDetailsProfile user={user?.data} />
 				</div>
 				<div>
 					{!!user?.data?.about && (
