@@ -1,0 +1,127 @@
+@import "@/styles/imports";
+
+.container {
+	margin-top: 4rem;
+    min-height: 30rem;
+    position: relative;
+    overflow: hidden;
+	.header_container {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 2rem;
+
+		.button_container {
+			display: flex;
+			gap: 1.6rem;
+			align-items: center;
+
+			button {
+				border-radius: 0.8rem;
+				background: transparent;
+				border: 1px solid $col-border;
+				gap: 0.5rem;
+                padding:1rem 1.4rem;
+
+                p{
+                    @include screenMax("mobile"){
+                        display: none;
+                    }
+                }
+			}
+		}
+	}
+
+	.review_body {
+        width: 100%;
+		background: #fbfbfd;
+		padding: 2.4rem;
+		border-radius: 1.6rem;
+		position: absolute; // Ensure the reviews overlap each other
+		transition: opacity 0.5s ease, transform 0.5s ease;
+      
+
+		&.slide_in_right {
+			animation: slideInRight 0.5s forwards;
+		}
+
+		&.slide_in_left {
+			animation: slideInLeft 0.5s forwards;
+		}
+
+		&.slide_out_left {
+			animation: slideOutLeft 0.5s forwards;
+		}
+
+		&.slide_out_right {
+			animation: slideOutRight 0.5s forwards;
+		}
+
+		@keyframes slideInRight {
+			0% {
+				opacity: 0;
+				transform: translateX(100%);
+			}
+			100% {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+
+		@keyframes slideInLeft {
+			0% {
+				opacity: 0;
+				transform: translateX(-100%);
+			}
+			100% {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+
+		@keyframes slideOutLeft {
+			0% {
+				opacity: 1;
+				transform: translateX(0);
+			}
+			100% {
+				opacity: 0;
+				transform: translateX(-100%);
+			}
+		}
+
+		@keyframes slideOutRight {
+			0% {
+				opacity: 1;
+				transform: translateX(0);
+			}
+			100% {
+				opacity: 0;
+				transform: translateX(100%);
+			}
+		}
+
+		&__top {
+			display: flex;
+			gap: 1rem;
+			margin-bottom: 2.4rem;
+
+			.avatar,
+			img {
+				height: 5.6rem;
+				width: 5.6rem;
+				border-radius: 50%;
+			}
+
+			h3 {
+				color: #1b1e21;
+				font-weight: 700;
+				font-size: 1.8rem;
+			}
+		}
+		p {
+			color: #1b1e21;
+			font-weight: 700;
+			font-size: 1.6rem;
+		}
+	}
+}

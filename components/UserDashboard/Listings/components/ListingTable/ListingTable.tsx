@@ -47,8 +47,6 @@ const ListingTable = ({
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 
-	console.log(listings,'listings')
-
 	const mappedListings = useMemo(() => {
 		const activeSubFilter = filters
 			.find(filter => filter.name.toLowerCase() === activeFilter)

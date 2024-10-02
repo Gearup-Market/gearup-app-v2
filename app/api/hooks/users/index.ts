@@ -160,6 +160,18 @@ const useGetUser = (
 		refetchOnMount: false
 	});
 
+const useGetUserDetails = (
+	{ userId }: { userId: string },
+	options?: UseQueryOptions<any, IGetCardHistoriesErr>
+) =>
+	useQuery<any, IGetCardHistoriesErr>({
+		queryKey: ["user"],
+		queryFn: async () => (await api.get(`${API_URL.getUser}/${userId}`)).data,
+		...options,
+		enabled: !!userId,
+		refetchOnMount: false
+	});
+
 // ----------------------------------------------
 
 const usePostRegisterKyc = (
@@ -304,5 +316,6 @@ export {
 	usePostResendKycCode,
 	usePostValidateKycCode,
 	usePostUpdateBank,
-	usePostReview
+	usePostReview,
+	useGetUserDetails
 };

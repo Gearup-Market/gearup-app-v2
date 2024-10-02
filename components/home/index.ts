@@ -11,6 +11,7 @@ import Reviews from "./reviews/Reviews";
 import ScrollComponent from "./scrollComponent/ScrollComponent";
 import BlogComponent from "./blog/Blog";
 import BlogDetailsComponent from "./blog/blogDetails/blogDetails";
+import UserDetailsComponent from "./UserDetails/UserDetails";
 
 export {
 	Hero,
@@ -26,4 +27,5 @@ export {
 	Faq,
 	BlogComponent,
 	BlogDetailsComponent,
+	UserDetailsComponent
 };
