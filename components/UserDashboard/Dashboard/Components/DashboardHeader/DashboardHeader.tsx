@@ -1,8 +1,8 @@
 "use client";
 
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './DashboardHeader.module.scss'
-import { Button } from '@/shared'
+import { Button, KycPrompt } from '@/shared'
 import { useAppSelector } from '@/store/configureStore'
 import Link from 'next/link'
 import toast from 'react-hot-toast';
@@ -21,11 +21,12 @@ function greeting(){
 
 const DashboardHeader = () => {
     const user = useAppSelector(state => state.user)
+    const [showKycPrompt, setShowKycPrompt]=useState(false)
     console.log(user, "user")
 
     const handleClick =()=>{
         if(user.isVerified) return;
-        toast.error("Complete your verification before creating a listing")
+        setShowKycPrompt(true)
     }
     return (
         <div className={styles.container}>
@@ -38,6 +39,7 @@ const DashboardHeader = () => {
                     <Link href={user.isVerified?'/new-listing':""}>Create a Listing</Link>
                 </Button>
             </div>
+            <KycPrompt openModal={showKycPrompt} setOpenModal={setShowKycPrompt}/>
         </div>
     )
 }

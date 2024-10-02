@@ -40,6 +40,7 @@ import LoadingSpinner  from "./Spinner/Spinner";
 import ChatBox from "./chatBox/ChatBox";
 import Countdown from "./countdown/Countdown";
 import PaystackPaymentButton from "./paystack/PaystackPaymentButton";
+import KycPrompt from "./KycPrompt/KycPrompt";
 
 export {
 	Header,
@@ -83,5 +84,6 @@ export {
 	LoadingSpinner,
 	ChatBox,
 	Countdown,
-	PaystackPaymentButton
+	PaystackPaymentButton,
+	KycPrompt
 };
