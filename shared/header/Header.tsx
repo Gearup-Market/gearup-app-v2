@@ -263,7 +263,23 @@ const Header = () => {
 					</Button>
 					{isAuthenticated ? (
 						<Link className={styles.user_image} href="/user/dashboard">
-							<Image src={user?.avatar || "/images/user.png"} alt="" fill />
+							{/* <Image src={user?.avatar || "/images/user.png"} alt="" fill /> */}
+							<div className={styles.user_details}>
+								<div className={styles.avatar}>
+									<Image
+										src="/images/admin-img.jpg"
+										width={40}
+										height={40}
+										alt="avatar"
+									/>
+								</div>
+								<span className={styles.name}>
+									{user?.userName || "Guest"}
+								</span>
+								{/* <span>
+          <ArrowDownIcon />
+        </span> */}
+							</div>
 						</Link>
 					) : (
 						<>

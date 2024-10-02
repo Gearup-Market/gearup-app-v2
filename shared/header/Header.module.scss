@@ -294,6 +294,40 @@
 			transform: rotate(-45deg);
 		}
 	}
+	.user_details {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+		background: $col-profile-container-bg;
+		border-radius: 50px;
+		padding: 0.8rem;
+		width: auto;
+		flex-shrink: 0;
+
+		.name {
+			font-size: 1.5rem;
+			display: flex;
+			flex-wrap: nowrap;
+			color: $col-high-emphasis-text;
+			font-weight: 600;
+		}
+
+		.avatar {
+			height: 2.4rem;
+			width: 2.4rem;
+			object-fit: cover;
+			border-radius: 50%;
+			border: 1px solid $col-border;
+
+			img {
+				border-radius: 50%;
+			}
+		}
+
+		@include screenMax("mobile") {
+			display: none;
+		}
+	}
 	.mob_buttons {
 		margin-left: auto;
 		display: none;
@@ -361,7 +395,8 @@
 				width: 3.2rem;
 				height: 3.2rem;
 				padding: 0.8rem;
-				div ,a{
+				div,
+				a {
 					position: relative;
 					width: 100%;
 					height: 100%;
