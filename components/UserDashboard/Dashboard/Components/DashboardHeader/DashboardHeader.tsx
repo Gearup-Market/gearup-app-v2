@@ -22,7 +22,6 @@ function greeting(){
 const DashboardHeader = () => {
     const user = useAppSelector(state => state.user)
     const [showKycPrompt, setShowKycPrompt]=useState(false)
-    console.log(user, "user")
 
     const handleClick =()=>{
         if(user.isVerified) return;
