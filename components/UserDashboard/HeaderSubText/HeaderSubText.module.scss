@@ -11,6 +11,10 @@
         &[data-variant = 'main']{
             font-size: 2.8rem;
         }
+        
+        &[data-variant='medium']{
+            font-size: 2.4rem;
+        }
     }
 
     .description {

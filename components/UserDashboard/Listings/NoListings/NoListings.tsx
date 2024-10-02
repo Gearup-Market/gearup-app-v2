@@ -5,7 +5,15 @@ import { GridAddIcon } from "@mui/x-data-grid";
 import { Button } from "@/shared";
 import Link from "next/link";
 
-const NoListings = () => {
+interface Props {
+	showCreateButton?: boolean;
+	description?: string;
+}
+
+const NoListings = ({
+	showCreateButton = true,
+	description = "No Public Listing Found!"
+}: Props) => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.image_container}>
@@ -16,12 +24,14 @@ const NoListings = () => {
 					height={60}
 				/>
 			</div>
-			<p className={styles.no_transaction_text}>No Public Listing Found!</p>
-			<Link href={"/new-listing"}>
-				<Button>
-					<GridAddIcon className={styles.add_icon} /> Create a listing
-				</Button>
-			</Link>
+			<p className={styles.no_transaction_text}>{description}</p>
+			{showCreateButton && (
+				<Link href={"/new-listing"}>
+					<Button>
+						<GridAddIcon className={styles.add_icon} /> Create a listing
+					</Button>
+				</Link>
+			)}
 		</div>
 	);
 };

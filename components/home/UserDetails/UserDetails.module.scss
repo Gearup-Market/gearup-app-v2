@@ -1,0 +1,98 @@
+@import "@/styles/imports";
+
+.container {
+	padding: 4rem 3rem;
+	margin-top: 10rem;
+	padding-bottom: 10rem;
+    width: 100%;
+
+	.details_body {
+		display: grid;
+		grid-template-columns: 25% 1fr;
+		gap: 2rem;
+		padding-top: 4rem;
+
+		.about_container {
+			margin-bottom: 2rem;
+			.about {
+				background-color: #fbfbfd;
+				padding: 1rem;
+				border-radius: 1.6rem;
+				font-size: 1.6rem;
+				color: #1b1e21;
+			}
+		}
+
+		.listing_container {
+			margin-top: 2rem;
+			.listing_bg {
+				background-color: #fbfbfd;
+			}
+		}
+	}
+
+	&__input_filter_container {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin: 2rem 0;
+
+		.filter_icon_container {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 1rem;
+			border: 1px solid $col-border;
+			border-radius: 0.5rem;
+
+			img {
+				width: 2rem;
+				height: 2rem;
+			}
+		}
+
+		&__input {
+			padding: 0.5rem;
+			border: 1px solid $col-grey-300;
+			border-radius: 0.5rem;
+			font-size: 1.2rem;
+			font-weight: 400;
+			color: $col-grey-1;
+		}
+
+		&__filter {
+			padding: 0.5rem 1rem;
+			border: 1px solid $col-grey-300;
+			border-radius: 0.5rem;
+			font-size: 1.2rem;
+			font-weight: 400;
+			color: $col-grey-1;
+			background-color: $col-grey-50;
+		}
+
+		@include screenMax("mobile") {
+			display: none;
+		}
+	}
+
+	&__grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 2rem;
+		margin-top: 3rem;
+	}
+
+	@include screenMax("mobile") {
+        padding: 2rem 1.6rem;
+
+        .details_body{
+            grid-template-columns: 1fr;
+        }
+		&__grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 1rem;
+			margin-top: 3rem;
+		}
+	}
+}
