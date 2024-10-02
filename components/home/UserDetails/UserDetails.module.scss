@@ -1,7 +1,7 @@
 @import "@/styles/imports";
 
 .container {
-	padding: 4rem 3rem;
+	padding: 4rem 4rem;
 	margin-top: 10rem;
 	padding-bottom: 10rem;
     width: 100%;
@@ -11,6 +11,8 @@
 		grid-template-columns: 25% 1fr;
 		gap: 2rem;
 		padding-top: 4rem;
+		// padding-right: 1.6rem;
+		
 
 		.about_container {
 			margin-bottom: 2rem;
