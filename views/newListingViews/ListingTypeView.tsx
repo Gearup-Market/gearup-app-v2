@@ -33,7 +33,7 @@ const ListingTypeView = () => {
 	const [condition, setCondition] = useState<string>("");
 
 	const nextPage = () => {
-		if (!condition) {
+		if (!condition && type.includes("sell")) {
 			toast.error("Please select a gear condition");
 			return;
 		}

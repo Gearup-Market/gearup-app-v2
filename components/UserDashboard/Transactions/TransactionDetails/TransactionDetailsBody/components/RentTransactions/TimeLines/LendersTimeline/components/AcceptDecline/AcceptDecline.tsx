@@ -35,6 +35,11 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 				role: isBuyer ? "buyer" : ("seller" as "buyer" | "seller")
 			};
 
+			if (transactionStatus !== TransactionStatus.Pending) {
+				toast.error("Transaction not in cancellation state");
+				return;
+			}
+
 			const res = await postTransactionStatus({
 				id,
 				status: TransactionStatus.Declined,
