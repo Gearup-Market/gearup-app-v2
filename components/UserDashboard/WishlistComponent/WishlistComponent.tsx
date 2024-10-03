@@ -4,8 +4,9 @@ import styles from "./WishlistComponent.module.scss";
 import HeaderSubText from "../HeaderSubText/HeaderSubText";
 import { CloseIcon } from "@/shared/svgs/dashboard";
 import Image from "next/image";
-import { Button, MobileCard, MobileCardContainer } from "@/shared";
+import { Button, Pagination } from "@/shared";
 import Link from "next/link";
+import WishlistCard from "./WishlistCard/WishlistCard";
 
 interface Props {
 	showWishList: boolean;
@@ -13,7 +14,12 @@ interface Props {
 }
 
 const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
-	const wishlists = [1, 2, 3, 4, 56];
+	const wishlists = [] as any;
+	const [page, setPage] = useState(1);
+
+	const onPageChange = () => {
+		console.log(page);
+	};
 	useEffect(() => {
 		// Function to handle click events
 		const handleClick = (event: MouseEvent) => {
@@ -52,23 +58,24 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 				{wishlists.length === 0 ? (
 					<EmptyWishlist />
 				) : (
-                    <div>
-
-					<MobileCardContainer>
-						{wishlists.map((wishlist, ind) => (
-							<MobileCard
-								key={ind}
-								mainHeaderImage="/images/admin-img.jpg"
-								mainHeaderText={"wishlist"}
-								subHeaderText={"rester"}
-								lastEle={ind + 1 === wishlists.length}
-								ind={ind}
-							>
-								<h1>{wishlist}</h1>
-							</MobileCard>
-						))}
-					</MobileCardContainer>
-                        </div>
+					<div className={styles.cards_wrapper}>
+						<div className={styles.cards_container}>
+							{wishlists.map((item: any, ind: number) => (
+								<WishlistCard
+									key={ind}
+									item={item}
+									ind={ind}
+									lastEle={ind + 1 === wishlists.length ? true : false}
+								/>
+							))}
+						</div>
+						<Pagination
+							currentPage={page}
+							onPageChange={onPageChange}
+							totalCount={wishlists.length}
+							pageSize={10}
+						/>
+					</div>
 				)}
 			</div>
 		</div>
@@ -136,10 +143,3 @@ const exploreList = [
 		link: "/listings?type=courses"
 	}
 ];
-
-
-const WishlistCard =()=>{
-    return(
-        <div></div>
-    )
-}
