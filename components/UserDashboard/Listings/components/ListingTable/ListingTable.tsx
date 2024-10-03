@@ -39,7 +39,6 @@ const ListingTable = ({
 	const [activeLayout, setActiveLayout] = useState("list");
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 	const [page, setPage] = useState(1);
-	const [limit, setLimit] = useState(5);
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 	const { userId } = useAppSelector(s => s.user);

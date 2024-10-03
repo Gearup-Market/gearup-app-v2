@@ -17,6 +17,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/shared";
 import { useAuth } from "@/contexts/AuthContext";
+import Image from "next/image";
 
 interface Props {
 	isMobile?: boolean;
@@ -25,7 +26,7 @@ interface Props {
 
 const AdminSidebar = ({ isMobile, onClose }: Props) => {
 	const pathname = usePathname();
-	const { logout } = useAuth();
+	const { logout, user } = useAuth();
 	const sidebarItems = [
 		{
 			name: "Dashboard",
@@ -80,12 +81,17 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 				<div className={styles.sidebar_container__customer_container}>
 					<h3 className={styles.title}>Profile</h3>
 					<div className={styles.location_details}>
-						<span className={styles.location_icon}>
-							<LocationEllipse />
-						</span>
+					<div className={styles.avatar}>
+						<Image
+							src={!!user?.avatar ? user.avatar : "/svgs/avatar-user.svg"}
+							width={40}
+							height={40}
+							alt="avatar"
+						/>
+					</div>
 						<div>
-							<h4>username</h4>
-							<Link href="/user/settings?q=profile">View Profile</Link>
+							<h4>{user?.userName}</h4>
+							<Link href={`/users/${user?._id}`}>View Profile</Link>
 						</div>
 					</div>
 				</div>

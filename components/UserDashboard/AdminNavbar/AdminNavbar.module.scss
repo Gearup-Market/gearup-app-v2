@@ -1,194 +1,266 @@
 @import "@/styles/imports";
 
 .navbar_container {
-  padding: 3rem;
-  height: 10rem;
-  border-bottom: 1px solid $col-border;
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  width: 100%;
-  box-sizing: border-box;
-  position:relative;
+	padding: 3rem;
+	height: 10rem;
+	border-bottom: 1px solid $col-border;
+	display: flex;
+	align-items: center;
+	gap: 2.5rem;
+	width: 100%;
+	box-sizing: border-box;
+	position: relative;
+	background-color: #fff;
 
-  .icons_container {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    justify-content: center;
+	.icons_container {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+		justify-content: center;
 
-    .search_icon {
-      
-      @include screenMax("mobile") {
-        display: flex;
-      }
-    }
+		.search_icon {
+			@include screenMax("mobile") {
+				display: flex;
+			}
+		}
 
-    .menu_icon {
-      display: none;
-      @include screenMax("mobile") {
-        display: flex;
-      }
-    }
+		.menu_icon {
+			display: none;
+			@include screenMax("mobile") {
+				display: flex;
+			}
+		}
 
-    .mob_buttons{
-      display: none;
+		.mob_buttons {
+			display: none;
 
-      .small_icon{
-        padding: 0;
-        height: 100%;
-        display: flex;
-        align-items: center;
-      }
+			.small_icon {
+				padding: 0;
+				height: 100%;
+				display: flex;
+				align-items: center;
+			}
 
-      .circle_border{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 3.5rem;
-        width: 3.5rem;
-        border-radius: 50%;
-        border: 1px solid $col-border;
-        padding: 0.7rem;
-      }
+			.circle_border {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 3.5rem;
+				width: 3.5rem;
+				border-radius: 50%;
+				border: 1px solid $col-border;
+				padding: 0.7rem;
+			}
 
-      @include screenMax("mobile"){
-        display: flex;
-        align-items: center;
-        gap: 2rem;
+			@include screenMax("mobile") {
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+			}
+		}
+	}
 
-      }
-    }
-  }
+	.logo_icon {
+		display: none;
+		@include screenMax("mobile") {
+			display: flex;
+		}
+	}
 
-  .logo_icon {
-    display: none;
-    @include screenMax("mobile") {
-      display: flex;
-    }
-  }
+	@keyframes slide-down {
+		from {
+			transform: translateY(-100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
 
-  @keyframes slide-down {
-    from {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
+	.input_container {
+		display: flex;
+		width: 100%;
 
-  .input_container {
-    display: flex;
-    width: 100%;
+		.close {
+			display: none;
+			@include screenMax("mobile") {
+				display: flex;
+				color: $col-error;
+				font-size: 1.6rem;
+			}
+		}
 
-    .close{
-      display: none;
-      @include screenMax("mobile") {
-        display: flex;
-        color: $col-error;
-        font-size: 1.6rem;
-      }
-    }
+		@include screenMax("mobile") {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			z-index: 4;
+			background-color: $col-white;
+			height: 8rem;
+			align-items: center;
+			padding: 1rem;
+			gap: 1.6rem;
+			animation: slide-down 0.5s ease-out forwards;
+			display: none;
 
-    @include screenMax("mobile") {
-      position: absolute;
-      left: 0;
-      top:0;
-      width: 100%;
-      z-index: 4;
-      background-color: $col-white;
-      height: 8rem;
-      align-items: center;
-      padding: 1rem;
-      gap: 1.6rem;
-      animation: slide-down 0.5s ease-out forwards;
-      display: none;
+			&[data-show="true"] {
+				display: flex;
+			}
 
-      &[data-show="true"] {
-        display: flex;
-      }
+			.search_field {
+				border-radius: 50%;
+				&[data-focus="true"] {
+					border-color: $col-warning;
+				}
+			}
+		}
+	}
 
-      .search_field{
-        border-radius: 50%;
-        &[data-focus="true"] {
-          border-color: $col-warning;
+	&__details {
+		display: flex;
+		align-items: center;
+		border-radius: 50px;
+		padding: 1rem;
+		width: 100%;
+		flex-shrink: 0;
+		justify-content: flex-end;
+
+		
+		.details_items {
+			display: flex;
+			gap: 0.5rem;
+			align-items: center;
+			background: #fbfbfd;
+			border-radius: 50px;
+			padding: 0.5rem 1rem;
+			width: auto;
+			flex-shrink: 0;
+			justify-content: flex-end;
+      position: relative;
+
+      .drop_down_menu_container {
+        position: absolute;
+        right: 0;
+        top:4rem;
+        display: none;
+        box-shadow: 0px 2px 30px 0px #120E0614;
+        background-color: #fff;
+        border-radius: 1.6rem;
+        min-width: 27.5rem;
+  
+        &[data-show='true']{
+          display: flex;
+        }
+  
+        .menu_container{
+          border-radius: 0.8rem;
+          width: 100%;
+
+          .cursor{
+            cursor: pointer;
+          }
+          
+          .menu_item{
+            width: 100%;
+            display: flex;
+            padding: 1.6rem;
+            align-items: center;
+            gap: 0.8rem;
+            color: #4B525A;
+            font-weight: 400;
+            font-size: 1.6rem;
+            img{
+              height: 2.4rem;
+              width: 2.4rem;
+            }
+
+            .avatar{
+              height: 4rem;
+              width: 4rem;
+            }
+
+            .user_name{
+              color: #1B1E21;
+              font-weight: 600;
+              font-size: 1.4rem;
+            }
+
+            .email{
+              color: #4B525A;
+              font-weight: 400;
+              font-size: 1.2rem;
+            }
+          }
+
+          .menu_item:not(:last-child){
+            border-bottom: 1px solid $col-border;
+          }
         }
       }
+  
+		}
+
+		.name {
+			font-size: 1.5rem;
+			display: flex;
+			flex-wrap: nowrap;
+			color: $col-high-emphasis-text;
+			font-weight: 600;
+		}
+
+		.avatar {
+			height: 3.2rem;
+			width: 3.2rem;
+			object-fit: cover;
+			border-radius: 50%;
+			border: 1px solid $col-border;
+
+			img {
+				border-radius: 50%;
+			}
+
+		}
+    .drop_down_icon{
+      cursor: pointer;
     }
 
-  }
+		@include screenMax("mobile") {
+			display: none;
+		}
+	}
 
-  &__details {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    background: $col-profile-container-bg;
-    border-radius: 50px;
-    padding: 1rem;
-    width: auto;
-    flex-shrink: 0;
+	@keyframes slide-out {
+		from {
+			transform: translateX(100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
 
-    .name {
-      font-size: 1.5rem;
-      display: flex;
-      flex-wrap: nowrap;
-      color: $col-high-emphasis-text;
-      font-weight: 600;
-    }
+	.sidemenu_container {
+		display: none;
 
-    .avatar {
-      height: 4rem;
-      width: 4rem;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 1px solid $col-border;
+		@include screenMax("mobile") {
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			background: $col-white;
+			width: 100%;
+			height: 100vh;
+			animation: slide-out 0.4s ease-out forwards;
+			z-index: 5;
+		}
+	}
 
-      img {
-        border-radius: 50%;
-      }
-    }
-
-    @include screenMax("mobile") {
-      display: none;
-    }
-  }
-
-
-
-  @keyframes slide-out {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  .sidemenu_container{
-    display: none;
-
-    @include screenMax("mobile") {
-    display: block;
-    position: fixed;
-    top: 0;
-    left:0;
-    background: $col-white;
-    width: 100%;
-    height: 100vh;
-    animation: slide-out 0.4s ease-out forwards;
-    z-index: 5;
-  }
-}
-
-  @include screenMax("mobile") {
-    justify-content: space-between;
-    padding: 1.6rem 1.5rem;
-    height: 8rem;
-  }
-
-
+	@include screenMax("mobile") {
+		justify-content: space-between;
+		padding: 1.6rem 1.5rem;
+		height: 8rem;
+	}
 }

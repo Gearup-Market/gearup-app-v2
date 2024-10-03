@@ -1,0 +1,139 @@
+@import "@/styles/imports";
+
+.container {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(2, 1, 6, 0.58); 
+	height: 100vh;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px); 
+	overflow: hidden;
+	z-index: 200;
+
+	@keyframes slideInRight {
+		0% {
+			// opacity: 0;
+			transform: translateX(100%);
+		}
+		100% {
+			// opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	&[data-show="true"] {
+		display: flex;
+		justify-content: flex-end;
+		animation: slideInRight 0.1s ease-in-out;
+	}
+
+	&[data-show="false"] {
+		display: none;
+	}
+
+	.content {
+		height: 100vh;
+		width: 51rem;
+		background-color: #fff;
+        box-sizing: border-box;
+		
+		.header {
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+			border: 1px solid #f0f0f1;
+			align-items: center;
+			padding: 2.4rem;
+
+			.close_icon {
+				cursor: pointer;
+			}
+		}
+
+		.empty_wishlist_container {
+			display: flex;
+			flex-direction: column;
+			gap: 1.6rem;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			margin-top: 15rem;
+
+			.image_container {
+				height: 8rem;
+				width: 8rem;
+			}
+
+			button {
+				gap: 0.5rem;
+				animation: all 2s ease-in-out;
+			}
+
+			h2 {
+				font-weight: 700;
+				font-size: 1.8rem;
+				color: #1b1e21;
+			}
+
+			p {
+				color: #4b525a;
+				font-size: 1.4rem;
+				font-weight: 400;
+			}
+
+			.explore_container {
+				background-color: #fff;
+				display: none;
+				animation: all 2s ease-in-out;
+				width: 100%;
+				margin-top: 0.8rem;
+				box-shadow: 0px 2px 30px 0px #120e0614;
+				border-radius: 0.8rem;
+
+				&[data-show="true"] {
+					display: flex;
+					flex-direction: column;
+				}
+				.explore_item {
+					display: flex;
+					align-items: center;
+					gap: 0.5rem;
+					padding: 1.2rem 1.6rem;
+
+					img {
+						height: 2.4rem;
+						width: 2.4rem;
+					}
+
+					p {
+						color: #4b525a;
+						font-size: 1.6rem;
+						font-weight: 400;
+					}
+				}
+
+				.explore_item:first-child {
+					border-bottom: 1px solid $col-border;
+				}
+			}
+		}
+
+        .cards_wrapper{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: calc(100vh - 8rem);
+            padding: 2.4rem;
+            
+            .cards_container {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border: 1px solid $col-border;
+                border-radius: 1.6rem;
+            }
+        }
+	}
+}
