@@ -37,4 +37,5 @@ export const API_URL = {
 	changeTxStage: "/transactions/update-stage",
 	changeTxStatus: "/transactions/update-status",
 	reviews: "/reviews/add",
+	getAnalytics: "/analytics/transactions"
 };

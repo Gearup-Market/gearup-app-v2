@@ -8,21 +8,26 @@ import Image from "next/image";
 import AdminSidebar from "../AdminSidebar/AdminSidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
+import WishlistComponent from "../WishlistComponent/WishlistComponent";
 
 const AdminNavbar = () => {
 	const [collapsed, setCollapsed] = useState<boolean>(false);
 	const [showMenubar, setShowMenubar] = useState<boolean>(false);
 	const [showDropDown, setShowDropDown] = useState(false);
+	const [showWishList, setShowWishList] = useState(false);
 	const { user } = useAuth();
 
-  useEffect(() => {
+	useEffect(() => {
 		// Function to handle click events
 		const handleClick = (event: MouseEvent) => {
 			const target = event.target as HTMLElement;
 
 			// Check if the click happened outside the specified elements
-			if (!target.closest(".drop-down-menu-class") && !target.closest(".drop-down-icon-class")) {
-				setShowDropDown(false)
+			if (
+				!target.closest(".drop-down-menu-class") &&
+				!target.closest(".drop-down-icon-class")
+			) {
+				setShowDropDown(false);
 			}
 		};
 
@@ -66,7 +71,7 @@ const AdminNavbar = () => {
 						className={`${styles.small_icon} ${styles.circle_border}`}
 					>
 						<Image
-							src={"/svgs/icon-notification.svg"}
+							src={"/svgs/notification.svg"}
 							height={70}
 							width={70}
 							alt=""
@@ -93,6 +98,18 @@ const AdminNavbar = () => {
 				</div>
 			</div>
 			<div className={styles.navbar_container__details}>
+				<Button
+					buttonType="transparent"
+					className={`${styles.small_icon} ${styles.circle_border}`}
+				>
+					<Image
+						src={"/svgs/notification.svg"}
+						height={70}
+						width={70}
+						alt=""
+						sizes="100vw"
+					/>
+				</Button>
 				<div className={styles.details_items}>
 					<div className={styles.avatar}>
 						<Image
@@ -103,10 +120,16 @@ const AdminNavbar = () => {
 						/>
 					</div>
 					<span className={styles.name}>{user?.userName ?? "Guest"}</span>
-					<span className={`${styles.drop_down_icon} drop-down-icon-class`} onClick={()=>setShowDropDown(true)}>
+					<span
+						className={`${styles.drop_down_icon} drop-down-icon-class`}
+						onClick={() => setShowDropDown(true)}
+					>
 						<ArrowDownIcon />
 					</span>
-				<MenuDropDown showDropDownMenu={showDropDown} />
+					<MenuDropDown
+						showDropDownMenu={showDropDown}
+						setShowWishList={setShowWishList}
+					/>
 				</div>
 			</div>
 
@@ -118,19 +141,38 @@ const AdminNavbar = () => {
 					/>
 				</div>
 			)}
+			<WishlistComponent
+				showWishList={showWishList}
+				setShowWishList={setShowWishList}
+			/>
 		</div>
 	);
 };
 
 export default AdminNavbar;
 
-const MenuDropDown = ({ showDropDownMenu }: { showDropDownMenu: boolean }) => {
+const MenuDropDown = ({
+	showDropDownMenu,
+	setShowWishList
+}: {
+	showDropDownMenu: boolean;
+	setShowWishList: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
 	const { user } = useAuth();
 	return (
-		<div className={`${styles.drop_down_menu_container} drop-down-menu-class`} data-show={showDropDownMenu}>
+		<div
+			className={`${styles.drop_down_menu_container} drop-down-menu-class`}
+			data-show={showDropDownMenu}
+		>
 			<ul className={styles.menu_container}>
 				<li className={styles.menu_item}>
-					<Image src={!!user?.avatar ? user.avatar : "/svgs/avatar-user.svg"} alt="user-icon" height={32} width={32} className={styles.avatar}/>
+					<Image
+						src={!!user?.avatar ? user.avatar : "/svgs/avatar-user.svg"}
+						alt="user-icon"
+						height={32}
+						width={32}
+						className={styles.avatar}
+					/>
 					<div>
 						<h3 className={styles.user_name}>{user?.userName}</h3>
 						<p className={styles.email}>{user?.email}</p>
@@ -140,7 +182,7 @@ const MenuDropDown = ({ showDropDownMenu }: { showDropDownMenu: boolean }) => {
 					<Image src="/svgs/user.svg" alt="user-icon" height={32} width={32} />
 					<h3>Profile</h3>
 				</Link>
-				<li className={styles.menu_item}>
+				<li className={`${styles.menu_item} ${styles.cursor} wishlist_icon`} onClick={() => setShowWishList(true)}>
 					<Image src="/svgs/star.svg" alt="user-icon" height={32} width={32} />
 					<h3>Wishlist</h3>
 				</li>

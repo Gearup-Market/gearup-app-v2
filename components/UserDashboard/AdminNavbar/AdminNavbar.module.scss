@@ -157,6 +157,10 @@
         .menu_container{
           border-radius: 0.8rem;
           width: 100%;
+
+          .cursor{
+            cursor: pointer;
+          }
           
           .menu_item{
             width: 100%;
