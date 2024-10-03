@@ -9,7 +9,7 @@ const Messages = () => {
 	const messages = [];
 	return (
 		<div className={styles.container}>
-			{messages.length !== 0 ? (
+			{messages.length === 0 ? (
 				<NoMessages />
 			) : (
 				<div className={styles.chat_messages}>
