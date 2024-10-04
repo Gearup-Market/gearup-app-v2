@@ -45,10 +45,10 @@
 			}
 		}
 
-        @include screenMax("mobile"){
-            margin: 1.6rem 1.6rem;
-            padding: 1rem 1.6rem;
-        }
+		@include screenMax("mobile") {
+			margin: 1.6rem 1.6rem;
+			padding: 1rem 1.6rem;
+		}
 	}
 
 	&__header {
@@ -86,9 +86,9 @@
 				cursor: pointer;
 				box-sizing: border-box;
 
-                @include screenMax("mobile"){
-                    padding: 1.6rem 3.2rem;
-                }
+				@include screenMax("mobile") {
+					padding: 1.6rem 3.2rem;
+				}
 
 				&[data-active="true"] {
 					background: $col-active-nav-bg;
@@ -106,21 +106,27 @@
 				.title {
 					font-size: 1.6rem;
 					color: $col-high-emphasis-text;
-					font-weight: 400;
+					// font-weight: 400;
 				}
 
 				.logout_text {
 					color: $col-error;
 				}
 
-				img{
+				img {
 					height: 2.4rem;
 					width: 2.4rem;
 				}
 			}
-		}
 
-		
+			.wishlist_nav {
+				display: none;
+
+				@include screenMax("mobile") {
+					display: flex;
+				}
+			}
+		}
 	}
 
 	.btn_container {

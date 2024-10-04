@@ -5,6 +5,8 @@ import styles from "./ProfileCard.module.scss";
 import Image from "next/image";
 import { Button, Ratings } from "@/shared";
 import { Listing } from "@/store/slices/listingsSlice";
+import Link from "next/link";
+import { AppRoutes } from "@/utils";
 
 const ProfileCard = ({ listing }: { listing: Listing }) => {
 	const { location, user, reviews, averageRating, ownerTotalListings } = listing;
@@ -51,12 +53,14 @@ const ProfileCard = ({ listing }: { listing: Listing }) => {
 						</div>
 					</div>
 				</div>
+				<Link href={`${AppRoutes.userDashboard.messages}?participantId=${user?._id}&listingId=${listing?._id}`}>
 				<Button className={styles.button} buttonType="transparent">
 					<div className={styles.icon}>
 						<Image src="/svgs/send.svg" alt="" fill sizes="100vw" />
 					</div>
 					<h5>Send a message</h5>
 				</Button>
+				</Link>
 			</div>
 			{user?.about && <div className={styles.text}>
 				<p>

@@ -40,6 +40,6 @@ export const API_URL = {
 	getAnalytics: "/analytics/transactions",
 	createMessages: "/chats/new",
 	addMessage: (id: string) => `/chats/${id}/messages`,
-	getUserMessages: (id: string) => `/chats/${id}`,
-	getChatMessages: (id: string) => `/chats/all/${id}`,
+	getUserMessages: (id: string) => `/chats/all/${id}`,
+	getChatMessages: (id: string) => `/chats/${id}`,
 };

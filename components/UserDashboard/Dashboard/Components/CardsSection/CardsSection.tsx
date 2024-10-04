@@ -12,13 +12,14 @@ import Link from "next/link";
 import { useFetchUserAnalytics } from "@/app/api/hooks/analytics";
 import { useAuth } from "@/contexts/AuthContext";
 import Spinner from "@/shared/Spinner/Spinner";
+import { useGetUserAnalyticsById } from "@/hooks/useUsers";
 
 const CardsSection = () => {
 	const [selectedTime, setSelectedTime] = useState<string>();
 	const [allTime, setAllTime] = useState();
 	const { user } = useAuth();
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
-	const { data, isFetching } = useFetchUserAnalytics(user?._id ?? "");
+	const { data, fetchingData } = useGetUserAnalyticsById();
 
 	const [inputDate, setInputDate] = useState<any>([
 		{
@@ -34,28 +35,28 @@ const CardsSection = () => {
 			title: "Active listing",
 			icon: "/svgs/active-icon.svg",
 			percentage: 0,
-			amount: data?.data.activeListings
+			amount: data?.activeListings
 		},
 		{
 			id: 2,
 			title: "Ongoing deals",
 			icon: "/svgs/ongoing-icon.svg",
 			percentage: 0,
-			amount: data?.data.ongoingTransactions
+			amount: data?.ongoingTransactions
 		},
 		{
 			id: 3,
 			title: "Completed deals",
 			icon: "/svgs/completed-icon.svg",
 			percentage: 0,
-			amount: data?.data.completedDeals
+			amount: data?.completedDeals
 		},
 		{
 			id: 4,
 			title: "Declined deals",
 			icon: "/svgs/decline-icon.svg",
 			percentage: 0,
-			amount: data?.data.declinedDeals
+			amount: data?.declinedDeals
 		}
 	];
 
@@ -123,7 +124,7 @@ const CardsSection = () => {
 											{card.title}
 										</Link>
 										<p className={styles.amount}>
-											{isFetching ? (
+											{fetchingData ? (
 												<Spinner size="small" />
 											) : (
 												card.amount
