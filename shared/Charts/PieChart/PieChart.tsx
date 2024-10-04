@@ -18,7 +18,7 @@ const PieChartComponent = ({ data, colors }: Props) => {
                         data={data}
                         cx="50%"
                         cy="50%"
-                        innerRadius={60}
+                        innerRadius={70}
                         outerRadius={100}
                         fill="#8884d8"
                         paddingAngle={10}

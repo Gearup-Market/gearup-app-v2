@@ -38,7 +38,6 @@
 		width: 51rem;
 		background-color: #fff;
         box-sizing: border-box;
-		
 		.header {
 			display: flex;
 			width: 100%;
@@ -50,6 +49,9 @@
 			.close_icon {
 				cursor: pointer;
 			}
+		}
+		.mobile_header{
+			display: none;
 		}
 
 		.empty_wishlist_container {
@@ -81,6 +83,7 @@
 				color: #4b525a;
 				font-size: 1.4rem;
 				font-weight: 400;
+				text-align: center;
 			}
 
 			.explore_container {
@@ -118,6 +121,10 @@
 					border-bottom: 1px solid $col-border;
 				}
 			}
+
+			.btn_container{
+
+			}
 		}
 
         .cards_wrapper{
@@ -135,5 +142,38 @@
                 border-radius: 1.6rem;
             }
         }
+	}
+
+	@include screenMax("mobile"){
+		position: absolute;
+		// bottom: 0;
+		top: 8rem;
+		height: calc(100vh - 8rem);
+
+
+		.content{
+			padding: 1.6rem;
+			.header{
+				display: none;
+			}
+
+			.mobile_header{
+				display: flex;
+				flex-direction: column;
+				gap: 1.6rem;
+
+				.close_icon{
+					cursor: pointer;
+				}
+			}
+
+			.btn_container{
+				width: 100%;
+
+				button{
+					width: 100%;
+				}
+			}
+		}
 	}
 }

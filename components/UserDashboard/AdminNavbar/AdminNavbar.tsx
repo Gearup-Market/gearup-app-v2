@@ -138,6 +138,7 @@ const AdminNavbar = () => {
 					<AdminSidebar
 						isMobile={true}
 						onClose={() => setShowMenubar(!showMenubar)}
+						setShowWishList={setShowWishList}
 					/>
 				</div>
 			)}

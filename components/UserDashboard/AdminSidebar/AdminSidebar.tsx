@@ -6,7 +6,6 @@ import {
 	CloseIcon,
 	DashboardNavIcon,
 	ListingsNavIcon,
-	LocationEllipse,
 	LogoutNavIcon,
 	MessagesNavIcon,
 	SettingsNavIcon,
@@ -22,9 +21,10 @@ import Image from "next/image";
 interface Props {
 	isMobile?: boolean;
 	onClose?: () => void;
+	setShowWishList?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AdminSidebar = ({ isMobile, onClose }: Props) => {
+const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 	const pathname = usePathname();
 	const { logout, user } = useAuth();
 	const sidebarItems = [
@@ -81,14 +81,16 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 				<div className={styles.sidebar_container__customer_container}>
 					<h3 className={styles.title}>Profile</h3>
 					<div className={styles.location_details}>
-					<div className={styles.avatar}>
-						<Image
-							src={!!user?.avatar ? user.avatar : "/svgs/avatar-user.svg"}
-							width={40}
-							height={40}
-							alt="avatar"
-						/>
-					</div>
+						<div className={styles.avatar}>
+							<Image
+								src={
+									!!user?.avatar ? user.avatar : "/svgs/avatar-user.svg"
+								}
+								width={40}
+								height={40}
+								alt="avatar"
+							/>
+						</div>
 						<div>
 							<h4>{user?.userName}</h4>
 							<Link href={`/users/${user?._id}`}>View Profile</Link>
@@ -113,6 +115,22 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 				</ul>
 
 				<ul className={`${styles.navlinks_container} ${styles.btn_container}`}>
+					<li
+						className={`${styles.navlinks_container__item} ${styles.cursor} wishlist_icon`}
+						onClick={() => {
+							setShowWishList && setShowWishList(true);
+
+							onClose && onClose();
+						}}
+					>
+						<Image
+							src="/svgs/star.svg"
+							alt="user-icon"
+							height={32}
+							width={32}
+						/>
+						<h3>Wishlist</h3>
+					</li>
 					<Link
 						href="/user/settings?q=payments"
 						className={styles.navlinks_container__item}

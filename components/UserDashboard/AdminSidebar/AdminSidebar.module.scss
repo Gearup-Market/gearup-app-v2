@@ -1,124 +1,129 @@
 @import "@/styles/imports";
 
 .sidebar_container {
-    background-color: $col-white;
-    box-sizing: border-box;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+	background-color: $col-white;
+	box-sizing: border-box;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 
-    &__customer_container{
-        background: #FBFBFD;
-        padding: 1rem;
-        margin: 2rem 1rem o 1rem;
+	&__customer_container {
+		background: #fbfbfd;
+		padding: 1rem;
+		margin: 2rem 1rem 0 1rem;
 
-        .avatar{
-            height: 4rem;
-            width: 4rem;
+		.avatar {
+			height: 4rem;
+			width: 4rem;
+		}
+
+		.title {
+			font-size: 1.2rem;
+			font-weight: 700;
+			color: #1b1e21;
+			margin-bottom: 1.2rem;
+			text-transform: uppercase;
+		}
+
+		.location_details {
+			@include flex;
+			align-items: flex-start;
+			gap: 1rem;
+			margin-bottom: 1.2rem;
+
+			a {
+				font-size: 1.2rem;
+				font-weight: 400;
+				color: #4b525a;
+				text-decoration: underline;
+			}
+
+			h4 {
+				font-size: 1.4rem;
+				font-weight: 400;
+				color: #121212;
+			}
+		}
+
+        @include screenMax("mobile"){
+            margin: 1.6rem 1.6rem;
+            padding: 1rem 1.6rem;
         }
+	}
 
-        .title{
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #1B1E21;
-            margin-bottom: 1.2rem;
-            text-transform: uppercase;
-        }
+	&__header {
+		padding: 3.2rem;
+		height: 10rem;
+		border-bottom: 1px solid $col-border;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		width: 100%;
 
-        .location_details{
-            @include flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1.2rem;
+		@include screenMax("mobile") {
+			justify-content: space-between;
+			padding: 1.6rem 3.2rem;
+			height: 8rem;
+		}
+	}
 
-            a{
-                font-size: 1.2rem;
-                font-weight: 400;
-                color: #4B525A;
-                text-decoration: underline;
-            }
+	.navlinks_wrapper {
+		display: flex;
+		flex-direction: column;
+		flex: 1 1 auto;
+		justify-content: space-between;
 
-            h4{
-                font-size: 1.4rem;
-                font-weight: 400;
-                color: #121212;
-            }
-        
-        }
-        
-}
+		.navlinks_container {
+			display: flex;
+			flex-direction: column;
+			padding: 3rem 0;
 
+			&__item {
+				display: flex;
+				gap: 1rem;
+				align-items: center;
+				padding: 1.6rem;
+				cursor: pointer;
+				box-sizing: border-box;
 
-
-    &__header {
-        padding: 3.5rem;
-        height: 10rem;
-        border-bottom: 1px solid $col-border;
-        box-sizing:border-box;
-        display: flex;
-        align-items: center;
-        width:100%;
-
-        @include screenMax("mobile") {
-            justify-content: space-between;
-            padding: 1.6rem 1.5rem;
-            height: 8rem;
-          }
-    }
-
-    .navlinks_wrapper {
-        display: flex;
-        flex-direction: column;
-        flex: 1 1 auto;
-        justify-content: space-between;
-
-        .navlinks_container {
-            display: flex;
-            flex-direction: column;
-            padding: 3rem 0;
-
-            &__item {
-                display: flex;
-                gap: 1rem;
-                align-items: center;
-                padding: 1rem;
-                cursor: pointer;
-                box-sizing: border-box;
-
-
-                &[data-active='true'] {
-                    background: $col-active-nav-bg;
-                    font-weight: 700;
-                    border-left: 4px solid $col-orange;
+                @include screenMax("mobile"){
+                    padding: 1.6rem 3.2rem;
                 }
 
-                .icon {
-                    height: 2.4rem;
-                    width: 2.4rem;
-                    display: flex;
-                    align-items: center;
-                }
+				&[data-active="true"] {
+					background: $col-active-nav-bg;
+					font-weight: 700;
+					border-left: 4px solid $col-orange;
+				}
 
-                .title {
-                    font-size: 1.6rem;
-                    color: $col-high-emphasis-text;
-                    font-weight: 400;
-                }
+				.icon {
+					height: 2.4rem;
+					width: 2.4rem;
+					display: flex;
+					align-items: center;
+				}
 
-                .logout_text {
-                    color: $col-error;
-                }
+				.title {
+					font-size: 1.6rem;
+					color: $col-high-emphasis-text;
+					font-weight: 400;
+				}
 
-            }
-        }
+				.logout_text {
+					color: $col-error;
+				}
 
-    }
+				img{
+					height: 2.4rem;
+					width: 2.4rem;
+				}
+			}
+		}
 
-    .btn_container {
-        padding: 0;
+		
+	}
 
-    }
-
-
-
+	.btn_container {
+		padding: 0;
+	}
 }

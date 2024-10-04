@@ -11,7 +11,7 @@
 	box-sizing: border-box;
 	position: relative;
 	background-color: #fff;
-
+	
 	.icons_container {
 		display: flex;
 		gap: 1.5rem;
@@ -127,7 +127,6 @@
 		flex-shrink: 0;
 		justify-content: flex-end;
 
-		
 		.details_items {
 			display: flex;
 			gap: 0.5rem;
@@ -138,68 +137,68 @@
 			width: auto;
 			flex-shrink: 0;
 			justify-content: flex-end;
-      position: relative;
+			position: relative;
 
-      .drop_down_menu_container {
-        position: absolute;
-        right: 0;
-        top:4rem;
-        display: none;
-        box-shadow: 0px 2px 30px 0px #120E0614;
-        background-color: #fff;
-        border-radius: 1.6rem;
-        min-width: 27.5rem;
-  
-        &[data-show='true']{
-          display: flex;
-        }
-  
-        .menu_container{
-          border-radius: 0.8rem;
-          width: 100%;
+			.drop_down_menu_container {
+				position: absolute;
+				right: 0;
+				top: 4rem;
+				display: none;
+				box-shadow: 0px 2px 30px 0px #120e0614;
+				background-color: #fff;
+				border-radius: 1.6rem;
+				min-width: 27.5rem;
+				z-index: 20;
 
-          .cursor{
-            cursor: pointer;
-          }
-          
-          .menu_item{
-            width: 100%;
-            display: flex;
-            padding: 1.6rem;
-            align-items: center;
-            gap: 0.8rem;
-            color: #4B525A;
-            font-weight: 400;
-            font-size: 1.6rem;
-            img{
-              height: 2.4rem;
-              width: 2.4rem;
-            }
+				&[data-show="true"] {
+					display: flex;
+				}
 
-            .avatar{
-              height: 4rem;
-              width: 4rem;
-            }
+				.menu_container {
+					border-radius: 0.8rem;
+					width: 100%;
 
-            .user_name{
-              color: #1B1E21;
-              font-weight: 600;
-              font-size: 1.4rem;
-            }
+					.cursor {
+						cursor: pointer;
+					}
 
-            .email{
-              color: #4B525A;
-              font-weight: 400;
-              font-size: 1.2rem;
-            }
-          }
+					.menu_item {
+						width: 100%;
+						display: flex;
+						padding: 1.6rem;
+						align-items: center;
+						gap: 0.8rem;
+						color: #4b525a;
+						font-weight: 400;
+						font-size: 1.6rem;
+						img {
+							height: 2.4rem;
+							width: 2.4rem;
+						}
 
-          .menu_item:not(:last-child){
-            border-bottom: 1px solid $col-border;
-          }
-        }
-      }
-  
+						.avatar {
+							height: 4rem;
+							width: 4rem;
+						}
+
+						.user_name {
+							color: #1b1e21;
+							font-weight: 600;
+							font-size: 1.4rem;
+						}
+
+						.email {
+							color: #4b525a;
+							font-weight: 400;
+							font-size: 1.2rem;
+						}
+					}
+
+					.menu_item:not(:last-child) {
+						border-bottom: 1px solid $col-border;
+					}
+				}
+			}
 		}
 
 		.name {
@@ -220,11 +219,10 @@
 			img {
 				border-radius: 50%;
 			}
-
 		}
-    .drop_down_icon{
-      cursor: pointer;
-    }
+		.drop_down_icon {
+			cursor: pointer;
+		}
 
 		@include screenMax("mobile") {
 			display: none;
@@ -262,5 +260,6 @@
 		justify-content: space-between;
 		padding: 1.6rem 1.5rem;
 		height: 8rem;
+		position: relative;
 	}
 }
