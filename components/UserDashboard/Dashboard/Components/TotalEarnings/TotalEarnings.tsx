@@ -47,6 +47,16 @@ const TotalEarnings = () => {
         <div className={styles.container}>
             <div className={styles.container__pie_chart_container}>
                 <PieChartComponent data={data} colors={COLORS} />
+                <ul>
+                    {
+                        rows.map((item, index) => (
+                            <li key={index}>
+                                <EllipseIcon color={COLORS[index]} />
+                                <p>{item.type}</p>
+                            </li>
+                        ))
+                    }
+                </ul>
             </div>
             <div style={{ width: '100%' }} className={styles.container__table}>
                 <DataGrid rows={rows} sx={customisedTableClasses} columns={columns} hideFooter autoHeight paginationMode="server"

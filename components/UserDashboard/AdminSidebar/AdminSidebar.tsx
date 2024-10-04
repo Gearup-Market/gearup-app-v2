@@ -22,9 +22,10 @@ import Image from "next/image";
 interface Props {
 	isMobile?: boolean;
 	onClose?: () => void;
+	setShowWishList: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AdminSidebar = ({ isMobile, onClose }: Props) => {
+const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 	const pathname = usePathname();
 	const { logout, user } = useAuth();
 	const sidebarItems = [
@@ -113,6 +114,13 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 				</ul>
 
 				<ul className={`${styles.navlinks_container} ${styles.btn_container}`}>
+				<li className={`${styles.navlinks_container__item} ${styles.cursor} wishlist_icon`} onClick={() => {setShowWishList(true)
+
+				onClose &&	onClose()
+				}}>
+					<Image src="/svgs/star.svg" alt="user-icon" height={32} width={32} />
+					<h3>Wishlist</h3>
+				</li>
 					<Link
 						href="/user/settings?q=payments"
 						className={styles.navlinks_container__item}

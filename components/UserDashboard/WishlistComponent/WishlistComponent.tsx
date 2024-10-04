@@ -4,7 +4,7 @@ import styles from "./WishlistComponent.module.scss";
 import HeaderSubText from "../HeaderSubText/HeaderSubText";
 import { CloseIcon } from "@/shared/svgs/dashboard";
 import Image from "next/image";
-import { Button, Pagination } from "@/shared";
+import { BackNavigation, Button, Pagination } from "@/shared";
 import Link from "next/link";
 import WishlistCard from "./WishlistCard/WishlistCard";
 
@@ -55,6 +55,10 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 						<CloseIcon />
 					</span>
 				</div>
+				<div className={styles.mobile_header}>
+					<HeaderSubText variant="medium" title="Wishlist" />
+				</div>
+
 				{wishlists.length === 0 ? (
 					<EmptyWishlist />
 				) : (
@@ -98,7 +102,7 @@ const EmptyWishlist = () => {
 			</span>
 			<h2>No Item added Yet</h2>
 			<p>Browse through the marketplace to bookmark an item for later</p>
-			<div>
+			<div className={styles.btn_container}>
 				<Button
 					onClick={() => setShowExplore(prev => !prev)}
 					iconSuffix={
