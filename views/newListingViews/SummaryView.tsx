@@ -52,8 +52,8 @@ const SummaryView = () => {
 			const photos = Array.from(
 				new Set([...(newListing.listingPhotos || []), ...listingPhotos])
 			);
-			const newListingPhotos = photos.filter(url => !url.startsWith('blob:'));
-			
+			const newListingPhotos = photos.filter(url => !url.startsWith("blob:"));
+
 			dispatch(
 				updateNewListing({
 					listingPhotos: newListingPhotos
@@ -290,7 +290,7 @@ const SummaryView = () => {
 											)}
 											prefix="₦"
 										/>
-										{newListing.offer?.forRent?.day3Offer && (
+										{newListing.offer?.forRent?.day3Offer ? (
 											<DetailContainer
 												title="3 days offer(including VAT)"
 												value={formatNum(
@@ -298,8 +298,8 @@ const SummaryView = () => {
 												)}
 												prefix="₦"
 											/>
-										)}
-										{newListing.offer?.forRent?.day7Offer && (
+										) : null}
+										{newListing.offer?.forRent?.day7Offer ? (
 											<DetailContainer
 												title="7 days offer(including VAT)"
 												value={formatNum(
@@ -307,8 +307,8 @@ const SummaryView = () => {
 												)}
 												prefix="₦"
 											/>
-										)}
-										{newListing.offer?.forRent?.day30Offer && (
+										) : null}
+										{newListing.offer?.forRent?.day30Offer ? (
 											<DetailContainer
 												title="30 days offer(including VAT)"
 												value={formatNum(
@@ -316,7 +316,7 @@ const SummaryView = () => {
 												)}
 												prefix="₦"
 											/>
-										)}
+										) : null}
 									</div>
 									<DetailContainer
 										title="Total replacement amount (Including VAT):"

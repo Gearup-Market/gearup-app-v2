@@ -75,6 +75,15 @@ const ListingDetailsView = () => {
 		}
 	}, [newListing, allCategories]);
 
+	useEffect(() => {
+		if(newListing.items.length === 1){
+			setInputValues({
+				...inputValues,
+				title: newListing.items[0].name
+			})
+		}
+	}, [newListing])
+
 	const disabledButton =
 		!inputValues.description || !inputValues.title || !category || !subCategory;
 
