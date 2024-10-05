@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./ChatBodyElement.module.scss";
 import MessageReceived from "../MessageReceived/MessageReceived";
 import MessageSent from "../MessageSent/MessageSent";
-import { Button, InputField } from "@/shared";
+import { Button } from "@/shared";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -10,7 +10,8 @@ import { useAddChatMessage, useCreateChatMessage, useFetchChatMessages } from "@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { on } from "events";
+import { CircularProgressLoader } from "@/shared/loaders";
+import { Box } from "@mui/material";
 
 // Define the validation schema using Yup
 const ChatMessageSchema = Yup.object().shape({
@@ -27,9 +28,7 @@ const ChatBodyElement = () => {
 	const pathname = usePathname();
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
 	const { mutateAsync: addChatMessage } = useAddChatMessage();
-	const {data: chatMessages, isFetching} = useFetchChatMessages(chatId);
-
-	console.log(chatMessages, "Chat Messages");
+	const {data: chatMessages, isPending, refetch,} = useFetchChatMessages(chatId);
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (user && participantId && listingId) {
@@ -56,6 +55,7 @@ const ChatBodyElement = () => {
 					attachments: []
 				});
 				console.log(addMessageRes, "Add Resp");
+				refetch();
 				resetForm(); // Clear the form after submission
 			} catch (error) {
 				console.error("Failed to send message:", error);
@@ -66,14 +66,34 @@ const ChatBodyElement = () => {
 
 	return (
 		<div className={styles.chat_body}>
+			{
+				isPending ? 
+				<Box
+				display="flex"
+				justifyContent="center"
+				alignItems="center"
+				height="40rem"
+			>
+				<CircularProgressLoader color="#ffb30f" size={30} />
+			</Box>
+				:
+			
+			<>
 			<p className={styles.chat_date}>Sun, Dec 17 (Today)</p>
 			<div className={styles.chat_content}>
 				<div className={styles.chats}>
-					<MessageReceived />
-					<MessageSent />
+					{
+						
+							chatMessages?.data?.messages?.map((message, index) => {
+								if (message.sender._id === user?._id) {
+									return <MessageSent key={index} message={message.message} />;
+								} else {
+									return <MessageReceived key={index} message={message.message} />;
+								}
+							})
+					
+					}
 				</div>
-
-				{/* Formik form integration */}
 				<Formik
 					initialValues={{ message: "" }}
 					validationSchema={ChatMessageSchema}
@@ -104,6 +124,8 @@ const ChatBodyElement = () => {
 					)}
 				</Formik>
 			</div>
+			</>
+			}
 		</div>
 	);
 };

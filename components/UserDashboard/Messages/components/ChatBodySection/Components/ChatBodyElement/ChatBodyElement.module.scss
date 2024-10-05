@@ -25,10 +25,12 @@
 		justify-content: space-between;
 
 		.chats {
-			overflow: hidden;
+			overflow: auto;
 			display: flex;
 			flex-direction: column;
 			gap: 1.6rem;
+			padding: 2rem 0 6rem 0;
+			height: 70vh;
 			@include noScrollBar;
 		}
 
@@ -80,5 +82,10 @@
 				z-index: 5;
 			}
 		}
+	}
+
+	@include screenMax("mobile"){
+		margin-top: 0;
+		padding: 4rem 0rem;
 	}
 }

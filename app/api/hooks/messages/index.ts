@@ -29,18 +29,9 @@ export const useGetUserMessages = (
     useQuery<IGetConversationResp, IGetMessagesErr>({
       queryKey: ["getUserMessages", chatId],
       queryFn: async () =>
-        (await api.post(`${API_URL.getChatMessages(chatId as string)}`)).data,
+        (await api.get(`${API_URL.getChatMessages(chatId as string)}`)).data,
       refetchOnMount: false,
       enabled: !!chatId,
-      retry(failureCount, error) {
-        console.log(error,"404 error")
-        console.log(failureCount,"failure ocunt")
-        if (error.status === 404) return false;
-        return failureCount < 3;
-      },
-      retryDelay(failureCount, error) {
-        return failureCount * 1000;
-      },
       ...options
     });
   

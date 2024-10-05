@@ -5,12 +5,14 @@ import NoMessages from "./components/NoMessages/NoMessages";
 import ChatMessageHistory from "./components/ChatMessageHistory/ChatMessageHistory";
 import UserProfileSection from "./components/UserProfileSection/UserProfileSection";
 import ChatBodySection from "./components/ChatBodySection/ChatBodySection";
-import { useMessages } from "@/hooks/useMessages";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { Box } from "@mui/material";
+import { useGetUserMessages } from "@/app/api/hooks/messages";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Messages = () => {
-	const { allUserMessages, isFetchingAllUserMessages } = useMessages();
+	const { user } = useAuth();
+	const { data: allUserMessages, isFetching: isFetchingAllUserMessages } = useGetUserMessages(user?._id);
 
 	if (isFetchingAllUserMessages) {
 		return (
@@ -27,11 +29,11 @@ const Messages = () => {
 
 	return (
 		<div className={styles.container}>
-			{allUserMessages?.length === 0 ? (
+			{allUserMessages?.data.length === 0 ? (
 				<NoMessages />
 			) : (
 				<div className={styles.chat_messages}>
-					<ChatMessageHistory allUserMessages={allUserMessages} />
+					<ChatMessageHistory allUserMessages={allUserMessages?.data || []} />
 					<div className={styles.chat_body_desktop}>
 						<ChatBodySection />
 					</div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ChatMessageHistory.module.scss";
 import HeaderSubText from "@/components/UserDashboard/HeaderSubText/HeaderSubText";
 import { CustomImage, InputField } from "@/shared";
@@ -28,6 +28,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 	const [activeChatId, setActiveChatId] = useState<string | null>(activeId);
 	const pathname = usePathname()
 	const [showMessageDetails, setShowMessageDetails] = useState<boolean>(false);
+	const participantId = searchParams.get("participantId");
 	const router = useRouter()
 	const { user } = useAuth();
 	const {isMobile} = useResponsive();
@@ -37,7 +38,17 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 		userProfile: false
 	});
 
-	console.log(allUserMessages,"userMessages")
+	// Set the first chat as active chat if no chat is active
+useEffect(()=>{
+	if(!participantId && !activeChatId && allUserMessages?.length){
+		const currentParams = new URLSearchParams(searchParams.toString());
+		currentParams.set('participantId', allUserMessages[0]?.participants?.find(item => item?._id !== user?._id)?._id || "");
+		currentParams.set("activeChatId", allUserMessages[0]?._id || "")
+		currentParams.set("listingId", allUserMessages[0]?.listingItem?._id || "")
+		router.push(`${pathname}?${currentParams.toString()}`);
+	}
+},[allUserMessages])
+
 	const handleMessageClick = (chat: MessageData) => {
 		const id = chat._id;
 		const participantId = chat?.participants?.find(item => item?._id !== user?._id)?._id || "";
@@ -172,7 +183,7 @@ const ChatItem = ({
 					/>
 				</div>
 				<div className={styles.details}>
-					<div className={styles.name}>{participant?.userName}</div>
+					<div className={styles.name}>{participant?.name}</div>
 					<div className={styles.message}>Hello, how are you?</div>
 				</div>
 			</div>
