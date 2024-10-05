@@ -19,6 +19,7 @@ export * from "./cart";
 export * from "./getDaysFactor";
 export * from "./formatTime";
 export * from "./stringUtils";
+export * from './appRoutes'
 
 export {
 	isEmpty,

@@ -116,7 +116,7 @@ const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 
 				<ul className={`${styles.navlinks_container} ${styles.btn_container}`}>
 					<li
-						className={`${styles.navlinks_container__item} ${styles.cursor} wishlist_icon`}
+						className={`${styles.navlinks_container__item} ${styles.cursor} ${styles.wishlist_nav} wishlist_icon`}
 						onClick={() => {
 							setShowWishList && setShowWishList(true);
 

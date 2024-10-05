@@ -85,6 +85,15 @@
 		border-radius: 1.6rem;
 		padding: 1.6rem;
 
+		.conversation_image{
+			height: 10rem;
+			width: 10rem;
+
+			img{
+				border-radius: 1.6rem;
+			}
+		}
+
 		.convo_name {
 			font-size: 1.6rem;
 			font-weight: 700;

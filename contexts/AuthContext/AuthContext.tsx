@@ -10,6 +10,7 @@ import { api, queryClient } from "@/app/api";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateUser } from "@/store/slices/userSlice";
 import useCart from "@/hooks/useCart";
+import { CircularProgressLoader } from "@/shared/loaders";
 
 // ** Defaults
 export const defaultAuthProvider: DefaultProviderType = {
@@ -128,7 +129,7 @@ export const ProtectRoute = (props: ProtectRouteProps) => {
 					height: "400px"
 				}}
 			>
-				<CircularProgress style={{ color: "#FFB30F" }} />
+				<CircularProgressLoader color="#ffb30f" size={40} />
 			</Box>
 		);
 	}

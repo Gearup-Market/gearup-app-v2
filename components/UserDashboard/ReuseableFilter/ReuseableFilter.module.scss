@@ -29,10 +29,6 @@
         width:fit-content;
         transition: all 0.3s ease-in-out;
 
-       
-
-        
-
 
         &__filter{
             display: flex;
@@ -47,7 +43,7 @@
             transition: all 0.3s ease-in-out;
 
             &[data-active='true']{
-                background-color: $orange-grad;
+                background: $orange-grad;
                 font-weight: 700;
             }
         

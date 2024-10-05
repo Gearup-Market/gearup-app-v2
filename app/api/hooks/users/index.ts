@@ -14,6 +14,7 @@ import {
 	IResetPasswordRequestProps,
 	IResetPasswordRequestRes,
 	IResetPasswordRes,
+	IUserResp,
 	iPostRegisterKycReq,
 	iPostRegisterKycResp,
 	iPostReviewResp,
@@ -162,10 +163,10 @@ const useGetUser = (
 
 const useGetUserDetails = (
 	{ userId }: { userId: string },
-	options?: UseQueryOptions<any, IGetCardHistoriesErr>
+	options?: UseQueryOptions<IUserResp, IGetCardHistoriesErr>
 ) =>
-	useQuery<any, IGetCardHistoriesErr>({
-		queryKey: ["user"],
+	useQuery<IUserResp, IGetCardHistoriesErr>({
+		queryKey: ["user", userId],
 		queryFn: async () => (await api.get(`${API_URL.getUser}/${userId}`)).data,
 		...options,
 		enabled: !!userId,

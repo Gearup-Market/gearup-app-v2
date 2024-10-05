@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useGetUserDetails } from "@/app/api/hooks/users";
 import { Box, CircularProgress } from "@mui/material";
 import LatestReviews from "./LatestReviews/LatestReviews";
+import { useFetchUserDetailsById } from "@/hooks/useUsers";
 
 interface Props {
 	userId: string;
@@ -19,13 +20,11 @@ interface Props {
 const UserDetails = ({ userId }: Props) => {
 
     // get user details
-	const { isFetching: fetchingUser, data: user } = useGetUserDetails({
-		userId
-	});
+	const { fetchingUser, user } = useFetchUserDetailsById(userId);
 
     // get user listings using id
 	const { data, isFetching, refetch } = useGetListings({
-		userId: user?.data?.userId,
+		userId: user?.userId,
 		shouldFetchAll: false
 	});
 
@@ -87,14 +86,14 @@ const UserDetails = ({ userId }: Props) => {
 			<BackNavigation />
 			<div className={styles.details_body}>
 				<div>
-					<UserDetailsProfile user={user?.data} />
+					<UserDetailsProfile user={user} />
 				</div>
 				<div>
-					{!!user?.data?.about && (
+					{!!user?.about && (
 						<div className={styles.about_container}>
 							<HeaderSubText title="About" variant="medium" />
 							<div className={styles.about}>
-								<p>{user?.data?.about}</p>
+								<p>{user?.about}</p>
 							</div>
 						</div>
 					)}

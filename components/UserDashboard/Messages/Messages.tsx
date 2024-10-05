@@ -1,19 +1,39 @@
+"use client";
 import React from "react";
 import styles from "./Messages.module.scss";
 import NoMessages from "./components/NoMessages/NoMessages";
 import ChatMessageHistory from "./components/ChatMessageHistory/ChatMessageHistory";
 import UserProfileSection from "./components/UserProfileSection/UserProfileSection";
 import ChatBodySection from "./components/ChatBodySection/ChatBodySection";
+import { CircularProgressLoader } from "@/shared/loaders";
+import { Box } from "@mui/material";
+import { useGetUserMessages } from "@/app/api/hooks/messages";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Messages = () => {
-	const messages = [];
+	const { user } = useAuth();
+	const { data: allUserMessages, isFetching: isFetchingAllUserMessages } = useGetUserMessages(user?._id);
+
+	if (isFetchingAllUserMessages) {
+		return (
+			<Box
+				display="flex"
+				justifyContent="center"
+				alignItems="center"
+				height="40rem"
+			>
+				<CircularProgressLoader color="#ffb30f" size={30} />
+			</Box>
+		);
+	}
+
 	return (
 		<div className={styles.container}>
-			{messages.length === 0 ? (
+			{allUserMessages?.data.length === 0 ? (
 				<NoMessages />
 			) : (
 				<div className={styles.chat_messages}>
-					<ChatMessageHistory />
+					<ChatMessageHistory allUserMessages={allUserMessages?.data || []} />
 					<div className={styles.chat_body_desktop}>
 						<ChatBodySection />
 					</div>

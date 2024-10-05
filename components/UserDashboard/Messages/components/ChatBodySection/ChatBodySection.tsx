@@ -4,12 +4,20 @@ import styles from "./ChatBodySection.module.scss";
 import { VerifyIcon } from "@/shared/svgs/dashboard";
 import Image from "next/image";
 import ChatBodyElement from "./Components/ChatBodyElement/ChatBodyElement";
+import { useSearchParams } from "next/navigation";
+import { useCurrentChatMessages } from "@/hooks/useMessages";
+import { Box } from "@mui/material";
+import { CircularProgressLoader } from "@/shared/loaders";
+import { useFetchChatMessages } from "@/app/api/hooks/messages";
 
 interface ChatBodySectionProps {
 	showAllBorder?: boolean;
 }
 
 const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
+	const searchParams = useSearchParams();
+	const chatId = searchParams.get("activeChatId") ?? "";
+	const participantId = searchParams.get("participantId");
 
 	return (
 		<div className={styles.container} data-borders={showAllBorder}>
@@ -50,7 +58,7 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 					</span>
 				</div>
 			</div>
-			<ChatBodyElement/>
+			<ChatBodyElement />
 		</div>
 	);
 };

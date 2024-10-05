@@ -252,3 +252,26 @@ export type iPostReviewRsq = {
 	comment?: string;
 	transaction: string;
 };
+
+export interface IUserResp {
+	data: IUser
+	message: string;
+  }
+  
+
+  export interface IUser {
+	_id: string;
+	userId: string;
+	email: string;
+	password: string;
+	name: string;
+	verificationToken: string;
+	isVerified: boolean;
+	resetPasswordToken: string;
+	verificationTokenExpiry: string;
+	createdAt: string;
+	resetPasswordTokenExpiry: string;
+	userName: string;
+	about: string;
+	__v: number;
+  };
