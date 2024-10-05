@@ -27,7 +27,7 @@ export const useGetUserMessages = (
     options?: UseQueryOptions<IGetConversationResp, IGetMessagesErr>
   ) =>
     useQuery<IGetConversationResp, IGetMessagesErr>({
-      queryKey: ["getUserMessages", chatId],
+      queryKey: ["getChatMessages", chatId],
       queryFn: async () =>
         (await api.get(`${API_URL.getChatMessages(chatId as string)}`)).data,
       refetchOnMount: false,

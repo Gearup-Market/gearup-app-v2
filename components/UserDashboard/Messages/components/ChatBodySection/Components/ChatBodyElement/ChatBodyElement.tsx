@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { Box } from "@mui/material";
+import { useChatSocket } from "@/hooks";
 
 // Define the validation schema using Yup
 const ChatMessageSchema = Yup.object().shape({
@@ -29,6 +30,8 @@ const ChatBodyElement = () => {
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
 	const { mutateAsync: addChatMessage } = useAddChatMessage();
 	const {data: chatMessages, isPending, refetch,} = useFetchChatMessages(chatId);
+
+	useChatSocket(chatId); 
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (user && participantId && listingId) {
