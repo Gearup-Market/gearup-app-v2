@@ -272,5 +272,6 @@ export interface IUserResp {
 	createdAt: string;
 	resetPasswordTokenExpiry: string;
 	userName: string;
+	about: string;
 	__v: number;
   };

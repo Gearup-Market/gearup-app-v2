@@ -86,14 +86,14 @@ const UserDetails = ({ userId }: Props) => {
 			<BackNavigation />
 			<div className={styles.details_body}>
 				<div>
-					<UserDetailsProfile user={user?.data} />
+					<UserDetailsProfile user={user} />
 				</div>
 				<div>
-					{!!user?.data?.about && (
+					{!!user?.about && (
 						<div className={styles.about_container}>
 							<HeaderSubText title="About" variant="medium" />
 							<div className={styles.about}>
-								<p>{user?.data?.about}</p>
+								<p>{user?.about}</p>
 							</div>
 						</div>
 					)}
