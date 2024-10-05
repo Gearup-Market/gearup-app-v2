@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { Box } from "@mui/material";
 import { useChatSocket } from "@/hooks";
+import { queryClient } from "@/app/api";
 
 // Define the validation schema using Yup
 const ChatMessageSchema = Yup.object().shape({
@@ -22,6 +23,7 @@ const ChatMessageSchema = Yup.object().shape({
 const ChatBodyElement = () => {
 	const searchParams = useSearchParams();
 	const chatId = searchParams.get("activeChatId") ?? "";
+	useChatSocket(chatId); 
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
 	const { user } = useAuth();
@@ -29,9 +31,8 @@ const ChatBodyElement = () => {
 	const pathname = usePathname();
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
 	const { mutateAsync: addChatMessage } = useAddChatMessage();
-	const {data: chatMessages, isPending, refetch,} = useFetchChatMessages(chatId);
+	const {data: chatMessages,isFetching: isPending, refetch, isLoading} = useFetchChatMessages(chatId);
 
-	useChatSocket(chatId); 
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (user && participantId && listingId) {
@@ -50,14 +51,13 @@ const ChatBodyElement = () => {
 					router.push(`${pathname}?${currentParams.toString()}`);
 				}
 
-				console.log(resp, "Resp");
-				const addMessageRes = await addChatMessage({
+				await addChatMessage({
 					senderId: user?._id as string,
 					chatId: chatId ?? resp.data._id,
 					message: values.message,
 					attachments: []
 				});
-				console.log(addMessageRes, "Add Resp");
+
 				refetch();
 				resetForm(); // Clear the form after submission
 			} catch (error) {
@@ -70,7 +70,7 @@ const ChatBodyElement = () => {
 	return (
 		<div className={styles.chat_body}>
 			{
-				isPending ? 
+				isLoading ? 
 				<Box
 				display="flex"
 				justifyContent="center"

@@ -15,12 +15,10 @@ interface ChatBodySectionProps {
 
 const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 	const searchParams = useSearchParams();
-	const chatId = searchParams.get("activeChatId") ?? "";
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
 	const cachedUserData = queryClient.getQueryData<IUserResp>(["user", participantId]);
 	const cachedListing = queryClient.getQueryData<iGetListingResp>(["listingsById", listingId]);
-	console.log(cachedUserData,"cacheduser");
 
 	return (
 		<div className={styles.container} data-borders={showAllBorder}>

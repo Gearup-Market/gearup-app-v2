@@ -9,10 +9,14 @@ import { CircularProgressLoader } from "@/shared/loaders";
 import { Box } from "@mui/material";
 import { useGetUserMessages } from "@/app/api/hooks/messages";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSearchParams } from "next/navigation";
 
 const Messages = () => {
 	const { user } = useAuth();
 	const { data: allUserMessages, isFetching: isFetchingAllUserMessages } = useGetUserMessages(user?._id);
+	const searchParams = useSearchParams()
+	const participantId = searchParams.get("participantId")
+	const listingId = searchParams.get("listingId")
 
 	if (isFetchingAllUserMessages) {
 		return (
@@ -29,7 +33,7 @@ const Messages = () => {
 
 	return (
 		<div className={styles.container}>
-			{allUserMessages?.data.length === 0 ? (
+			{allUserMessages?.data.length === 0 && (!participantId || !listingId) ? (
 				<NoMessages />
 			) : (
 				<div className={styles.chat_messages}>
