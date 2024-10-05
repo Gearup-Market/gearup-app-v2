@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import styles from "./NewListingViews.module.scss";
-import { Button, CustomImage, LoadingSpinner, Logo } from "@/shared";
+import { Button, CustomImage, Logo } from "@/shared";
 import Image from "next/image";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
@@ -51,9 +51,9 @@ const ImagesView = () => {
 
 	const nextPage = useCallback(async () => {
 		const newListingData = {
-			listingPhotos: (newListing.listingPhotos || []).concat(
-				displayedImages.map(c => URL.createObjectURL(c))
-			),
+			listingPhotos: [...newListing.listingPhotos,
+				...displayedImages.map(c => URL.createObjectURL(c))],
+			
 			tempPhotos: displayedImages
 		};
 

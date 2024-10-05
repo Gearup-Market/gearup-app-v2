@@ -2,14 +2,18 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from 'recharts';
 import styles from './PieChart.module.scss';
+import { GearData, SalesAnalyticsData } from '@/app/api/hooks/analytics/types';
 
 interface Props {
-    data: any,
+    data?: any,
     colors: any
+    totalEarnings?: number
 
 }
 
-const PieChartComponent = ({ data, colors }: Props) => {
+const PieChartComponent = ({ data, colors,totalEarnings }: Props) => {
+    console.log(data,"data")
+
     return (
         <div className={styles.container}>
             <ResponsiveContainer width={200} height={200}>
@@ -22,25 +26,16 @@ const PieChartComponent = ({ data, colors }: Props) => {
                         outerRadius={100}
                         fill="#8884d8"
                         paddingAngle={10}
-                        dataKey="value"
+                        dataKey="amount"
+                        nameKey="name"
                     >
-                        {data.map((entry: any, index: number) => (
+                        {data?.map((entry: any, index: number) => (
                             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                         ))}
-                        <Label content={<CustomLabel />} position="center" />
+                        <Label content={<CustomLabel totalEarning={totalEarnings}/>} position="center" />
                     </Pie>
                 </PieChart>
             </ResponsiveContainer>
-           {/*  <div className={styles.color_details}>
-                {
-                    data.map((entry: any, index: number) => (
-                        <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <div style={{ backgroundColor: colors[index % colors.length], width: '10px', height: '10px', borderRadius: '50%' }}></div>
-                            <p>{entry.name}</p>
-                        </div>
-                    ))
-                }
-            </div> */}
         </div>
     );
 };
@@ -48,13 +43,13 @@ const PieChartComponent = ({ data, colors }: Props) => {
 export default PieChartComponent;
 
 
-const CustomLabel = ({ viewBox }: any) => {
+const CustomLabel = ({ viewBox,totalEarning }: any) => {
     const { cx, cy } = viewBox;
     return (
         <g>
             <text x={cx} y={cy} textAnchor="middle" dominantBaseline="central">
                 <tspan x={cx} dy="-1.2em" fontSize="16" fontWeight="normal">Total Earnings</tspan>
-                <tspan x={cx} dy="1.2em" fontSize="16" fontWeight="bold">$0.00</tspan>
+                <tspan x={cx} dy="1.2em" fontSize="16" fontWeight="bold">{totalEarning}</tspan>
             </text>
         </g>
     );

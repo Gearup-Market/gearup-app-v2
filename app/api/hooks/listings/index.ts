@@ -110,7 +110,7 @@ const useGetListingById = (
 	options?: UseQueryOptions<iGetListingResp, IGetErr>
 ) =>
 	useQuery<iGetListingResp, IGetErr>({
-		queryKey: ["listingsById"],
+		queryKey: ["listingsById", listingId],
 		queryFn: async () => (await api.get(`${API_URL.listingById}/${listingId}`)).data,
 		...options,
 		enabled: !!listingId,

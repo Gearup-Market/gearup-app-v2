@@ -136,13 +136,13 @@ const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 						className={styles.navlinks_container__item}
 						data-active={active === "/user/settings"}
 					>
-						<span>
+						<span className={styles.icon}>
 							<SettingsNavIcon />
 						</span>
 						<p>Settings</p>
 					</Link>
 					<div className={styles.navlinks_container__item} onClick={logout}>
-						<span>
+						<span className={styles.icon}>
 							<LogoutNavIcon />
 						</span>
 						<p className={styles.logout_text}>Logout</p>

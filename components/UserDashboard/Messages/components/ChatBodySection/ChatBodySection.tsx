@@ -5,10 +5,9 @@ import { VerifyIcon } from "@/shared/svgs/dashboard";
 import Image from "next/image";
 import ChatBodyElement from "./Components/ChatBodyElement/ChatBodyElement";
 import { useSearchParams } from "next/navigation";
-import { useCurrentChatMessages } from "@/hooks/useMessages";
-import { Box } from "@mui/material";
-import { CircularProgressLoader } from "@/shared/loaders";
-import { useFetchChatMessages } from "@/app/api/hooks/messages";
+import { IUserResp } from "@/app/api/hooks/users/types";
+import { queryClient } from "@/app/api";
+import { iGetListingResp } from "@/app/api/hooks/listings/types";
 
 interface ChatBodySectionProps {
 	showAllBorder?: boolean;
@@ -16,8 +15,10 @@ interface ChatBodySectionProps {
 
 const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 	const searchParams = useSearchParams();
-	const chatId = searchParams.get("activeChatId") ?? "";
 	const participantId = searchParams.get("participantId");
+	const listingId = searchParams.get("listingId");
+	const cachedUserData = queryClient.getQueryData<IUserResp>(["user", participantId]);
+	const cachedListing = queryClient.getQueryData<iGetListingResp>(["listingsById", listingId]);
 
 	return (
 		<div className={styles.container} data-borders={showAllBorder}>
@@ -26,15 +27,18 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 					<span className={styles.user_alias}>WW</span>
 					<div>
 						<p className={styles.name}>
-							Wade Warren{" "}
+							{cachedUserData?.data?.name || cachedUserData?.data?.userName}
+							{
+								cachedUserData?.data?.isVerified &&
 							<span className={styles.verfiy_icon}>
 								<VerifyIcon />
 							</span>
+							}
 						</p>
 						<div className={styles.date_convo_about}>
 							<span className={styles.date}> 1:23 PM GMT +8 ⋅</span>{" "}
 							<span className={styles.convo_about}>
-								Conversation about Canon EOS RS Camera kit Rental
+								{cachedListing?.data?.productName}
 							</span>
 						</div>
 					</div>

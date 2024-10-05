@@ -41,6 +41,7 @@ import ChatBox from "./chatBox/ChatBox";
 import Countdown from "./countdown/Countdown";
 import PaystackPaymentButton from "./paystack/PaystackPaymentButton";
 import KycPrompt from "./KycPrompt/KycPrompt";
+import CustomNoRowsOverlay from "./CustomNoRowsOverlay/CustomNoRowsOverlay";
 
 export {
 	Header,
@@ -85,5 +86,6 @@ export {
 	ChatBox,
 	Countdown,
 	PaystackPaymentButton,
-	KycPrompt
+	KycPrompt,
+	CustomNoRowsOverlay
 };

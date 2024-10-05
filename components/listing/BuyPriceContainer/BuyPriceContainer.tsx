@@ -27,11 +27,9 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 		}
 	]);
 	const { productName, offer, listingType } = listing;
-	const forSale = !!offer?.forSell;
-	const forRent = !!offer?.forRent;
 
-	const currency = forSale ? offer.forSell?.currency : offer.forRent?.currency;
-	const pricing = forRent ? offer.forRent?.day1Offer : offer.forSell?.pricing;
+	const currency = offer.forSell?.currency;
+	const pricing = offer.forSell?.pricing;
 	const transactionType =
 		["sell", "buy"].includes(actionType!) || listingType !== "rent"
 			? TransactionType.Sale
