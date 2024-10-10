@@ -37,6 +37,11 @@
 		padding: 1.6rem;
 		display: flex;
 		justify-content: space-between;
+		position: absolute;
+		left: 0;
+		width: 100%;
+		z-index: 20;
+		background: #fff;
 
 		.left {
 			display: flex;

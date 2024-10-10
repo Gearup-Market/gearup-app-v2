@@ -4,7 +4,8 @@
 	margin-top: 1rem;
 	width: 100%;
 	height: 100%;
-	padding: 4rem 1.6rem;
+	padding:0 1.6rem 4rem 1.6rem;
+	// position: relative;
 
 	.chat_date {
 		position: absolute;
@@ -23,14 +24,15 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-
+		
 		.chats {
 			overflow: auto;
 			display: flex;
 			flex-direction: column;
 			gap: 1.6rem;
-			padding: 2rem 0 6rem 0;
-			height: 70vh;
+			position: relative;
+			padding: 8rem 0 4rem 0;
+			height: 80vh;
 			@include noScrollBar;
 		}
 

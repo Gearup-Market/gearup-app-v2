@@ -19,6 +19,7 @@ export const useGetUserMessages = (
 			(await api.get(`${API_URL.getUserMessages(userId as string)}`)).data,
 		refetchOnMount: true,
 		enabled: !!userId,
+    staleTime: 0,
 		...options
 	});
 

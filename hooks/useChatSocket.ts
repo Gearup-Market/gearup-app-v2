@@ -2,45 +2,58 @@
 import { queryClient } from '@/app/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEffect, useState } from 'react';
-import io, { Socket } from 'socket.io-client';
+import {io, Socket } from 'socket.io-client';
 
-const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_BASE_URL_SOCKET;
 
 export const useChatSocket = (chatId?: string) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if(!chatId) return;
+    if (!chatId) return;
+
     // Establish socket connection
-    const socketInstance = io(SOCKET_SERVER_URL);
+    const socketInstance = io(SOCKET_SERVER_URL,{
+      withCredentials: true,
+    } );
+
     setSocket(socketInstance);
 
-    // Listen for all chats overview updates
-    socketInstance.on('chatOverviewUpdate', (newChatData) => {
-      console.log("i was listienrr1")
-      queryClient.setQueryData(["getUserMessages", user?._id], (oldData: any) => {
-        return oldData.map((chat: any) =>
-          chat._id === newChatData._id ? newChatData : chat
-        );
-      });
-    });
-
-    // Listen for updates to the specific chat if chatId is passed
+    // Join a specific chat room and listen for new messages
     if (chatId) {
-      console.log("i was listienrr2")
-      socketInstance.emit('joinChat', chatId); // Join a specific chat room
+      socketInstance.emit("joinChat", chatId);
       socketInstance.on('newMessage', (message) => {
-        queryClient.setQueryData(["getChatMessages", chatId], (oldData: any) => {
-          return [...oldData, message];
+        console.log(message,"message")
+        queryClient.setQueryData(['getChatMessages', chatId], (oldData: any) => {
+          return {
+            ...oldData,
+            data: message,
+          };
         });
       });
     }
+        // Listen for chat overview updates (all chats)
+        socketInstance.on('newMessage', (newChatData) => {
+          queryClient.setQueryData(['getUserMessages', user?._id], (oldData: any) => {
+            return {
+              ...oldData,
+              data:oldData?.data?.map((chat: any) =>
+                chat._id === newChatData._id ? newChatData : chat
+              ),
+            }
+          });
+        });
+    // Handle errors
+    socketInstance.on('connect_error', (err) => {
+      console.error('Socket connection error:', err);
+    });
 
-    return () => {
+  //  Cleanup on unmount or when chatId changes
+   return () => {
       socketInstance.disconnect();
-    };
-  }, [chatId, queryClient]);
+   };
+  }, [chatId, user?._id]);
 
   return { socket };
 };
