@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./ChatBodyElement.module.scss";
 import MessageReceived from "../MessageReceived/MessageReceived";
 import MessageSent from "../MessageSent/MessageSent";
@@ -13,7 +13,6 @@ import toast from "react-hot-toast";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { Box } from "@mui/material";
 import { useChatSocket } from "@/hooks";
-import { queryClient } from "@/app/api";
 
 // Define the validation schema using Yup
 const ChatMessageSchema = Yup.object().shape({
@@ -21,6 +20,8 @@ const ChatMessageSchema = Yup.object().shape({
 });
 
 const ChatBodyElement = () => {
+	const chatRef = useRef<HTMLDivElement>(null);  // To track the chat container
+	const lastMessageRef = useRef<HTMLDivElement>(null);  // To track the last message
 	const searchParams = useSearchParams();
 	const chatId = searchParams.get("activeChatId") ?? "";
 	useChatSocket(chatId); 
@@ -31,10 +32,9 @@ const ChatBodyElement = () => {
 	const pathname = usePathname();
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
 	const { mutateAsync: addChatMessage } = useAddChatMessage();
-	const {data: chatMessages,isFetching: isPending, refetch, isLoading} = useFetchChatMessages(chatId);
+	const {data: chatMessages, isFetching: isPending, refetch, isLoading} = useFetchChatMessages(chatId);
 
 	console.log(chatMessages,"chatMessages")
-
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (user && participantId && listingId) {
@@ -60,7 +60,6 @@ const ChatBodyElement = () => {
 					attachments: []
 				});
 
-				// refetch();
 				resetForm(); // Clear the form after submission
 			} catch (error) {
 				console.error("Failed to send message:", error);
@@ -69,67 +68,74 @@ const ChatBodyElement = () => {
 		}
 	};
 
+	// Scroll to the last message whenever chatMessages change
+	useEffect(() => {
+		if (lastMessageRef.current) {
+			lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+		}
+	}, [chatMessages, chatId]);
+
 	return (
 		<div className={styles.chat_body}>
 			{
 				isLoading ? 
 				<Box
-				display="flex"
-				justifyContent="center"
-				alignItems="center"
-				height="40rem"
-			>
-				<CircularProgressLoader color="#ffb30f" size={30} />
-			</Box>
-				:
-			
-			<>
-			<p className={styles.chat_date}>Sun, Dec 17 (Today)</p>
-			<div className={styles.chat_content}>
-				<div className={styles.chats}>
-					{
-						
-							chatMessages?.data?.messages?.map((message, index) => {
-								if (message.sender._id === user?._id) {
-									return <MessageSent key={index} message={message.message} />;
-								} else {
-									return <MessageReceived key={index} message={message.message} />;
-								}
-							})
-					
-					}
-				</div>
-				<Formik
-					initialValues={{ message: "" }}
-					validationSchema={ChatMessageSchema}
-					onSubmit={handleSubmit}
+					display="flex"
+					justifyContent="center"
+					alignItems="center"
+					height="40rem"
 				>
-					{({ errors, touched, isSubmitting }) => (
-						<Form className={styles.form_container}>
-							<Field
-								name="message"
-								placeholder="Write a message..."
-								className={`${styles.input_field}`}
-								as="input"
-							/>
-							<Button
-								buttonType="transparent"
-								iconPrefix=""
-								type="submit"
-								disabled={isSubmitting}
-							>
-								<Image
-									src="/svgs/submit-icon.svg"
-									alt="send"
-									height={24}
-									width={24}
-								/>
-							</Button>
-						</Form>
-					)}
-				</Formik>
-			</div>
-			</>
+					<CircularProgressLoader color="#ffb30f" size={30} />
+				</Box>
+				:
+				<>
+					<div className={styles.chat_content} ref={chatRef}>
+						<div className={styles.chats}>
+							{chatMessages?.data?.messages?.map((message, index) => (
+								<div
+									key={index}
+									ref={index === chatMessages?.data?.messages.length - 1 ? lastMessageRef : null} // Attach ref to the last message
+								>
+									{message.sender._id === user?._id ? (
+										<MessageSent message={message.message} />
+									) : (
+										<MessageReceived message={message.message} />
+									)}
+								</div>
+							))}
+						</div>
+
+						<Formik
+							initialValues={{ message: "" }}
+							validationSchema={ChatMessageSchema}
+							onSubmit={handleSubmit}
+						>
+							{({ isSubmitting }) => (
+								<Form className={styles.form_container}>
+									<Field
+										name="message"
+										placeholder="Write a message..."
+										className={`${styles.input_field}`}
+										as="input"
+									/>
+									<Button
+										buttonType="transparent"
+										iconPrefix=""
+										type="submit"
+										disabled={isSubmitting}
+									>
+										<Image
+											src="/svgs/submit-icon.svg"
+											alt="send"
+											height={24}
+											width={24}
+										/>
+									</Button>
+								</Form>
+							)}
+						</Formik>
+					</div>
+				</>
 			}
 		</div>
 	);

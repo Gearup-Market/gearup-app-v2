@@ -24,14 +24,15 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-
+		
 		.chats {
 			overflow: auto;
 			display: flex;
 			flex-direction: column;
 			gap: 1.6rem;
-			padding: 2rem 0 6rem 0;
-			height: 70vh;
+			position: relative;
+			padding: 8rem 0 4rem 0;
+			height: 80vh;
 			@include noScrollBar;
 		}
 

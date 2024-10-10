@@ -14,7 +14,9 @@ export const useChatSocket = (chatId?: string) => {
     if (!chatId) return;
 
     // Establish socket connection
-    const socketInstance = io(SOCKET_SERVER_URL, );
+    const socketInstance = io(SOCKET_SERVER_URL,{
+      withCredentials: true,
+    } );
 
     setSocket(socketInstance);
 
@@ -22,6 +24,7 @@ export const useChatSocket = (chatId?: string) => {
     if (chatId) {
       socketInstance.emit("joinChat", chatId);
       socketInstance.on('newMessage', (message) => {
+        console.log(message,"message")
         queryClient.setQueryData(['getChatMessages', chatId], (oldData: any) => {
           return {
             ...oldData,

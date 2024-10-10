@@ -8,6 +8,8 @@ import { useSearchParams } from "next/navigation";
 import { IUserResp } from "@/app/api/hooks/users/types";
 import { queryClient } from "@/app/api";
 import { iGetListingResp } from "@/app/api/hooks/listings/types";
+import { useGetUserDetails } from "@/app/api/hooks/users";
+import { useGetListingById } from "@/app/api/hooks/listings";
 
 interface ChatBodySectionProps {
 	showAllBorder?: boolean;
@@ -17,19 +19,23 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 	const searchParams = useSearchParams();
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
-	const cachedUserData = queryClient.getQueryData<IUserResp>(["user", participantId]);
-	const cachedListing = queryClient.getQueryData<iGetListingResp>(["listingsById", listingId]);
-
+	const { data } = useGetUserDetails({
+		userId: participantId as string
+	});
+	const {
+		data: listing,
+	} = useGetListingById(listingId as string);
+	
 	return (
 		<div className={styles.container} data-borders={showAllBorder}>
 			<div className={styles.header}>
 				<div className={styles.left}>
-					<span className={styles.user_alias}>WW</span>
+					<span className={styles.user_alias}>{data?.data.userName[0]}</span>
 					<div>
 						<p className={styles.name}>
-							{cachedUserData?.data?.name || cachedUserData?.data?.userName}
+							{data?.data?.name || data?.data?.userName}
 							{
-								cachedUserData?.data?.isVerified &&
+								data?.data?.isVerified &&
 							<span className={styles.verfiy_icon}>
 								<VerifyIcon />
 							</span>
@@ -38,7 +44,7 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 						<div className={styles.date_convo_about}>
 							<span className={styles.date}> 1:23 PM GMT +8 ⋅</span>{" "}
 							<span className={styles.convo_about}>
-								{cachedListing?.data?.productName}
+								{listing?.data?.productName}
 							</span>
 						</div>
 					</div>
