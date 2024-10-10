@@ -38,6 +38,8 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 		userProfile: false
 	});
 
+	console.log(allUserMessages, "allUserMessages");
+
 	// Set the first chat as active chat if no chat is active
 	useEffect(() => {
 		if (!participantId && !activeChatId && allUserMessages?.length) {
@@ -172,7 +174,6 @@ const ChatItem = ({
 	const participantId = searchParams.get("participantId");
 
 	const participant = chat.participants.find(item => item._id !== user?._id);
-	console.log(chat, "chatiotemß");
 
 	return (
 		<div className={styles.chat} data-active={active} onClick={onClick}>
