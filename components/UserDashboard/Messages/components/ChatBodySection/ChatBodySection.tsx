@@ -25,7 +25,7 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 	const {
 		data: listing,
 	} = useGetListingById(listingId as string);
-	
+
 	return (
 		<div className={styles.container} data-borders={showAllBorder}>
 			<div className={styles.header}>
@@ -36,15 +36,15 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 							{data?.data?.name || data?.data?.userName}
 							{
 								data?.data?.isVerified &&
-							<span className={styles.verfiy_icon}>
-								<VerifyIcon />
-							</span>
+								<span className={styles.verfiy_icon}>
+									<VerifyIcon />
+								</span>
 							}
 						</p>
 						<div className={styles.date_convo_about}>
-							<span className={styles.date}> 1:23 PM GMT +8 ⋅</span>{" "}
+							{/* <span className={styles.date}> </span>{" "} */}
 							<span className={styles.convo_about}>
-								{listing?.data?.productName}
+								conversations about	{listing?.data?.productName}
 							</span>
 						</div>
 					</div>

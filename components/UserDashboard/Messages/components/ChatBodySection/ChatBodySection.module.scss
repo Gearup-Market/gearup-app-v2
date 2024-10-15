@@ -89,6 +89,9 @@
 					font-size: 1.2rem;
 					color: #a3a7ab;
 					line-height: normal;
+					display: flex;
+					align-items: center;
+					gap: 0.8rem;
 				}
 
 				@include screenMax("mobile"){
