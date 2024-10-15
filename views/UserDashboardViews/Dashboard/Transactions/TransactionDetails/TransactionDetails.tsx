@@ -59,6 +59,7 @@ const TransactionDetails = ({ transactionId }: Props) => {
 	//         }
 	// 	}
 	// }, [data, isFetching]);
+	
 	return (
 		<div className={styles.container}>
 			{!transaction && <PageLoader />}

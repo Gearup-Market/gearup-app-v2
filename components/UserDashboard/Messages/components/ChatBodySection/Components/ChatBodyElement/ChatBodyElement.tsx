@@ -34,8 +34,6 @@ const ChatBodyElement = () => {
 	const { mutateAsync: addChatMessage } = useAddChatMessage();
 	const {data: chatMessages, isFetching: isPending, refetch, isLoading} = useFetchChatMessages(chatId);
 
-	console.log(chatMessages,"chatMessages")
-
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (user && participantId && listingId) {
 			try {

@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo, useState } from "react";
 import styles from "./TransactionTable.module.scss";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import { InputField, MobileCardContainer, Pagination } from "@/shared";
 import { customisedTableClasses } from "@/utils/classes";

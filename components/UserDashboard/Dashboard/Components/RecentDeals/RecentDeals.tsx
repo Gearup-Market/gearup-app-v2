@@ -9,6 +9,7 @@ import { MoreIcon, TransactionNavIcon } from '@/shared/svgs/dashboard';
 import { customisedTableClasses } from '@/utils/classes';
 import Link from 'next/link';
 import { recentDeals } from '@/mock/RecentDealsData.mock';
+import useTransactions from '@/hooks/useTransactions';
 const sharedColDef: GridColDef = {
     field: "",
     sortable: true,
@@ -17,10 +18,8 @@ const sharedColDef: GridColDef = {
 const RecentDeals = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
-    const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
-        recentDeals.slice(0, limit)
-    );
-
+    const {data, isFetching, error} = useTransactions()
+    const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(data);
 
     const handlePagination = (page: number) => {
         const start = (page - 1) * limit;
@@ -110,6 +109,8 @@ const RecentDeals = () => {
     return (
         <div className={styles.container}>
             <h2 className={styles.container__title}> RecentDeals</h2>
+            {
+                !!paginatedTransactions?.length &&
             <div className={styles.container__input_filter_container}>
                 <InputField placeholder='Search' icon='/svgs/icon-search-dark.svg' iconTitle='search-icon' />
                 <div className={styles.filter_icon_container}>
@@ -117,16 +118,15 @@ const RecentDeals = () => {
                     <p>Filter</p>
                 </div>
             </div>
+            }
 
             {
-                paginatedTransactions.length < 1 ?
+                paginatedTransactions?.length < 1 ?
                     <div className={styles.empty_rows}>
                         <span className={styles.transaction_icon}>
                             <TransactionNavIcon color='#FFB30F' />
                         </span>
-                        No data available
-
-                        <AddBtn />
+                        Recent deals will be displayed here
                     </div>
                     :
                     <>
@@ -134,6 +134,7 @@ const RecentDeals = () => {
                             <DataGrid rows={paginatedTransactions} columns={columns}
                                 hideFooterPagination={true} hideFooter paginationMode="server"
                                 sx={customisedTableClasses} autoHeight
+                                loading={isFetching}
                             />
                         </div>
 

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import styles from "./TotalEarnings.module.scss";
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { customisedTableClasses } from "@/utils/classes";
 import { EllipseIcon } from "@/shared/svgs/dashboard";
 import { PieChartComponent } from "@/shared";
@@ -48,14 +48,14 @@ const TotalEarnings = () => {
 				</div>
 			)
 		},
-		// {
-		// 	...sharedColDef,
-		// 	field: "no_of_products",
-		// 	cellClassName: styles.table_cell,
-		// 	headerName: "No of Products",
-		// 	headerClassName: styles.table_header,
-		// 	minWidth: 200
-		// },
+		 {
+		 	...sharedColDef,
+		 	field: "productCount",
+		 	cellClassName: styles.table_cell,
+		 	headerName: "No of Products",
+		 	headerClassName: styles.table_header,
+		 	minWidth: 200
+		 },
 		{
 			...sharedColDef,
 			field: "percentage",
@@ -74,9 +74,8 @@ const TotalEarnings = () => {
 		}
 	];
 
-
-
     const rows = convertObjToArray(salesData?.breakdown as GearData) || [];
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__pie_chart_container}>
@@ -114,7 +113,8 @@ export default TotalEarnings;
 
 export enum tableEnum {
     "gearSales" = "Gear Sales",
-    "gearRentals" = "Gear Rentals"
+    "gearRentals" = "Gear Rentals",
+	"productCount" = "No of Products",
 }
 
 export const convertObjToArray = (obj: GearData) => {
@@ -123,6 +123,7 @@ export const convertObjToArray = (obj: GearData) => {
         id: key,
         name: key,
         amount: !!value.amount ? value.amount : 50,
-        percentage: value.percentage
+        percentage: value.percentage,
+		productCount: value.productCount
     }));
 };

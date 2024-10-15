@@ -16,6 +16,7 @@ export const useChatSocket = (chatId?: string) => {
     // Establish socket connection
     const socketInstance = io(SOCKET_SERVER_URL,{
       withCredentials: true,
+      transports: ['websocket'],
     } );
 
     setSocket(socketInstance);
@@ -24,7 +25,6 @@ export const useChatSocket = (chatId?: string) => {
     if (chatId) {
       socketInstance.emit("joinChat", chatId);
       socketInstance.on('newMessage', (message) => {
-        console.log(message,"message")
         queryClient.setQueryData(['getChatMessages', chatId], (oldData: any) => {
           return {
             ...oldData,
