@@ -2,6 +2,15 @@
 
 .section {
 	width: 100%;
+
+	.error_border{
+		border: 0.1rem solid #FF3729;
+	}
+	.error_text{
+		color: #FF3729;
+		font-size: 1.2rem;
+	}
+
 	.header {
 		border-bottom: 0.4rem solid #dedfe0;
 		padding: 2.4rem 8rem;
@@ -86,6 +95,72 @@
 			padding-bottom: 10rem;
 			.container {
 				margin-top: 4rem;
+
+				.rental_pricing{
+					border: 1px solid $col-border;
+					border-radius: 1.6rem;
+					padding: 2.4rem;
+					margin-top: 2.4rem;
+
+					.title{
+						font-size: 2rem;
+						font-weight: 700;
+						margin-bottom: 1.6rem;
+						color: #1B1E21;
+					}
+
+					.content_wrapper{
+						background: #fafafa;
+						border-radius: 1.6rem;
+						padding: 1.6rem;
+						display: flex;
+						flex-direction: column;
+						gap: 1.6rem;
+
+						.warning_container{
+							display: flex;
+							align-items: center;
+							gap: 1rem;
+							background: #FEF5E6;
+							color: #563600;
+							padding: 1.6rem;
+							border-radius: 1rem;
+							font-size: 1.4rem;
+							border-radius: 1.6rem;
+
+							.icon{
+								width: 2rem;
+								height: 2rem;
+							}
+
+							p {
+								font-size: 1.4rem;
+								.bold_text{
+									font-weight: 700;
+									font-size: 1.4rem;
+								}
+							
+							}
+						}
+
+						.additional_offer_container{
+
+							.offer_title{
+								text-transform: uppercase;
+								font-size: 1.4rem;
+								font-weight: 700;
+								color: #1B1E21;
+
+								.optional_text{
+									font-size: 1.4rem;
+									font-weight: 700;
+									color: #A3A7AB;
+								}
+							}
+
+						}
+					}
+				}
 				.block {
 					margin-top: 3.2rem;
 					.text {
@@ -104,7 +179,7 @@
 					}
 					.input {
 						margin-bottom: 2rem;
-						font-weight: 700;
+						font-weight: 400;
 						color: #1b1e21;
 					}
 				}
@@ -260,7 +335,7 @@
 			width: 100%;
 			height: 0.1rem;
 			background-color: #dedfe0;
-			margin-block: 2.4rem;
+			margin-block: 1.6rem;
 		}
 	}
 	.single_footer {
@@ -375,7 +450,11 @@
 			}
 		}
 		.footer {
+			display: flex;
+			flex-direction: column-reverse;
+			gap: 1.6rem;
 			width: 100%;
+			padding: 2.4rem 1.6rem;
 			.button {
 				width: 100%;
 			}

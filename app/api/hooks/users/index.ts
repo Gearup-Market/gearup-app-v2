@@ -15,6 +15,7 @@ import {
 	IResetPasswordRequestRes,
 	IResetPasswordRes,
 	IUserResp,
+	UserUpdateResp,
 	iPostRegisterKycReq,
 	iPostRegisterKycResp,
 	iPostReviewResp,
@@ -289,21 +290,38 @@ const usePostUpdateBank = (
 		...options
 	});
 
-	const usePostReview = (
+const usePostReview = (
+	options?: Omit<
+		UseMutationOptions<iPostReviewResp, iPostUserSignInErr, iPostReviewRsq>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostReviewResp, iPostUserSignInErr, iPostReviewRsq>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.reviews, {
+					...props
+				})
+			).data,
+		...options
+	});
+
+	const usePostUpdateUser = (
 		options?: Omit<
-			UseMutationOptions<iPostReviewResp, iPostUserSignInErr, iPostReviewRsq>,
+			UseMutationOptions<UserUpdateResp, AxiosError, any>,
 			"mutationFn"
 		>
 	) =>
-		useMutation<iPostReviewResp, iPostUserSignInErr, iPostReviewRsq>({
+		useMutation<UserUpdateResp, AxiosError, any>({
 			mutationFn: async props =>
 				(
-					await api.post(API_URL.reviews, {
+					await api.post(API_URL.updateUser, {
 						...props
 					})
-				).data,
+				).data.data,
 			...options
 		});
+
 export {
 	useResetPassword,
 	useResetPasswordRequest,
@@ -318,5 +336,6 @@ export {
 	usePostValidateKycCode,
 	usePostUpdateBank,
 	usePostReview,
-	useGetUserDetails
+	useGetUserDetails,
+	usePostUpdateUser
 };

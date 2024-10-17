@@ -33,7 +33,16 @@
         gap: 0.5rem;
     }
 
+    .create_listing_container{
+        display: none;
+        flex-direction: column;
+        gap: 1re;
+    }
+    
     @include screenMax("mobile"){
         height: 30rem;
+        .create_listing_container{
+            display: flex;
+        }
     }
 }

@@ -25,6 +25,8 @@ const NoListings = ({
 				/>
 			</div>
 			<p className={styles.no_transaction_text}>{description}</p>
+			<div className={styles.create_listing_container}>
+
 			{showCreateButton && (
 				<Link href={"/new-listing"}>
 					<Button>
@@ -32,6 +34,7 @@ const NoListings = ({
 					</Button>
 				</Link>
 			)}
+			</div>
 		</div>
 	);
 };

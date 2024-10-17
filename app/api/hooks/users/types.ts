@@ -275,3 +275,40 @@ export interface IUserResp {
 	about: string;
 	__v: number;
   };
+
+  interface Coordinates {
+	longitude: number;
+	latitude: number;
+  }
+  
+  export interface Location {
+	address?: string;
+	city?: string;
+	state?: string;
+	country?: string;
+	coords?: Coordinates;
+  }
+  
+  export interface UserUpdateResp {
+	userId: string;
+	name: string;
+	email: string;
+	userName: string;
+	phoneNumber: string;
+	firstName: string;
+	lastName: string;
+	address: string;
+	about: string;
+	location: Location;
+	linkedin: string;
+	facebook: string;
+	instagram: string;
+	twitter: string;
+	avatar: string;
+	isVerified: boolean;
+	isActive: boolean;
+	accountName: string;
+	accountNumber: string;
+	bankName: string;
+  }
+  

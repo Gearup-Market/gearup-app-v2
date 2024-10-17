@@ -69,7 +69,17 @@ const parentFilters: Filter[] = [
 				name: "All categories"
 			}
 		]
-	}
+	},
+	// {
+	// 	id: 3,
+	// 	name: "Courses",
+	// 	subFilters: [
+	// 		{
+	// 			id: 1,
+	// 			name: "All categories"
+	// 		}
+	// 	]
+	// }
 ];
 
 export function useListingFilters() {
