@@ -7,19 +7,21 @@ const containerStyle = {
 	width: "100%",
 	height: "100%"
 };
-import { Listing } from "@/store/slices/listingsSlice";
+import { Location } from "@/app/api/hooks/users/types";
 
 const Map = ({
 	location,
 	showTitle = true,
-	showAddress = true
+	showAddress = true,
+	setLocation
 }: {
-	location?: Listing["location"];
+	location?: Location;
 	showTitle?: boolean;
 	showAddress?: boolean;
+	setLocation: React.Dispatch<React.SetStateAction<Location | undefined>>;
 }) => {
 	const [map, setMap] = useState<google.maps.Map | null>(null);
-	const [loc, setLocation] = useState({
+	const [loc, setLoc] = useState({
 		lat: 0,
 		lng: 0
 	});
@@ -30,7 +32,7 @@ const Map = ({
 			navigator.geolocation.getCurrentPosition(
 				position => {
 					const { latitude, longitude } = position.coords;
-					setLocation({ lat: latitude, lng: longitude });
+					setLoc({ lat: latitude, lng: longitude });
 					// Call function to get address
 					getAddress(latitude, longitude);
 				},
@@ -50,14 +52,13 @@ const Map = ({
 
 	const onLoad = useCallback(function callback(map: google.maps.Map) {
 		setMap(map);
-		// No need to use fitBounds
 	}, []);
 
 	const onUnmount = React.useCallback(function callback(map: google.maps.Map) {
 		setMap(null);
 	}, []);
 
-	// Fetch the human-readable address using Google Maps Geocoding API
+	// Fetch the human-readable address, city, state, and country using Google Maps Geocoding API
 	const getAddress = async (lat: number, lng: number) => {
 		const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
@@ -66,8 +67,46 @@ const Map = ({
 			const data = await response.json();
 
 			if (data.status === "OK" && data.results.length > 0) {
-				const formattedAddress = data.results[0].formatted_address;
+				let formattedAddress = data.results[0].formatted_address;
+
+				// Check if the formatted address starts with a Plus Code and remove it
+				const plusCodeRegex = /^[A-Z0-9\+]+\s+/; // Regex to detect Plus Code at the start
+				if (plusCodeRegex.test(formattedAddress)) {
+					formattedAddress = formattedAddress.replace(plusCodeRegex, ""); // Remove the Plus Code
+				}
+
 				setAddress(formattedAddress);
+
+				// Extract the city, state, and country
+				const addressComponents = data.results[0].address_components;
+				let city = "";
+				let state = "";
+				let country = "";
+
+				addressComponents.forEach((component: any) => {
+					const types = component.types;
+					if (types.includes("locality")) {
+						city = component.long_name;
+					}
+					if (types.includes("administrative_area_level_1")) {
+						state = component.long_name;
+					}
+					if (types.includes("country")) {
+						country = component.long_name;
+					}
+				});
+
+				// Update location in parent component
+				setLocation({
+					coords: {
+						latitude: lat,
+						longitude: lng
+					},
+					address: formattedAddress,
+					city,
+					state,
+					country
+				});
 			} else {
 				console.log("No address found for this location.");
 			}
@@ -76,15 +115,26 @@ const Map = ({
 		}
 	};
 
-	console.log(address, "address");
+	// Update location when marker is dragged
+	const handleMarkerDragEnd = (event: google.maps.MapMouseEvent) => {
+		if (event.latLng) {
+			const newLat = event.latLng.lat();
+			const newLng = event.latLng.lng();
+			setLoc({ lat: newLat, lng: newLng });
+			getAddress(newLat, newLng);
+		}
+	};
 
 	return (
 		<div className={styles.container}>
-			{showTitle && (
-				<div className={styles.text}>
-					<h3>LOCATION</h3>
-				</div>
-			)}
+			<div className={styles.header}>
+				{showTitle && (
+					<div className={styles.text}>
+						<h3>LOCATION</h3>
+					</div>
+				)}
+				<p>Drag the location icon to set your location</p>
+			</div>
 			<div className={styles.image}>
 				{isLoaded ? (
 					<GoogleMap
@@ -100,6 +150,8 @@ const Map = ({
 								url: "/svgs/map-location-svgrepo-com.svg",
 								scaledSize: new google.maps.Size(40, 40)
 							}}
+							draggable={true}
+							onDragEnd={handleMarkerDragEnd}
 						/>
 					</GoogleMap>
 				) : (

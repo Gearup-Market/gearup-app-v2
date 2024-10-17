@@ -43,4 +43,6 @@ export const API_URL = {
 	addMessage: (id: string) => `/chats/${id}/messages`,
 	getUserMessages: (id: string) => `/chats/all/${id}`,
 	getChatMessages: (id: string) => `/chats/${id}`,
+	updateUser: "/users/update",
+	updateAccountPin: "/users/update-pin",
 };
