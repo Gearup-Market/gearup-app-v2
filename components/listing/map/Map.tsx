@@ -18,7 +18,7 @@ const Map = ({
 	location?: Location;
 	showTitle?: boolean;
 	showAddress?: boolean;
-	setLocation: React.Dispatch<React.SetStateAction<Location | undefined>>;
+	setLocation?: React.Dispatch<React.SetStateAction<Location | undefined>>;
 }) => {
 	const [map, setMap] = useState<google.maps.Map | null>(null);
 	const [loc, setLoc] = useState({
@@ -97,6 +97,7 @@ const Map = ({
 				});
 
 				// Update location in parent component
+				if (setLocation) {
 				setLocation({
 					coords: {
 						latitude: lat,
@@ -107,6 +108,8 @@ const Map = ({
 					state,
 					country
 				});
+
+				}
 			} else {
 				console.log("No address found for this location.");
 			}
