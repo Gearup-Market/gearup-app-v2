@@ -129,7 +129,7 @@ export interface RentingOffer {
 	currency?: string;
 	pricing?: number;
 	priceStructure?: string;
-	day1Offer?: number;
+	day1Offer: number;
 	day3Offer: number;
 	day7Offer: number;
 	day30Offer?: number;

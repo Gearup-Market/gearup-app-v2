@@ -40,6 +40,7 @@ const initialForRentDetails: RentingOffer = {
 	currency: "NGN",
 	pricing: undefined,
 	priceStructure: undefined,
+	day1Offer: 0,
 	day3Offer: 0,
 	day7Offer: 0,
 	day30Offer: 0,
