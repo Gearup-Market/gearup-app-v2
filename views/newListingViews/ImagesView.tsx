@@ -56,6 +56,7 @@ const ImagesView = () => {
 			
 			tempPhotos: displayedImages
 		};
+		
 
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/type");

@@ -58,7 +58,7 @@ const ListingDetailsView = () => {
 			subCategory,
 			fieldValues: convertArrToObj(selectedFields)
 		};
-		// console.log(newListingData, "newListingData");
+		
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/images");
 	};

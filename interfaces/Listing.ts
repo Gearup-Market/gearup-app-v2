@@ -127,7 +127,8 @@ export interface SellingOffer {
 
 export interface RentingOffer {
 	currency?: string;
-	day1Offer: number;
+	pricing?: number;
+	priceStructure?: string;
 	day3Offer: number;
 	day7Offer: number;
 	day30Offer?: number;

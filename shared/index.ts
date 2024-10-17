@@ -42,6 +42,7 @@ import Countdown from "./countdown/Countdown";
 import PaystackPaymentButton from "./paystack/PaystackPaymentButton";
 import KycPrompt from "./KycPrompt/KycPrompt";
 import CustomNoRowsOverlay from "./CustomNoRowsOverlay/CustomNoRowsOverlay";
+import FavoriteStar from "./FavoriteStar/FavoriteStar";
 
 export {
 	Header,
@@ -87,5 +88,6 @@ export {
 	Countdown,
 	PaystackPaymentButton,
 	KycPrompt,
-	CustomNoRowsOverlay
+	CustomNoRowsOverlay,
+	FavoriteStar
 };

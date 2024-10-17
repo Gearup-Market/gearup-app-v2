@@ -3,12 +3,12 @@
 import React from "react";
 import styles from "./Listing.module.scss";
 import Image from "next/image";
-import { Button } from "..";
-import { formatLink, formatNumber, shortenTitle } from "@/utils";
+import { Button, FavoriteStar } from "..";
+import { formatNumber, shortenTitle } from "@/utils";
 import Link from "next/link";
 import { Listing as iListing, setListings } from "@/store/slices/listingsSlice";
 import { useAppDispatch } from "@/store/configureStore";
-import { ListingType } from "@/interfaces";
+import { useRouter } from "next/navigation";
 
 interface Props {
 	props: iListing;
@@ -18,6 +18,7 @@ interface Props {
 
 const Listing = ({ props, className, actionType }: Props) => {
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 	const {
 		_id: id,
 		offer,
@@ -32,20 +33,22 @@ const Listing = ({ props, className, actionType }: Props) => {
 	const forSale = !!offer?.forSell;
 	const forRent = !!offer?.forRent;
 
+	const listingUrl = actionType
+	? `/listings/${productSlug}?type=${actionType}`
+	: `/listings/${productSlug}`;
+
 	const onClickListing = () => {
 		dispatch(
 			setListings({
 				currentListing: props
 			})
 		);
+		router.push(listingUrl);
 	};
-	const listingUrl = actionType
-		? `/listings/${productSlug}?type=${actionType}`
-		: `/listings/${productSlug}`;
+
 
 	return (
-		<Link
-			href={listingUrl}
+		<div
 			className={`${styles.container} ${className}`}
 			onClick={onClickListing}
 		>
@@ -60,6 +63,9 @@ const Listing = ({ props, className, actionType }: Props) => {
 					{forSale && <Button className={styles.button}>Buy</Button>}
 					{forRent && <Button className={styles.button}>Rent</Button>}
 				</div>
+				<span className={styles.fave_icon}>
+					<FavoriteStar/>
+				</span>
 			</div>
 			<div className={styles.row} style={{ alignItems: "flex-start" }}>
 				<div className={styles.text}>
@@ -120,7 +126,7 @@ const Listing = ({ props, className, actionType }: Props) => {
 					</div>
 				</div>
 			</div>
-		</Link>
+		</div>
 	);
 };
 
