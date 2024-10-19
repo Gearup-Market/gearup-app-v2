@@ -263,7 +263,7 @@ const Header = () => {
 					</Button>
 					{isAuthenticated ? (
 						<Link className={styles.user_image} href="/user/dashboard">
-							<Image src={user?.avatar || "/images/user.png"} alt="" fill />
+							<Button>My account</Button>
 						</Link>
 					) : (
 						<>

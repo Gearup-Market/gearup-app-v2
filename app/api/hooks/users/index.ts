@@ -14,8 +14,12 @@ import {
 	IResetPasswordRequestProps,
 	IResetPasswordRequestRes,
 	IResetPasswordRes,
+	IUserResp,
+	UserUpdateResp,
 	iPostRegisterKycReq,
 	iPostRegisterKycResp,
+	iPostReviewResp,
+	iPostReviewRsq,
 	iPostUpdateBankResp,
 	iPostUpdateBankRsq,
 	iPostUserSignInErr,
@@ -158,6 +162,18 @@ const useGetUser = (
 		refetchOnMount: false
 	});
 
+const useGetUserDetails = (
+	{ userId }: { userId: string },
+	options?: UseQueryOptions<IUserResp, IGetCardHistoriesErr>
+) =>
+	useQuery<IUserResp, IGetCardHistoriesErr>({
+		queryKey: ["user", userId],
+		queryFn: async () => (await api.get(`${API_URL.getUser}/${userId}`)).data,
+		...options,
+		enabled: !!userId,
+		refetchOnMount: false
+	});
+
 // ----------------------------------------------
 
 const usePostRegisterKyc = (
@@ -273,6 +289,39 @@ const usePostUpdateBank = (
 			).data,
 		...options
 	});
+
+const usePostReview = (
+	options?: Omit<
+		UseMutationOptions<iPostReviewResp, iPostUserSignInErr, iPostReviewRsq>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostReviewResp, iPostUserSignInErr, iPostReviewRsq>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.reviews, {
+					...props
+				})
+			).data,
+		...options
+	});
+
+	const usePostUpdateUser = (
+		options?: Omit<
+			UseMutationOptions<UserUpdateResp, AxiosError, any>,
+			"mutationFn"
+		>
+	) =>
+		useMutation<UserUpdateResp, AxiosError, any>({
+			mutationFn: async props =>
+				(
+					await api.post(API_URL.updateUser, {
+						...props
+					})
+				).data.data,
+			...options
+		});
+
 export {
 	useResetPassword,
 	useResetPasswordRequest,
@@ -285,5 +334,8 @@ export {
 	usePostUpdateKyc,
 	usePostResendKycCode,
 	usePostValidateKycCode,
-	usePostUpdateBank
+	usePostUpdateBank,
+	usePostReview,
+	useGetUserDetails,
+	usePostUpdateUser
 };

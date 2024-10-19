@@ -37,7 +37,7 @@ const ConfirmShipment = ({ handleNext, thirdPartyVerification }: Props) => {
         </div>
       </div>
       <div className={styles.btn_container}>
-        <Button onClick={() => handleNext(TransactionStage.ReviewAndFeedback, TransactionStatus.Completed)}>Confirm Shipment</Button>
+        <Button onClick={() => handleNext(TransactionStage.BuyerReceivedItem)}>Confirm Shipment</Button>
       </div>
     </div>
   )

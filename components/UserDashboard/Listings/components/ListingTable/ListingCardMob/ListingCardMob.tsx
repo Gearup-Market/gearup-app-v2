@@ -3,6 +3,8 @@ import React from 'react'
 import styles from './ListingCardMob.module.scss'
 import Image from 'next/image'
 import { Button, MobileCard, ToggleSwitch } from '@/shared'
+import { formatDate } from '@/utils'
+import Link from 'next/link'
 
 interface Props {
     item: any
@@ -85,12 +87,17 @@ const ListingCardMob = ({ item, ind, lastEle, activeFilter }: Props) => {
                         </div>
                         <div className={styles.container__details__detail_container}>
                             <p className={styles.key}>Date</p>
-                            <p className={`${styles.value}`}>{item.date}</p>
+                            <p className={`${styles.value}`}>{formatDate(item.date)}</p>
                         </div>
                         <div className={styles.container__details__detail_container}>
                             <p className={styles.key}>Availability</p>
                             <p className={`${styles.value} ${styles.rental}`}>{item.availability}</p>
                         </div>
+                        <Link
+                            href={`/user/listings/${item.id}`}>
+
+                            <Button className={styles.button} buttonType='secondary'>See detials</Button>
+                        </Link>
                         <div className={styles.container__details__detail_container}>
                             <p className={styles.key}>Actions</p>
                             <p className={`${styles.value} ${styles.action_icons}`}>

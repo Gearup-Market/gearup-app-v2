@@ -5,8 +5,12 @@ import styles from "./ProfileCard.module.scss";
 import Image from "next/image";
 import { Button, Ratings } from "@/shared";
 import { Listing } from "@/store/slices/listingsSlice";
+import Link from "next/link";
+import { AppRoutes } from "@/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProfileCard = ({ listing }: { listing: Listing }) => {
+	const { user: loggedInUser } = useAuth();
 	const { location, user, reviews, averageRating, ownerTotalListings } = listing;
 	return (
 		<div className={styles.card}>
@@ -42,27 +46,35 @@ const ProfileCard = ({ listing }: { listing: Listing }) => {
 								</div>
 							)}
 						</div>
-						{location && location.state && <div className={styles.text} style={{ marginBottom: 0 }}>
-							<p>{location.state}, Nigeria</p>
-						</div>}
+						{location && location.state && (
+							<div className={styles.text} style={{ marginBottom: 0 }}>
+								<p>{location.state}, Nigeria</p>
+							</div>
+						)}
 						<Ratings rating={averageRating || 0} showRatingNumber readOnly />
 						<div className={styles.text} style={{ marginBottom: 0 }}>
 							<p>{ownerTotalListings || 0} deals</p>
 						</div>
 					</div>
 				</div>
-				<Button className={styles.button} buttonType="transparent">
-					<div className={styles.icon}>
-						<Image src="/svgs/send.svg" alt="" fill sizes="100vw" />
-					</div>
-					<h5>Send a message</h5>
-				</Button>
+				{loggedInUser?._id !== user._id && (
+					<Link
+						href={`${AppRoutes.userDashboard.messages}?participantId=${user?._id}&listingId=${listing?._id}`}
+					>
+						<Button className={styles.button} buttonType="transparent">
+							<div className={styles.icon}>
+								<Image src="/svgs/send.svg" alt="" fill sizes="100vw" />
+							</div>
+							<h5>Send a message</h5>
+						</Button>
+					</Link>
+				)}
 			</div>
-			{user?.about && <div className={styles.text}>
-				<p>
-					{user.about}
-				</p>
-			</div>}
+			{user?.about && (
+				<div className={styles.text}>
+					<p>{user.about}</p>
+				</div>
+			)}
 		</div>
 	);
 };

@@ -16,7 +16,7 @@ import {
 	WalletTransactionsTable,
 	WalletWithdrawalModal,
 	XlmDepositModal,
-	XlmWithdrawalModal,
+	XlmWithdrawalModal
 } from "./components";
 import AlertModal from "./components/AlertModal/AlertModal";
 import { GridAddIcon } from "@mui/x-data-grid";
@@ -27,9 +27,12 @@ import { formatNumber } from "@/utils";
 import { WalletStatus } from "@/app/api/hooks/wallets/types";
 import { useStellarWallet } from "@/hooks";
 import { SmallLoader } from "@/shared/loaders";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const WalletDepositModal = dynamic(() => import('./components').then(mod => mod.WalletDepositModal), { ssr: false });
+const WalletDepositModal = dynamic(
+	() => import("./components").then(mod => mod.WalletDepositModal),
+	{ ssr: false }
+);
 
 enum ToggleType {
 	FIAT = "Fiat",
@@ -56,8 +59,11 @@ const Wallet = () => {
 	const [showWalletWithdrawalModal, setShowWalletWithdrawalModal] = useState(false);
 	const [activeWallet, setActiveWallet] = useState<ToggleType>(ToggleType.FIAT);
 	const { wallet } = useAppSelector(s => s.wallet);
-	const { data: stellarWallet, isFetching: isFetchingStellarWallet, refetch } =
-		useStellarWallet();
+	const {
+		data: stellarWallet,
+		isFetching: isFetchingStellarWallet,
+		refetch
+	} = useStellarWallet();
 
 	const handleToggleWallet = (type: ToggleType) => {
 		setActiveWallet(type);
@@ -68,7 +74,10 @@ const Wallet = () => {
 		[wallet?.status]
 	);
 
-  const walletBalance = useMemo(() => (wallet.balance || 0) - (wallet.pendingDebit || 0), [wallet])
+	const walletBalance = useMemo(
+		() => (wallet?.balance || 0) - (wallet?.pendingDebit || 0),
+		[wallet]
+	);
 
 	return (
 		<div className={styles.wallet_wrapper}>
@@ -140,8 +149,16 @@ const Wallet = () => {
 					</div>
 
 					<div className={styles.account_balance_container}>
-						<p>Wallet balance</p>
-						<h2>NGN {formatNumber(walletBalance || 0)}</h2>
+						<BalanceSection
+							balance={walletBalance}
+							text="Wallet balance"
+							loading={isFetchingStellarWallet}
+						/>
+						<BalanceSection
+							balance={wallet?.pendingDebit || 0}
+							text="Escrow Balance"
+							loading={isFetchingStellarWallet}
+						/>
 					</div>
 					<div className={`${styles.btn_container} ${styles.mobile_btns}`}>
 						<Button
@@ -177,13 +194,18 @@ const Wallet = () => {
 					<div className={styles.container__header}>
 						<HeaderSubText title="XLM wallet" variant="normal" />
 					</div>
-					<div className={styles.account_balance_container}>
-						<p>Wallet balance</p>
-						{isFetchingStellarWallet ? (
-							<SmallLoader />
-						) : (
-							<h2>{stellarWallet?.xlmBalance || "0.00"}</h2>
-						)}
+					<div className={styles.xlm_balance_container}>
+						<BalanceSection
+							balance={stellarWallet?.xlmBalance || 0}
+							text="Wallet balance"
+							loading={isFetchingStellarWallet}
+							type="xlm"
+						/>
+						{/* <BalanceSection
+							balance={stellarWallet?.xlmBalance || 0}
+							text="Escrow Balance"
+							loading={isFetchingStellarWallet}
+						/> */}
 					</div>
 					<div className={`${styles.btn_container} ${styles.xlm_btn}`}>
 						<Button
@@ -234,15 +256,15 @@ const Wallet = () => {
 					<XlmDepositModal
 						openModal={showXlmDepositModal}
 						setOpenModal={setShowXlmDepositModal}
-            wallet={stellarWallet}
-            isLoading={isFetchingStellarWallet}
+						wallet={stellarWallet}
+						isLoading={isFetchingStellarWallet}
 					/>
 				)}
 				{showXlmWithdrawalModal && (
 					<XlmWithdrawalModal
 						openModal={showXlmWithdrawalModal}
 						setOpenModal={setShowXlmWithdrawalModal}
-            refetch={refetch}
+						refetch={refetch}
 					/>
 				)}
 				{showWalletDepositModal && (
@@ -257,3 +279,33 @@ const Wallet = () => {
 };
 
 export default Wallet;
+
+const BalanceSection = ({
+	balance = "0.00",
+	text,
+	loading,
+	type = "ngn"
+}: {
+	balance: string | number;
+	text: string;
+	loading: boolean;
+	type?: "xlm" | "ngn";
+}) => {
+	return (
+		<div className={styles.balance_section}>
+			<p>{text}</p>
+			{loading ? (
+				<SmallLoader />
+			) : (
+				<h2>
+					{type !== "xlm" ? (
+						<Image src="/svgs/ngn.svg" alt="cur" height={20} width={20} />
+					) : (
+						"XLM"
+					)}{" "}
+					{balance || "0.00"}
+				</h2>
+			)}
+		</div>
+	);
+};

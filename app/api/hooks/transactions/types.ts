@@ -72,6 +72,10 @@ export interface Transaction {
 	payment: string;
 	metadata: MetadataSchema;
 	stages: Stage[];
+	reviews: {
+		buyerReviewed: boolean;
+		sellerReviewed: boolean;
+	}
 	createdAt: string;
 	updatedAt?: string;
 }

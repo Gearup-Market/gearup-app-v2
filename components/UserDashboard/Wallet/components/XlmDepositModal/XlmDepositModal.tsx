@@ -8,6 +8,7 @@ import { CopyIcon, WarningIcon } from "@/shared/svgs/dashboard";
 import { StellarWallet } from "@/app/api/hooks/wallets/types";
 import { PageLoader } from "@/shared/loaders";
 import { toast } from "react-hot-toast";
+import { shortenTitle } from "@/utils";
 
 interface Props {
 	openModal: boolean;
@@ -141,7 +142,7 @@ const XlmDepositModal = ({ setOpenModal, openModal, wallet, isLoading }: Props) 
 										Deposit address
 									</p>
 									<div className={styles.address_container}>
-										<p>{wallet?.publicKey}</p>
+										<p className={styles.public_key}>{wallet?.publicKey}</p>
 										<span className={styles.icon}>
 											<CopyIcon />
 										</span>

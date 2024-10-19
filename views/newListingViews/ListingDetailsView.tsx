@@ -29,7 +29,10 @@ const ListingDetailsView = () => {
 	const [inputValues, setInputValues] = useState<{
 		title: string;
 		description: string;
-	}>({ title: newListing.productName || "", description: newListing.description || "" });
+	}>({
+		title: newListing.productName || "",
+		description: newListing.description || ""
+	});
 
 	const convertArrToObj = (arr: any[]) => {
 		return arr?.reduce((acc, field) => {
@@ -55,22 +58,31 @@ const ListingDetailsView = () => {
 			subCategory,
 			fieldValues: convertArrToObj(selectedFields)
 		};
-		// console.log(newListingData, "newListingData");
+		
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/images");
 	};
 
 	useEffect(() => {
-		let _c: iCategory | undefined
-		if (newListing.category){
-			_c = allCategories?.data.find(c => c._id === newListing.category?._id)
-			setCategory(_c)
+		let _c: iCategory | undefined;
+		if (newListing.category) {
+			_c = allCategories?.data.find(c => c._id === newListing.category?._id);
+			setCategory(_c);
 		}
-		if (newListing.subCategory){
-			const _b = _c?.subCategories.find(c => c._id === newListing.subCategory?._id)
-			setSubCategory(_b)
+		if (newListing.subCategory) {
+			const _b = _c?.subCategories.find(c => c._id === newListing.subCategory?._id);
+			setSubCategory(_b);
 		}
 	}, [newListing, allCategories]);
+
+	useEffect(() => {
+		if(newListing.items.length === 1){
+			setInputValues({
+				...inputValues,
+				title: newListing.items[0].name
+			})
+		}
+	}, [newListing])
 
 	const disabledButton =
 		!inputValues.description || !inputValues.title || !category || !subCategory;
@@ -86,7 +98,10 @@ const ListingDetailsView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }} onClick={() => router.push('/user/dashboard')}>
+				<div
+					style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}
+					onClick={() => router.push("/user/dashboard")}
+				>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -107,7 +122,9 @@ const ListingDetailsView = () => {
 						</p>
 					</div>
 					<div className={styles.container}>
-						<InputField
+						{
+							newListing.items.length > 1 &&
+							<InputField
 							label="Package title"
 							placeholder="E.g Zhiyun Weebill Lab Creator Accessory Kit"
 							value={inputValues.title}
@@ -117,7 +134,8 @@ const ListingDetailsView = () => {
 									title: e.target.value
 								}))
 							}
-						/>
+							/>
+						}
 						<div className={styles.select_row}>
 							<AdvanceSelect
 								label="Category"

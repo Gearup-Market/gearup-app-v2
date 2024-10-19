@@ -5,8 +5,8 @@
     border-radius: 8px;
     padding: 1.5rem;
     background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s ease-in-out;
+    // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    // transition: box-shadow 0.2s ease-in-out;
     min-width: 25rem;
 
     @include screenMax("mobile") {

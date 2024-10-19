@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import styles from "./NewListingViews.module.scss";
-import { Button, LoadingSpinner, Logo } from "@/shared";
+import { Button, CustomImage, Logo } from "@/shared";
 import Image from "next/image";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
@@ -51,11 +51,12 @@ const ImagesView = () => {
 
 	const nextPage = useCallback(async () => {
 		const newListingData = {
-			listingPhotos: (newListing.listingPhotos || []).concat(
-				displayedImages.map(c => URL.createObjectURL(c))
-			),
+			listingPhotos: [...newListing.listingPhotos,
+				...displayedImages.map(c => URL.createObjectURL(c))],
+			
 			tempPhotos: displayedImages
 		};
+		
 
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/type");
@@ -126,7 +127,7 @@ const ImagesView = () => {
 						<div className={styles.image_row}>
 							{newListing.listingPhotos.map((photo: string, index) => (
 								<div key={index} className={styles.image}>
-									<Image src={photo} alt="" fill sizes="100vw" />
+									<CustomImage src={photo} alt="" fill sizes="100vw" />
 									<div
 										className={styles.closeModal_container}
 										onClick={() => removeExistingImage(photo)}
@@ -140,7 +141,7 @@ const ImagesView = () => {
 							))}
 							{displayedImages.map((displayedImage: File) => (
 								<div key={displayedImage.name} className={styles.image}>
-									<Image
+									<CustomImage
 										src={URL.createObjectURL(displayedImage)}
 										alt=""
 										fill

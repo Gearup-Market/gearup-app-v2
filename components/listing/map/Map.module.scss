@@ -2,7 +2,14 @@
 
 .container {
 	width: 100%;
-	margin-top: 3.2rem;
+	height: 100%;
+
+	.header{
+		@include flex(space-between, center);
+		font-size: 1.4rem;
+		letter-spacing: 0.08rem;
+		color: #4b525a;
+	}
 	.text {
 		margin-bottom: 1.6rem;
 		h3 {

@@ -5,7 +5,7 @@
     display: flex;
     align-items: flex-start;
     gap: 2rem;
-    // width: 100%;
+    width: 100%;
     padding: 2rem 0;
     box-sizing: border-box;
     overflow: hidden;
@@ -16,6 +16,8 @@
         display: flex;
         gap: 2rem;
         flex-direction: column;
+        overflow: scroll;
+        width: 100%;
 
     &__parent_container{
         display: flex;
@@ -26,10 +28,6 @@
         border: 1px solid $col-border;
         width:fit-content;
         transition: all 0.3s ease-in-out;
-
-       
-
-        
 
 
         &__filter{
@@ -45,7 +43,7 @@
             transition: all 0.3s ease-in-out;
 
             &[data-active='true']{
-                background-color: #ffb30f;
+                background: $orange-grad;
                 font-weight: 700;
             }
         
@@ -56,9 +54,11 @@
         display: flex;
         gap: 2rem;
         padding: 1rem 0;
-        overflow: scroll;
-        width: 100%;
+        overflow: auto;
+        // width: 100%;
+        padding-right: 6rem;
         // flex-wrap: wrap;
+
         row-gap: 1rem;
 
         &__filter{
@@ -74,6 +74,7 @@
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease-in-out;
             min-width: 10rem;
+            width: fit-content;
             justify-content: center;
             // max-width: 50%;
             
@@ -123,7 +124,7 @@
                 gap: 1rem;
                 min-width: fit-content;
                 flex-wrap: nowrap;
-                
+                width: fit-content;
                 flex: 1;
                 
     

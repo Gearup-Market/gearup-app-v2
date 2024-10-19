@@ -16,26 +16,35 @@ enum TransactionType {
 export default function useTimeline(item: iTransactionDetails) {
 	const { userId } = useAppSelector(s => s.user);
 	const { mutateAsync: postTransactionStage, isPending } = usePostTransactionStage();
-	const {transaction, currentStage} = useAppSelector(s => s.transaction);
+	const { transaction, currentStage } = useAppSelector(s => s.transaction);
 	const [steps, setSteps] = useState(1);
-	
-	
-	const { isBuyer, id, userRole, transactionType } = transaction!;
-	const stage = currentStage?.stage
-	console.log(stage);
-	
+
+	const { isBuyer, id, userRole, transactionType, metadata } = transaction!;
+	const has3rdPartyCheckup = Boolean(metadata?.thirdPartyCheckup);
+	const stage = currentStage?.stage;
 
 	useEffect(() => {
 		if (userRole === UserRole.Renter && transactionType === TransactionType.Rental) {
-			if (!stage || stage === TransactionStage.PendingApproval) {
+			if (
+				!stage ||
+				[
+					TransactionStage.AwaitingPayment,
+					TransactionStage.PendingApproval
+				].includes(stage)
+			) {
 				setSteps(1);
-			} else if (stage === TransactionStage.AwaitingConfirmation) {
+			} else if (
+				[
+					TransactionStage.SellerPreparingDelivery,
+					TransactionStage.SellerShipped
+				].includes(stage)
+			) {
 				setSteps(2);
-			} else if (stage === TransactionStage.TransactionOngoing) {
+			} else if (stage === TransactionStage.RentalOngoing) {
 				setSteps(3);
-			} else if (stage === TransactionStage.InitiateReturn) {
+			} else if (stage === TransactionStage.AwaitingItemReturn) {
 				setSteps(4);
-			} else if (stage === TransactionStage.ConfirmReturn) {
+			} else if (stage === TransactionStage.AwaitingLenderConfirmation) {
 				setSteps(5);
 			} else if (stage === TransactionStage.ReviewAndFeedback) {
 				setSteps(6);
@@ -44,36 +53,103 @@ export default function useTimeline(item: iTransactionDetails) {
 			userRole === UserRole.Lender &&
 			transactionType === TransactionType.Rental
 		) {
-			if (!stage || stage === TransactionStage.PendingApproval) {
+			if (
+				!stage ||
+				[
+					TransactionStage.AwaitingPayment,
+					TransactionStage.PendingApproval
+				].includes(stage)
+			) {
 				setSteps(1);
-			} else if (stage === TransactionStage.ConfirmHandover) {
+			} else if (stage === TransactionStage.SellerPreparingDelivery) {
 				setSteps(2);
-			} else if (stage === TransactionStage.AwaitingConfirmation) {
+			} else if (stage === TransactionStage.SellerShipped) {
 				setSteps(3);
-			} else if (stage === TransactionStage.TransactionOngoing || stage === TransactionStage.InitiateReturn) {
+			} else if (
+				[
+					TransactionStage.RentalOngoing,
+					TransactionStage.AwaitingItemReturn
+				].includes(stage)
+			) {
 				setSteps(4);
-			} else if (stage === TransactionStage.ConfirmReturn) {
+			} else if (stage === TransactionStage.AwaitingLenderConfirmation) {
 				setSteps(5);
 			} else if (stage === TransactionStage.ReviewAndFeedback) {
 				setSteps(6);
 			}
-		} else if(userRole === UserRole.Buyer && ['Purchase', 'Sale'].includes(transactionType)){
-			if (!stage || stage === TransactionStage.PendingApproval) {
+		} else if (
+			userRole === UserRole.Buyer &&
+			["Purchase", "Sale"].includes(transactionType)
+		) {
+			if (
+				!stage ||
+				[
+					TransactionStage.AwaitingPayment,
+					TransactionStage.PendingApproval
+				].includes(stage)
+			) {
 				setSteps(1);
-			} else if (stage === TransactionStage.AwaitingConfirmation) {
-				setSteps(2);
-			} else if (stage === TransactionStage.ReviewAndFeedback) {
-				setSteps(3);
+			} else if (has3rdPartyCheckup) {
+				if (
+					[
+						TransactionStage.SellerPreparingDelivery,
+						TransactionStage.SellerShipped,
+						TransactionStage.ThirdPartyReceived,
+						TransactionStage.ThirdPartyInspecting,
+						TransactionStage.ThirdPartyReportProvided,
+						TransactionStage.AwaitingThirdPartyDelivery,
+						TransactionStage.BuyerReviewingReport
+					].includes(stage)
+				) {
+					setSteps(2);
+				} else if ([TransactionStage.SellerShipped].includes(stage)) {
+					setSteps(3);
+				} else if (stage === TransactionStage.ReviewAndFeedback) {
+					setSteps(4);
+				}
+			} else {
+				if ([TransactionStage.SellerShipped].includes(stage)) {
+					setSteps(2);
+				} else if ([TransactionStage.ReviewAndFeedback, TransactionStage.BuyerReceivedItem].includes(stage)) {
+					setSteps(3);
+				}
 			}
-		}  else if(userRole === UserRole.Seller && ['Purchase', 'Sale'].includes(transactionType)){
-			if (!stage || stage === TransactionStage.PendingApproval) {
+		} else if (
+			userRole === UserRole.Seller &&
+			["Purchase", "Sale"].includes(transactionType)
+		) {
+			if (
+				!stage ||
+				[
+					TransactionStage.AwaitingPayment,
+					TransactionStage.PendingApproval
+				].includes(stage)
+			) {
 				setSteps(1);
-			}else if (stage === TransactionStage.ConfirmHandover) {
+			} else if (stage === TransactionStage.SellerPreparingDelivery) {
 				setSteps(2);
-			} else if (stage === TransactionStage.AwaitingConfirmation) {
+			} else if (stage === TransactionStage.SellerShipped) {
 				setSteps(3);
-			} else if (stage === TransactionStage.ReviewAndFeedback) {
-				setSteps(4);
+			} else if (has3rdPartyCheckup) {
+				if (
+					[
+						TransactionStage.SellerPreparingDelivery,
+						TransactionStage.SellerShipped,
+						TransactionStage.ThirdPartyReceived,
+						TransactionStage.ThirdPartyInspecting,
+						TransactionStage.ThirdPartyReportProvided,
+						TransactionStage.AwaitingThirdPartyDelivery,
+						TransactionStage.BuyerReviewingReport
+					].includes(stage)
+				) {
+					setSteps(4);
+				} else if ([TransactionStage.ReviewAndFeedback, TransactionStage.BuyerReceivedItem].includes(stage)) {
+					setSteps(5);
+				}
+			} else {
+				if ([TransactionStage.ReviewAndFeedback, TransactionStage.BuyerReceivedItem].includes(stage)) {
+					setSteps(4);
+				}
 			}
 		}
 	}, [item]);
@@ -94,12 +170,12 @@ export default function useTimeline(item: iTransactionDetails) {
 
 			if (res.data) {
 				toast.success("Success!");
-				window.location.reload();
+				// window.location.reload();
 			}
 		} catch (error: any) {
 			toast.error(error?.response?.data?.message || "An error occured");
 		}
 	};
 
-	return {steps, handleAction, isPending};
+	return { steps, handleAction, isPending };
 }

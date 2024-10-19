@@ -15,10 +15,11 @@ import { formatLink } from "./formatLink";
 import { arraysAreEqual } from "./compareArrays";
 import { isEmpty } from "./isEmpty";
 import { buildUrlQuery } from "./buildQuery";
-
-export * from './getDaysFactor';
-export * from './formatTime';
-export * from './stringUtils';
+export * from "./cart";
+export * from "./getDaysFactor";
+export * from "./formatTime";
+export * from "./stringUtils";
+export * from './appRoutes'
 
 export {
 	isEmpty,
@@ -38,5 +39,5 @@ export {
 	scrollTo,
 	eventEmitter,
 	formatLink,
-	arraysAreEqual,
+	arraysAreEqual
 };

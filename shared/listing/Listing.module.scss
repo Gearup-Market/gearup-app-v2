@@ -9,6 +9,16 @@
 		overflow: hidden;
 		border-radius: 0.4rem;
 		margin-bottom: 1.2rem;
+
+		.fave_icon{
+			position: absolute;
+			top: 0.8rem;
+			right: 0.8rem;
+			width: 2.4rem;
+			height: 2.4rem;
+			z-index: 100;
+		}
+
 		.button_container {
 			position: absolute;
 			z-index: 1;

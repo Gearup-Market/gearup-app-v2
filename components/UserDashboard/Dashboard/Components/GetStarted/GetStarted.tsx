@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './GetStarted.module.scss'
 import { Button, CheckBox, RadioInput } from '@/shared'
 import ProgressBar from '@/shared/progressBar/ProgressBar'
+import Link from 'next/link'
 
 const GetStarted = () => {
     const verificationSteps = [
@@ -52,7 +53,9 @@ const GetStarted = () => {
                 </ul>
             </div>
             <Button buttonType='transparent' iconSuffix='/svgs/color-arrow.svg' className={styles.container__btn_started}>
+            <Link href="/verification">
                 Get Started
+            </Link>
             </Button>
         </div>
     )

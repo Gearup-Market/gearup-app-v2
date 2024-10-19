@@ -10,6 +10,20 @@
 		border-radius: 0.4rem;
 		margin-bottom: 1.2rem;
 
+		.button_container {
+			position: absolute;
+			bottom: 1rem;
+			left: 1rem;
+
+			.button{
+				color: #1b1e21;
+				padding: 0.5rem 1rem;
+				border-radius: 0.4rem;
+				font-size: 1.4rem;
+				opacity: 1;
+			}
+		}
+
 		&[data-disabled="true"] {
 			opacity: 0.5;
 		}

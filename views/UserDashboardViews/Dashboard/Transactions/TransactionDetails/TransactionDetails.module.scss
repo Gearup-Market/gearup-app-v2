@@ -3,10 +3,20 @@
 .container{
     display: flex;
     justify-content: space-between;
-    padding: 2rem 3rem;
+    padding: 4rem 3rem;
     border-bottom: 1px solid $col-border;
     flex-direction: column;
     gap: 2.4rem;
+    overflow: auto;
+    height: 100%;
+    padding-bottom: 10rem;
+    @include noScrollBar;
+
+    .chat_body_section{
+        max-width: 92rem;
+        border-radius: 1.6rem;
+        padding-bottom: 10rem;
+    }
 
     @include screenMax("mobile") {
         padding: 2rem 1.6rem;

@@ -24,7 +24,7 @@ export function useTransaction(id?: string) {
 		data: result,
 		isFetching,
 		error
-	} = useGetSingleTransactions(id, { refetchInterval: 10000 });
+	} = useGetSingleTransactions(id, { refetchInterval: 5000 });
 	const { userId } = useAppSelector(s => s.user);
 	const dispatch = useAppDispatch();
 

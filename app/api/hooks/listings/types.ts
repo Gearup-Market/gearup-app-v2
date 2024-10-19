@@ -52,12 +52,12 @@ export interface iPostListingResp {
 
 export interface iGetListingsResp {
 	data: Listing[];
-	message: string;
+	message: string
 }
 
 export interface iGetListingResp {
 	data: Listing;
-	message: string;
+	message: string
 }
 
 export interface iCategory {

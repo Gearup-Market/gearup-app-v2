@@ -5,7 +5,7 @@ import styles from './HeaderSubText.module.scss'
 interface HeaderSubTextProps {
     title?: string
     description?: string
-    variant?: 'main' | 'normal';
+    variant?: 'main' | 'normal' | 'medium';
 }
 const HeaderSubText = ({ title, description, variant = 'normal' }: HeaderSubTextProps) => {
     return (

@@ -20,13 +20,32 @@
     &__pie_chart_container{
         width: 30rem;
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
         gap: 2rem;
         align-items: center;
+
+        ul{
+            display: none;
+        }
 
         @include screenMax("mobile") {
             width: 100%;
             height: 20rem;
+
+            ul{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 1.6rem;
+
+                li{
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                   color: #1B1E21;
+                   font-weight: 600;
+                }
+            }
         }
     
 

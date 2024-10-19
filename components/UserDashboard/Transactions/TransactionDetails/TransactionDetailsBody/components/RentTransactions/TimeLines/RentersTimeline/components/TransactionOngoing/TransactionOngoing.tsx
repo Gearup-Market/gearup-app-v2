@@ -53,7 +53,7 @@ const TransactionOngoing = ({ handleNext, isTimeElapsed }: Props) => {
                     if(isTimeElapsed){
                         handleInitiateReturn()
                     }else {
-                        handleNext(TransactionStage.InitiateReturn)
+                        handleNext(TransactionStage.AwaitingItemReturn)
                     } 
                 }}>
                     {
@@ -61,7 +61,7 @@ const TransactionOngoing = ({ handleNext, isTimeElapsed }: Props) => {
                     }
                 </Button>
             </div>
-            <PaymentRequest openPaymentRequest={openPaymentRequest} setOpenPaymentRequest={setOpenPaymentRequest}  setShowPaymentForm={setOpenPaymentForm}/>
+            <PaymentRequest openPaymentRequest={openPaymentRequest} setOpenPaymentRequest={setOpenPaymentRequest} setShowPaymentForm={setOpenPaymentForm}/>
             <PaymentForm showPaymentForm={openPaymentForm} setShowPaymentForm={setOpenPaymentForm} handleNext={handleNext}/>
         </div>
     )

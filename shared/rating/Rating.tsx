@@ -8,14 +8,21 @@ interface Props {
 	readOnly?: boolean;
 	rating?: number;
 	showRatingNumber?: boolean;
+	onChange?: (rating: number) => void;
 }
 
-const Ratings = ({ readOnly = false, rating = 5, showRatingNumber = false }: Props) => {
+const Ratings = ({ readOnly = false, rating = 5, showRatingNumber = false, onChange }: Props) => {
 	const [localRating, setLocalRating] = useState<number>(rating);
 
+	const handleChange = (rating: number) => {
+		if(onChange){
+			onChange(rating);
+		}
+		setLocalRating(rating)
+	}
 	return (
 		<div className={styles.container}>
-			<Rating value={localRating} onChange={setLocalRating} readOnly={readOnly} />
+			<Rating value={localRating} onChange={handleChange} readOnly={readOnly} />
 			{showRatingNumber && (
 				<div className={styles.text}>
 					<h5>{localRating}</h5>

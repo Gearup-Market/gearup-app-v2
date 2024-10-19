@@ -7,8 +7,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { iTransactionDetails } from "@/interfaces";
 import { formatNumber } from "@/utils";
 import { useAppSelector } from "@/store/configureStore";
+import { DetailsView } from "@/views/UserDashboardViews/Dashboard/Transactions/TransactionDetails/TransactionDetails";
+
 interface Props {
-	item: iTransactionDetails;
+	item?: iTransactionDetails;
+	activeView: string;
+	setActiveView: React.Dispatch<React.SetStateAction<DetailsView>>
 }
 
 const list = [
@@ -17,8 +21,7 @@ const list = [
 	{ id: 3, name: "Details" }
 ];
 
-const TransactionDetailsHeader = () => {
-	const [activeId, setActiveId] = useState(1);
+const TransactionDetailsHeader = ({activeView,setActiveView}:Props) => {
 	const { transaction } = useAppSelector(s => s.transaction);
 	const router = useRouter();
 	const search = useSearchParams();
@@ -58,10 +61,10 @@ const TransactionDetailsHeader = () => {
 				<ul className={styles.container__children_container}>
 					{list.map(item => (
 						<li
-							onClick={() => setActiveId(item.id)}
+							onClick={() => setActiveView(item?.name?.toLowerCase() as DetailsView)}
 							key={item.id}
 							className={styles.container__children_container__filter}
-							data-active={activeId === item.id}
+							data-active={activeView === item.name.toLowerCase()}
 						>
 							<p>{item.name}</p>
 						</li>

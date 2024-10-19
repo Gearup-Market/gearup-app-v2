@@ -1,0 +1,116 @@
+@import "@/styles/imports";
+
+.container {
+	border: 1px solid $col-border;
+	border-top: none;
+	border-bottom: none;
+	animation: 0.5s fadeIn ease-in-out;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+
+	@keyframes fadeIn {
+		0% {
+		  opacity: 0;
+		}
+		100% {
+		  opacity: 1;
+		}
+	  }
+
+	  &[data-borders="true"] {
+		border-top: 1px solid $col-border;
+		border-bottom: 1px solid $col-border;
+		border-radius: 1.6rem;
+		
+		.header{
+			background-color: #fff;
+			border-top-left-radius: 1.6rem;
+			border-top-right-radius: 1.6rem;
+		}
+	}
+
+	
+
+	.header {
+		border-bottom: 1px solid $col-border;
+		padding: 1.6rem;
+		display: flex;
+		justify-content: space-between;
+		position: absolute;
+		left: 0;
+		width: 100%;
+		z-index: 20;
+		background: #fff;
+
+		.left {
+			display: flex;
+			gap: 0.8rem;
+			align-items: flex-start;
+
+			.user_alias {
+				font-size: 1.2rem;
+				font-weight: 700;
+				color: #1b1e21;
+				background: #dedfe0;
+				border-radius: 50%;
+				height: 4rem;
+				width: 4rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-shrink: 0;
+			}
+
+			.name {
+				font-size: 1.2rem;
+				font-weight: 700;
+				color: #1b1e21;
+				display: flex;
+				align-items: center;
+
+				.verfiy_icon {
+					width: 2rem;
+					height: 2rem;
+					margin-left: 0.8rem;
+				}
+			}
+
+			.date_convo_about {
+				display: flex;
+				align-items: center;
+
+				.date {
+					font-size: 1.2rem;
+					color: #1b1e21;
+					line-height: normal;
+				}
+				.convo_about {
+					font-size: 1.2rem;
+					color: #a3a7ab;
+					line-height: normal;
+					display: flex;
+					align-items: center;
+					gap: 0.8rem;
+				}
+
+				@include screenMax("mobile"){
+					flex-wrap: wrap;
+				}
+			}
+		}
+
+        .right{
+            display: flex;
+            align-items: center;
+            gap: 1.6rem;
+
+            .icon{
+                height: 2.4rem;
+                width: 2.4rem;
+            }
+        }
+	}
+
+	
+}

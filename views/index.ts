@@ -21,6 +21,7 @@ import BlogView from "./BlogView/BlogView";
 import BlogDetailsView from "./BlogDetailsView/BlogDetailsView";
 import CartView from "./homeView/CartView/CartView";
 import CheckoutView from "./homeView/CheckoutView/CheckoutView";
+import UserDetailsView from './UserDetailsView/UserDetailsView'
 
 export {
 	HomeView,
@@ -45,5 +46,6 @@ export {
 	BlogView,
 	BlogDetailsView,
 	CartView,
-	CheckoutView
+	CheckoutView,
+	UserDetailsView
 };

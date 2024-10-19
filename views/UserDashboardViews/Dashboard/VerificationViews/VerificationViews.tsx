@@ -20,7 +20,7 @@ const VerificationViews = () => {
 	const [currentStep, setCurrentStep] = useState(1);
 	const [isTokenVerified, setIsTokenVerified] = useState(false);
 	const [isTokenVerification, setIsTokenVerification] = useState(false);
-  const verificationState = useAppSelector(s => s.verification)
+  	const verificationState = useAppSelector(s => s.verification)
 	const personalIdentificationRef = useRef<PersonalIdentificationHandle>(null);
 	const phoneNumberFormRef = useRef<PhoneNumberFormHandle>(null);
 

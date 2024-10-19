@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./NewListingViews.module.scss";
 import { Button, Logo, Select } from "@/shared";
 import Image from "next/image";
@@ -31,13 +31,17 @@ const ListingTypeView = () => {
 		sell: false
 	});
 	const [condition, setCondition] = useState<string>("");
+	const [defaultOptionIndex, setDefaultOptionIndex] = useState<number>(-1);
 
 	const nextPage = () => {
-		if (!condition) {
+		if (!condition && type.includes("sell")) {
 			toast.error("Please select a gear condition");
 			return;
 		}
-		const newListingData = { condition, listingType: type.length === 2 ? "both" : type[0] };
+		const newListingData = {
+			condition,
+			listingType: type.length === 2 ? "both" : type[0]
+		};
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/pricing");
 	};
@@ -51,6 +55,28 @@ const ListingTypeView = () => {
 		setType(filteredType);
 		setChecked(prev => ({ ...prev, [title]: !isIncluded }));
 	};
+
+	console.log(newListing, "newlisting");
+
+	useEffect(() => {
+		if (newListing.listingType && !type.length) {
+			setType(
+				newListing.listingType === "both"
+					? ["rent", "sell"]
+					: [newListing.listingType]
+			);
+			setCondition(newListing.condition);
+			const defaultOptionIndex = gearConditions.findIndex(
+				item => item === newListing.condition
+			);
+			setDefaultOptionIndex(defaultOptionIndex);
+			if (newListing.listingType === "both") {
+				setChecked({ rent: true, sell: true });
+			} else {
+				setChecked(prev => ({ ...prev, [newListing.listingType]: true }));
+			}
+		}
+	}, [newListing]);
 
 	const disabledButton = !type.length;
 	return (
@@ -96,12 +122,13 @@ const ListingTypeView = () => {
 							checked={checked.sell}
 							type="listingView"
 						/>
-						{!disabledButton && (
+						{!disabledButton && type.includes("sell") && (
 							<Select
 								label="Gear condition"
 								required={true}
 								options={gearConditions}
 								onOptionChange={setCondition}
+								defaultOptionIndex={defaultOptionIndex}
 							/>
 						)}
 					</div>

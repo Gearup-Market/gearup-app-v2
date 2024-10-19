@@ -36,4 +36,13 @@ export const API_URL = {
     getSingleTransaction: "/transactions",
 	changeTxStage: "/transactions/update-stage",
 	changeTxStatus: "/transactions/update-status",
+	reviews: "/reviews/add",
+	getTransactionsAnalytics: "/analytics/transactions",
+	getSalesAnalytics: "/analytics/sales",
+	createMessages: "/chats/new",
+	addMessage: (id: string) => `/chats/${id}/messages`,
+	getUserMessages: (id: string) => `/chats/all/${id}`,
+	getChatMessages: (id: string) => `/chats/${id}`,
+	updateUser: "/users/update",
+	updateAccountPin: "/users/update-pin",
 };

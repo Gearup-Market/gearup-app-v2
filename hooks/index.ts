@@ -8,6 +8,8 @@ import {
 	useStellarWalletTransactions
 } from "./useWallet";
 import { useListingFilters } from "./useListings";
+import { useResponsive } from "./useResponsive";
+import { useChatSocket } from "./useChatSocket";
 
 export {
 	useCopy,
@@ -17,5 +19,7 @@ export {
 	useWallet,
     useStellarWallet,
 	useStellarWalletTransactions,
-	useListingFilters
+	useListingFilters,
+	useResponsive,
+	useChatSocket
 };

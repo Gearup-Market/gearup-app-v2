@@ -45,7 +45,7 @@ const InitiateReturn = ({ handleNext }: Props) => {
                 </div>
             </div>
             <div className={styles.btn_container}>
-                <Button onClick={() => handleNext(TransactionStage.ConfirmReturn)}>Completed</Button>
+                <Button onClick={() => handleNext(TransactionStage.AwaitingLenderConfirmation)}>Completed</Button>
             </div>
         </div>
     )

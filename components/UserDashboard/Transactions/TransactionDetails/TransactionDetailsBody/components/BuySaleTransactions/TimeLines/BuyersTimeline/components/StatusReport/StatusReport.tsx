@@ -97,11 +97,12 @@ const StatusReport = ({ handleNext }: Props) => {
                             </div>
                             <div className={styles.btn_container}>
                                 <Button onClick={() => setShowRefundModal(true)}>Request a refund</Button>
+                                <Button onClick={() => handleNext(TransactionStage.SellerShipped)} buttonType="transparent">Proceed with order</Button>
                             </div>
                         </>
                 }
             </div>
-            <RefundModal openModal={showRefundModal} setOpenModal={setShowRefundModal} />
+            <RefundModal handleNext={handleNext} openModal={showRefundModal} setOpenModal={setShowRefundModal} />
         </div>
     )
 }

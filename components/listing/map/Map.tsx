@@ -1,31 +1,42 @@
-'use client';
+"use client";
 import React, { useState, useCallback, useEffect } from "react";
 import styles from "./Map.module.scss";
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
-	width: '100%',
-	height: '100%'
+	width: "100%",
+	height: "100%"
 };
-import { Listing } from "@/store/slices/listingsSlice";
+import { Location } from "@/app/api/hooks/users/types";
 
-const Map = ({ location }: { location?: Listing['location'] }) => {
-	const [map, setMap] = useState<google.maps.Map | null>(null)
-	const [loc, setLocation] = useState({
+const Map = ({
+	location,
+	showTitle = true,
+	showAddress = true,
+	setLocation
+}: {
+	location?: Location;
+	showTitle?: boolean;
+	showAddress?: boolean;
+	setLocation?: React.Dispatch<React.SetStateAction<Location | undefined>>;
+}) => {
+	const [map, setMap] = useState<google.maps.Map | null>(null);
+	const [loc, setLoc] = useState({
 		lat: 0,
 		lng: 0
 	});
-	const [address, setAddress] = useState('');
+	const [address, setAddress] = useState("");
+
 	useEffect(() => {
 		if ("geolocation" in navigator) {
 			navigator.geolocation.getCurrentPosition(
-				(position) => {
+				position => {
 					const { latitude, longitude } = position.coords;
-					setLocation({ lat: latitude, lng: longitude });
+					setLoc({ lat: latitude, lng: longitude });
 					// Call function to get address
 					getAddress(latitude, longitude);
 				},
-				(error) => {
+				error => {
 					console.error(`Error: ${error.message}`);
 				}
 			);
@@ -35,21 +46,19 @@ const Map = ({ location }: { location?: Listing['location'] }) => {
 	}, []);
 
 	const { isLoaded } = useJsApiLoader({
-		id: 'google-map-script',
+		id: "google-map-script",
 		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
-	})
-
+	});
 
 	const onLoad = useCallback(function callback(map: google.maps.Map) {
 		setMap(map);
-		// No need to use fitBounds
 	}, []);
 
 	const onUnmount = React.useCallback(function callback(map: google.maps.Map) {
-		setMap(null)
-	}, [])
+		setMap(null);
+	}, []);
 
-	// Fetch the human-readable address using Google Maps Geocoding API
+	// Fetch the human-readable address, city, state, and country using Google Maps Geocoding API
 	const getAddress = async (lat: number, lng: number) => {
 		const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
@@ -57,9 +66,50 @@ const Map = ({ location }: { location?: Listing['location'] }) => {
 			const response = await fetch(geocodeUrl);
 			const data = await response.json();
 
-			if (data.status === 'OK' && data.results.length > 0) {
-				const formattedAddress = data.results[0].formatted_address;
+			if (data.status === "OK" && data.results.length > 0) {
+				let formattedAddress = data.results[0].formatted_address;
+
+				// Check if the formatted address starts with a Plus Code and remove it
+				const plusCodeRegex = /^[A-Z0-9\+]+\s+/; // Regex to detect Plus Code at the start
+				if (plusCodeRegex.test(formattedAddress)) {
+					formattedAddress = formattedAddress.replace(plusCodeRegex, ""); // Remove the Plus Code
+				}
+
 				setAddress(formattedAddress);
+
+				// Extract the city, state, and country
+				const addressComponents = data.results[0].address_components;
+				let city = "";
+				let state = "";
+				let country = "";
+
+				addressComponents.forEach((component: any) => {
+					const types = component.types;
+					if (types.includes("locality")) {
+						city = component.long_name;
+					}
+					if (types.includes("administrative_area_level_1")) {
+						state = component.long_name;
+					}
+					if (types.includes("country")) {
+						country = component.long_name;
+					}
+				});
+
+				// Update location in parent component
+				if (setLocation) {
+				setLocation({
+					coords: {
+						latitude: lat,
+						longitude: lng
+					},
+					address: formattedAddress,
+					city,
+					state,
+					country
+				});
+
+				}
 			} else {
 				console.log("No address found for this location.");
 			}
@@ -68,41 +118,56 @@ const Map = ({ location }: { location?: Listing['location'] }) => {
 		}
 	};
 
-	console.log(address, "address");
+	// Update location when marker is dragged
+	const handleMarkerDragEnd = (event: google.maps.MapMouseEvent) => {
+		if (event.latLng) {
+			const newLat = event.latLng.lat();
+			const newLng = event.latLng.lng();
+			setLoc({ lat: newLat, lng: newLng });
+			getAddress(newLat, newLng);
+		}
+	};
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.text}>
-				<h3>LOCATION</h3>
+			<div className={styles.header}>
+				{showTitle && (
+					<div className={styles.text}>
+						<h3>LOCATION</h3>
+					</div>
+				)}
+				<p>Drag the location icon to set your location</p>
 			</div>
 			<div className={styles.image}>
-				{
-					isLoaded ? (
-						<GoogleMap
-							mapContainerStyle={containerStyle}
-							center={loc}
-							zoom={10}
-							onLoad={onLoad}
-							onUnmount={onUnmount}
-
-
-						>
-							<Marker
-								position={loc}
-								icon={{
-									url: '/svgs/map-location-svgrepo-com.svg',
-									scaledSize: new google.maps.Size(40, 40),
-								}}
-							/>
-						</GoogleMap>
-					) : <></>
-				}
+				{isLoaded ? (
+					<GoogleMap
+						mapContainerStyle={containerStyle}
+						center={loc}
+						zoom={10}
+						onLoad={onLoad}
+						onUnmount={onUnmount}
+					>
+						<Marker
+							position={loc}
+							icon={{
+								url: "/svgs/map-location-svgrepo-com.svg",
+								scaledSize: new google.maps.Size(40, 40)
+							}}
+							draggable={true}
+							onDragEnd={handleMarkerDragEnd}
+						/>
+					</GoogleMap>
+				) : (
+					<></>
+				)}
 			</div>
-			<div className={styles.text}>
-				<p>{address}</p>
-			</div>
+			{showAddress && (
+				<div className={styles.text}>
+					<p>{address}</p>
+				</div>
+			)}
 		</div>
 	);
 };
 
-export default React.memo(Map);
+export default Map;

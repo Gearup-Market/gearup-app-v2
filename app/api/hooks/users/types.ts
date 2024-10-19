@@ -230,3 +230,85 @@ export type iPostUpdateBankRsq = {
 	accountNumber: string;
 	bankName: string;
 };
+
+export type iPostReviewResp = {
+	data: {
+		_id: string;
+		reviewer: string;
+		reviewed: string;
+		rating: number;
+		comment?: string;
+		transaction: string;
+		isBuyer: boolean;
+		createdAt: string;
+	};
+	message: string;
+};
+
+export type iPostReviewRsq = {
+	reviewer: string;
+	reviewed: string;
+	rating: number;
+	comment?: string;
+	transaction: string;
+};
+
+export interface IUserResp {
+	data: IUser
+	message: string;
+  }
+  
+
+  export interface IUser {
+	_id: string;
+	userId: string;
+	email: string;
+	password: string;
+	name: string;
+	verificationToken: string;
+	isVerified: boolean;
+	resetPasswordToken: string;
+	verificationTokenExpiry: string;
+	createdAt: string;
+	resetPasswordTokenExpiry: string;
+	userName: string;
+	about: string;
+	__v: number;
+  };
+
+  interface Coordinates {
+	longitude: number;
+	latitude: number;
+  }
+  
+  export interface Location {
+	address?: string;
+	city?: string;
+	state?: string;
+	country?: string;
+	coords?: Coordinates;
+  }
+  
+  export interface UserUpdateResp {
+	userId: string;
+	name: string;
+	email: string;
+	userName: string;
+	phoneNumber: string;
+	firstName: string;
+	lastName: string;
+	address: string;
+	about: string;
+	location: Location;
+	linkedin: string;
+	facebook: string;
+	instagram: string;
+	twitter: string;
+	avatar: string;
+	isVerified: boolean;
+	isActive: boolean;
+	accountName: string;
+	accountNumber: string;
+	bankName: string;
+  }
+  

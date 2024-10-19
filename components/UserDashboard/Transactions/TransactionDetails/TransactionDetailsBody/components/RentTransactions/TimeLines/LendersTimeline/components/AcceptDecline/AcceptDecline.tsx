@@ -35,6 +35,11 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 				role: isBuyer ? "buyer" : ("seller" as "buyer" | "seller")
 			};
 
+			if (transactionStatus !== TransactionStatus.Pending) {
+				toast.error("Transaction not in cancellation state");
+				return;
+			}
+
 			const res = await postTransactionStatus({
 				id,
 				status: TransactionStatus.Declined,
@@ -43,7 +48,7 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 
 			if (res.data) {
 				toast.success("You have declined this request");
-                window.location.reload()
+				window.location.reload();
 			}
 		} catch (error: any) {
 			toast.error(error?.response?.data?.message || "An error occurred");
@@ -77,7 +82,7 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 								</span>{" "}
 								has successfully paid the sum of{" "}
 								<span className={styles.bold}>₦{formatNum(amount)}</span>{" "}
-								for the rental of {listing.productName}
+								for the rental of {listing.productName}{" "}
 								{rentalPeriod?.start && (
 									<span className={styles.bold}>
 										from {formatDate(rentalPeriod?.start)} to{" "}
@@ -112,7 +117,7 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 					</>
 				)}
 			</div>
-			{(!isCancelled && !isDeclined) && (
+			{!isCancelled && !isDeclined && (
 				<div className={styles.btn_container}>
 					<Button
 						onClick={onClickDecline}
@@ -123,10 +128,7 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 					</Button>
 					<Button
 						onClick={() =>
-							handleNext(
-								TransactionStage.ConfirmHandover,
-								TransactionStatus.Ongoing
-							)
+							handleNext(TransactionStage.SellerPreparingDelivery)
 						}
 					>
 						Accept

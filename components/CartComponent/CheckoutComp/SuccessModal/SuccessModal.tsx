@@ -30,6 +30,9 @@ const SuccessModal = ({ openModal, setOpenModal }: Props) => {
 					<Button onClick={() => setOpenModal(false)} className={styles.button}>
 						<Link href="/user/wallet">Go back to dashboard</Link>
 					</Button>
+					<Button onClick={() => setOpenModal(false)} className={styles.button}>
+						<Link href="/rent">Place another order</Link>
+					</Button>
 				</div>
 			</div>
 		</Modal>

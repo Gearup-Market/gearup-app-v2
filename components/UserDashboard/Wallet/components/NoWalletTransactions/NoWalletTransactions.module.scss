@@ -1,0 +1,35 @@
+@import "@/styles/imports";
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $col-border;
+    flex-direction: column;
+    gap: 1.6rem;
+    height: 36.2rem;
+    border-radius: 1.6rem;
+    padding: 0 4rem;
+    width: 100%;
+
+    .image_container{
+        width: 6rem;
+        height: 6rem;
+    }
+
+    .no_transaction_text{
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #A4A6A7;
+        width: 100%;
+        box-sizing: border-box;
+        flex-wrap: wrap;    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    @include screenMax("mobile"){
+        height: 30rem;
+    }
+}

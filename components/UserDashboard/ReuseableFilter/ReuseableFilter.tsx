@@ -8,9 +8,10 @@ interface Props {
     setActiveFilterId: any
     setActiveSubFilterId: any
     activeSubFilterId: number | string
+    showChildrenFilters?: boolean
 
 }
-const ReuseableFilters = ({ parentFilters, activeFilterId, setActiveFilterId, setActiveSubFilterId, activeSubFilterId }: Props) => {
+const ReuseableFilters = ({ parentFilters, activeFilterId, setActiveFilterId, setActiveSubFilterId, activeSubFilterId, showChildrenFilters= true }: Props) => {
 
     return (
         <div className={styles.container}>
@@ -27,6 +28,8 @@ const ReuseableFilters = ({ parentFilters, activeFilterId, setActiveFilterId, se
                         ))
                     }
                 </ul>
+                {
+                    showChildrenFilters &&
                 <ul className={styles.container__filters__children_container}>
                     {
                         parentFilters.find((filter) => filter.id === activeFilterId)?.subFilters.map((subFilter) => (
@@ -36,6 +39,7 @@ const ReuseableFilters = ({ parentFilters, activeFilterId, setActiveFilterId, se
                         ))
                     }
                 </ul>
+                    }
             </div>
         </div>
     )

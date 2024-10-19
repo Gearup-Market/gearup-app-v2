@@ -6,8 +6,8 @@ import {
 	CloseIcon,
 	DashboardNavIcon,
 	ListingsNavIcon,
-	LocationEllipse,
 	LogoutNavIcon,
+	MessagesNavIcon,
 	SettingsNavIcon,
 	TransactionNavIcon,
 	WalletNavIcon
@@ -16,15 +16,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/shared";
 import { useAuth } from "@/contexts/AuthContext";
+import Image from "next/image";
 
 interface Props {
 	isMobile?: boolean;
 	onClose?: () => void;
+	setShowWishList?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AdminSidebar = ({ isMobile, onClose }: Props) => {
+const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 	const pathname = usePathname();
-	const { logout } = useAuth();
+	const { logout, user } = useAuth();
 	const sidebarItems = [
 		{
 			name: "Dashboard",
@@ -36,12 +38,11 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 			icon: <TransactionNavIcon />,
 			link: "/user/transactions"
 		},
-
-		// {
-		//     name: 'Messages',
-		//     icon: <MessagesNavIcon />,
-		//     link: '/user/messages',
-		// },
+		{
+			name: "Messages",
+			icon: <MessagesNavIcon />,
+			link: "/user/messages"
+		},
 		{
 			name: "Listings",
 			icon: <ListingsNavIcon />,
@@ -62,16 +63,13 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 
 	useEffect(() => {
 		const absPath = pathname.split("?")[0].split("/").slice(0, 3).join("/");
-		console.log(absPath);
 		setActive(absPath);
 	}, [pathname]);
 
 	return (
 		<div className={styles.sidebar_container}>
 			<div className={styles.sidebar_container__header}>
-				<Link href="/">
-					<Logo type="dark" />
-				</Link>
+				<Logo type="dark" />
 				{isMobile && (
 					<span onClick={onClose}>
 						<CloseIcon />
@@ -83,12 +81,19 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 				<div className={styles.sidebar_container__customer_container}>
 					<h3 className={styles.title}>Profile</h3>
 					<div className={styles.location_details}>
-						<span className={styles.location_icon}>
-							<LocationEllipse />
-						</span>
+						<div className={styles.avatar}>
+							<Image
+								src={
+									!!user?.avatar ? user.avatar : "/svgs/avatar-user.svg"
+								}
+								width={40}
+								height={40}
+								alt="avatar"
+							/>
+						</div>
 						<div>
-							<h4>username</h4>
-							<Link href="/user/settings?q=profile">View Profile</Link>
+							<h4>{user?.userName}</h4>
+							<Link href={`/users/${user?._id}`}>View Profile</Link>
 						</div>
 					</div>
 				</div>
@@ -110,18 +115,34 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 				</ul>
 
 				<ul className={`${styles.navlinks_container} ${styles.btn_container}`}>
+					<li
+						className={`${styles.navlinks_container__item} ${styles.cursor} ${styles.wishlist_nav} wishlist_icon`}
+						onClick={() => {
+							setShowWishList && setShowWishList(true);
+
+							onClose && onClose();
+						}}
+					>
+						<Image
+							src="/svgs/star.svg"
+							alt="user-icon"
+							height={32}
+							width={32}
+						/>
+						<h3>Wishlist</h3>
+					</li>
 					<Link
 						href="/user/settings?q=payments"
 						className={styles.navlinks_container__item}
 						data-active={active === "/user/settings"}
 					>
-						<span>
+						<span className={styles.icon}>
 							<SettingsNavIcon />
 						</span>
 						<p>Settings</p>
 					</Link>
 					<div className={styles.navlinks_container__item} onClick={logout}>
-						<span>
+						<span className={styles.icon}>
 							<LogoutNavIcon />
 						</span>
 						<p className={styles.logout_text}>Logout</p>
