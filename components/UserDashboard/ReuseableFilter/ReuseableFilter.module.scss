@@ -57,6 +57,7 @@
         overflow: auto;
         // width: 100%;
         padding-right: 6rem;
+        @include noScrollBar;
         // flex-wrap: wrap;
 
         row-gap: 1rem;
@@ -71,7 +72,6 @@
             border-radius: 10rem;
             cursor: pointer;
             border: 1px solid $col-border;
-            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease-in-out;
             min-width: 10rem;
             width: fit-content;

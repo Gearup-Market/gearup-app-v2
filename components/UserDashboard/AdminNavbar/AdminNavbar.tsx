@@ -46,26 +46,8 @@ const AdminNavbar = () => {
 				<Logo type="dark" />
 			</div>
 
-			{/* <div className={styles.input_container} data-show={showSearchBar}>
-        <InputField placeholder="Try e.g Nikon SR ..." icon="/svgs/icon-search-dark.svg" iconTitle="search-icon" className={`${styles.search_field}`} onChange={handleSearchTerm} data-focus={!!searchTerm}/>
-		<span className={styles.close} onClick={toggleSearchBar}>Close</span>
-      </div> */}
-
 			<div className={styles.icons_container}>
 				<div className={styles.mob_buttons}>
-					{/* <Button
-						buttonType="transparent"
-						onClick={toggleSearchBar}
-						className={`${styles.small_icon} ${styles.circle_border}`}
-					>
-						<Image
-							src={"/svgs/icon-search-normal.svg"}
-							height={70}
-							width={70}
-							alt=""
-							sizes="100vw"
-						/>
-					</Button> */}
 					<Button
 						buttonType="transparent"
 						className={`${styles.small_icon} ${styles.circle_border}`}

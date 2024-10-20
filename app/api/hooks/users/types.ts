@@ -254,7 +254,7 @@ export type iPostReviewRsq = {
 };
 
 export interface IUserResp {
-	data: IUser
+	data: UserUpdateResp;
 	message: string;
   }
   
