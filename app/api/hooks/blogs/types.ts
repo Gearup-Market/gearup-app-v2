@@ -1,0 +1,57 @@
+import { AxiosError } from "axios";
+
+export interface IGetArticle {
+    _id: string;
+    title: string;
+    publishedDate: string;
+    status: 'available' | 'unavailable';
+    readMinutes: number;
+    category: string;
+    content: {
+        text: string;
+        attachments: string[];
+    };
+    bannerImage: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+export interface IGetArticleResp {
+    data: IGetArticle[];
+    message: string;
+}
+
+
+export type IGetErr = AxiosError<{ status: string }>;
+
+export interface IPostBlogReq {
+    title?: string;
+    status?: string;
+    readMinutes?: number;
+    category?: string;
+    content?: {
+        text?: string;
+        attachments?: string[]
+    },
+    user: string;
+    bannerImage?: string;
+}
+
+export interface ICreateArticleResp {
+    _id: string;
+    title: string;
+    publishedDate: string;
+    status: 'available' | 'unavailable';
+    readMinutes: number;
+    category: string;
+    content: {
+      text: string;
+      attachments: string[];
+    };
+    bannerImage: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }
+  

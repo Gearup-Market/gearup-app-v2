@@ -4,10 +4,8 @@ import styles from "./Listings.module.scss";
 import ListingTable from "./components/ListingTable/ListingTable";
 import { ToggleSwitch } from "@/shared";
 import { useRouter } from "next/navigation";
-import { useAdminListingFilters, useListingFilters, useListings } from "@/hooks/useListings";
-import { useAppSelector } from "@/store/configureStore";
+import { useAdminListingFilters, useListings } from "@/hooks/useListings";
 import { ReuseableFilters } from "@/components/UserDashboard";
-import { useGetListings } from "@/app/api/hooks/listings";
 
 enum Type {
 	Rent = "Rent",
@@ -39,9 +37,6 @@ const Listings = () => {
 
 	return (
 		<div className={styles.container}>
-			{/* {
-				showTitle && <HeaderSubText title='Listings' />
-			} */}
 			<div className={styles.title_toggle}>
 				{/* <HeaderSubText title="Listings" variant="main" /> */}
 				<div className={styles.listing_text}>

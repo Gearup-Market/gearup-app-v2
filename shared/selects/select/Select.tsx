@@ -45,7 +45,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 	bodyClassName,
 	label,
 	required=false,
-	error
+	error,
 }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [selectedOptionIndex, setSelectedOptionIndex] =
