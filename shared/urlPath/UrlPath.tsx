@@ -28,8 +28,8 @@ const UrlPath = ({ checkUrl }: Props) => {
                             <Image
                                 src="/svgs/icon-close.svg"
                                 alt="blog"
-                                width={20}
-                                height={20}
+                                width={16}
+                                height={16}
                             />
                         </p>
                         <HeaderSubText title='New blog article' variant="normal" />

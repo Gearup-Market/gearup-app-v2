@@ -11,15 +11,19 @@ import { blogsCategoriesData } from "@/mock/blogCategories.mock";
 import { AddCategory, EditCategory } from "./components";
 import BlogCategoryCardMob from "./BlogCategoryCardMob/BlogCategoryCardMob";
 import AddButtonMob from "../AddButtonMob/AddButtonMob";
+import { useGetAllCategories } from "@/app/api/hooks/blogs";
 
 const BlogsCategories = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(7);
+    const {data, isLoading, refetch, isFetching} = useGetAllCategories()
+    const blogsCategories = data?.data || []
     const [showEditCategory, setShowEditCategory] = useState(false)
     const [showAddCategory, setShowAddCategory] = useState(false)
     const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
         blogsCategoriesData.slice(0, limit)
     );
+    const [category, setCategory] = useState("");
 
     const sharedColDef: GridColDef = {
         field: "",
@@ -37,7 +41,7 @@ const BlogsCategories = () => {
     const columns: GridColDef[] = [
         {
             ...sharedColDef,
-            field: "category",
+            field: "name",
             cellClassName: styles.table_cell,
             headerClassName: styles.table_header,
             headerName: "Category Name",
@@ -46,9 +50,7 @@ const BlogsCategories = () => {
             headerAlign: "left",
             renderCell: ({ row, value }) => (
                 <div className={styles.container__name_container}>
-                    <div className={styles.blogs_img} >
-                        <CustomImage src={"https://images.unsplash.com/photo-1702423671974-b2555bbd80ad?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhdGVnb3JpZXN8ZW58MHx8MHx8fDA%3D"} alt={value} width={16} height={16} />
-                    </div>
+               
                     <p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
                         {value}
                     </p>
@@ -118,11 +120,13 @@ const BlogsCategories = () => {
                 style={{ width: "100%", height: "100%" }}
             >
                 <DataGrid
-                    rows={paginatedTransactions}
+                    rows={blogsCategories}
+                    getRowId={(row) => row._id}
                     columns={columns}
                     paginationMode="server"
                     sx={customisedTableClasses}
                     hideFooter
+                    loading={isLoading || isFetching}
                     autoHeight
                 />
             </div>
@@ -134,14 +138,14 @@ const BlogsCategories = () => {
             </MobileCardContainer>
 
             <AddButtonMob onClick={() => setShowAddCategory(true)} />
-            <Pagination
+       {/*      <Pagination
                 currentPage={page}
                 onPageChange={handlePagination}
                 totalCount={transactions.length}
                 pageSize={limit}
-            />
+            /> */}
             <EditCategory openModal={showEditCategory} setOpenModal={setShowEditCategory} />
-            <AddCategory openModal={showAddCategory} setOpenModal={setShowAddCategory} />
+            <AddCategory category={category} setCategory={setCategory} openModal={showAddCategory} setOpenModal={setShowAddCategory} refetch={refetch} />
         </div>
     );
 };

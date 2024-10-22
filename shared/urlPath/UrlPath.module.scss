@@ -1,14 +1,17 @@
 @import "@/styles/imports";
 
-.container{
-display: flex;
-gap: 1rem;
+.container {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
 
-.close_icon{
-    cursor: pointer;
-}
+	.close_icon {
+		cursor: pointer;
+        height: 2rem;
+        width: 2rem;
+	}
 
-    @include screenMax("mobile") {
-        padding:  1.6rem;
-    }
+	@include screenMax("mobile") {
+		padding: 1.6rem;
+	}
 }

@@ -8,7 +8,7 @@ import { GridAddIcon } from '@mui/x-data-grid';
 import { AddCategory } from '../components/BlogsCategories/components';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
-import { useGetArticleById, usePostCreateBlog } from '@/app/api/hooks/blogs';
+import { useGetAllCategories, useGetArticleById, usePostCreateBlog } from '@/app/api/hooks/blogs';
 import { useUploadFiles } from '@/app/api/hooks/listings';
 import { useAppSelector } from '@/store/configureStore';
 import { useSearchParams } from 'next/navigation';
@@ -23,7 +23,7 @@ interface NewBlogFormValues {
 
 const NewBlog = () => {
     const editingMode = useSearchParams().get('edit_mode');
-    const  articleId = useSearchParams().get('blog_id');
+    const articleId = useSearchParams().get('blog_id');
     const [showAddCategory, setShowAddCategory] = useState(false);
     const inputUploadRef = useRef<HTMLInputElement>(null);
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -31,14 +31,16 @@ const NewBlog = () => {
     const { mutateAsync: createBlogPost, isPending: uploadingBlogPost } = usePostCreateBlog();
     const { mutateAsync: uploadImg, isPending: uploadingImg } = useUploadFiles();
     const user = useAppSelector(state => state.user);
-    const [isDraft,setIsDraft] = useState(false)
-    const {data, isLoading} = useGetArticleById(articleId as string);
+    const [isDraft, setIsDraft] = useState(false)
+    const { data, isLoading } = useGetArticleById(articleId as string);
+    const { data: categories, refetch } = useGetAllCategories()
+    const blogsCategories = categories?.data.map((item) => item.name) || []
 
     const initialValues: NewBlogFormValues = {
         title: !!editingMode ? data?.title : "",
         content: !!editingMode ? data?.content.text : '',
         category: !!editingMode ? data?.category : '',
-        readMinutes:  !!editingMode ? data?.readMinutes : 0,
+        readMinutes: !!editingMode ? data?.readMinutes : 0,
         status: !!editingMode ? data?.status : "available",  // Add status here
     };
 
@@ -83,8 +85,6 @@ const NewBlog = () => {
         });
     };
 
-    const categoryOptions = ['Technology', 'Health', 'Fashion'];
-
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
@@ -96,7 +96,7 @@ const NewBlog = () => {
         inputUploadRef.current?.click();
     };
 
-    const defaultOptionIndex = categoryOptions.findIndex((option) => option.toLowerCase() === data?.category.toLowerCase());
+    const defaultOptionIndex = blogsCategories.findIndex((option) => option.toLowerCase() === category.toLowerCase());
 
     return (
         <div className={styles.container}>
@@ -157,7 +157,7 @@ const NewBlog = () => {
                                 <div className={styles.address_field}>
                                     <Field as="select" name="category">
                                         {({ field }: any) => (
-                                            <Select label='Category' options={categoryOptions} defaultOptionIndex={defaultOptionIndex} {...field} onOptionChange={(value) => {
+                                            <Select label='Category' options={blogsCategories} defaultOptionIndex={defaultOptionIndex} {...field} onOptionChange={(value) => {
                                                 setFieldValue("category", value)
                                             }} />
                                         )}
@@ -194,7 +194,8 @@ const NewBlog = () => {
                                     type="button"
                                     onClick={() => {
                                         setIsDraft(true)
-                                        handleSubmit(values, { resetForm }, true)}}  // Save draft with unavailable status
+                                        handleSubmit(values, { resetForm }, true)
+                                    }}  // Save draft with unavailable status
                                     className={styles.upload_btn}
                                 >
                                     {(uploadingBlogPost || uploadingImg) && isDraft ? <LoadingSpinner size='small' /> : 'Save draft'}
@@ -211,7 +212,7 @@ const NewBlog = () => {
                     )}
                 </Formik>
             </div>
-            <AddCategory openModal={showAddCategory} setOpenModal={setShowAddCategory} category={category} setCategory={setCategory} />
+            <AddCategory refetch={refetch} openModal={showAddCategory} setOpenModal={setShowAddCategory} category={category} setCategory={setCategory} />
         </div>
     );
 };

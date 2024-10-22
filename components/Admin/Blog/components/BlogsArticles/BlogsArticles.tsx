@@ -24,14 +24,10 @@ const BlogsTable = () => {
     const { mutateAsync: postUpdateBlogStatus } = usePostUpdateBlogStatus()
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
     const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
-    const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(7);
     const router = useRouter();
     const [selectedRow, setSelectedRow] = useState<any | undefined>();
-    const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
-        blogsData.slice(0, limit)
-    );
-
+    const blogsPosts = data?.data || [];
 
     const sharedColDef: GridColDef = {
         field: "",
@@ -217,7 +213,7 @@ const BlogsTable = () => {
                 style={{ width: "100%", height: "100%" }}
             >
                 <DataGrid
-                    rows={data?.data || []}
+                    rows={blogsPosts}
                     getRowId={(row) => row._id}
                     columns={columns}
                     paginationMode="server"
@@ -228,8 +224,8 @@ const BlogsTable = () => {
                 />
             </div>
             <MobileCardContainer>
-                {paginatedTransactions.map((item, ind) => (
-                    <BlogArticleCardMob key={item.id} item={item} ind={ind} lastEle={(ind + 1) === paginatedTransactions.length ? true : false} />
+                {blogsPosts.map((item, ind) => (
+                    <BlogArticleCardMob key={item._id} item={item} ind={ind} lastEle={(ind + 1) === blogsPosts.length ? true : false} />
                 ))}
             </MobileCardContainer>
 

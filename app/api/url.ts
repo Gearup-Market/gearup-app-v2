@@ -47,4 +47,6 @@ export const API_URL = {
 	updateAccountPin: "/users/update-pin",
 	adminBlogsArticles: "/admin/blog",
 	adminBlogsArticlesById: "/admin/blog/",
+	getAllBlogCategories: "/admin/blog/category/all",
+	createBlogCategory: "/admin/blog/create-category"
 };

@@ -46,12 +46,34 @@ export interface ICreateArticleResp {
     readMinutes: number;
     category: string;
     content: {
-      text: string;
-      attachments: string[];
+        text: string;
+        attachments: string[];
     };
     bannerImage: string;
     createdAt: string;
     updatedAt: string;
     __v: number;
-  }
-  
+}
+
+export interface CategoryData {
+    _id: string;
+    name: string;
+    tag: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+export interface IGetCategoriesResp {
+    data: CategoryData[];
+}
+
+
+export interface ICreateCategoryResp {
+    data: CategoryData;
+}
+
+export interface ICreateCategoryReq {
+    name: string;
+    tag: string;
+}
