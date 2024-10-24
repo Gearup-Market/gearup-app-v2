@@ -1,5 +1,5 @@
 import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from "@tanstack/react-query";
-import { ICreateArticleResp, ICreateCategoryReq, ICreateCategoryResp, IGetArticle, IGetArticleResp, IGetCategoriesResp, IGetErr, IPostBlogReq } from "./types";
+import { ICreateArticleResp, ICreateCategoryReq, ICreateCategoryResp, IGetArticle, IGetArticleResp, IGetCategoriesResp, IGetErr, IPostBlogReq, IUpdateBlogReq, IUpdateCategoryReq } from "./types";
 import { API_URL } from "../../url";
 import { api } from "../../api";
 
@@ -53,6 +53,17 @@ export const usePostCreateBlog = (
         ...options
     });
 
+export const usePostUpdateBlog = (
+    options?: Omit<
+        UseMutationOptions<ICreateArticleResp, IGetErr, IUpdateBlogReq>,
+        "mutationFn"
+    >
+) =>
+    useMutation<ICreateArticleResp, IGetErr, IUpdateBlogReq>({
+        mutationFn: async props => (await api.put(`${API_URL.adminBlogsArticles}/update/${props._id}`, props)).data,
+        ...options
+    });
+
 export const useDeleteBlogById = (
     options?: Omit<
         UseMutationOptions<IGetArticle, IGetErr, any>,
@@ -85,5 +96,18 @@ export const usePostCreateBlogCategory = (
 ) =>
     useMutation<ICreateCategoryResp, IGetErr, ICreateCategoryReq>({
         mutationFn: async props => (await api.post(`${API_URL.createBlogCategory}`, props)).data,
+        ...options
+    });
+
+export const usePostUpdateBlogCategory = (
+    options?: Omit<
+        UseMutationOptions<ICreateCategoryResp, IGetErr, IUpdateCategoryReq>,
+        "mutationFn"
+    >
+) =>
+    useMutation<ICreateCategoryResp, IGetErr, IUpdateCategoryReq>({
+        mutationFn: async props => {
+            const { id, name, tag } = props;
+            return(await api.put(`${API_URL.updateBlogCategory}/${id}`, {name,tag})).data},
         ...options
     });

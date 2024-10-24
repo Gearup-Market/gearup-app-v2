@@ -48,5 +48,14 @@ export const API_URL = {
 	adminBlogsArticles: "/admin/blog",
 	adminBlogsArticlesById: "/admin/blog/",
 	getAllBlogCategories: "/admin/blog/category/all",
-	createBlogCategory: "/admin/blog/create-category"
+	createBlogCategory: "/admin/blog/create-category",
+	updateBlogCategory: "/admin/blog/category/update",
+	adminGetAllUsers: "/users",
+	adminGetUserById: "/admin/user/",
+	adminUpdateUser: "/admin/user/update",
+	adminDeleteUser: "/admin/user",
+	addminGetRecentUsers: "/admin/user/recent",
+	adminGetUsersTotal: "/admin/user/total",
+	adminDeactivateUser: "/admin/user",
+	adminSettingsRoles: "/admin/settings/roles",
 };

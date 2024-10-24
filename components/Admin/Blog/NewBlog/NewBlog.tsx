@@ -8,10 +8,11 @@ import { GridAddIcon } from '@mui/x-data-grid';
 import { AddCategory } from '../components/BlogsCategories/components';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
-import { useGetAllCategories, useGetArticleById, usePostCreateBlog } from '@/app/api/hooks/blogs';
+import { useGetAllCategories, useGetArticleById, usePostCreateBlog, usePostUpdateBlog } from '@/app/api/hooks/blogs';
 import { useUploadFiles } from '@/app/api/hooks/listings';
 import { useAppSelector } from '@/store/configureStore';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { base64ToBlob } from '@/utils';
 
 interface NewBlogFormValues {
     title?: string;
@@ -29,19 +30,22 @@ const NewBlog = () => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [category, setCategory] = useState('');
     const { mutateAsync: createBlogPost, isPending: uploadingBlogPost } = usePostCreateBlog();
+    const { mutateAsync: updateBlogPost, isPending: updatingBlogPost } = usePostUpdateBlog();
     const { mutateAsync: uploadImg, isPending: uploadingImg } = useUploadFiles();
     const user = useAppSelector(state => state.user);
     const [isDraft, setIsDraft] = useState(false)
     const { data, isLoading } = useGetArticleById(articleId as string);
     const { data: categories, refetch } = useGetAllCategories()
     const blogsCategories = categories?.data.map((item) => item.name) || []
+    const [imageSrc, setImageSrc] = useState<string>(data?.bannerImage ?? '');
+    const router = useRouter();
 
     const initialValues: NewBlogFormValues = {
         title: !!editingMode ? data?.title : "",
         content: !!editingMode ? data?.content.text : '',
         category: !!editingMode ? data?.category : '',
         readMinutes: !!editingMode ? data?.readMinutes : 0,
-        status: !!editingMode ? data?.status : "available",  // Add status here
+        status: !!editingMode ? data?.status : "available", 
     };
 
     const validationSchema = Yup.object().shape({
@@ -51,13 +55,94 @@ const NewBlog = () => {
         readMinutes: Yup.string().required('Read time is required'),
     });
 
+    const handleUpdateSubmit = async (
+        values: NewBlogFormValues,
+        { resetForm }: any,
+        isDraft: boolean
+      ) => {
+        // Check if both selectedImage and imageSrc are missing
+        if (!selectedImage && !imageSrc) {
+          toast.error('Please upload an image');
+          return;
+        }
+      
+        // Parse blog content, handling embedded image uploads
+        const parsedContent = await handleBlogContentImageUpload(values?.content as string);
+        const status = isDraft ? 'unavailable' : 'available';
+      
+        // Get the category ID for the blog post
+        const categoryId = getCategoryIndex(values?.category as string);
+        if (!categoryId) {
+          toast.error('Category does not exist');
+          return;
+        }
+      
+        // If selectedImage is a File, proceed with image upload
+        if (selectedImage instanceof File) {
+          await uploadImg([selectedImage], {
+            onSuccess: async (res) => {
+              const image = res.imageUrls[0];
+              // Proceed with blog post update after successful image upload
+              await updateBlogPost({
+                ...values,
+                bannerImage: image, // Use uploaded image
+                user: user.userId,
+                status,
+                _id: articleId as string,
+                category: categoryId,
+                content: { text: parsedContent as string }
+              }, {
+                onSuccess: () => {
+                  toast.success('Blog post updated successfully');
+                  setSelectedImage(null);
+                  resetForm();
+                  router.push("/admin/blog");
+                },
+                onError: () => {
+                  toast.error('Error updating blog post');
+                }
+              });
+            },
+            onError: () => {
+              toast.error('Error uploading image');
+            }
+          });
+        } else {
+          // If no new image (File), directly update the blog post with the existing imageSrc
+          await updateBlogPost({
+            ...values,
+            bannerImage: imageSrc, // Use existing imageSrc
+            user: user.userId,
+            status,
+            _id: articleId as string,
+            category: categoryId,
+            content: { text: parsedContent as string }
+          }, {
+            onSuccess: () => {
+              toast.success('Blog post updated successfully');
+              resetForm();
+              router.push("/admin/blog");
+            },
+            onError: () => {
+              toast.error('Error updating blog post');
+            }
+          });
+        }
+      };
+      
+
     const handleSubmit = async (values: NewBlogFormValues, { resetForm }: any, isDraft: boolean) => {
         if (!selectedImage) {
             toast.error('Please upload an image');
             return;
         }
-
         const status = isDraft ? 'unavailable' : 'available';
+        const categoryId = getCategoryIndex(values?.category as string);
+
+        if(!categoryId) {
+            toast.error('Category does not exist');
+            return;
+        }
 
         await uploadImg([selectedImage], {
             onSuccess: async (res) => {
@@ -67,12 +152,14 @@ const NewBlog = () => {
                     bannerImage: image,
                     user: user.userId,
                     status,  // Set status based on save action
+                    category: categoryId,
                     content: { text: values.content }
                 }, {
                     onSuccess: () => {
                         toast.success(isDraft ? 'Draft saved successfully' : 'Blog post created successfully');
                         setSelectedImage(null);
                         resetForm();
+                        router.push("/admin/blog")
                     },
                     onError: () => {
                         toast.error('Error creating blog post');
@@ -89,6 +176,7 @@ const NewBlog = () => {
         const file = event.target.files && event.target.files[0];
         if (file) {
             setSelectedImage(file);
+            setImageSrc(URL.createObjectURL(file));
         }
     };
 
@@ -96,7 +184,41 @@ const NewBlog = () => {
         inputUploadRef.current?.click();
     };
 
-    const defaultOptionIndex = blogsCategories.findIndex((option) => option.toLowerCase() === category.toLowerCase());
+    const defaultOptionIndex = categories?.data.findIndex((option) => option._id === data?.category);
+
+    const handleBlogContentImageUpload = async (content: string): Promise<string> => {
+        // Create a DOM parser to find <img> tags
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(content, 'text/html');
+
+        // Find all image elements
+        const imgElements = Array.from(doc.querySelectorAll('img')) as HTMLImageElement[];
+
+        for (let img of imgElements) {
+            const base64Image = img.getAttribute('src');
+            if (base64Image && base64Image.startsWith('data:image/')) {
+                const imageBlob = base64ToBlob(base64Image) as File
+                // Upload the image and get the URL
+                const imageUrl = await uploadImg([imageBlob],{
+                    onSuccess: (res) => {
+                        console.log(res,"response")
+                        img.setAttribute('src', res.imageUrls[0]);
+                    },
+                    onError: () => {
+                        toast.error('Error uploading image');
+                    }
+                });
+            }
+        }
+
+        // Serialize the updated HTML content
+        return doc.body.innerHTML;
+    };
+
+    const getCategoryIndex = (category: string) => {
+        const cat = categories?.data.find((item) => item?.name?.toLowerCase() === category.toLowerCase());
+        return cat?._id
+    }
 
     return (
         <div className={styles.container}>
@@ -104,7 +226,14 @@ const NewBlog = () => {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={(values, { resetForm }) => handleSubmit(values, { resetForm }, false)}
+                    onSubmit={(values, { resetForm }) =>{
+                        if(!editingMode) {
+                            handleSubmit(values, { resetForm }, false)
+                        }else{
+                            handleUpdateSubmit(values, { resetForm }, false)
+                        }
+                    } 
+                }
                     enableReinitialize
                 >
                     {({ errors, touched, setFieldValue, values, resetForm }) => (
@@ -121,7 +250,7 @@ const NewBlog = () => {
                                 />
                                 {selectedImage || data?.bannerImage ? (
                                     <div className={styles.image_wrapper}>
-                                        <Image src={!!selectedImage ? URL.createObjectURL(selectedImage) : data?.bannerImage ?? ""} alt="image" fill className={styles.image} />
+                                        <Image src={!!selectedImage ? imageSrc : data?.bannerImage ?? ""} alt="image" fill className={styles.image} />
                                     </div>
                                 ) : (
                                     <div className={styles.image_placeholder}>
@@ -142,7 +271,7 @@ const NewBlog = () => {
                                     </div>
                                 )}
                             </div>
-                            {selectedImage && <Button onClick={openUploadDialog} buttonType='secondary'>Change image</Button>}
+                            {(!!selectedImage || data?.bannerImage) && <Button onClick={openUploadDialog} buttonType='secondary'>Change image</Button>}
 
                             <div className={styles.container__form_container__form}>
                                 <div className={styles.form_field}>
@@ -189,23 +318,26 @@ const NewBlog = () => {
                             </div>
 
                             <div className={styles.submit_btn_container}>
+                                {
+                                    !editingMode &&
                                 <Button
-                                    buttonType='secondary'
-                                    type="button"
-                                    onClick={() => {
-                                        setIsDraft(true)
-                                        handleSubmit(values, { resetForm }, true)
-                                    }}  // Save draft with unavailable status
-                                    className={styles.upload_btn}
+                                buttonType='secondary'
+                                type="button"
+                                onClick={() => {
+                                    setIsDraft(true)
+                                    handleSubmit(values, { resetForm }, true)
+                                }} 
+                                className={styles.upload_btn}
                                 >
                                     {(uploadingBlogPost || uploadingImg) && isDraft ? <LoadingSpinner size='small' /> : 'Save draft'}
                                 </Button>
+                                }
                                 <Button
                                     buttonType='primary'
-                                    type="submit" // Create post with available status
+                                    type="submit"
                                     className={styles.upload_btn}
                                 >
-                                    {(uploadingBlogPost || uploadingImg) && !isDraft ? <LoadingSpinner size='small' /> : 'Create post'}
+                                    {(uploadingBlogPost || uploadingImg) && !isDraft ? <LoadingSpinner size='small' /> : !!editingMode ? "Update post":"Create post"}
                                 </Button>
                             </div>
                         </Form>

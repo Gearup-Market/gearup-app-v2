@@ -6,12 +6,9 @@ import Image from "next/image";
 import { Button, CustomImage, InputField, MobileCardContainer, Pagination, ToggleSwitch } from "@/shared";
 import { customisedTableClasses } from "@/utils/classes";
 import Link from "next/link";
-import { transactions } from "@/mock/transactions.mock";
-import RecentDealsCard from "@/components/UserDashboard/Dashboard/Components/RecentDeals/components/RecentDealsCard/RecentDealsCard";
-import { blogsData } from "@/mock/blogs.mock";
 import { MoreIcon } from "@/shared/svgs/dashboard";
 import MoreModal from "./MoreModal/MoreModal";
-import { Fade, Popover, Popper } from "@mui/material";
+import { Fade, Popper } from "@mui/material";
 import BlogArticleCardMob from "./BlogArticleCardMob/BlogArticleCardMob";
 import AddButtonMob from "../AddButtonMob/AddButtonMob";
 import { useRouter } from "next/navigation";
@@ -24,7 +21,6 @@ const BlogsTable = () => {
     const { mutateAsync: postUpdateBlogStatus } = usePostUpdateBlogStatus()
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
     const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
-    const [limit, setLimit] = useState(7);
     const router = useRouter();
     const [selectedRow, setSelectedRow] = useState<any | undefined>();
     const blogsPosts = data?.data || [];

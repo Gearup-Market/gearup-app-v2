@@ -24,3 +24,16 @@ export const getIdFromSlug = (productSlug: string): string => {
 	const strArray = productSlug.split('-');
 	return strArray.at(-1) || '';
 }
+
+
+export const base64ToBlob = (base64: string): Blob => {
+    const byteString = atob(base64.split(',')[1]); // Decode base64
+    const mimeString = base64.split(',')[0].split(':')[1].split(';')[0]; // Extract MIME type
+
+    const byteArray = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) {
+        byteArray[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([byteArray], { type: mimeString });
+};

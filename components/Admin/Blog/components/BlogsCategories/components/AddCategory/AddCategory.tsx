@@ -15,7 +15,7 @@ interface AddMemberProps {
     refetch?: () => void;
 }
 
-const AddRole = ({ openModal, setOpenModal, category, setCategory, refetch }: AddMemberProps) => {
+const AddCategory = ({ openModal, setOpenModal, category, setCategory, refetch }: AddMemberProps) => {
     const { mutateAsync: createBlogCategory, isPending } = usePostCreateBlogCategory();
 
     interface AddCategoryFormValues {
@@ -91,4 +91,4 @@ const AddRole = ({ openModal, setOpenModal, category, setCategory, refetch }: Ad
     );
 };
 
-export default AddRole;
+export default AddCategory;

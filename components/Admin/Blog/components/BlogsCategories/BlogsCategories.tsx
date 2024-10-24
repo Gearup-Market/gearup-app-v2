@@ -24,6 +24,7 @@ const BlogsCategories = () => {
         blogsCategoriesData.slice(0, limit)
     );
     const [category, setCategory] = useState("");
+    const [activeCategoryId, setActiveCategoryId] = useState("");
 
     const sharedColDef: GridColDef = {
         field: "",
@@ -78,7 +79,7 @@ const BlogsCategories = () => {
             ...sharedColDef,
             align: "right",
             headerAlign: "right",
-            field: "id",
+            field: "_id",
             cellClassName: styles.table_cell,
             headerClassName: styles.table_header,
             headerName: "Actions",
@@ -87,13 +88,19 @@ const BlogsCategories = () => {
                 <div
                     className={styles.container__action_btn}
                 >
-                    <Image src="/svgs/edit.svg" alt="edit" width={16} height={16} onClick={() => setShowEditCategory(true)} />
+                    <Image src="/svgs/edit.svg" alt="edit" width={16} height={16} onClick={() => handleEditCategory(value)} />
                     <Image src="/svgs/red-trash.svg" alt="edit" width={16} height={16} />
 
                 </div>
             ),
         },
     ];
+
+    const handleEditCategory = (id: string) => {
+        console.log(id,"string id")
+        setActiveCategoryId(id);
+        setShowEditCategory(true);
+    }
 
     return (
         <div className={styles.container}>
@@ -144,7 +151,7 @@ const BlogsCategories = () => {
                 totalCount={transactions.length}
                 pageSize={limit}
             /> */}
-            <EditCategory openModal={showEditCategory} setOpenModal={setShowEditCategory} />
+            <EditCategory openModal={showEditCategory} setOpenModal={setShowEditCategory} categoryId={activeCategoryId} refetch={refetch} />
             <AddCategory category={category} setCategory={setCategory} openModal={showAddCategory} setOpenModal={setShowAddCategory} refetch={refetch} />
         </div>
     );

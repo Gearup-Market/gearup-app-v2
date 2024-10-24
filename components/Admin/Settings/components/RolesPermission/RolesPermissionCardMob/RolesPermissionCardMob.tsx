@@ -7,7 +7,7 @@ interface Props {
 }
 
 const RolesPermissionCardMob = ({ item }: Props) => {
-    console.log(item, 'item')
+  
     return (
         <div>
             <div className={styles.container__details}>
