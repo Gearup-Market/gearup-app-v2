@@ -13,7 +13,11 @@ enum Type {
 	Courses = "Courses"
 }
 
-const Listings = () => {
+interface Props{
+	showTitle?: boolean;
+}
+
+const Listings = ({showTitle}:Props) => {
 	useListings();
 	const [activeFilterId, setActiveFilterId] = useState<number | string>(1);
 	const [activeSubFilterId, setActiveSubFilterId] = useState<number | string>(1);

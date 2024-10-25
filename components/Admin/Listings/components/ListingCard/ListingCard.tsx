@@ -11,7 +11,7 @@ import { CustomImage } from "@/shared";
 interface Props {
     props: any;
     className?: string;
-    activeFilter: string;
+    activeFilter?: string;
     activeRow?: number;
 	setActiveRow?: React.Dispatch<React.SetStateAction<number>>;
 }
