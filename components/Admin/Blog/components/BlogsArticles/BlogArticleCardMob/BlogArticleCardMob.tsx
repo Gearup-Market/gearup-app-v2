@@ -44,7 +44,7 @@ const BlogArticleCardMob = ({ item, lastEle, ind }: Props) => {
             </div>
             <div className={styles.container__details__detail_container}>
                 <p className={styles.key}>Category</p>
-                <p className={`${styles.value} ${styles.rental}`}>{item.category}</p>
+                <p className={`${styles.value} ${styles.rental}`}>{item.category.name}</p>
             </div>
             <div className={styles.container__details__detail_container}>
                 <p className={styles.key}>Status</p>

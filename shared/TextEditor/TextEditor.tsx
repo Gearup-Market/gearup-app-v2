@@ -23,20 +23,20 @@ const CustomTextEditor = ({ value = '', setValue, placeholder, label, name }: Cu
     if (ssr) return null;
 
     const toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],   
+        ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
-        ['image', 'video'],
-        [{ 'header': 1 }, { 'header': 2 }],                         
-        [{ 'size': ['small', false, 'large', 'huge'] }], 
+        ['image'],
+        [{ 'header': 1 }, { 'header': 2 }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        [{ 'color': [] }, { 'background': [] }],         
+        [{ 'color': [] }, { 'background': [] }],
         [{ 'align': [] }],
-        ['clean']                                       
+        ['clean']
     ];
 
-      const modules = {
+    const modules = {
         toolbar: toolbarOptions
-        }
+    }
 
     return (
         <div className={styles.container}>

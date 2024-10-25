@@ -25,6 +25,7 @@ const BlogsTable = () => {
     const [selectedRow, setSelectedRow] = useState<any | undefined>();
     const blogsPosts = data?.data || [];
 
+    console.log(blogsPosts,"posts")
     const sharedColDef: GridColDef = {
         field: "",
         sortable: true,
@@ -92,7 +93,7 @@ const BlogsTable = () => {
             renderCell: ({ row, value }) => (
                 <div className={styles.tag_container} >
                     <p >
-                        {value}
+                        {value?.name}
                     </p>
                 </div>
             ),
@@ -219,11 +220,11 @@ const BlogsTable = () => {
                     loading={isLoading}
                 />
             </div>
-            <MobileCardContainer>
+           {/*  <MobileCardContainer>
                 {blogsPosts.map((item, ind) => (
                     <BlogArticleCardMob key={item._id} item={item} ind={ind} lastEle={(ind + 1) === blogsPosts.length ? true : false} />
                 ))}
-            </MobileCardContainer>
+            </MobileCardContainer> */}
 
             <AddButtonMob onClick={() => router.push('/admin/blog/new-blog')} />
             {/* <Pagination

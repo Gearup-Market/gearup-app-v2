@@ -46,11 +46,10 @@ const ListingTable = ({
 	const {
 		data,
 		isFetching,
-		refetch
+		refetch,
+		isLoading
 	} = useGetListings({ userId, shouldFetchAll: true });
 	const listings = data?.data || [];
-
-	console.log(listings, "lisitngs")
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -460,6 +459,7 @@ const ListingTable = ({
 									hideFooter
 									autoHeight
 									sx={customisedTableClasses}
+									loading={isLoading}
 								/>
 							</div>
 
