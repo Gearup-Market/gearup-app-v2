@@ -43,7 +43,7 @@ const NewBlog = () => {
     const initialValues: NewBlogFormValues = {
         title: !!editingMode ? data?.title : "",
         content: !!editingMode ? data?.content.text : '',
-        category: !!editingMode ? data?.category : '',
+        category: !!editingMode ? data?.category.name : '',
         readMinutes: !!editingMode ? data?.readMinutes : 0,
         status: !!editingMode ? data?.status : "available",
     };
@@ -186,26 +186,23 @@ const NewBlog = () => {
         inputUploadRef.current?.click();
     };
 
-    const defaultOptionIndex = categories?.data.findIndex((option) => option._id === data?.category);
+    const defaultOptionIndex = categories?.data.findIndex((option) => option._id === data?.category._id);
 
+// for uploading blog content images
     const handleBlogContentImageUpload = async (content: string): Promise<string> => {
-        // Create a DOM parser to find <img> tags
         const parser = new DOMParser();
         const doc = parser.parseFromString(content, 'text/html');
-
-        // Find all image elements
         const imgElements = Array.from(doc.querySelectorAll('img')) as HTMLImageElement[];
-
+    
         for (let img of imgElements) {
             const base64Image = img.getAttribute('src');
             if (base64Image && base64Image.startsWith('data:image/')) {
-                const imageFile = base64ToFile(base64Image, "attachment.jpg") as File
-                // Upload the image and get the URL
-                console.log(base64Image,"base64")
-               console.log(imageFile,"imgfile")
-                const imageUrl = await uploadImg([imageFile], {
+                const uniqueId = base64Image.substring(0, 10).replace(/\W/g, '');
+                const fileName = `image_${uniqueId}_${Date.now()}.jpg`;
+    
+                const imageFile = base64ToFile(base64Image, fileName) as File;
+                await uploadImg([imageFile], {
                     onSuccess: (res) => {
-                        console.log(res, "response")
                         img.setAttribute('src', res.imageUrls[0]);
                     },
                     onError: () => {
@@ -214,17 +211,15 @@ const NewBlog = () => {
                 });
             }
         }
-
-        // Serialize the updated HTML content
         return doc.body.innerHTML;
     };
+    
 
     const getCategoryIndex = (category: string) => {
         const cat = categories?.data.find((item) => item?.name?.toLowerCase() === category.toLowerCase());
         return cat?._id
     }
 
-    console.log(selectedImage,"seletedimage")
     return (
         <div className={styles.container}>
             <div className={styles.container__form_container}>

@@ -13,6 +13,16 @@ export const useGetAllArticles = (
         refetchOnMount: true
     });
 
+export const useGetAllRecommendedArticles = (
+    options?: UseQueryOptions<IGetArticleResp, IGetErr>
+) =>
+    useQuery<IGetArticleResp, IGetErr>({
+        queryKey: ["getAllAdminRecommendedBlogs"],
+        queryFn: async () => (await api.get(`${API_URL.adminBlogsArticles}/recommend`)).data,
+        ...options,
+        refetchOnMount: true
+    });
+
     export const useGetArticleById = (
         articleId?: string,
         options?: UseQueryOptions<IGetArticle, IGetErr>

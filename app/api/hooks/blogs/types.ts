@@ -6,7 +6,7 @@ export interface IGetArticle {
     publishedDate: string;
     status: 'available' | 'unavailable';
     readMinutes: number;
-    category: string;
+    category: IUpdateCategoryReq;
     content: {
         text: string;
         attachments: string[];
@@ -57,7 +57,7 @@ export interface ICreateArticleResp {
     publishedDate: string;
     status: 'available' | 'unavailable';
     readMinutes: number;
-    category: string;
+    category: IUpdateCategoryReq;
     content: {
         text?: string;
         attachments?: string[];
@@ -92,6 +92,7 @@ export interface ICreateCategoryReq {
 }
 
 export interface IUpdateCategoryReq {
+    _id: string;
     id: string;
     name: string;
     tag: string;
