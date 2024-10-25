@@ -32,7 +32,7 @@ const AddRole = ({ openModal, setOpenModal, refetch, categoryId }: AddMemberProp
     const handleSubmit = async (values: AddCategoryFormValues) => {
         if(!categoryId) return;
         await updateBlogCategory(
-            {id: categoryId as string, name: values.category, tag: values.category },
+            {id: categoryId as string, name: values.category, tag: values.category, _id: categoryId},
             {
                 onSuccess: (value) => {
                     setOpenModal(false);

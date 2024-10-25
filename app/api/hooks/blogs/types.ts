@@ -93,7 +93,7 @@ export interface ICreateCategoryReq {
 
 export interface IUpdateCategoryReq {
     _id: string;
-    id: string;
+    id?: string;
     name: string;
     tag: string;
 }
