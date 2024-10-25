@@ -6,23 +6,26 @@ import { HeaderSubText } from '@/components/UserDashboard'
 import PersonalDetails from '../../Transactions/TransactionDetails/TransactionDetailsBody/components/PersonalDetails/PersonalDetails'
 import BuyRentListing from './components/BuyRentListing/BuyRentListing'
 import CourseListing from './components/CourseListing/CourseListing';
-
-const filters = [
-    {
-        id: 1,
-        name: 'Buy'
-    },
-    {
-        id: 2,
-        name: 'Rent'
-    }
-]
+import { PageLoader } from '@/shared/loaders';
+import { useSingleListing } from '@/hooks/useListings';
+import { useAppSelector } from '@/store/configureStore';
+import { useParams } from 'next/navigation';
+import { useFetchUserDetailsById } from '@/hooks/useUsers';
 
 const ListingsDetails = () => {
-    const [activeFilterId, setActiveFilterId] = React.useState(1)
     const listingType: string = 'buy-rent'
+    const { listingId } = useParams();
+    const { currentListing } = useAppSelector(s => s.listings);
+    const { refetch, isFetching } = useSingleListing(listingId.toString());
+    const { fetchingUser,
+        user } = useFetchUserDetailsById(currentListing?.user._id ?? '');
+
+    if (!currentListing && isFetching) return <PageLoader />;
+    if (!currentListing) return null;
 
     return (
+
+
         <div className={styles.container}>
             <BackNavigation />
             <div className={styles.header_container}>
@@ -32,20 +35,6 @@ const ListingsDetails = () => {
                     <Button className={styles.accept_btn}>Approve</Button>
                 </div>
             </div>
-            {
-                listingType === 'buy-rent' &&
-                <ul className={styles.container__filters_container}>
-                    {
-                        filters.map((filter) => (
-                            <li data-active={filter.id === activeFilterId} onClick={() => {
-                                setActiveFilterId(filter.id)
-                            }} key={filter.id} className={styles.container__filters_container__filter}>
-                                <p>{filter.name}</p>
-                            </li>
-                        ))
-                    }
-                </ul>
-            }
             <main className={styles.main_container}>
                 <div className={styles.left_container}>
 
@@ -54,12 +43,12 @@ const ListingsDetails = () => {
                             <CourseListing />
                         ) :
                             <>
-                                <BuyRentListing />
+                                <BuyRentListing listing={currentListing} />
                             </>
                     }
                 </div>
                 <div className={styles.right_container}>
-                    <PersonalDetails profileLink='/settings?q=profile' title='Merchant' name='Wade Warren' subText='Lagos, Nigeria' />
+                    <PersonalDetails profileLink={`/users/${user?.userId}`} title='Merchant' name={user?.userName} subText={user?.address || "Nigeria"} />
                 </div>
             </main>
             <div className={styles.btn_container_mob}>

@@ -81,6 +81,63 @@ const parentFilters: Filter[] = [
 	// 	]
 	// }
 ];
+const adminParentFilters: Filter[] = [
+	{
+		id: 1,
+		name: "Rent",
+		subFilters:[
+			{
+				id: 1,
+				name: "Pending",
+			}, {
+				id: 2,
+				name: "Approved",
+			}, {
+				id: 3,
+				name: "Declined",
+			}
+		]
+	},
+	{
+		id: 2,
+		name: "Sell",
+		subFilters:[
+			{
+				id: 1,
+				name: "Pending",
+			}, {
+				id: 2,
+				name: "Approved",
+			}, {
+				id: 3,
+				name: "Declined",
+			}
+		]
+	},
+	// {
+	// 	id: 3,
+	// 	name: "Courses",
+	// 	subFilters: [
+	// 		{
+	// 			id: 1,
+	// 			name: "All categories"
+	// 		}
+	// 	]
+	// }
+];
+
+const adminSubListingFilters = [
+	{
+		id: 1,
+		name: "Pending",
+	}, {
+		id: 2,
+		name: "Approved",
+	}, {
+		id: 3,
+		name: "Declined",
+	}
+]
 
 export function useListingFilters() {
 	const [filters, setFilters] = useState<Filter[]>(parentFilters);
@@ -105,4 +162,11 @@ export function useListingFilters() {
 	}, [categories, isFetching]);
 
 	return { filters, isFetching, refetch };
+}
+
+export function useAdminListingFilters() {
+	const [filters, setFilters] = useState<Filter[]>(parentFilters);
+
+
+	return { adminParentFilters, adminSubListingFilters };
 }

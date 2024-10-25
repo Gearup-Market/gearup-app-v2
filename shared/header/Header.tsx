@@ -262,8 +262,8 @@ const Header = () => {
 						</div>
 					</Button>
 					{isAuthenticated ? (
-						<Link className={styles.user_image} href="/user/dashboard">
-							<Button>My account</Button>
+						<Link className={styles.user_account} href="/user/dashboard">
+							<Button className={styles.my_account}>My account</Button>
 						</Link>
 					) : (
 						<>

@@ -5,6 +5,13 @@
     padding: 4rem 3rem;
     max-width: 80rem;
 
+    .error_text{
+        color: #FF0000;
+        font-size: 1.2rem;
+        font-weight: 400;
+        margin-top: 0.8rem;
+    }
+
     .image_container{
         display: flex;
         justify-content: center;
@@ -124,6 +131,10 @@
           justify-content: flex-end;
           margin-top: 4rem;
           width: 100%;
+
+          .upload_btn{
+            width: 13rem;
+          }
         }
       }
 

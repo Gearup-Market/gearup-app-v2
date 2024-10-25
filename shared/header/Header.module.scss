@@ -213,6 +213,13 @@
 			// width: 12rem;
 			height: 4rem;
 		}
+		@include screenMax("mobile") {
+			width: 100%;
+			justify-content: center;
+			.my_account {
+				width: 100%;
+			}
+		}
 	}
 
 	.header_wrapper,
@@ -519,7 +526,7 @@
 			}
 		}
 		.button_container {
-			@include flex(flex-start, center);
+			display: flex;
 			width: 100%;
 			margin-top: 14.5rem;
 			gap: 1.6rem;
@@ -527,11 +534,18 @@
 				display: none;
 			}
 			.trans_button,
-			.button {
+			.user_account {
 				width: 100%;
+
+				button {
+					width: 100%;
+				}
 			}
 			.trans_button {
 				color: #1b1e21;
+			}
+			.my_account {
+				width: 100%;
 			}
 		}
 	}

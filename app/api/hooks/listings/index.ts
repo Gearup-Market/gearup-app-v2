@@ -9,7 +9,6 @@ import { API_URL } from "../../url";
 import {
 	iPostListingResp,
 	iPostListingErr,
-	iPostListingReq,
 	iUploadImagesResp,
 	iCategoryResp,
 	iCategoryDetailedResp,

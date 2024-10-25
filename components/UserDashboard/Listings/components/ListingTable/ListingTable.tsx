@@ -436,7 +436,7 @@ const ListingTable = ({
 
 	return (
 		<div className={styles.container}>
-			{mappedListings.length <= 0 ? (
+			{mappedListings.length > 0 ? (
 				<>
 					<div className={styles.container__input_filter_container}>
 						<InputField

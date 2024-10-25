@@ -9,9 +9,10 @@ interface Props {
     subText?: string;
     profileLink: string;
     title?: string;
+    isVerified?: boolean;
 }
 
-const PersonalDetails = ({ name, subText, profileLink, title }: Props) => {
+const PersonalDetails = ({ name, subText, profileLink, title, isVerified = false }: Props) => {
     return (
         <div className={styles.container}>
             <div className={styles.container__customer_container}>
@@ -26,9 +27,12 @@ const PersonalDetails = ({ name, subText, profileLink, title }: Props) => {
                         </h4>
                         <p>{subText}</p>
                     </div>
-                    <span className={styles.verfiy_icon}>
-                        <VerifyIcon />
-                    </span>
+                    {
+                        isVerified &&
+                        <span className={styles.verfiy_icon}>
+                            <VerifyIcon />
+                        </span>
+                    }
                 </div>
                 <div className={styles.btn_container}>
                     <Button buttonType='secondary' className={styles.btn}>

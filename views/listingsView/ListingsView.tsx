@@ -171,19 +171,6 @@ const ListingsView = () => {
 								</div>
 							</Button>
 						</div>
-						<div className={styles.show_button}>
-							<div className={styles.text}>
-								<h3>Show on map</h3>
-							</div>
-							<label className={styles.switch}>
-								<input
-									type="checkbox"
-									onChange={() => setShowOnMaps(!showOnMaps)}
-									checked={showOnMaps}
-								/>
-								<span className={styles.slider}></span>
-							</label>
-						</div>
 					</div>
 					{currentTableData && currentTableData.length ? (
 						<>

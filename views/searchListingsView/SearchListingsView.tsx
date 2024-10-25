@@ -147,7 +147,7 @@ const SearchListingsView = () => {
 								</div>
 							</Button>
 						</div>
-						<div className={styles.show_button}>
+						{/* <div className={styles.show_button}>
 							<div className={styles.text}>
 								<h3>Show on map</h3>
 							</div>
@@ -159,7 +159,7 @@ const SearchListingsView = () => {
 								/>
 								<span className={styles.slider}></span>
 							</label>
-						</div>
+						</div> */}
 					</div>
 					{currentTableData && currentTableData.length ? (
 						<>

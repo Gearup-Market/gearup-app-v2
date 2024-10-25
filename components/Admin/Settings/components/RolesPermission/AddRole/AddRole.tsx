@@ -1,9 +1,11 @@
-import React from 'react'
-import styles from './AddRole.module.scss'
-import Modal from '@/shared/modals/modal/Modal'
+import React from 'react';
+import styles from './AddRole.module.scss';
+import Modal from '@/shared/modals/modal/Modal';
 import { Button, InputField, Select } from '@/shared';
-import { Form, Formik } from 'formik';
+import { Form, Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { usePostCreateAdminRoles } from '@/app/api/hooks/Admin/users';
+import toast from 'react-hot-toast';
 
 interface AddMemberProps {
     openModal: boolean;
@@ -11,49 +13,52 @@ interface AddMemberProps {
 }
 
 const AddRole = ({ openModal, setOpenModal }: AddMemberProps) => {
-    const [selectedRole, setSelectedRole] = React.useState<string>('')
+    const [selectedRole, setSelectedRole] = React.useState<string>('');
+    const {mutateAsync: postCreateRole, isPending} = usePostCreateAdminRoles()
 
-    interface PayoutFormValues {
-        firstName: string;
-        lastName: string;
-        bank: string;
-        accountNumber: string;
+    interface RoleFormValues {
+        roleName: string;
     }
 
-    const initialValues: PayoutFormValues = {
-        firstName: '',
-        lastName: '',
-        bank: '',
-        accountNumber: '',
+    const initialValues: RoleFormValues = {
+        roleName: '',
     };
 
     const validationSchema = Yup.object().shape({
-        firstName: Yup.string().required('First name is required'),
-        lastName: Yup.string().required('Last name is required'),
-        bank: Yup.string().required('Bank is required'),
-        accountNumber: Yup.string()
-            .required('Account number is required')
-            .matches(/^\d+$/, 'Account number must be numeric'),
+        roleName: Yup.string().required('Role name is required'),
     });
 
-    const handleSubmit = (values: PayoutFormValues) => {
+    const handleSubmit = async(values: RoleFormValues) => {
         // Handle form submission
         console.log(values);
+        // You can also call an API to create the role here
+        await postCreateRole(values,{
+            onSuccess: () => {
+                toast.success('Role created successfully');
+                setOpenModal(false);
+            },
+            onError: (err) => {
+                console.log('Error creating role');
+                toast.error('Error creating role');
+            }
+        })
+
     };
 
     const onClose = () => {
-        setOpenModal(false)
-    }
+        setOpenModal(false);
+    };
 
     const roleOptions = [
-        'customer support',
-        'designer',
-        'footballer'
-    ]
+        { value: 'customer support', label: 'Customer Support' },
+        { value: 'designer', label: 'Designer' },
+        { value: 'footballer', label: 'Footballer' },
+    ];
 
     const onOptionChange = (option: any) => {
-        setSelectedRole(option.value)
-    }
+        setSelectedRole(option.value);
+    };
+
     return (
         <Modal openModal={openModal} setOpenModal={onClose} title='Create new role' description='Add roles to your Gearup portal'>
             <div className={styles.container}>
@@ -63,21 +68,38 @@ const AddRole = ({ openModal, setOpenModal }: AddMemberProps) => {
                         validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                     >
-                        <Form >
-                            <div className={styles.container__form_container__form}>
-                                <div className={styles.address_field}>
-                                    <InputField label='Name' placeholder='Enter name' />
+                        {({ handleChange, handleBlur }) => (
+                            <Form>
+                                <div className={styles.container__form_container__form}>
+                                    <div className={styles.address_field}>
+                                        <Field 
+                                            name='roleName'
+                                            render={({ field }: any) => (
+                                                <InputField
+                                                    {...field}
+                                                    label='Role Name'
+                                                    placeholder='Enter role name'
+                                                    onChange={(e) => {
+                                                        handleChange(e);
+                                                        setSelectedRole(e.target.value); // Update selectedRole
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                />
+                                            )}
+                                        />
+                                        <ErrorMessage name="roleName" component="div" className={styles.error} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className={styles.submit_btn_container}>
-                                <Button buttonType='primary' type="submit">Create Role</Button>
-                            </div>
-                        </Form>
+                                <div className={styles.submit_btn_container}>
+                                    <Button buttonType='primary' type="submit">Create Role</Button>
+                                </div>
+                            </Form>
+                        )}
                     </Formik>
                 </div>
             </div>
         </Modal>
-    )
+    );
 }
 
-export default AddRole
+export default AddRole;

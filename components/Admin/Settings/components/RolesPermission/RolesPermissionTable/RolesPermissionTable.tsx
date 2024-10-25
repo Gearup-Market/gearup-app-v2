@@ -12,6 +12,8 @@ import { permissionsData } from "@/mock/permissionsData.mock";
 import RadioBox from "@/shared/Radio/Radio";
 import { Radio } from "@mui/material";
 import RolesPermissionCardMob from "../RolesPermissionCardMob/RolesPermissionCardMob";
+import { useGetAdminRoles } from "@/app/api/hooks/Admin/users";
+import { RoleProps } from "@/app/api/hooks/Admin/users/types";
 
 const RolesPermissionTable = () => {
     const [activeLayout, setActiveLayout] = useState("list");
@@ -19,12 +21,19 @@ const RolesPermissionTable = () => {
     const [showMoreModal, setShowMoreModal] = useState(false);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(7);
+    const {data, isLoading} = useGetAdminRoles()
+    const rolesAndPermissions = data || []
+    console.log(data,"data")
     const [paginatedData, setPaginatedData] = useState(permissionsData);
     const sharedColDef: GridColDef = {
         field: "",
         sortable: true,
         flex: 1,
     };
+
+    const getPermissionsByRoleName = (roleName: string) => {
+        return rolesAndPermissions.find((role:RoleProps) => role.roleName.toLowerCase() === roleName.toLowerCase())
+    }
 
     const columns: GridColDef[] = [
         {
@@ -55,8 +64,10 @@ const RolesPermissionTable = () => {
             headerClassName: styles.table_header,
             headerName: 'Super Admin',
             minWidth: 150,
-            renderCell: ({ row, value }) => (
-                <div className={styles.super_admin}>
+            renderCell: ({ row, value }) => {
+                const superAdminPermissions = getPermissionsByRoleName("super admin")
+                return (
+                    <div className={styles.super_admin}>
                     <ul>
                         {
                             row.permissions.map((item: string, index: number) => {
@@ -69,7 +80,8 @@ const RolesPermissionTable = () => {
                             })}
                     </ul>
                 </div>
-            ),
+                )
+            }
         },
         {
             ...sharedColDef,
@@ -79,22 +91,26 @@ const RolesPermissionTable = () => {
             headerClassName: styles.table_header,
             headerName: 'Admin',
             minWidth: 150,
-            renderCell: ({ row, value }) => (
-                <div className={styles.super_admin}>
-                    <ul>
-                        {
-                            row.permissions.map((item: string, index: number) => {
-                                return (
-                                    <li key={index} className={styles.permission}>
-                                        <CustomRadioButton
-
-                                        />
-                                    </li>
-                                )
-                            })}
-                    </ul>
-                </div>
-            ),
+            renderCell: ({ row, value }) => {
+                const adminPermissions = getPermissionsByRoleName("admin")
+                console.log(adminPermissions,"adminPermissions")
+                return (
+                    <div className={styles.super_admin}>
+                        <ul>
+                            {
+                                row.permissions.map((item: string, index: number) => {
+                                    return (
+                                        <li key={index} className={styles.permission}>
+                                            <CustomRadioButton
+    
+                                            />
+                                        </li>
+                                    )
+                                })}
+                        </ul>
+                    </div>
+                )
+            },
         },
         {
             ...sharedColDef,
@@ -121,17 +137,6 @@ const RolesPermissionTable = () => {
         },
     ];
 
-    const handleClickMore = (id: number) => {
-        console.log('More clicked', id)
-        setShowMoreModal((prev) => !prev)
-        setActiveRow(id)
-    };
-
-    const handlePagination = (page: number) => {
-        const start = (page - 1) * limit;
-        const end = page * limit;
-        setPaginatedData(permissionsData.slice(start, end));
-    }
 
     return (
         <div className={styles.container}>
@@ -148,11 +153,12 @@ const RolesPermissionTable = () => {
                 style={{ width: "100%", height: "100%" }}
             >
                 <DataGrid
-                    rows={paginatedData}
+                    rows={permissionsData}
                     columns={columns}
                     hideFooterPagination={true}
                     paginationMode="server"
                     hideFooter
+                    loading={isLoading}
                     autoHeight
                     getRowHeight={() => 120}
                     sx={customisedTableClasses}

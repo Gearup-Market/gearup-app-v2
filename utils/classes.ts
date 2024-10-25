@@ -40,7 +40,7 @@ export const customisedTableClasses = {
       
     },
 
-    borderRadius: "8px",
+
   };
   
   

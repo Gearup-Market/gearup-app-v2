@@ -3,29 +3,27 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./BlogsArticles.module.scss";
 import { DataGrid, GridAddIcon, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Image from "next/image";
-import { Button, InputField, MobileCardContainer, Pagination, ToggleSwitch } from "@/shared";
+import { Button, CustomImage, InputField, MobileCardContainer, Pagination, ToggleSwitch } from "@/shared";
 import { customisedTableClasses } from "@/utils/classes";
 import Link from "next/link";
-import { transactions } from "@/mock/transactions.mock";
-import RecentDealsCard from "@/components/UserDashboard/Dashboard/Components/RecentDeals/components/RecentDealsCard/RecentDealsCard";
-import { blogsData } from "@/mock/blogs.mock";
 import { MoreIcon } from "@/shared/svgs/dashboard";
 import MoreModal from "./MoreModal/MoreModal";
-import { Fade, Popover, Popper } from "@mui/material";
+import { Fade, Popper } from "@mui/material";
 import BlogArticleCardMob from "./BlogArticleCardMob/BlogArticleCardMob";
 import AddButtonMob from "../AddButtonMob/AddButtonMob";
 import { useRouter } from "next/navigation";
+import { useGetAllArticles, usePostUpdateBlogStatus } from "@/app/api/hooks/blogs";
+import { formatDate } from "@/utils";
+import toast from "react-hot-toast";
 
 const BlogsTable = () => {
+    const { data, isLoading, refetch } = useGetAllArticles()
+    const { mutateAsync: postUpdateBlogStatus } = usePostUpdateBlogStatus()
     const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
     const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(7);
     const router = useRouter();
     const [selectedRow, setSelectedRow] = useState<any | undefined>();
-    const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
-        blogsData.slice(0, limit)
-    );
+    const blogsPosts = data?.data || [];
 
     const sharedColDef: GridColDef = {
         field: "",
@@ -33,15 +31,22 @@ const BlogsTable = () => {
         flex: 1,
     };
 
-    const handlePagination = (page: number) => {
-        const start = (page - 1) * limit;
-        const end = start + limit;
-        setPaginatedTransactions(transactions.slice(start, end));
-        setPage(page);
-    };
     const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
+    const handleOnStatusToggle = async (row: any) => {
+        const status = row.status === "available" ? "unavailable" : "available";
+        await postUpdateBlogStatus({ blogId: row._id, status }, {
+            onSuccess: () => {
+                toast.success("Status updated successfully")
+                refetch()
+            },
+            onError: (err) => {
+                toast.error("Error updating status")
+            }
+        });
+    }
 
 
     const columns: GridColDef[] = [
@@ -54,7 +59,9 @@ const BlogsTable = () => {
             minWidth: 250,
             renderCell: ({ row, value }) => (
                 <div className={styles.container__name_container}>
-                    <Image src={"https://images.unsplash.com/photo-1623039405147-547794f92e9e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YXJ0aWNsZXN8ZW58MHx8MHx8fDA%3D"} alt={value} width={40} height={40} className={styles.blogs_img} />
+                    <div className={styles.blogs_img}>
+                    <CustomImage src={row.bannerImage ?? ""} alt={value} width={40} height={40} className={styles.blogs_img} />
+                    </div>
                     <p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
                         {value}
                     </p>
@@ -63,13 +70,16 @@ const BlogsTable = () => {
         },
         {
             ...sharedColDef,
-            field: "published_date",
+            field: "publishedDate",
             cellClassName: styles.table_cell,
             headerClassName: styles.table_header,
             headerName: "Published Date",
             minWidth: 200,
             headerAlign: "center",
             align: "center",
+            renderCell: ({ value }) => (
+                <p className={styles.table_cell}>{formatDate(value)}</p>
+            ),
         },
         {
             ...sharedColDef,
@@ -96,9 +106,9 @@ const BlogsTable = () => {
             minWidth: 150,
             headerAlign: "center",
             align: "center",
-            renderCell: ({ value }) => (
+            renderCell: ({ value,row }) => (
                 <div className={styles.container__status_container}>
-                    <ToggleSwitch checked={value === "published"} />
+                    <ToggleSwitch checked={value === "available"} onChange={()=>handleOnStatusToggle(row)} />
                     <p>{value}</p>
                 </div>
             ),
@@ -119,7 +129,7 @@ const BlogsTable = () => {
                     <Popper id={'simple-popover'} open={openPoppover} anchorEl={anchorEl} transition>
                         {({ TransitionProps }) => (
                             <Fade {...TransitionProps} timeout={200}>
-                                <div className={`${styles.more_modal} popover-content`}><MoreModal row={selectedRow} /></div>
+                                <div className={`${styles.more_modal} popover-content`}><MoreModal row={selectedRow} refetch={refetch} onClose={handleModalClose} /></div>
                             </Fade>
                         )}
                     </Popper>
@@ -136,6 +146,12 @@ const BlogsTable = () => {
             ),
         },
     ];
+
+    const handleModalClose=()=>{
+        setOpenPopover(false)
+        setAnchorEl(null)
+        setSelectedRow(undefined)
+    }
 
 
 
@@ -193,27 +209,29 @@ const BlogsTable = () => {
                 style={{ width: "100%", height: "100%" }}
             >
                 <DataGrid
-                    rows={paginatedTransactions}
+                    rows={blogsPosts}
+                    getRowId={(row) => row._id}
                     columns={columns}
                     paginationMode="server"
                     sx={customisedTableClasses}
                     hideFooter
                     autoHeight
+                    loading={isLoading}
                 />
             </div>
             <MobileCardContainer>
-                {paginatedTransactions.map((item, ind) => (
-                    <BlogArticleCardMob key={item.id} item={item} ind={ind} lastEle={(ind + 1) === paginatedTransactions.length ? true : false} />
+                {blogsPosts.map((item, ind) => (
+                    <BlogArticleCardMob key={item._id} item={item} ind={ind} lastEle={(ind + 1) === blogsPosts.length ? true : false} />
                 ))}
             </MobileCardContainer>
 
             <AddButtonMob onClick={() => router.push('/admin/blog/new-blog')} />
-            <Pagination
+            {/* <Pagination
                 currentPage={page}
                 onPageChange={handlePagination}
                 totalCount={transactions.length}
                 pageSize={limit}
-            />
+            /> */}
         </div>
     );
 };

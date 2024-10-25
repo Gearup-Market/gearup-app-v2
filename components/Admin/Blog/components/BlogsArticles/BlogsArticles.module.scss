@@ -35,19 +35,21 @@
         color: $col-grey-1;
     }
     .tag_container{
+        width: 100%;
         display: flex;
         justify-content: center;
         height: 100%;
         align-items: center;
         
         p{
-            
+            // width: 100%;
             background-color: #FFF7E7;
             padding: 0.5rem 1rem;
             border-radius: 2rem;
             font-size: 1.2rem;
             font-weight: 700;
             color: #1B1E21;
+            text-align: center;
         }
 
     }
@@ -149,6 +151,11 @@
         .table_cell{
             font-size: 1.2rem;
             background-color: $col-white;
+            vertical-align: middle;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .dataGridOverlay {

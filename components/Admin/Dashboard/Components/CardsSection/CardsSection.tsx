@@ -73,31 +73,31 @@ const CardsSection = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.container__date_container}>
-                <div className={styles.date_picker_container}>
-                    <Select options={timeOptions} onOptionChange={onOptionChange} />
-                </div>
-                <div className={styles.container__date_container__date_display}>
-                    {openModal && (
-                        <DatePicker
-                            openModal={openModal}
-                            setInputDate={setInputDate}
-                            setOpenModal={setOpenModal}
-                            inputDate={inputDate}
-                            setIsDateSelected={setIsDateSelected}
-                        />
-                    )}
-                    <div className={styles.input_field} onClick={() => setOpenModal(true)}>
-                        <p>
-                            {format(
-                                inputDate[0].startDate,
-                                "MM/dd/yyyy"
-                            )} - {format(inputDate[0].endDate, "MM/dd/yyyy")}
-                        </p>
-
-                    </div>
-                </div>
-            </div>
+           		<div className={styles.container__date_container}>
+				<div className={styles.date_picker_container}>
+					<Select options={timeOptions} onOptionChange={onOptionChange} />
+				</div>
+				<div className={styles.container__date_container__date_display}>
+					{openModal && (
+						<DatePicker
+							openModal={openModal}
+							setInputDate={setInputDate}
+							setOpenModal={setOpenModal}
+							inputDate={inputDate}
+							setIsDateSelected={setIsDateSelected}
+						/>
+					)}
+					<div
+						className={styles.input_field}
+						onClick={() => setOpenModal(true)}
+					>
+						<p>
+							{format(inputDate[0].startDate, "MM/dd/yyyy")} - {" "}
+							{format(inputDate[0].endDate, "MM/dd/yyyy")}
+						</p>
+					</div>
+				</div>
+			</div>
             <div>
                 <ul className={styles.container__cards_container}>
                     {

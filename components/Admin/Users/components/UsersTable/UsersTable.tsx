@@ -7,8 +7,9 @@ import { MoreIcon, UserIcon } from '@/shared/svgs/dashboard';
 import { customisedTableClasses } from '@/utils/classes';
 import Link from 'next/link';
 import RecentDealsCard from '@/components/UserDashboard/Dashboard/Components/RecentDeals/components/RecentDealsCard/RecentDealsCard';
-import { Button, MobileCardContainer, Pagination } from '@/shared';
+import { Button, InputField, MobileCardContainer, Pagination } from '@/shared';
 import UserCardMob from '../UserCardMob/UserCardMob';
+import { useGetAllUsers } from '@/app/api/hooks/Admin/users';
 const sharedColDef: GridColDef = {
     field: "",
     sortable: true,
@@ -24,7 +25,11 @@ interface Props {
     totalCount?: number
 }
 
-const UsersTable = ({ users, page, limit, handlePagination, url, totalCount }: Props) => {
+const UsersTable = ({  page, limit, handlePagination, url, totalCount }: Props) => {
+
+    const {data, isLoading} = useGetAllUsers()
+    const users = data?.data || []
+    console.log(users,"users ss")
 
 
     const columns: GridColDef[] = [
@@ -69,7 +74,7 @@ const UsersTable = ({ users, page, limit, handlePagination, url, totalCount }: P
             minWidth: 150,
             renderCell: ({ value }) => (
                 <div className={styles.container__status_container}>
-                    <p style={{ fontSize: '1.2rem' }} className={styles.container__status_container__status} data-status={value.toLowerCase()}>
+                    <p style={{ fontSize: '1.2rem' }} className={styles.container__status_container__status} data-status={value?.toLowerCase()}>
                         {value}
                     </p>
                 </div>
@@ -107,17 +112,22 @@ const UsersTable = ({ users, page, limit, handlePagination, url, totalCount }: P
                     </div>
                     :
                     <>
+                    <div className={styles.container__input_filter_container}>
+                <InputField placeholder='Search' icon='/svgs/icon-search-dark.svg' iconTitle='search-icon' />
+            </div>
                         <div className={styles.container__table}>
                             <DataGrid rows={users || []} columns={columns}
                                 hideFooterPagination={true} hideFooter paginationMode="server"
                                 sx={customisedTableClasses} autoHeight
                                 scrollbarSize={20}
+                                loading={isLoading}
+                                getRowId={(row) => row._id}
                             />
                         </div>
                         <MobileCardContainer>
                             {
                                 users?.map((item, ind) => (
-                                    <UserCardMob key={item.id} item={item} url='users' lastEle={(ind + 1) === users.length ? true : false} ind={ind} />
+                                    <UserCardMob key={item._id} item={item} url='users' lastEle={(ind + 1) === users.length ? true : false} ind={ind} />
                                 ))
                             }
                         </MobileCardContainer>
