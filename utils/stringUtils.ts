@@ -37,3 +37,24 @@ export const base64ToBlob = (base64: string): Blob => {
 
     return new Blob([byteArray], { type: mimeString });
 };
+
+export function base64ToFile(base64Image: string, fileName: string) {
+    // Split the base64 string into data and contentType
+    const [base64Header, base64Data] = base64Image.split(',');
+    const mimeMatch = base64Header.match(/:(.*?);/);
+    const mimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+
+    // Decode the base64 string
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+
+    // Create a Blob with the binary data and MIME type
+    const blob = new Blob([byteArray], { type: mimeType });
+
+    // Convert the Blob to a File
+    return new File([blob], fileName, { type: mimeType });
+}

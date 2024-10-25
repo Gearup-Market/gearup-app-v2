@@ -13,18 +13,22 @@ export const useGetAllArticles = (
         refetchOnMount: true
     });
 
-export const useGetArticleById = (
-    articleId?: string,
-    options?: UseQueryOptions<IGetArticle, IGetErr>
-) =>
-    useQuery<IGetArticle, IGetErr>({
-        queryKey: ["getArticleById", articleId],
-        queryFn: async () => (await api.get(`${API_URL.adminBlogsArticles}/${articleId}`)).data,
-        ...options,
-        enabled: !!articleId,
-        refetchOnMount: true
-    });
-
+    export const useGetArticleById = (
+        articleId?: string,
+        options?: UseQueryOptions<IGetArticle, IGetErr>
+    ) => {
+        return useQuery<IGetArticle, IGetErr>({
+            queryKey: ["getArticleById", articleId],
+            queryFn: async () => {
+                if (!articleId) throw new Error("Article ID is required");
+                return (await api.get(`${API_URL.adminBlogsArticles}/${articleId}`)).data;
+            },
+            enabled: !!articleId,
+            refetchOnMount: true,
+            ...options,
+        });
+    };
+    
 
 export const usePostUpdateBlogStatus = (
     options?: Omit<

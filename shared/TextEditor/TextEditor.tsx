@@ -21,44 +21,6 @@ const CustomTextEditor = ({ value = '', setValue, placeholder, label, name }: Cu
         setSsr(false);
     }, []);
     if (ssr) return null;
-    const imageHandler = () => {
-
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-
-        input.onchange = async () => {
-            const file = input.files ? input.files[0] : null;
-            if (file) {
-                const formData = new FormData();
-                formData.append('image', file);
-
-                // Upload the image to your server or cloud service and get the URL
-                const url = await uploadImageToServer(formData);
-
-                // Ensure that the editor instance is available before inserting the image
-                const quillEditor = (document.querySelector('.ql-editor') as any)?.__quill;
-                if (quillEditor) {
-                    const range = quillEditor.getSelection();
-                    quillEditor.insertEmbed(range.index, 'image', url);
-                }
-            }
-        };
-    };
-
-    const uploadImageToServer = async (formData: FormData): Promise<string> => {
-        // Replace this with your image upload logic.
-        // Here, I'm returning a placeholder URL for demonstration purposes.
-        // Upload image to your server or use a cloud service like AWS S3, Firebase, or Cloudinary.
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve('https://via.placeholder.com/150');
-            }, 1000);
-        });
-    };
-
-    
 
     const toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],   
@@ -85,7 +47,7 @@ const CustomTextEditor = ({ value = '', setValue, placeholder, label, name }: Cu
             )}
             <ReactQuill
                 theme="snow"
-                value={value || ''} // Ensure value is always a string
+                value={value || ''}
                 onChange={setValue}
                 placeholder={placeholder}
                 modules={modules}

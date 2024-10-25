@@ -12,7 +12,7 @@ import { useGetAllCategories, useGetArticleById, usePostCreateBlog, usePostUpdat
 import { useUploadFiles } from '@/app/api/hooks/listings';
 import { useAppSelector } from '@/store/configureStore';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { base64ToBlob } from '@/utils';
+import { base64ToBlob, base64ToFile } from '@/utils';
 
 interface NewBlogFormValues {
     title?: string;
@@ -45,7 +45,7 @@ const NewBlog = () => {
         content: !!editingMode ? data?.content.text : '',
         category: !!editingMode ? data?.category : '',
         readMinutes: !!editingMode ? data?.readMinutes : 0,
-        status: !!editingMode ? data?.status : "available", 
+        status: !!editingMode ? data?.status : "available",
     };
 
     const validationSchema = Yup.object().shape({
@@ -59,87 +59,89 @@ const NewBlog = () => {
         values: NewBlogFormValues,
         { resetForm }: any,
         isDraft: boolean
-      ) => {
+    ) => {
         // Check if both selectedImage and imageSrc are missing
         if (!selectedImage && !imageSrc) {
-          toast.error('Please upload an image');
-          return;
+            toast.error('Please upload an image');
+            return;
         }
-      
+
         // Parse blog content, handling embedded image uploads
         const parsedContent = await handleBlogContentImageUpload(values?.content as string);
         const status = isDraft ? 'unavailable' : 'available';
-      
+
         // Get the category ID for the blog post
         const categoryId = getCategoryIndex(values?.category as string);
         if (!categoryId) {
-          toast.error('Category does not exist');
-          return;
+            toast.error('Category does not exist');
+            return;
         }
-      
+
         // If selectedImage is a File, proceed with image upload
         if (selectedImage instanceof File) {
-          await uploadImg([selectedImage], {
-            onSuccess: async (res) => {
-              const image = res.imageUrls[0];
-              // Proceed with blog post update after successful image upload
-              await updateBlogPost({
+            await uploadImg([selectedImage], {
+                onSuccess: async (res) => {
+                    const image = res.imageUrls[0];
+                    // Proceed with blog post update after successful image upload
+                    await updateBlogPost({
+                        ...values,
+                        bannerImage: image, // Use uploaded image
+                        user: user.userId,
+                        status,
+                        _id: articleId as string,
+                        category: categoryId,
+                        content: { text: parsedContent as string }
+                    }, {
+                        onSuccess: () => {
+                            toast.success('Blog post updated successfully');
+                            setSelectedImage(null);
+                            resetForm();
+                            router.push("/admin/blog");
+                        },
+                        onError: () => {
+                            toast.error('Error updating blog post');
+                        }
+                    });
+                },
+                onError: () => {
+                    toast.error('Error uploading image');
+                }
+            });
+        } else {
+            // If no new image (File), directly update the blog post with the existing imageSrc
+            await updateBlogPost({
                 ...values,
-                bannerImage: image, // Use uploaded image
+                bannerImage: imageSrc, // Use existing imageSrc
                 user: user.userId,
                 status,
                 _id: articleId as string,
                 category: categoryId,
                 content: { text: parsedContent as string }
-              }, {
+            }, {
                 onSuccess: () => {
-                  toast.success('Blog post updated successfully');
-                  setSelectedImage(null);
-                  resetForm();
-                  router.push("/admin/blog");
+                    toast.success('Blog post updated successfully');
+                    resetForm();
+                    router.push("/admin/blog");
                 },
                 onError: () => {
-                  toast.error('Error updating blog post');
+                    toast.error('Error updating blog post');
                 }
-              });
-            },
-            onError: () => {
-              toast.error('Error uploading image');
-            }
-          });
-        } else {
-          // If no new image (File), directly update the blog post with the existing imageSrc
-          await updateBlogPost({
-            ...values,
-            bannerImage: imageSrc, // Use existing imageSrc
-            user: user.userId,
-            status,
-            _id: articleId as string,
-            category: categoryId,
-            content: { text: parsedContent as string }
-          }, {
-            onSuccess: () => {
-              toast.success('Blog post updated successfully');
-              resetForm();
-              router.push("/admin/blog");
-            },
-            onError: () => {
-              toast.error('Error updating blog post');
-            }
-          });
+            });
         }
-      };
-      
+    };
+
 
     const handleSubmit = async (values: NewBlogFormValues, { resetForm }: any, isDraft: boolean) => {
         if (!selectedImage) {
             toast.error('Please upload an image');
             return;
         }
+
+        const parsedContent = await handleBlogContentImageUpload(values?.content as string);
         const status = isDraft ? 'unavailable' : 'available';
         const categoryId = getCategoryIndex(values?.category as string);
 
-        if(!categoryId) {
+        if (!categoryId) {
             toast.error('Category does not exist');
             return;
         }
@@ -153,7 +155,7 @@ const NewBlog = () => {
                     user: user.userId,
                     status,  // Set status based on save action
                     category: categoryId,
-                    content: { text: values.content }
+                    content: { text: parsedContent }
                 }, {
                     onSuccess: () => {
                         toast.success(isDraft ? 'Draft saved successfully' : 'Blog post created successfully');
@@ -197,11 +199,13 @@ const NewBlog = () => {
         for (let img of imgElements) {
             const base64Image = img.getAttribute('src');
             if (base64Image && base64Image.startsWith('data:image/')) {
-                const imageBlob = base64ToBlob(base64Image) as File
+                const imageFile = base64ToFile(base64Image, "attachment.jpg") as File
                 // Upload the image and get the URL
-                const imageUrl = await uploadImg([imageBlob],{
+                console.log(base64Image,"base64")
+               console.log(imageFile,"imgfile")
+                const imageUrl = await uploadImg([imageFile], {
                     onSuccess: (res) => {
-                        console.log(res,"response")
+                        console.log(res, "response")
                         img.setAttribute('src', res.imageUrls[0]);
                     },
                     onError: () => {
@@ -220,20 +224,21 @@ const NewBlog = () => {
         return cat?._id
     }
 
+    console.log(selectedImage,"seletedimage")
     return (
         <div className={styles.container}>
             <div className={styles.container__form_container}>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={(values, { resetForm }) =>{
-                        if(!editingMode) {
+                    onSubmit={(values, { resetForm }) => {
+                        if (!editingMode) {
                             handleSubmit(values, { resetForm }, false)
-                        }else{
+                        } else {
                             handleUpdateSubmit(values, { resetForm }, false)
                         }
-                    } 
-                }
+                    }
+                    }
                     enableReinitialize
                 >
                     {({ errors, touched, setFieldValue, values, resetForm }) => (
@@ -320,24 +325,24 @@ const NewBlog = () => {
                             <div className={styles.submit_btn_container}>
                                 {
                                     !editingMode &&
-                                <Button
-                                buttonType='secondary'
-                                type="button"
-                                onClick={() => {
-                                    setIsDraft(true)
-                                    handleSubmit(values, { resetForm }, true)
-                                }} 
-                                className={styles.upload_btn}
-                                >
-                                    {(uploadingBlogPost || uploadingImg) && isDraft ? <LoadingSpinner size='small' /> : 'Save draft'}
-                                </Button>
+                                    <Button
+                                        buttonType='secondary'
+                                        type="button"
+                                        onClick={() => {
+                                            setIsDraft(true)
+                                            handleSubmit(values, { resetForm }, true)
+                                        }}
+                                        className={styles.upload_btn}
+                                    >
+                                        {(uploadingBlogPost || uploadingImg) && isDraft ? <LoadingSpinner size='small' /> : 'Save draft'}
+                                    </Button>
                                 }
                                 <Button
                                     buttonType='primary'
                                     type="submit"
                                     className={styles.upload_btn}
                                 >
-                                    {(uploadingBlogPost || uploadingImg) && !isDraft ? <LoadingSpinner size='small' /> : !!editingMode ? "Update post":"Create post"}
+                                    {(uploadingBlogPost || uploadingImg) && !isDraft ? <LoadingSpinner size='small' /> : !!editingMode ? "Update post" : "Create post"}
                                 </Button>
                             </div>
                         </Form>
