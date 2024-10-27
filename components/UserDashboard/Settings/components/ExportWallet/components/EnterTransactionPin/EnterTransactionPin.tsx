@@ -1,41 +1,35 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import styles from './AccountPinSet.module.scss';
+import React from 'react'
+import styles from './EnterTransactionPin.module.scss'
+import Modal from '@/shared/modals/modal/Modal'
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Button, InputField } from '@/shared';
-import HeaderSubText from '@/components/Admin/HeaderSubText/HeaderSubText';
-import { useAppSelector } from '@/store/configureStore';
-import { usePostUpdateUser } from '@/app/api/hooks/users';
 import toast from 'react-hot-toast';
+import { useAppSelector } from '@/store/configureStore';
+import * as Yup from 'yup';
 
 interface PinFormValues {
     accountPin: string;
-    confirmPin: string;
 }
 
 interface Props{
-    inModal?: boolean;
+    openModal: boolean;
+    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-
-const AccountPinSet: React.FC<Props> = ({inModal=false}) => {
+const EnterTransactionPin = ({openModal, setOpenModal}:Props) => {
     const user = useAppSelector(state => state.user);
-    const { mutateAsync: postUpdateUser, isPending } = usePostUpdateUser();
+
     const initialValues: PinFormValues = {
         accountPin: '',
-        confirmPin: '',
     };
 
     const validationSchema = Yup.object().shape({
         accountPin: Yup.string()
             .required('New account pin is required')
             .matches(/^\d{6}$/, 'Pin must be exactly 6 digits'),
-        confirmPin: Yup.string()
-            .oneOf([Yup.ref('accountPin')], 'Pins do not match')
-            .required('Please confirm your pin'),
     });
 
     const handleSubmit = async  (values: PinFormValues, { resetForm }: { resetForm: () => void }) => {
-        try {
+      /*   try {
             const resp = await postUpdateUser({ userId: user._id, pin:values.accountPin }, {
                 onSuccess: (value) => {
                     toast.success('Pin updated successfully');
@@ -47,27 +41,29 @@ const AccountPinSet: React.FC<Props> = ({inModal=false}) => {
             });
         } catch (error) {
             console.error('Submit error:', error);
-        }
+        } */
     };
 
-    return (
+
+    const onClose = () => {
+        setOpenModal(false)
+    }
+  return (
+    <Modal title='Transaction pin' openModal={openModal} setOpenModal={onClose} >
         <div className={styles.container}>
-            <HeaderSubText title="Set up account pin" description="Please use a pin you can remember easily" />
-            <div className={styles.container__form_container} data-inmodal={inModal}>
-                <Formik
+        <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
                     {({ isSubmitting }) => (
                         <Form>
-                            <div className={styles.container__form_container__form}>
+                            <div className={styles.container__form_container}>
                                 <div className={styles.form_field}>
                                     <Field
                                         name="accountPin"
                                         as={InputField}
-                                        label="New account pin"
-                                        placeholder="Enter 6 digit pin"
+                                        placeholder="Enter transaction pin "
                                         isPassword
                                     />
                                     <ErrorMessage
@@ -76,36 +72,27 @@ const AccountPinSet: React.FC<Props> = ({inModal=false}) => {
                                         className={styles.error_message}
                                     />
                                 </div>
-                                <div className={styles.form_field}>
-                                    <Field
-                                        name="confirmPin"
-                                        as={InputField}
-                                        label="Confirm pin"
-                                        placeholder="Repeat pin"
-                                        isPassword
-                                    />
-                                    <ErrorMessage
-                                        name="confirmPin"
-                                        component="div"
-                                        className={styles.error_message}
-                                    />
-                                </div>
-                            </div>
-                            <div className={styles.submit_btn_container} data-inModal={inModal}>
+                                
+                            <div className={styles.submit_btn_container}>
                                 <Button
                                     buttonType="primary"
                                     type="submit"
                                     disabled={isSubmitting}
-                                >
-                                    {isSubmitting ? 'Saving...' : inModal ? "Save & proceed": 'Save changes'}
+                                    >
+                                    {isSubmitting ? 'Saving...' : 'Proceed'}
                                 </Button>
                             </div>
+
+                            <div className={styles.forgot_pin_container}>
+                                <p>Forgot pin? <span className={styles.contact_support}>Contact support</span></p>
+                            </div>
+                                    </div>
                         </Form>
                     )}
                 </Formik>
-            </div>
         </div>
-    );
-};
+    </Modal>
+  )
+}
 
-export default AccountPinSet;
+export default EnterTransactionPin

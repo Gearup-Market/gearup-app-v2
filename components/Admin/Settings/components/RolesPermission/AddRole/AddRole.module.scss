@@ -3,6 +3,12 @@
 .container{
     width: 50rem;
 
+    .error{
+        color: red;
+        font-size: 1.4rem;
+        margin-top: 0.4rem;
+    }
+
     &__form_container {
         background-color: #fff;
     

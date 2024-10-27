@@ -3,11 +3,15 @@ import React, { useState } from 'react'
 import styles from './BlogArticleCardMob.module.scss'
 import Image from 'next/image'
 import { Button, MobileCard, ToggleSwitch } from '@/shared'
+import { useDeleteBlogById } from '@/app/api/hooks/blogs'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 interface Props {
     item: any;
     lastEle?: boolean;
     ind?: number;
+    refetch?: () => void
 }
 enum MoreModalActions {
     EDIT = 1,
@@ -33,18 +37,49 @@ const lists = [
     }
 
 ]
-const BlogArticleCardMob = ({ item, lastEle, ind }: Props) => {
+const BlogArticleCardMob = ({ item, lastEle, ind, refetch }: Props) => {
+    console.log(item,"blogmob")
+
+    // return null
+
+    const router = useRouter()
+    const {mutateAsync: deleteBlogById} = useDeleteBlogById()
+
+    const handleActions = async(id: number) => {
+        switch (id) {
+            case MoreModalActions.EDIT:
+                router.push(`/admin/blog/new-blog?edit_mode=true&blog_id=${item._id}`)
+                break;
+            case MoreModalActions.PREVIEW:
+                router.push(`/blog/${item._id}`)
+                break;
+            case MoreModalActions.DELETE:
+                await deleteBlogById({blogId: item._id},{
+                    onSuccess: () => {
+                        toast.success('Blog deleted successfully')
+                        refetch && refetch()
+                    },
+                    onError: () => {
+                        toast.error('Error deleting blog')
+                    }
+                    
+                })
+                break;
+            default:
+                break;
+        }
+    }
 
     return (
 
-        <MobileCard mainHeaderText={item.category} mainHeaderImage="/images/admin-img.jpg" lastEle={lastEle} ind={ind}>
+        <MobileCard mainHeaderText={item?.title} mainHeaderImage={item?.bannerImage} lastEle={lastEle} ind={ind}>
             <div className={styles.container__details__detail_container}>
                 <p className={styles.key}>Published date</p>
-                <p className={styles.value}>{item.published_date}</p>
+                <p className={styles.value}>{item.publishedDate}</p>
             </div>
             <div className={styles.container__details__detail_container}>
                 <p className={styles.key}>Category</p>
-                <p className={`${styles.value} ${styles.rental}`}>{item.category.name}</p>
+                <p className={`${styles.value} ${styles.rental}`}>{item?.category?.name}</p>
             </div>
             <div className={styles.container__details__detail_container}>
                 <p className={styles.key}>Status</p>
@@ -60,7 +95,7 @@ const BlogArticleCardMob = ({ item, lastEle, ind }: Props) => {
                 <ul className={styles.icons_container}>
                     {
                         lists.map((list) => (
-                            <li key={list.id} className={styles.item}>
+                            <li key={list.id} className={styles.item} onClick={()=>handleActions(list.id)}>
                                 <Image src={list.icon} height={20} width={20} alt={list.title} />
                                 <p className={styles.text}>{list.title}</p>
                             </li>

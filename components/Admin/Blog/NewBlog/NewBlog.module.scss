@@ -1,6 +1,13 @@
 @import "@/styles/imports";
 
+.title_container{
+  display: none;
 
+  @include screenMax("mobile"){
+    display: block;
+    margin: 2rem 0;
+  }
+}
 .container {
     padding: 4rem 3rem;
     max-width: 80rem;
@@ -140,6 +147,7 @@
 
       @include screenMax("mobile"){
         padding: 3rem 1.6rem;
+        padding-top: 0;
 
         .submit_btn_container{
           flex-direction: column-reverse;
