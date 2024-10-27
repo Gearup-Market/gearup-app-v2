@@ -1,11 +1,17 @@
+'use client';
 import React from 'react'
 import styles from './Blog.module.scss'
 import { CustomImage, InputField } from '@/shared'
 import { blogsData } from '@/mock/blogs.mock'
 import Link from 'next/link'
 import slugify from 'slugify'
+import { useGetAllRecommendedArticles } from '@/app/api/hooks/blogs'
+import { shortenTitle } from '@/utils'
+import Image from 'next/image';
 
 const Blog = () => {
+    const { data: blogsResp, isLoading: fetchingRecommended } = useGetAllRecommendedArticles()
+    const blogs = blogsResp?.data || []
     return (
         <div className={styles.container}>
             <div className={styles.container__hero_section}>
@@ -18,22 +24,23 @@ const Blog = () => {
 
             <div className={styles.container__blogs_section}>
                 {
-                    blogsData.map((blog, index) => (
+                    blogs.map((blog, index) => (
                         <div key={index} className={styles.container__blogs_section__blog}>
-                            <CustomImage height={200} width={400} src={"https://plus.unsplash.com/premium_photo-1663050714985-25d0b31fb7b4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZWR1Y2F0aW9uJTIwYmxvZyUyMGltYWdlfGVufDB8fDB8fHww"} alt={blog.title} className={styles.container__blogs_section__blog__image} />
+                            <div className={styles.banner_image}>
+                                <CustomImage fill src={blog.bannerImage} alt={blog.title} className={styles.container__blogs_section__blog__image} />
+                            </div>
                             <ul className={styles.tags_container}>
-                                <li className={styles.tag}>{blog.category}</li>
+                                <li className={styles.tag}>{blog.category.name}</li>
                             </ul>
                             <div className={styles.container__blogs_section__blog__content}>
                                 <h2 className={styles.container__blogs_section__blog__content__title}>{blog.title}</h2>
-                                <p className={styles.container__blogs_section__blog__content__description}>{blog.preview_text}</p>
+                                <p className={styles.container__blogs_section__blog__content__description}>
+                                    <p dangerouslySetInnerHTML={{ __html: shortenTitle(blog.content.text, 100) ?? "" }} />
+                                </p>
                             </div>
 
-                            <Link href={`/blog/${slugify(blog.title, {
-                                replacement: '-',
-                                lower: true,
-                            })}`} className={styles.learn_more}>
-                                <p className={styles.text}>Learn more</p> <span className={styles.icon}> <CustomImage height={20} width={20} src="/svgs/ArrowLeft.svg" alt="arrow-right" className={styles.image_arrow} /></span>
+                            <Link href={`/blog/${blog._id}`} className={styles.learn_more}>
+                                <p className={styles.text}>Learn more</p> <span className={styles.icon}> <Image height={20} width={20} src="/svgs/learn-more-arrow.svg" alt="arrow-right" className={styles.image_arrow} /></span>
                             </Link>
                         </div>
                     ))
