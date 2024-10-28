@@ -35,6 +35,10 @@
 		border-color: #ff3729;
 		transition: all 0.1s ease-in;
 	}
+
+	&[data-focus='true'] {
+		border-color: #FFB30F;
+	}
 }
 
 .input_icon {

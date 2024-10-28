@@ -59,5 +59,6 @@ export const API_URL = {
 	adminDeactivateUser: "/admin/user",
 	adminSettingsRoles: "/admin/settings/roles",
 	adminCreateMember: "/admin/create-members",
-
+	courses: "/courses",
+	wishlists: "/wishlist"
 };

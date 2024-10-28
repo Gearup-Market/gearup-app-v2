@@ -43,6 +43,7 @@ import PaystackPaymentButton from "./paystack/PaystackPaymentButton";
 import KycPrompt from "./KycPrompt/KycPrompt";
 import CustomNoRowsOverlay from "./CustomNoRowsOverlay/CustomNoRowsOverlay";
 import FavoriteStar from "./FavoriteStar/FavoriteStar";
+import NoSearchResult from "./NoSearchResult/NoSearchResult";
 
 export {
 	Header,
@@ -89,5 +90,6 @@ export {
 	PaystackPaymentButton,
 	KycPrompt,
 	CustomNoRowsOverlay,
-	FavoriteStar
+	FavoriteStar,
+	NoSearchResult
 };

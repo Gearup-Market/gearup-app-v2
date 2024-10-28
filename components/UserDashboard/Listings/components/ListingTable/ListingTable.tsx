@@ -22,6 +22,7 @@ import { usePostChangeListingStatus } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
 import { formatNum } from "@/utils";
 import NoListings from "../../NoListings/NoListings";
+import { useGetAllCourses } from "@/app/api/hooks/courses";
 
 interface Props {
 	activeFilter: string;
@@ -42,9 +43,12 @@ const ListingTable = ({
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 	const { userId } = useAppSelector(s => s.user);
+	const {data:courseListings, isLoading} = useGetAllCourses()
 	const listings = useAppSelector(s => s.listings.owned);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
+
+	console.log(courseListings, "course lisitngs")
 
 	const mappedListings = useMemo(() => {
 		const activeSubFilter = filters

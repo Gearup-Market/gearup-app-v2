@@ -41,6 +41,7 @@ const InputField = ({
 }: Props) => {
 	let localType = isPassword ? (type = "password") : type;
 	const [inputType, setInputType] = useState<string>(localType);
+	const [inputFocus, setInputFocus] =useState(false)
 	const handleShowPassword = () => {
 		if (inputType === "text") {
 			setInputType("password");
@@ -50,14 +51,14 @@ const InputField = ({
 		}
 	};
 	return (
-		<div className={`${styles.input} ${className}`}>
+		<div className={`${styles.input} ${className}`} >
 			{!!label && (
 				<label className={styles.input_label} htmlFor={name}>
 					{label}
 				</label>
 			)}
 
-			<div className={`${styles.input_wrapper} ${inputClassName}`} data-error={!!error}>
+			<div className={`${styles.input_wrapper} ${inputClassName}`} data-error={!!error} data-focus={inputFocus}>
 				{!!icon && iconPosition === "prefix" && (
 					<figure className={styles.input_icon}>
 						<Image src={icon} fill sizes="100vw" title={iconTitle} alt="" />
@@ -71,8 +72,11 @@ const InputField = ({
 					data-icon={!!icon}
 					name={name}
 					autoComplete="off"
+					onFocus={()=>setInputFocus(true)}
+					onBlur={()=>setInputFocus(false)}
 					{...register}
 					{...options}
+
 				/>
 				{isPassword && (
 					<div className={styles.icon} onClick={handleShowPassword}>

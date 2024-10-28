@@ -1,6 +1,7 @@
 'use client';
 import { Filter } from '@/interfaces/Listing';
 import styles from './ReuseableFilter.module.scss'
+import { removeTrailingCommad } from '@/utils';
 
 interface Props {
     parentFilters: Filter[]
@@ -34,7 +35,7 @@ const ReuseableFilters = ({ parentFilters, activeFilterId, setActiveFilterId, se
                     {
                         parentFilters.find((filter) => filter.id === activeFilterId)?.subFilters.map((subFilter) => (
                             <li onClick={() => setActiveSubFilterId(subFilter.id)} key={`${subFilter.name}-${subFilter.id}`} className={styles.container__filters__children_container__filter} data-active={activeSubFilterId === subFilter.id}>
-                                <p>{subFilter.name.split(' ')[0]}</p>
+                                <p>{removeTrailingCommad(subFilter.name.split(' ')[0])}</p>
                             </li>
                         ))
                     }

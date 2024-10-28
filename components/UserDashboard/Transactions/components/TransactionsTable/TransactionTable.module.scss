@@ -81,6 +81,22 @@
         align-items: center;
         gap: 1rem;
         margin: 2rem 0;
+        position: relative;
+        overflow: visible;
+
+
+        .no_search_result{
+            position: absolute;
+            top: 5rem;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            display: none;
+
+            &[data-show='true']{
+                display: block;
+            }
+        }
 
 
         .filter_icon_container{
