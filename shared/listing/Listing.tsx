@@ -11,6 +11,7 @@ import { useAppDispatch } from "@/store/configureStore";
 import { useRouter } from "next/navigation";
 import { useAddItemToWishlist, usePostCheckItemInWishlist } from "@/app/api/hooks/wishlists";
 import toast from "react-hot-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Props {
 	props: iListing;
@@ -23,6 +24,7 @@ const Listing = ({ props, className, actionType }: Props) => {
 	const {mutateAsync: addFavorite} = useAddItemToWishlist();
 	const {mutateAsync: checkIsFavorite} = usePostCheckItemInWishlist();
 	const [isFavorite, setIsFavorite] = React.useState(false);
+	const { user:loggedInUser } = useAuth();
 	const router = useRouter();
 	const {
 		_id: id,
@@ -53,14 +55,14 @@ const Listing = ({ props, className, actionType }: Props) => {
 
 	const handleToggleFavorites = async(isFavorite: boolean) => {
 		const data = {
-			userId: user._id,
+			userId: loggedInUser?._id,
 			listingId: id
 		}
 
 		await addFavorite(data,{
-			onSuccess: () => {
+			onSuccess: (resp) => {
 				setIsFavorite(!isFavorite);
-				toast.success(isFavorite ? "Removed from favorites" : "Added to favorites");
+				toast.success(!isFavorite ? "Removed from favorites" : "Added to favorites");
 			},
 			onError: (error) => {
 				console.log(error);
@@ -69,19 +71,18 @@ const Listing = ({ props, className, actionType }: Props) => {
 	}
 
 	useEffect(() => {
+		if(!user || !id) return;
 		const checkFavorite = async() => {
 			const data = {
-				userId: user._id,
+				userId: loggedInUser?._id,
 				listingId: id
 			}
 			const response = await checkIsFavorite(data);
-			console.log(response,"isFave")
-			setIsFavorite(response);
+			setIsFavorite(response.data);
 		}
 
 		checkFavorite();
-	}, []);
-
+	}, [id, user]);
 
 	return (
 		<div
@@ -100,7 +101,7 @@ const Listing = ({ props, className, actionType }: Props) => {
 					{forRent && <Button className={styles.button}>Rent</Button>}
 				</div>
 				<span className={styles.fave_icon}>
-					<FavoriteStar />
+					<FavoriteStar onToggle={handleToggleFavorites} isFavorite={isFavorite} />
 				</span>
 			</div>
 			<div className={styles.row} style={{ alignItems: "flex-start" }}>

@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './FavoriteStar.module.scss'
 
 interface FavoriteStarProps {
@@ -8,7 +8,7 @@ interface FavoriteStarProps {
     onToggle?: (isFavorite: boolean) => void;
 }
 
-const FavoriteStar: React.FC<FavoriteStarProps> = ({ isFavorite = false, onToggle }) => {
+const FavoriteStar: React.FC<FavoriteStarProps> = ({ isFavorite, onToggle }) => {
     const [favorite, setFavorite] = useState(isFavorite);
 
     const handleToggle = (e: any) => {
@@ -19,6 +19,10 @@ const FavoriteStar: React.FC<FavoriteStarProps> = ({ isFavorite = false, onToggl
             onToggle(newFavoriteState);
         }
     };
+
+    useEffect(() => {
+        setFavorite(isFavorite);
+    }, [isFavorite]);
 
     return (
         <button onClick={handleToggle} aria-label="Toggle favorite" className={styles.button}>

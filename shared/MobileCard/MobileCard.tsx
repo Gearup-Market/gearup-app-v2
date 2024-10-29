@@ -28,7 +28,7 @@ const MobileCard = ({ mainHeaderImage, mainHeaderText, subHeaderText, lastEle, i
                     </div>
                 </div>
                 <span className={styles.container__header__icon} data-rotate={showDetails} onClick={() => setShowDetails((prev) => !prev)}>
-                    <Image src={'/svgs/chevron.svg'} alt={"toggle-icon"} width={16} height={16} />
+                    <Image src={'/svgs/new-chevron.svg'} alt={"toggle-icon"} width={16} height={16} />
                 </span>
             </div>
             {

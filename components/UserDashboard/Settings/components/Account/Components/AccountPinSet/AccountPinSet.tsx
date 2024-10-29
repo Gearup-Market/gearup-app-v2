@@ -9,6 +9,7 @@ import { usePostUpdateUser } from '@/app/api/hooks/users';
 import toast from 'react-hot-toast';
 
 interface PinFormValues {
+    currentPin?: string;
     accountPin: string;
     confirmPin: string;
 }
@@ -23,7 +24,10 @@ const AccountPinSet: React.FC<Props> = ({inModal=false}) => {
     const initialValues: PinFormValues = {
         accountPin: '',
         confirmPin: '',
+        currentPin: '',
     };
+
+    console.log(user,"user")
 
     const validationSchema = Yup.object().shape({
         accountPin: Yup.string()

@@ -17,6 +17,7 @@ export const useAddItemToWishlist = (
 /////////////////////////////////////////////////////////////////////////////////
 
 export const useRemoveItemFromWishlist = (
+    
     options?: Omit<
         UseMutationOptions<any, any, any>,
         "mutationFn"
@@ -24,9 +25,7 @@ export const useRemoveItemFromWishlist = (
 ) =>
     useMutation<any, any, any>({
         mutationFn: async props => {
-            const { wishlistId } = props;
-            delete props.wishlistId;
-            return (await api.delete(`${API_URL.wishlists}/${wishlistId}`, props)).data;
+            return (await api.post(`${API_URL.wishlists}/remove`, props)).data;
         },
         ...options
     });
@@ -34,13 +33,14 @@ export const useRemoveItemFromWishlist = (
 /////////////////////////////////////////////////////////////////////////////////
 
 export const useGetUserWishlists = (
-    options?: UseQueryOptions<any, any>
+    userId: string,
+    options?: any // Accept options parameter
 ) =>
     useQuery<any, any>({
-        queryKey: ["getUserWishlists"],
-        queryFn: async () => (await api.get(`${API_URL.wishlists}`)).data,
-        ...options,
-        refetchOnMount: true
+        queryKey: ["getUserWishlists", userId], // Include userId in queryKey for uniqueness
+        queryFn: async () => (await api.get(`${API_URL.wishlists}/${userId}`)).data,
+        refetchOnMount: true,
+        ...options, // Spread options here
     });
 
 /////////////////////////////////////////////////////////////////////////////////
