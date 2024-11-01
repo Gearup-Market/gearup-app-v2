@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Button, CustomImage, MobileCard, Ratings, ToggleSwitch } from '@/shared'
 import Link from 'next/link'
 import { useGetUserDetails } from '@/app/api/hooks/users'
+import { formatNumber } from '@/utils'
 
 interface Props {
     item: any
@@ -20,14 +21,24 @@ const WishlistCard = ({ item, ind, lastEle, activeFilter, setShowWishList, onDel
     const {data, isLoading, refetch} = useGetUserDetails({userId:item.user as string});
     const user = data?.data
     console.log(data,"user data")
+    console.log(item,"items")
 
+    const forSellPrice = item?.listingType === "sell" ? item?.offer?.forSell?.pricing : ""
+    const forRentPrice = item?.listingType === "rent" ? item?.offer?.forRent?.day1Offer : ""
+    const bothPrice = item?.listingType === "both" ? item?.offer?.forSell?.pricing : ""
+    const rentOrBuyPrice = forSellPrice || forRentPrice || bothPrice  
+
+    console.log(forSellPrice,"for sell price")
+    console.log(forRentPrice,"for rent price")
+    console.log(bothPrice,"for booth price")
+    console.log(rentOrBuyPrice,"rent sell price")
     if(!item) return null
 
     return (
         <MobileCard
             mainHeaderImage={item.listingPhotos[0]}
             mainHeaderText={item.productName}
-            subHeaderText={activeFilter !== 'courses' ? item.price : ""}
+            subHeaderText={activeFilter === 'courses' ? item.price : `NGN${formatNumber(rentOrBuyPrice)}${item.listingType === "rent" ? "/day" : ""}`}
             lastEle={lastEle}
             ind={ind}
         >
