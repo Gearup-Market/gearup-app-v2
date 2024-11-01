@@ -46,6 +46,8 @@
 				flex-direction: column;
 				justify-content: space-between;
 				height: 100%;
+				overflow: hidden;
+				max-width: 20rem;
 
 				&[data-pos="center"] {
 					justify-content: center;
@@ -56,6 +58,7 @@
 					font-weight: 700;
 					color: $col-grey-1;
 					overflow: hidden;
+					display: block;
 					text-overflow: ellipsis;
 					white-space: nowrap;
 				}
@@ -68,6 +71,8 @@
 
 		&__icon {
 			cursor: pointer;
+			height: 2rem;
+			width: 2rem;
 			&[data-rotate="true"] {
 				transform: rotate(180deg);
 			}

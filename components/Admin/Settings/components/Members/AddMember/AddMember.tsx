@@ -2,8 +2,12 @@ import React from 'react';
 import styles from './AddMember.module.scss';
 import Modal from '@/shared/modals/modal/Modal';
 import { Button, InputField, Select } from '@/shared';
-import { Form, Formik, ErrorMessage } from 'formik';
+import { Form, Formik, ErrorMessage, Field } from 'formik';
 import * as Yup from 'yup';
+import { usePostCreateAdminMember } from '@/app/api/hooks/settings';
+import { CircularProgressLoader } from '@/shared/loaders';
+import toast from 'react-hot-toast';
+import { useGetAdminRoles } from '@/app/api/hooks/Admin/users';
 
 interface AddMemberProps {
     openModal: boolean;
@@ -11,41 +15,46 @@ interface AddMemberProps {
 }
 
 const AddMember = ({ openModal, setOpenModal }: AddMemberProps) => {
-    const roleOptions = [
-        { value: 'customer support', label: 'Customer Support' },
-        { value: 'designer', label: 'Designer' },
-        { value: 'footballer', label: 'Footballer' },
-    ];
+    const { mutateAsync: createAdmin, isPending } = usePostCreateAdminMember();
+    const { data, isLoading } = useGetAdminRoles()
+    const roleOptions = data?.map((item) => item.roleName)
 
     const initialValues = {
         firstName: '',
         lastName: '',
-        email: '', 
-        bank: '',
-        accountNumber: '',
+        email: '',
         password: '',
         confirmPassword: '',
-        role: '', 
+        role: '',
     };
 
-    const validationSchema = Yup.object().shape({
+    const validationSchema = Yup.object({
         firstName: Yup.string().required('First name is required'),
         lastName: Yup.string().required('Last name is required'),
-        email: Yup.string().email('Invalid email format').required('Email is required'), // Added email validation
-        bank: Yup.string().required('Bank is required'),
-        accountNumber: Yup.string()
-            .required('Account number is required')
-            .matches(/^\d+$/, 'Account number must be numeric'),
-        password: Yup.string().required('Password is required'),
+        email: Yup.string().email('Invalid email format').required('Email is required'),
+        password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password')], 'Passwords must match')
             .required('Confirm password is required'),
-        role: Yup.string().required('Role is required'), // Role validation
+        role: Yup.string().required('Role is required'),
     });
 
-    const handleSubmit = (values: any) => {
-        // Handle form submission
-        console.log(values);
+    const handleSubmit = async (values: typeof initialValues) => {
+        const getRoleId = data?.find((item) => item.roleName === values.role)
+        if (!getRoleId) return toast.error('Role not found')
+        try {
+            await createAdmin({
+                email: values.email,
+                firstName: values.firstName,
+                lastName: values.lastName,
+                password: values.password,
+                role: getRoleId?._id as string,
+            });
+            setOpenModal(false);
+            toast.success('Admin created successfully');
+        } catch (error) {
+            toast.error('Error creating admin');
+        }
     };
 
     const onClose = () => {
@@ -53,49 +62,46 @@ const AddMember = ({ openModal, setOpenModal }: AddMemberProps) => {
     };
 
     return (
-        <Modal openModal={openModal} setOpenModal={onClose} title='Add Member' description='Add your member that will be given access to the Gearup portal'>
+        <Modal openModal={openModal} setOpenModal={onClose} title="Add Member" description="Add your member that will be given access to the Gearup portal">
             <div className={styles.container}>
                 <div className={styles.container__form_container}>
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
-                    >
+                    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
                         {({ setFieldValue }) => (
                             <Form>
                                 <div className={styles.container__form_container__form}>
                                     <div className={styles.form_field}>
-                                        <InputField name='firstName' label='First Name' placeholder='Enter first name'/>
+                                        <Field name="firstName" as={InputField} label="First Name" placeholder="Enter first name" />
                                         <ErrorMessage name="firstName" component="div" className={styles.error} />
                                     </div>
                                     <div className={styles.form_field}>
-                                        <InputField name='lastName' label='Last Name' placeholder='Enter last name'/>
+                                        <Field name="lastName" as={InputField} label="Last Name" placeholder="Enter last name" />
                                         <ErrorMessage name="lastName" component="div" className={styles.error} />
                                     </div>
                                     <div className={styles.form_field}>
-                                        <InputField name='email' label='Email' placeholder='Enter email address' />
+                                        <Field name="email" as={InputField} label="Email" placeholder="Enter email address" />
                                         <ErrorMessage name="email" component="div" className={styles.error} />
                                     </div>
                                     <div className={styles.form_field}>
                                         <Select
-                                            label='Role'
+                                            label="Role"
                                             options={roleOptions}
-                                            onOptionChange={(option) => setFieldValue('role', option.value)} // Bind the selected role to Formik state
+                                            onOptionChange={(option) => setFieldValue('role', option)}
                                         />
                                         <ErrorMessage name="role" component="div" className={styles.error} />
                                     </div>
-                    
                                     <div className={styles.form_field}>
-                                        <InputField type='password' name='password' label='Password' placeholder='Password (Min. of 8 characters)'/>
+                                        <Field name="password" as={InputField} isPassword={true} type="password" label="Password" placeholder="Password (Min. of 8 characters)" />
                                         <ErrorMessage name="password" component="div" className={styles.error} />
                                     </div>
                                     <div className={styles.form_field}>
-                                        <InputField type='password' name='confirmPassword' label='Confirm Password' placeholder=' Repeat password' />
+                                        <Field name="confirmPassword" as={InputField} isPassword={true} type="password" label="Confirm Password" placeholder="Repeat password" />
                                         <ErrorMessage name="confirmPassword" component="div" className={styles.error} />
                                     </div>
                                 </div>
                                 <div className={styles.submit_btn_container}>
-                                    <Button buttonType='primary' type="submit">Create Admin </Button>
+                                    <Button buttonType="primary" type="submit">
+                                        {isPending ? <CircularProgressLoader size={20} color="white" /> : 'Add Member'}
+                                    </Button>
                                 </div>
                             </Form>
                         )}
@@ -107,3 +113,4 @@ const AddMember = ({ openModal, setOpenModal }: AddMemberProps) => {
 };
 
 export default AddMember;
+

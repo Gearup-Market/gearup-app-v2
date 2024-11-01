@@ -7,6 +7,11 @@ import Image from "next/image";
 import { BackNavigation, Button, Pagination } from "@/shared";
 import Link from "next/link";
 import WishlistCard from "./WishlistCard/WishlistCard";
+import { useGetUserWishlists, useRemoveItemFromWishlist } from "@/app/api/hooks/wishlists";
+import { useAuth } from "@/contexts/AuthContext";
+import { Box } from "@mui/material";
+import { CircularProgressLoader } from "@/shared/loaders";
+import toast from "react-hot-toast";
 
 interface Props {
 	showWishList: boolean;
@@ -16,10 +21,23 @@ interface Props {
 const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 	const wishlists = [] as any;
 	const [page, setPage] = useState(1);
+	const { user } = useAuth();
+
+	const { data, isLoading, refetch } = useGetUserWishlists(user?._id as string, {
+		enabled: !!showWishList && !!user?._id
+	});
+
+	const { mutateAsync: removeWishlist, isPending } = useRemoveItemFromWishlist()
+
+
+	const listings = data?.data?.listings || [];
+
+	console.log(data, "wish lists")
 
 	const onPageChange = () => {
 		console.log(page);
 	};
+
 	useEffect(() => {
 		// Function to handle click events
 		const handleClick = (event: MouseEvent) => {
@@ -43,6 +61,23 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 		};
 	}, []);
 
+	const onDeleteItem = async (wishlistId: string) => {
+		if(!wishlistId) return
+		const data = {
+			userId: user?._id,
+			listingId: wishlistId
+		}
+		await removeWishlist(data, {
+			onSuccess: () => {
+				toast.success("Item removed from wishlist")
+				refetch()
+			},
+			onError: (error) => {
+				toast.error("Could not remove item, try again!!!")
+			}
+		})
+	}
+
 	return (
 		<div className={styles.container} data-show={showWishList}>
 			<div className={`${styles.content} wishlist_content`}>
@@ -59,28 +94,46 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 					<HeaderSubText variant="medium" title="Wishlist" />
 				</div>
 
-				{wishlists.length === 0 ? (
-					<EmptyWishlist />
-				) : (
-					<div className={styles.cards_wrapper}>
-						<div className={styles.cards_container}>
-							{wishlists.map((item: any, ind: number) => (
-								<WishlistCard
-									key={ind}
-									item={item}
-									ind={ind}
-									lastEle={ind + 1 === wishlists.length ? true : false}
-								/>
-							))}
-						</div>
-						<Pagination
-							currentPage={page}
-							onPageChange={onPageChange}
-							totalCount={wishlists.length}
-							pageSize={10}
-						/>
-					</div>
-				)}
+				{
+					isLoading ?
+						<Box
+							display="flex"
+							justifyContent="center"
+							alignItems="center"
+							height="30rem"
+						>
+							<CircularProgressLoader color="#ffb30f" size={30} />
+						</Box>
+						:
+
+						<>
+
+							{listings.length === 0 ? (
+								<EmptyWishlist />
+							) : (
+								<div className={styles.cards_wrapper}>
+									<div className={styles.cards_container}>
+										{listings.map((item: any, ind: number) => (
+											<WishlistCard
+												key={ind}
+												item={item}
+												ind={ind}
+												lastEle={ind + 1 === wishlists.length ? true : false}
+												setShowWishList={setShowWishList}
+												onDeleteItem={onDeleteItem}
+											/>
+										))}
+									</div>
+									<Pagination
+										currentPage={page}
+										onPageChange={onPageChange}
+										totalCount={wishlists.length}
+										pageSize={10}
+									/>
+								</div>
+							)}
+						</>
+				}
 			</div>
 		</div>
 	);

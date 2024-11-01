@@ -22,6 +22,7 @@ const UserDetailsProfile = ({ user }: Props) => {
 						height={150}
 						width={150}
 						alt="avatar"
+						style={{ borderRadius: "50%" }}
 					/>
 				</div>
 				<p className={styles.name}>

@@ -9,17 +9,25 @@ import { usePostUpdateUser } from '@/app/api/hooks/users';
 import toast from 'react-hot-toast';
 
 interface PinFormValues {
+    currentPin?: string;
     accountPin: string;
     confirmPin: string;
 }
 
-const AccountPinSet: React.FC = () => {
+interface Props{
+    inModal?: boolean;
+}
+
+const AccountPinSet: React.FC<Props> = ({inModal=false}) => {
     const user = useAppSelector(state => state.user);
     const { mutateAsync: postUpdateUser, isPending } = usePostUpdateUser();
     const initialValues: PinFormValues = {
         accountPin: '',
         confirmPin: '',
+        currentPin: '',
     };
+
+    console.log(user,"user")
 
     const validationSchema = Yup.object().shape({
         accountPin: Yup.string()
@@ -49,7 +57,7 @@ const AccountPinSet: React.FC = () => {
     return (
         <div className={styles.container}>
             <HeaderSubText title="Set up account pin" description="Please use a pin you can remember easily" />
-            <div className={styles.container__form_container}>
+            <div className={styles.container__form_container} data-inmodal={inModal}>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
@@ -58,6 +66,20 @@ const AccountPinSet: React.FC = () => {
                     {({ isSubmitting }) => (
                         <Form>
                             <div className={styles.container__form_container__form}>
+                                <div className={styles.form_field}>
+                                    <Field
+                                        name="accountPin"
+                                        as={InputField}
+                                        label="Current account pin"
+                                        placeholder="Enter current pin"
+                                        isPassword
+                                    />
+                                    <ErrorMessage
+                                        name="currentPin"
+                                        component="div"
+                                        className={styles.error_message}
+                                    />
+                                </div>
                                 <div className={styles.form_field}>
                                     <Field
                                         name="accountPin"
@@ -87,13 +109,13 @@ const AccountPinSet: React.FC = () => {
                                     />
                                 </div>
                             </div>
-                            <div className={styles.submit_btn_container}>
+                            <div className={styles.submit_btn_container} data-inModal={inModal}>
                                 <Button
                                     buttonType="primary"
                                     type="submit"
                                     disabled={isSubmitting}
                                 >
-                                    {isSubmitting ? 'Saving...' : 'Save changes'}
+                                    {isSubmitting ? 'Saving...' : inModal ? "Save & proceed": 'Save changes'}
                                 </Button>
                             </div>
                         </Form>

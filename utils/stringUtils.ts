@@ -58,3 +58,9 @@ export function base64ToFile(base64Image: string, fileName: string) {
     // Convert the Blob to a File
     return new File([blob], fileName, { type: mimeType });
 }
+
+
+export const removeTrailingCommad = (text: string): string => {
+    if (!text) return '';
+    return text.replace(/,\s*$/, "");
+}

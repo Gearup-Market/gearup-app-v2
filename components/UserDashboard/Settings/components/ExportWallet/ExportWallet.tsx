@@ -1,10 +1,10 @@
 'use client'
 import React, { useState } from 'react'
-import styles from './ImportWallet.module.scss'
+import styles from './ExportWallet.module.scss'
 import { HeaderSubText } from '@/components/Admin'
 import Image from 'next/image'
 import { WarningIcon } from '@/shared/svgs/dashboard'
-import { GoogleBackupModal, SecretPhraseModal } from './components'
+import { EnterTransactionPin, XlmExportModal, SetTransactionPinModal } from './components'
 
 enum ModalType {
     SHOW_SECRET_PHRASE = 'Show secret phrase',
@@ -15,37 +15,27 @@ enum ModalType {
 const importOptions = [
     {
         id: 1,
-        name: 'Secret phrase',
-        description: 'Use a 12, 18 or 24- word seed phrase',
-        icon: '/svgs/secret-phrase-icon.svg',
+        name: 'Export Your XLM Wallet ',
+        description: 'Securely export your wallet’s private key or recovery phrase.',
+        icon: '/svgs/export-wallet-icon.svg',
         modalType: ModalType.SHOW_SECRET_PHRASE
-    },
-    {
-        id: 2,
-        name: 'Google backup',
-        description: 'Restore from google drive backup',
-        icon: '/svgs/google-backup-icon.svg',
-        modalType: ModalType.SHOW_GOOGLE_BACKUP
     },
 ]
 
 const ImportWallet = () => {
-    const [modals, setModals] = useState({
-        showSecretPhraseModal: false,
-        showGoogleBackupModal: false
-    })
+    const hasTransactionPinSet = false;
+    const [showTransactionPinModal, setShowTransactionPinModal] = useState(false);
+    const [showSetTransactionPinModal, setShowSetTransactionPinModal] = useState(false);
+    const [showXlmExportModal, setShowXlmExportModal] = useState(false);
 
     const handleOpenModal = (modalType: string) => {
-        if (modalType === ModalType.SHOW_GOOGLE_BACKUP) {
-            setModals((prev) => ({ ...prev, showGoogleBackupModal: true }))
-        } else {
-            setModals((prev) => ({ ...prev, showSecretPhraseModal: true }))
-        }
+        // setShowTransactionPinModal(true);
+        setShowXlmExportModal(true);
     }
 
     return (
         <div className={styles.container}>
-            <HeaderSubText title="Import existing wallet" description="Transfer your current wallet and manage your funds seamlessly" />
+            <HeaderSubText title="Export wallet" description="Transfer your current wallet and manage your funds seamlessly" />
 
             <div className={styles.content_body}>
                 <ul>
@@ -74,16 +64,14 @@ const ImportWallet = () => {
                     <span className={styles.icon}>
                         <WarningIcon color='#A26B00' />
                     </span>
-                    <p>Note: <span className={styles.bold_underline}>Back up manually</span> or <span className={styles.bold_underline}>Back up with google drive</span> your existing Gearup XLM <br /> wallet so you don’t lose access to your existing assets.</p>
+                    <p>Exporting your wallet will reveal sensitive information. Ensure it is stored securely, as anyone with this data <br /> can access your funds. Proceed with caution.</p>
                 </div>
             </div>
 
-            {
-                modals.showGoogleBackupModal && <GoogleBackupModal openModal={modals.showGoogleBackupModal} setOpenModal={setModals} />
-            }
-            {
-                modals.showSecretPhraseModal && <SecretPhraseModal openModal={modals.showSecretPhraseModal} setOpenModal={setModals} />
-            }
+           <XlmExportModal openModal={showXlmExportModal} setOpenModal={setShowXlmExportModal} />
+            
+          <SetTransactionPinModal openModal={showSetTransactionPinModal} setOpenModal={setShowSetTransactionPinModal} />
+            <EnterTransactionPin openModal={showTransactionPinModal} setOpenModal={setShowTransactionPinModal}/>
         </div>
     )
 }

@@ -4,9 +4,10 @@ import { CustomRadioButton } from '@/shared'
 
 interface Props {
     item: any
+    handleToggle: (title: string, permission: string) => void
 }
 
-const RolesPermissionCardMob = ({ item }: Props) => {
+const RolesPermissionCardMob = ({ item, handleToggle }: Props) => {
   
     return (
         <div>
@@ -31,6 +32,7 @@ const RolesPermissionCardMob = ({ item }: Props) => {
                                     return (
                                         <li key={index} className={styles.permission}>
                                             <CustomRadioButton
+                                            onClick={()=>handleToggle("super admin", item)}
                                             />
                                         </li>
                                     )
@@ -47,6 +49,7 @@ const RolesPermissionCardMob = ({ item }: Props) => {
                                     return (
                                         <li key={index} className={styles.permission}>
                                             <CustomRadioButton
+                                                        onClick={()=>handleToggle("super admin", item)}
                                             />
                                         </li>
                                     )
@@ -63,6 +66,7 @@ const RolesPermissionCardMob = ({ item }: Props) => {
                                     return (
                                         <li key={index} className={styles.permission}>
                                             <CustomRadioButton
+                                                        onClick={()=>handleToggle("super admin", item)}
                                             />
                                         </li>
                                     )

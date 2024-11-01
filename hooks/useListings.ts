@@ -70,16 +70,16 @@ const parentFilters: Filter[] = [
 			}
 		]
 	},
-	// {
-	// 	id: 3,
-	// 	name: "Courses",
-	// 	subFilters: [
-	// 		{
-	// 			id: 1,
-	// 			name: "All categories"
-	// 		}
-	// 	]
-	// }
+	{
+		id: 3,
+		name: "Courses",
+		subFilters: [
+			{
+				id: 1,
+				name: "All categories"
+			}
+		]
+	}
 ];
 const adminParentFilters: Filter[] = [
 	{
@@ -114,16 +114,16 @@ const adminParentFilters: Filter[] = [
 			}
 		]
 	},
-	// {
-	// 	id: 3,
-	// 	name: "Courses",
-	// 	subFilters: [
-	// 		{
-	// 			id: 1,
-	// 			name: "All categories"
-	// 		}
-	// 	]
-	// }
+	{
+		id: 3,
+		name: "Courses",
+		subFilters: [
+			{
+				id: 1,
+				name: "All categories"
+			}
+		]
+	}
 ];
 
 const adminSubListingFilters = [

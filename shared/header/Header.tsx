@@ -10,7 +10,6 @@ import { NavLink, NavLinkMenu, NavLinkSub } from "@/interfaces";
 import { usePathname, useRouter } from "next/navigation";
 import { useGlobalContext } from "@/contexts/AppContext";
 import { AppState, useAppDispatch, useAppSelector } from "@/store/configureStore";
-import { clearNewListing } from "@/store/slices/addListingSlice";
 import { useAuth } from "@/contexts/AuthContext";
 
 enum Scroll {
@@ -79,7 +78,16 @@ const Header = () => {
 							return (
 								<li key={index} className={styles.header_navLink}>
 									{link.label === "blog" ? (
-										<Link href={link.href}>{link.label}</Link>
+										<Link href={link.href} className={styles.small_row} onClick={() => setCollapsed(!collapsed)}>
+											<div className={styles.link_icon} >
+												<Image
+													src={link.icon}
+													fill
+													alt=""
+													sizes="100vw"
+												/>
+											</div>
+											<span>	{link.label}</span></Link>
 									) : (
 										<>
 											<div className={styles.small_row}>
@@ -262,8 +270,8 @@ const Header = () => {
 						</div>
 					</Button>
 					{isAuthenticated ? (
-						<Link className={styles.user_account} href="/user/dashboard">
-							<Button className={styles.my_account}>My account</Button>
+						<Link className={styles.user_account} href="/user/dashboard" >
+							<Button onClick={() => setCollapsed(!collapsed)} className={styles.my_account}>My account</Button>
 						</Link>
 					) : (
 						<>

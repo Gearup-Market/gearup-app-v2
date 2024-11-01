@@ -1,7 +1,7 @@
 import { RentingOffer, SellingOffer } from "@/interfaces/Listing";
 import { AxiosError } from "axios";
 import { iPostListingResp } from "../listings/types";
-import { IUser, IUserResp } from "../users/types";
+import { IUser, IUserResp, UserUpdateResp } from "../users/types";
 
 export interface IGetMessagesResp {
     success: boolean;
@@ -10,7 +10,7 @@ export interface IGetMessagesResp {
   
   export interface MessageData {
     _id: string;
-    participants: IUser[];
+    participants: UserUpdateResp[];
     listingItem: ListingItem;
     messages: Message[];
     createdAt: string;

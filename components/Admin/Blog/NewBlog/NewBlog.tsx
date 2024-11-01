@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { Form, Formik, Field, ErrorMessage } from 'formik';
 import styles from './NewBlog.module.scss';
-import { Button, CustomTextEditor, InputField, LoadingSpinner, Select } from '@/shared';
+import { Button, CustomTextEditor, InputField, LoadingSpinner, Select, UrlPath } from '@/shared';
 import * as Yup from 'yup';
 import { GridAddIcon } from '@mui/x-data-grid';
 import { AddCategory } from '../components/BlogsCategories/components';
@@ -188,18 +188,18 @@ const NewBlog = () => {
 
     const defaultOptionIndex = categories?.data.findIndex((option) => option._id === data?.category._id);
 
-// for uploading blog content images
+    // for uploading blog content images
     const handleBlogContentImageUpload = async (content: string): Promise<string> => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(content, 'text/html');
         const imgElements = Array.from(doc.querySelectorAll('img')) as HTMLImageElement[];
-    
+
         for (let img of imgElements) {
             const base64Image = img.getAttribute('src');
             if (base64Image && base64Image.startsWith('data:image/')) {
                 const uniqueId = base64Image.substring(0, 10).replace(/\W/g, '');
                 const fileName = `image_${uniqueId}_${Date.now()}.jpg`;
-    
+
                 const imageFile = base64ToFile(base64Image, fileName) as File;
                 await uploadImg([imageFile], {
                     onSuccess: (res) => {
@@ -213,7 +213,7 @@ const NewBlog = () => {
         }
         return doc.body.innerHTML;
     };
-    
+
 
     const getCategoryIndex = (category: string) => {
         const cat = categories?.data.find((item) => item?.name?.toLowerCase() === category.toLowerCase());
@@ -221,130 +221,135 @@ const NewBlog = () => {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.container__form_container}>
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={(values, { resetForm }) => {
-                        if (!editingMode) {
-                            handleSubmit(values, { resetForm }, false)
-                        } else {
-                            handleUpdateSubmit(values, { resetForm }, false)
+        <div>
+            <div className={styles.title_container}>
+                <UrlPath />
+            </div>
+            <div className={styles.container}>
+                <div className={styles.container__form_container}>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={(values, { resetForm }) => {
+                            if (!editingMode) {
+                                handleSubmit(values, { resetForm }, false)
+                            } else {
+                                handleUpdateSubmit(values, { resetForm }, false)
+                            }
                         }
-                    }
-                    }
-                    enableReinitialize
-                >
-                    {({ errors, touched, setFieldValue, values, resetForm }) => (
-                        <Form>
-                            <h2 className={styles.banner_title}>Banner Image</h2>
-                            <div className={styles.image_container}>
-                                <input
-                                    id="fileInput"
-                                    type="file"
-                                    accept="image/*"
-                                    ref={inputUploadRef}
-                                    style={{ display: "none" }}
-                                    onChange={handleImageChange}
-                                />
-                                {selectedImage || data?.bannerImage ? (
-                                    <div className={styles.image_wrapper}>
-                                        <Image src={!!selectedImage ? imageSrc : data?.bannerImage ?? ""} alt="image" fill className={styles.image} />
+                        }
+                        enableReinitialize
+                    >
+                        {({ errors, touched, setFieldValue, values, resetForm }) => (
+                            <Form>
+                                <h2 className={styles.banner_title}>Banner Image</h2>
+                                <div className={styles.image_container}>
+                                    <input
+                                        id="fileInput"
+                                        type="file"
+                                        accept="image/*"
+                                        ref={inputUploadRef}
+                                        style={{ display: "none" }}
+                                        onChange={handleImageChange}
+                                    />
+                                    {selectedImage || data?.bannerImage ? (
+                                        <div className={styles.image_wrapper}>
+                                            <Image src={!!selectedImage ? imageSrc : data?.bannerImage ?? ""} alt="image" fill className={styles.image} />
+                                        </div>
+                                    ) : (
+                                        <div className={styles.image_placeholder}>
+                                            <Image
+                                                src='/svgs/icon-image.svg'
+                                                height={30}
+                                                width={30}
+                                                alt='image-icon'
+                                                onClick={openUploadDialog}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                            <p>
+                                                Drop your image here, or{' '}
+                                                <label onClick={openUploadDialog} className={styles.click_to_upload_text}>
+                                                    click to upload
+                                                </label>
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                                {(!!selectedImage || data?.bannerImage) && <Button onClick={openUploadDialog} buttonType='secondary'>Change image</Button>}
+
+                                <div className={styles.container__form_container__form}>
+                                    <div className={styles.form_field}>
+                                        <Field name="title">
+                                            {({ field }: any) => (
+                                                <InputField label='Title' placeholder='Enter title' {...field} />
+                                            )}
+                                        </Field>
+                                        <ErrorMessage name="title" component="div" className={styles.error_text} />
                                     </div>
-                                ) : (
-                                    <div className={styles.image_placeholder}>
-                                        <Image
-                                            src='/svgs/icon-image.svg'
-                                            height={30}
-                                            width={30}
-                                            alt='image-icon'
-                                            onClick={openUploadDialog}
-                                            style={{ cursor: 'pointer' }}
-                                        />
-                                        <p>
-                                            Drop your image here, or{' '}
-                                            <label onClick={openUploadDialog} className={styles.click_to_upload_text}>
-                                                click to upload
-                                            </label>
+
+                                    <div className={styles.address_field}>
+                                        <Field as="select" name="category">
+                                            {({ field }: any) => (
+                                                <Select label='Category' options={blogsCategories} defaultOptionIndex={defaultOptionIndex} {...field} onOptionChange={(value) => {
+                                                    setFieldValue("category", value)
+                                                }} />
+                                            )}
+                                        </Field>
+                                        <ErrorMessage name="category" component="div" className={styles.error_text} />
+                                        <p className={styles.create_category_text} onClick={() => setShowAddCategory(true)}>
+                                            <GridAddIcon /> Create new category
                                         </p>
                                     </div>
-                                )}
-                            </div>
-                            {(!!selectedImage || data?.bannerImage) && <Button onClick={openUploadDialog} buttonType='secondary'>Change image</Button>}
 
-                            <div className={styles.container__form_container__form}>
-                                <div className={styles.form_field}>
-                                    <Field name="title">
-                                        {({ field }: any) => (
-                                            <InputField label='Title' placeholder='Enter title' {...field} />
-                                        )}
-                                    </Field>
-                                    <ErrorMessage name="title" component="div" className={styles.error_text} />
+                                    <div className={styles.address_field}>
+                                        <Field name="readMinutes">
+                                            {({ field }: any) => (
+                                                <InputField type='number' label='Read minutes' placeholder='Enter read minutes' {...field} />
+                                            )}
+                                        </Field>
+                                        <ErrorMessage name="readMinutes" component="div" className={styles.error_text} />
+                                    </div>
+
+                                    <div className={styles.address_field}>
+                                        <CustomTextEditor
+                                            label='Content'
+                                            value={values.content ?? ""}
+                                            setValue={(value) => setFieldValue("content", value)}
+                                            placeholder='type to create content'
+                                        />
+                                        <ErrorMessage name="content" component="div" className={styles.error_text} />
+                                    </div>
                                 </div>
 
-                                <div className={styles.address_field}>
-                                    <Field as="select" name="category">
-                                        {({ field }: any) => (
-                                            <Select label='Category' options={blogsCategories} defaultOptionIndex={defaultOptionIndex} {...field} onOptionChange={(value) => {
-                                                setFieldValue("category", value)
-                                            }} />
-                                        )}
-                                    </Field>
-                                    <ErrorMessage name="category" component="div" className={styles.error_text} />
-                                    <p className={styles.create_category_text} onClick={() => setShowAddCategory(true)}>
-                                        <GridAddIcon /> Create new category
-                                    </p>
-                                </div>
-
-                                <div className={styles.address_field}>
-                                    <Field name="readMinutes">
-                                        {({ field }: any) => (
-                                            <InputField type='number' label='Read minutes' placeholder='Enter read minutes' {...field} />
-                                        )}
-                                    </Field>
-                                    <ErrorMessage name="readMinutes" component="div" className={styles.error_text} />
-                                </div>
-
-                                <div className={styles.address_field}>
-                                    <CustomTextEditor
-                                        label='Content'
-                                        value={values.content ?? ""}
-                                        setValue={(value) => setFieldValue("content", value)}
-                                        placeholder='type to create content'
-                                    />
-                                    <ErrorMessage name="content" component="div" className={styles.error_text} />
-                                </div>
-                            </div>
-
-                            <div className={styles.submit_btn_container}>
-                                {
-                                    !editingMode &&
+                                <div className={styles.submit_btn_container}>
+                                    {
+                                        !editingMode &&
+                                        <Button
+                                            buttonType='secondary'
+                                            type="button"
+                                            onClick={() => {
+                                                setIsDraft(true)
+                                                handleSubmit(values, { resetForm }, true)
+                                            }}
+                                            className={styles.upload_btn}
+                                        >
+                                            {(uploadingBlogPost || uploadingImg) && isDraft ? <LoadingSpinner size='small' /> : 'Save draft'}
+                                        </Button>
+                                    }
                                     <Button
-                                        buttonType='secondary'
-                                        type="button"
-                                        onClick={() => {
-                                            setIsDraft(true)
-                                            handleSubmit(values, { resetForm }, true)
-                                        }}
+                                        buttonType='primary'
+                                        type="submit"
                                         className={styles.upload_btn}
                                     >
-                                        {(uploadingBlogPost || uploadingImg) && isDraft ? <LoadingSpinner size='small' /> : 'Save draft'}
+                                        {(uploadingBlogPost || uploadingImg) && !isDraft ? <LoadingSpinner size='small' /> : !!editingMode ? "Update post" : "Create post"}
                                     </Button>
-                                }
-                                <Button
-                                    buttonType='primary'
-                                    type="submit"
-                                    className={styles.upload_btn}
-                                >
-                                    {(uploadingBlogPost || uploadingImg) && !isDraft ? <LoadingSpinner size='small' /> : !!editingMode ? "Update post" : "Create post"}
-                                </Button>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <AddCategory refetch={refetch} openModal={showAddCategory} setOpenModal={setShowAddCategory} category={category} setCategory={setCategory} />
             </div>
-            <AddCategory refetch={refetch} openModal={showAddCategory} setOpenModal={setShowAddCategory} category={category} setCategory={setCategory} />
         </div>
     );
 };

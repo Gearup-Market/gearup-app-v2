@@ -2,15 +2,28 @@
 
 .container{
     width: 50rem;
+    overflow: auto;
+    @include noScrollBar;
+
+    .error{
+        color: red;
+        font-size: 1.4rem;
+        margin-top: 0.4rem;
+    }
 
     &__form_container {
         background-color: #fff;
-    
+        overflow: auto;
+        @include noScrollBar;
+        
         &__form {
-          display: grid;
-          grid-template-columns: repeat(1, minmax(0, 1fr));
-          gap: 2rem;
-          margin-top: 1rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1.6rem;
+          margin-top: 0.5rem;
+          height: 100%;
+          overflow: auto;
+          @include noScrollBar;
     
           .phone_field{
             display: flex;

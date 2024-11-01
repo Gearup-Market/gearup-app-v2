@@ -58,5 +58,7 @@ export const API_URL = {
 	adminGetUsersTotal: "/admin/user/total",
 	adminDeactivateUser: "/admin/user",
 	adminSettingsRoles: "/admin/settings/roles",
-
+	adminCreateMember: "/admin/create-members",
+	courses: "/courses",
+	wishlists: "/wishlist",
 };

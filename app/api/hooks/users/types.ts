@@ -309,6 +309,7 @@ export interface IUserResp {
 	isActive: boolean;
 	accountName: string;
 	accountNumber: string;
+	rating: number;
 	bankName: string;
   }
   

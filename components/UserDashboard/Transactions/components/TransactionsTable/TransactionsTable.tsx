@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import styles from "./TransactionTable.module.scss";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
-import { InputField, MobileCardContainer, Pagination } from "@/shared";
+import { InputField, MobileCardContainer, NoSearchResult, Pagination } from "@/shared";
 import { customisedTableClasses } from "@/utils/classes";
 import Link from "next/link";
 import TransactionCardMob from "./TransactionCardMob/TransactionCardMob";
@@ -20,27 +20,29 @@ const TransactionTable = ({ transactionType }: Props) => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(5);
 	const { data, isFetching } = useTransactions();
+	const [localData, setLocalData] = useState(data)
 	const { userId } = useAppSelector(s => s.user);
+	const [isNoSearchResult, setIsNoSearchResult] = useState(false)
 
 	const transactions = useMemo(
 		() =>
-			data.map(({ _id, item, buyer, amount, type, status, createdAt }) => {
+			localData.map(({ _id, item, buyer, amount, type, status, createdAt }) => {
 				const isBuyer = userId === buyer;
 				const transactionType =
 					type === TransactionType.Sale && isBuyer
 						? "Purchase"
 						: type === TransactionType.Sale && !isBuyer
-						? "Sale"
-						: TransactionType.Rental;
+							? "Sale"
+							: TransactionType.Rental;
 
 				const userRole =
 					transactionType === "Purchase"
 						? UserRole.Buyer
 						: transactionType === "Sale"
-						? UserRole.Seller
-						: transactionType === "Rental" && isBuyer
-						? UserRole.Renter
-						: UserRole.Lender;
+							? UserRole.Seller
+							: transactionType === "Rental" && isBuyer
+								? UserRole.Renter
+								: UserRole.Lender;
 				return {
 					id: _id,
 					gearName: item.productName,
@@ -160,58 +162,71 @@ const TransactionTable = ({ transactionType }: Props) => {
 		}
 	];
 
+	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>)=>{
+		setIsNoSearchResult(true)
+
+	}
+
 	return (
 		<div className={styles.container}>
-		
-					<div className={styles.container__input_filter_container}>
-						<InputField
-							placeholder="Search"
-							icon="/svgs/icon-search-dark.svg"
-							iconTitle="search-icon"
-						/>
-					</div>
+			{
+				data.length < 1 ? <NoTransactions />
+					:
+					<>
+						<div className={styles.container__input_filter_container}>
+							<InputField
+								placeholder="Search"
+								icon="/svgs/icon-search-dark.svg"
+								iconTitle="search-icon"
+								onChange={handleSearch}
+							/>
+							<div className={styles.no_search_result} data-show={isNoSearchResult}>
+								<NoSearchResult />
+							</div>
+						</div>
 
-					<div
-						className={styles.container__table}
-						style={{ width: "100%", height: "100%" }}
-					>
-						<DataGrid
-							rows={filteredTransactions}
-							columns={columns}
-							paginationMode="server"
-							sx={customisedTableClasses}
-							hideFooter
-							autoHeight
-							loading={isFetching}
-						/>
-					</div>
-
-					<MobileCardContainer>
-					{!!transactions.length ? (
-				<>
-						{filteredTransactions.map((item, ind) => (
-							<TransactionCardMob
-								key={item.id}
-								item={item}
-								ind={ind}
-								lastEle={
-									ind + 1 === filteredTransactions.length ? true : false
-								}
+						<div
+							className={styles.container__table}
+							style={{ width: "100%", height: "100%" }}
+						>
+							<DataGrid
+								rows={filteredTransactions}
+								columns={columns}
+								paginationMode="server"
+								sx={customisedTableClasses}
+								hideFooter
+								autoHeight
 								loading={isFetching}
 							/>
-						))}
-							</>
-						) : (
-							<NoTransactions />
-						)}
-					</MobileCardContainer>
-					<Pagination
-						currentPage={page}
-						onPageChange={handlePagination}
-						totalCount={transactions.length}
-						pageSize={limit}
-					/>
-		
+						</div>
+
+						<MobileCardContainer>
+							{!!transactions.length ? (
+								<>
+									{filteredTransactions.map((item, ind) => (
+										<TransactionCardMob
+											key={item.id}
+											item={item}
+											ind={ind}
+											lastEle={
+												ind + 1 === filteredTransactions.length ? true : false
+											}
+											loading={isFetching}
+										/>
+									))}
+								</>
+							) : (
+								<NoTransactions />
+							)}
+						</MobileCardContainer>
+						<Pagination
+							currentPage={page}
+							onPageChange={handlePagination}
+							totalCount={transactions.length}
+							pageSize={limit}
+						/>
+					</>
+			}
 		</div>
 	);
 };

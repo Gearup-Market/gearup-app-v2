@@ -9,6 +9,8 @@ import { CircularProgressLoader } from "@/shared/loaders";
 import { useGetUserDetails } from "@/app/api/hooks/users";
 import { useSingleListing } from "@/hooks/useListings";
 import { useGetListingById } from "@/app/api/hooks/listings";
+import UserSocials from "@/shared/userSocials/UserSocials";
+import { UserUpdateResp } from "@/app/api/hooks/users/types";
 
 const UserProfileSection = () => {
 	const searchParams = useSearchParams();
@@ -47,84 +49,55 @@ const UserProfileSection = () => {
 						<h4 className={styles.title}>PROFILE</h4>
 						<div className={styles.profile_image}>
 							<CustomImage
-								src="/svgs/avatar.svg"
+								src={!!data?.data?.avatar ? data?.data?.avatar : "/svgs/avatar-user.svg"}
 								height={150}
 								width={150}
 								alt="avatar"
+								style={{ borderRadius: "50%" }}
 							/>
 						</div>
 						<p className={styles.name}>
 							{data?.data?.name || data?.data?.userName}
 							{
 								data?.data?.isVerified &&
-							<span className={styles.verfiy_icon}>
-								<VerifyIcon />
-							</span>
+								<span className={styles.verfiy_icon}>
+									<VerifyIcon />
+								</span>
 							}
 						</p>
-						<p className={styles.location}>Lagos, Nigeria</p>
+						<p className={styles.location}>{data?.data.address ?? "N//A"}</p>
 						<div className={styles.ratings_container}>
-							<Ratings rating={0} showRatingNumber={true} />
+							<Ratings rating={0} showRatingNumber={true} readOnly />
 						</div>
 						<p>0 deals</p>
-						<div className={styles.socials_icon}>
-							<span className={styles.icon}>
-								<Image
-									src="/svgs/twitter.svg"
-									alt="twitter-icon"
-									height={30}
-									width={30}
-								/>
-							</span>
-							<span className={styles.icon}>
-								<Image
-									src="/svgs/insta.svg"
-									alt="insta-icon"
-									height={30}
-									width={30}
-								/>
-							</span>
-							<span className={styles.icon}>
-								<Image
-									src="/svgs/linkedin.svg"
-									alt="linkedin-icon"
-									height={30}
-									width={30}
-								/>
-							</span>
-							<span className={styles.icon}>
-								<Image
-									src="/svgs/facebook.svg"
-									alt="fb-icon"
-									height={30}
-									width={30}
-								/>
-							</span>
-						</div>
+						<UserSocials user={data?.data as UserUpdateResp} />
 					</div>
+					{
+						listing?.data &&
 					<div className={styles.conversation_about}>
 						<p className={styles.title}>CONVERSATION ABOUT</p>
-					
-								<div className={styles.conversation_image}>
-									<CustomImage
-										src={listing?.data.listingPhotos[0] ?? "/svgs/convo_image.svg"}
-										height={150}
-										width={150}
-										alt="avatar"
-									/>
-								</div>
-								<h2 className={styles.convo_name}>
-									{listing?.data.productName}
-								</h2>
-								<p className={styles.text}>
-									<span className={styles.amount}>{`${currency} ${price}`}</span>
-									{
-										isRent &&
-									<span className={styles.day}>/Day</span>
-									}
-								</p>
-						
+
+						<div className={styles.conversation_image}>
+							<CustomImage
+								src={listing?.data.listingPhotos[0] ?? "/svgs/convo_image.svg"}
+								height={150}
+								width={150}
+								alt="avatar"
+							/>
+						</div>
+						<h2 className={styles.convo_name}>
+							{listing?.data.productName}
+						</h2>
+						<p className={styles.text}>
+							<span className={styles.amount}>{`${currency} ${price}`}</span>
+							{
+								isRent &&
+								<span className={styles.day}>/Day</span>
+							}
+						</p>
+
 					</div>
+							}
 				</>
 			)}
 		</div>

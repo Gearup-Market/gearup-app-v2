@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Account, HelpCenter, ImportWallet, Payments, Profile, Sidebar, Verification } from './components'
+import { Account, HelpCenter, ExportWallet, Payments, Profile, Sidebar, Verification } from './components'
 import styles from './Settings.module.scss'
 
 import { useSearchParams } from 'next/navigation'
@@ -44,9 +44,9 @@ const Settings = () => {
     },
     {
       id: 6,
-      name: 'Import wallet',
-      path: '/user/settings?q=import-wallet',
-      slug: 'import-wallet',
+      name: 'Export wallet',
+      path: '/user/settings?q=export-wallet',
+      slug: 'export-wallet',
       icon: '/svgs/settings-wallet-icon.svg',
     },
     {
@@ -74,7 +74,7 @@ const Settings = () => {
           {searchQuery === 'account' && <Account />}
           {searchQuery === 'payments' && <Payments />}
           {searchQuery === 'help-center' && <HelpCenter />}
-          {searchQuery === 'import-wallet' && <ImportWallet />}
+          {searchQuery === 'export-wallet' && <ExportWallet />}
         </div>
       </div>
     </div>

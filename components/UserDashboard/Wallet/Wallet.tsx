@@ -83,7 +83,7 @@ const Wallet = () => {
 		<div className={styles.wallet_wrapper}>
 			<div className={styles.mobile_title_container}>
 				<HeaderSubText title="Wallet" variant="normal" />
-				<Link href="/user/settings?q=import-wallet">
+				<Link href={activeWallet === ToggleType.XLM ? "/user/settings?q=export-wallet" : "/user/settings?q=payments"}>
 					<Button buttonType="secondary">
 						<span className={styles.icon}>
 							<SettingsNavIcon />{" "}
@@ -98,9 +98,8 @@ const Wallet = () => {
 						onClick={() => handleToggleWallet(option.title)}
 						key={option.id}
 						buttonType="secondary"
-						className={`${styles.toggle_btn} ${
-							activeWallet === option.title && styles.active
-						}`}
+						className={`${styles.toggle_btn} ${activeWallet === option.title && styles.active
+							}`}
 					>
 						{option.title}
 					</Button>
@@ -193,6 +192,9 @@ const Wallet = () => {
 				>
 					<div className={styles.container__header}>
 						<HeaderSubText title="XLM wallet" variant="normal" />
+						<Link href="/user/settings?q=export-wallet" className={styles.icon}>
+							<SettingsNavIcon />{" "}
+						</Link>
 					</div>
 					<div className={styles.xlm_balance_container}>
 						<BalanceSection
@@ -201,11 +203,6 @@ const Wallet = () => {
 							loading={isFetchingStellarWallet}
 							type="xlm"
 						/>
-						{/* <BalanceSection
-							balance={stellarWallet?.xlmBalance || 0}
-							text="Escrow Balance"
-							loading={isFetchingStellarWallet}
-						/> */}
 					</div>
 					<div className={`${styles.btn_container} ${styles.xlm_btn}`}>
 						<Button

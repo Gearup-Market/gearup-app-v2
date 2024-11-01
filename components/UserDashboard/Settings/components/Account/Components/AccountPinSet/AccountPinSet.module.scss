@@ -2,7 +2,7 @@
 @import "@/styles/imports";
 
 .container {
-
+  width: 100%;
   .error_message{
     font-size: 1.4rem;
     font-weight: 400;
@@ -29,6 +29,12 @@
     padding: 2.5rem;
     border-radius: 2rem;
 
+    &[data-inmodal='true']{
+      border: none;
+      padding: 0;
+      border-radius: 0;
+    }
+
     &__form {
       display: grid;
       gap: 2rem;
@@ -50,6 +56,14 @@
       justify-content: flex-end;
       margin-top: 2rem;
       width: 100%;
+
+      &[data-inmodal]{
+        justify-content: center;
+
+        button{
+          width: 100%;
+        }
+      }
     }
   }
 

@@ -110,7 +110,7 @@ const BlogsTable = () => {
             renderCell: ({ value,row }) => (
                 <div className={styles.container__status_container}>
                     <ToggleSwitch checked={value === "available"} onChange={()=>handleOnStatusToggle(row)} />
-                    <p>{value}</p>
+                    <p>{value === "available" ? "published":"draft" }</p>
                 </div>
             ),
         },
@@ -220,11 +220,11 @@ const BlogsTable = () => {
                     loading={isLoading}
                 />
             </div>
-           {/*  <MobileCardContainer>
+             <MobileCardContainer>
                 {blogsPosts.map((item, ind) => (
-                    <BlogArticleCardMob key={item._id} item={item} ind={ind} lastEle={(ind + 1) === blogsPosts.length ? true : false} />
+                    <BlogArticleCardMob key={item._id} item={item} ind={ind} lastEle={(ind + 1) === blogsPosts.length ? true : false} refetch={refetch}/>
                 ))}
-            </MobileCardContainer> */}
+            </MobileCardContainer> 
 
             <AddButtonMob onClick={() => router.push('/admin/blog/new-blog')} />
             {/* <Pagination

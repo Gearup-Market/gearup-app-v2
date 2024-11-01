@@ -5,6 +5,7 @@ import { UserUpdateResp } from "@/app/api/hooks/users/types";
 import Link from 'next/link';
 
 const UserSocials = ({ user }: { user: UserUpdateResp }) => {
+	if(!user) return null
 	return (
 		<div className={styles.socials_icon}>
 			{

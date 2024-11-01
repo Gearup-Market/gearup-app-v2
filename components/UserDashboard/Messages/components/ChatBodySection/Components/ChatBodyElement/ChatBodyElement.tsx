@@ -13,11 +13,19 @@ import toast from "react-hot-toast";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { Box } from "@mui/material";
 import { useChatSocket } from "@/hooks";
+import { ReUseableChatHeader } from "../../ChatBodySection";
+import { useGetUserDetails } from "@/app/api/hooks/users";
+import { useGetListingById } from "@/app/api/hooks/listings";
 
 // Define the validation schema using Yup
 const ChatMessageSchema = Yup.object().shape({
 	message: Yup.string().required("Message is required")
 });
+
+interface Props{
+	data?: any;
+	listing?: any;
+}
 
 const ChatBodyElement = () => {
 	const chatRef = useRef<HTMLDivElement>(null);  // To track the chat container
@@ -33,6 +41,7 @@ const ChatBodyElement = () => {
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
 	const { mutateAsync: addChatMessage } = useAddChatMessage();
 	const {data: chatMessages, isFetching: isPending, refetch, isLoading} = useFetchChatMessages(chatId);
+
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (user && participantId && listingId) {
@@ -60,7 +69,6 @@ const ChatBodyElement = () => {
 
 				resetForm(); // Clear the form after submission
 			} catch (error) {
-				console.error("Failed to send message:", error);
 				toast.error("Failed to send message");
 			}
 		}
@@ -92,7 +100,7 @@ const ChatBodyElement = () => {
 							{chatMessages?.data?.messages?.map((message, index) => (
 								<div
 									key={index}
-									ref={index === chatMessages?.data?.messages.length - 1 ? lastMessageRef : null} // Attach ref to the last message
+									ref={index === chatMessages?.data?.messages.length - 1 ? lastMessageRef : null}
 								>
 									{message.sender._id === user?._id ? (
 										<MessageSent message={message.message} />

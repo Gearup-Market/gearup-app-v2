@@ -43,7 +43,9 @@ const AdminNavbar = () => {
 	return (
 		<div className={styles.navbar_container}>
 			<div className={styles.logo_icon}>
+				<Link href="/">
 				<Logo type="dark" />
+				</Link>
 			</div>
 
 			<div className={styles.icons_container}>
