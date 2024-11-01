@@ -72,6 +72,8 @@ const UserProfileSection = () => {
 						<p>0 deals</p>
 						<UserSocials user={data?.data as UserUpdateResp} />
 					</div>
+					{
+						listing?.data &&
 					<div className={styles.conversation_about}>
 						<p className={styles.title}>CONVERSATION ABOUT</p>
 
@@ -95,6 +97,7 @@ const UserProfileSection = () => {
 						</p>
 
 					</div>
+							}
 				</>
 			)}
 		</div>

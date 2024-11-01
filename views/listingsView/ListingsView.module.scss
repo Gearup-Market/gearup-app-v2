@@ -137,6 +137,7 @@
 			margin-left: 13.3rem;
 		}
 	}
+
 	@include screenMax("mobile") {
 		padding-top: 10rem !important;
 		.desk_breadcrumb {
@@ -161,6 +162,11 @@
 		.section_grid {
 			.block {
 				width: 100%;
+				
+				.listings{
+					margin-top: 8rem;
+
+				}
 			}
 		}
 	}

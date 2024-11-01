@@ -31,16 +31,16 @@ const GetStarted = ({
 				title: "ID verification",
 				completed: verificationState.isSubmitted
 			},
-			{
-				title: "Set up account pin",
-				completed: !!user.accountPin
-			},
+			// {
+			// 	title: "Set up account pin",
+			// 	completed: !!user.accountPin
+			// },
 			{
 				title: "Face match",
 				completed: false
 			}
 		],
-		[verificationState, user?.accountPin]
+		[verificationState]
 	);
 
 	const totalCompleted = useMemo(() => {

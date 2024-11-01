@@ -78,8 +78,8 @@ const Header = () => {
 							return (
 								<li key={index} className={styles.header_navLink}>
 									{link.label === "blog" ? (
-										<Link href={link.href} className={styles.small_row}>
-											<div className={styles.link_icon} onClick={() => setCollapsed(!collapsed)}>
+										<Link href={link.href} className={styles.small_row} onClick={() => setCollapsed(!collapsed)}>
+											<div className={styles.link_icon} >
 												<Image
 													src={link.icon}
 													fill

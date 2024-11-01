@@ -92,7 +92,7 @@
 		}
 	}
 	.footer_socials {
-		@include grid(repeat(4, 2.4rem), 2.4rem);
+		@include grid(repeat(5, 2.4rem), 2.4rem);
 		.footer_social {
 			position: relative;
 			width: 100%;

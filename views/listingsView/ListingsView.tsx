@@ -173,7 +173,7 @@ const ListingsView = () => {
 						</div>
 					</div>
 					{currentTableData && currentTableData.length ? (
-						<>
+						<div className={styles.listings}>
 							<div className={styles.grid}>
 								{currentTableData.map((listing, index: number) => (
 									<Listing
@@ -192,7 +192,7 @@ const ListingsView = () => {
 								startNumber={startNumber}
 								endNumber={endNumber}
 							/>
-						</>
+						</div>
 					) : (
 						<PageLoader />
 					)}

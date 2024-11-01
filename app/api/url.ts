@@ -60,5 +60,5 @@ export const API_URL = {
 	adminSettingsRoles: "/admin/settings/roles",
 	adminCreateMember: "/admin/create-members",
 	courses: "/courses",
-	wishlists: "/wishlist"
+	wishlists: "/wishlist",
 };

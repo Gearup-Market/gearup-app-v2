@@ -53,6 +53,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 
 	// Set the first chat as active chat if no chat is active
 	useEffect(() => {
+		console.log(allUserMessages, "allUserMessages");
 		if (!participantId && !activeChatId && allUserMessages?.length) {
 			const currentParams = new URLSearchParams(searchParams.toString());
 			currentParams.set(
@@ -61,7 +62,9 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 					?.userId || ""
 			);
 			currentParams.set("activeChatId", allUserMessages[0]?._id || "");
-			currentParams.set("listingId", allUserMessages[0]?.listingItem?._id || "");
+			if(allUserMessages[0]?.listingItem?._id){
+				currentParams.set("listingId", allUserMessages[0]?.listingItem?._id || "");
+			}
 			router.push(`${pathname}?${currentParams.toString()}`);
 		}
 	}, [allUserMessages]);
@@ -77,6 +80,9 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 			const currentParams = new URLSearchParams(searchParams.toString());
 			currentParams.set("participantId", participantId);
 			currentParams.set("activeChatId", id);
+			if(chat?.listingItem?._id){
+				currentParams.set("listingId", chat?.listingItem?._id || "");
+			}
 			router.push(`${pathname}?${currentParams.toString()}`);
 		}
 		if (!isMobile) return;

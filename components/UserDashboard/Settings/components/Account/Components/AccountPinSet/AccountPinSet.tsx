@@ -70,6 +70,20 @@ const AccountPinSet: React.FC<Props> = ({inModal=false}) => {
                                     <Field
                                         name="accountPin"
                                         as={InputField}
+                                        label="Current account pin"
+                                        placeholder="Enter current pin"
+                                        isPassword
+                                    />
+                                    <ErrorMessage
+                                        name="currentPin"
+                                        component="div"
+                                        className={styles.error_message}
+                                    />
+                                </div>
+                                <div className={styles.form_field}>
+                                    <Field
+                                        name="accountPin"
+                                        as={InputField}
                                         label="New account pin"
                                         placeholder="Enter 6 digit pin"
                                         isPassword

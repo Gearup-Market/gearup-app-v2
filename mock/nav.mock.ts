@@ -403,22 +403,32 @@ export const footerNavLink = [
 export const socialMediaLinks = [
 	{
 		label: "twitter",
-		href: "#",
-		icon: "/svgs/icon-twitter.svg",
+		href: "https://x.com/gearupmarket",
+		icon: "/svgs/x-footer-icon.svg",
 	},
 	{
 		label: "linkedIn",
-		href: "#",
+		href: "https://www.linkedin.com/company/gearup-market/",
 		icon: "/svgs/icon-linkedin.svg",
 	},
 	{
 		label: "facebook",
-		href: "#",
+		href: "https://www.facebook.com/GearUpmarket",
 		icon: "/svgs/icon-facebook.svg",
 	},
+	// {
+	// 	label: "github",
+	// 	href: "https://www.instagram.com/gearup.market",
+	// 	icon: "/svgs/icon-github.svg",
+	// },
 	{
-		label: "github",
-		href: "#",
-		icon: "/svgs/icon-github.svg",
+		label: "instagram",
+		href: "https://www.instagram.com/gearup.market",
+		icon: "/svgs/inst-footer-icon.svg",
+	},
+	{
+		label: "tiktok",
+		href: "hhttps://www.tiktok.com/@gearup.market",
+		icon: "/svgs/tiktok-footer-icon.svg",
 	},
 ];
