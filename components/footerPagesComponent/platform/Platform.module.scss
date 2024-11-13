@@ -1,0 +1,97 @@
+@import "@/styles/imports";
+
+.section {
+	.title {
+		max-width: 52rem;
+		margin-bottom: 4rem;
+	}
+	.row {
+		@include flex(space-between);
+		.block {
+			h3 {
+				@extend %text-14;
+				color: #e8a30e;
+				font-weight: 700;
+			}
+		}
+		.image {
+			position: relative;
+			width: 52rem;
+			&[data-type="default"] {
+				height: 29.6rem;
+			}
+			&[data-type="rent"] {
+				height: 47.2rem;
+			}
+			&[data-type="buy"] {
+				height: 60.8rem;
+			}
+		}
+		.box_container {
+			width: 52rem;
+			.button {
+				@include flex(flex-start, center);
+				gap: 0.8rem;
+				margin-left: 4.4rem;
+				margin-top: 2.4rem;
+				.icon {
+					position: relative;
+					width: 1.6rem;
+					height: 1.6rem;
+				}
+				p {
+					color: #1b1e21;
+				}
+			}
+			.box {
+				width: 100%;
+				padding: 1.6rem 0;
+				@include flex();
+				flex-wrap: nowrap;
+				gap: 2rem;
+				.number_box {
+					width: 3.6rem;
+					height: 3.6rem;
+					border-radius: 0.6rem;
+					@extend %center;
+					background-color: #ffe7b5;
+					flex-shrink: 0;
+				}
+			}
+		}
+	}
+	@include screenMax("tablet") {
+		.row {
+			justify-content: center;
+			.box_container {
+				width: 100%;
+				margin-top: 4rem;
+			}
+			.image {
+				margin-top: 4.4rem;
+			}
+		}
+	}
+	@include screenMax("mobile") {
+		.box_title {
+			h1 {
+				font-size: 2rem;
+				line-height: 2.8rem;
+			}
+		}
+		.row {
+			.image {
+				width: 100%;
+				height: 31.1rem;
+				margin-top: 2.4rem;
+			}
+			.box_container {
+				.button {
+					margin-left: 0;
+					width: 100%;
+					justify-content: center;
+				}
+			}
+		}
+	}
+}

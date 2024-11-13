@@ -14,7 +14,7 @@ const Faq = () => {
 				titleClassName={styles.title_classname}
 			/>
 			<div className={styles.faq_section}>
-				{faq.map((item: any, index: number) => (
+				{faq.slice(0, 6).map((item: any, index: number) => (
 					<Accordion
 						title={item.title}
 						description={item.description}

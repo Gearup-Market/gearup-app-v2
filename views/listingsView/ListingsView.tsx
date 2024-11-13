@@ -31,7 +31,6 @@ const ListingsView = () => {
 	);
 	const [isMobile, setIsMobile] = useState<boolean>(true);
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [showOnMaps, setShowOnMaps] = useState<boolean>(false);
 	const pageSize: number = 12;
 	const elementRef: any = useRef(null);
 
@@ -142,6 +141,9 @@ const ListingsView = () => {
 					hideFilters={hideFilters}
 					setHideFilters={setHideFilters}
 					isMobile={isMobile}
+					categories={categories?.data}
+					selectedCategory={selectedCategory}
+					selectedSubCategory={selectedSubCategory}
 				/>
 				<div className={styles.block}>
 					<div className={styles.row}>

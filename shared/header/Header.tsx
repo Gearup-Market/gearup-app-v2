@@ -78,8 +78,12 @@ const Header = () => {
 							return (
 								<li key={index} className={styles.header_navLink}>
 									{link.label === "blog" ? (
-										<Link href={link.href} className={styles.small_row} onClick={() => setCollapsed(!collapsed)}>
-											<div className={styles.link_icon} >
+										<Link
+											href={link.href}
+											className={styles.link_row}
+											onClick={() => setCollapsed(!collapsed)}
+										>
+											<div className={styles.link_icon}>
 												<Image
 													src={link.icon}
 													fill
@@ -87,7 +91,8 @@ const Header = () => {
 													sizes="100vw"
 												/>
 											</div>
-											<span>	{link.label}</span></Link>
+											<span> {link.label}</span>
+										</Link>
 									) : (
 										<>
 											<div className={styles.small_row}>
@@ -180,7 +185,10 @@ const Header = () => {
 																				menu: NavLinkMenu,
 																				index: number
 																			) => (
-																				<li
+																				<Link
+																					href={
+																						menu.href
+																					}
 																					key={
 																						index
 																					}
@@ -209,7 +217,7 @@ const Header = () => {
 																							menu.label
 																						}
 																					</p>
-																				</li>
+																				</Link>
 																			)
 																		)}
 																	</ul>
@@ -270,8 +278,13 @@ const Header = () => {
 						</div>
 					</Button>
 					{isAuthenticated ? (
-						<Link className={styles.user_account} href="/user/dashboard" >
-							<Button onClick={() => setCollapsed(!collapsed)} className={styles.my_account}>My account</Button>
+						<Link className={styles.user_account} href="/user/dashboard">
+							<Button
+								onClick={() => setCollapsed(!collapsed)}
+								className={styles.my_account}
+							>
+								My account
+							</Button>
 						</Link>
 					) : (
 						<>

@@ -32,7 +32,7 @@
 				.mob_chevron {
 					display: none;
 				}
-				a,
+				.link_row,
 				p {
 					font-family: $font;
 					font-size: 1.4rem;
@@ -103,6 +103,13 @@
 								font-weight: 700;
 								color: #1b1e21;
 							}
+							&:hover {
+								p {
+									background: $orange-grad;
+									-webkit-background-clip: text;
+									-webkit-text-fill-color: transparent;
+								}
+							}
 						}
 						.subMenu_navlist {
 							width: 27.2rem;
@@ -158,11 +165,7 @@
 						width: 100%;
 						transition: $all-transition;
 					}
-					a {
-						background: $orange-grad;
-						-webkit-background-clip: text;
-						-webkit-text-fill-color: transparent;
-					}
+
 					.subMenu_container {
 						display: block;
 						// backdrop-filter: blur(8px);
@@ -440,7 +443,7 @@
 					max-height: 5.6rem;
 					overflow-y: hidden;
 					transition: all 0.5s ease-in-out;
-					.small_row {
+					.link_row {
 						@include flex(flex-start, center);
 						gap: 0.8rem;
 						margin-left: 1.6rem;

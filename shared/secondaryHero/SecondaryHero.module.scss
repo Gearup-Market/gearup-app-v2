@@ -1,0 +1,33 @@
+@import "@/styles/imports";
+
+.hero {
+	background-image: url("../../public/images/hero-background.png");
+	height: 100vh;
+	width: 100%;
+	background-repeat: no-repeat;
+	object-fit: cover;
+	background-size: cover;
+	@extend %center;
+	.title {
+		text-align: center;
+		@extend %center;
+		h1 {
+			max-width: 73rem;
+			@extend %title-56;
+			font-family: $font-good;
+			color: $col-white;
+			margin-bottom: 0.8rem;
+		}
+		h3 {
+			@extend %text-14;
+			color: #e8a30e;
+			font-weight: 700;
+		}
+		p {
+			@extend %text-18;
+			color: $col-grey-500;
+			max-width: 58rem;
+			text-align: center;
+		}
+	}
+}

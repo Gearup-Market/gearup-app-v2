@@ -9,14 +9,20 @@ import { iCategory } from "@/app/api/hooks/listings/types";
 interface Props {
 	isMobile?: boolean;
 	className?: string;
-	categories?: iCategory[]
+	categories?: iCategory[];
 	selectedCategory: iCategory | null;
 	selectedSubCategory: iCategory | null;
 	setSelectedSubCategory: React.Dispatch<React.SetStateAction<iCategory | null>>;
 	setSelectedCategory: (option: iCategory) => void;
 }
 
-const BreadCrumbSelect = ({ isMobile, className, selectedCategory, setSelectedCategory, setSelectedSubCategory }: Props) => {
+const BreadCrumbSelect = ({
+	isMobile,
+	className,
+	selectedCategory,
+	setSelectedCategory,
+	setSelectedSubCategory
+}: Props) => {
 	const { data: categories } = useGetCategories();
 
 	return (
@@ -64,7 +70,11 @@ const BreadCrumbSelect = ({ isMobile, className, selectedCategory, setSelectedCa
 						<p>Sub-category</p>
 					</div>
 					<AdvanceSelect
-						options={selectedCategory?.subCategories ? selectedCategory.subCategories : []}
+						options={
+							selectedCategory?.subCategories
+								? selectedCategory.subCategories
+								: []
+						}
 						defaultOptionIndex={0}
 						titleClassName={styles.titleClassName}
 						bodyClassName={styles.select_body}
