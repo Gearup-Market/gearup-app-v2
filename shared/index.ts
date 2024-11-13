@@ -36,7 +36,7 @@ import CustomImage from "./customImage/CustomImage";
 import MobileCard from "./MobileCard/MobileCard";
 import MobileCardContainer from "./MobileCardContainer/MobileCardContainer";
 import AddBtn from "./addBtn/AddBtn";
-import LoadingSpinner  from "./Spinner/Spinner";
+import LoadingSpinner from "./Spinner/Spinner";
 import ChatBox from "./chatBox/ChatBox";
 import Countdown from "./countdown/Countdown";
 import PaystackPaymentButton from "./paystack/PaystackPaymentButton";
@@ -44,8 +44,12 @@ import KycPrompt from "./KycPrompt/KycPrompt";
 import CustomNoRowsOverlay from "./CustomNoRowsOverlay/CustomNoRowsOverlay";
 import FavoriteStar from "./FavoriteStar/FavoriteStar";
 import NoSearchResult from "./NoSearchResult/NoSearchResult";
+import SecondaryHero from "./secondaryHero/SecondaryHero";
+import RadioButton from "./radioButton/RadioButton";
 
 export {
+	RadioButton,
+	SecondaryHero,
 	Header,
 	Footer,
 	Logo,

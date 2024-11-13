@@ -21,9 +21,27 @@ import BlogView from "./BlogView/BlogView";
 import BlogDetailsView from "./BlogDetailsView/BlogDetailsView";
 import CartView from "./homeView/CartView/CartView";
 import CheckoutView from "./homeView/CheckoutView/CheckoutView";
-import UserDetailsView from './UserDetailsView/UserDetailsView'
+import UserDetailsView from "./UserDetailsView/UserDetailsView";
+import RentHowItWorks from "./footerLinksViews/rentHowItWorks/RentHowItWorks";
+import RentOutHowItWorks from "./footerLinksViews/rentoutHowitWorks/RentOutHowItWorks";
+import SellHowitWorks from "./footerLinksViews/sellHowitWorks/SellHowitWorks";
+import BuyHowItWorks from "./footerLinksViews/buyHowitWorks/BuyHowItWorks";
+import EscrowPayment from "./footerLinksViews/escrowPayment/EscrowPayment";
+import InsuranceCoverage from "./footerLinksViews/insuranceCoverage/InsuranceCoverage";
+import CancellationPolicy from "./footerLinksViews/cancellationPolicy/CancellationPolicy";
+import SellersProtectionView from "./footerLinksViews/sellersProtection/SellersProtectionView";
+import BuyerProtectionView from "./footerLinksViews/buyerProtection/BuyerProtectionView";
 
 export {
+	BuyerProtectionView,
+	SellersProtectionView,
+	CancellationPolicy,
+	InsuranceCoverage,
+	EscrowPayment,
+	BuyHowItWorks,
+	SellHowitWorks,
+	RentOutHowItWorks,
+	RentHowItWorks,
 	HomeView,
 	ListingsView,
 	ListingView,

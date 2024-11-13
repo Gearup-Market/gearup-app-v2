@@ -4,12 +4,13 @@
 	padding-top: 13.8rem !important;
 	background-color: #fbfbfd;
 
-	.breadcrumb_container{
+	.breadcrumb_container {
 		margin-bottom: 2rem;
-		color: #1B1E21;
+		color: #1b1e21;
 		font-size: 1.6rem;
 
-		.items_count,.category_name{
+		.items_count,
+		.category_name {
 			font-weight: 700;
 		}
 	}
@@ -132,6 +133,9 @@
 	.card {
 		width: 30.2rem;
 	}
+	.empty {
+		margin-top: 3rem;
+	}
 	&[data-hidden="true"] {
 		.row {
 			margin-left: 13.3rem;
@@ -141,6 +145,9 @@
 		padding-top: 10rem !important;
 		.desk_breadcrumb {
 			display: none;
+		}
+		.empty {
+			margin-top: 7rem;
 		}
 		.row {
 			width: 100%;

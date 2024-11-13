@@ -46,10 +46,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 		userId: participantId as string
 	});
 
-	const {
-		data: listing,
-	} = useGetListingById(listingId as string);
-
+	const { data: listing } = useGetListingById(listingId as string);
 
 	// Set the first chat as active chat if no chat is active
 	useEffect(() => {
@@ -62,8 +59,11 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 					?.userId || ""
 			);
 			currentParams.set("activeChatId", allUserMessages[0]?._id || "");
-			if(allUserMessages[0]?.listingItem?._id){
-				currentParams.set("listingId", allUserMessages[0]?.listingItem?._id || "");
+			if (allUserMessages[0]?.listingItem?._id) {
+				currentParams.set(
+					"listingId",
+					allUserMessages[0]?.listingItem?._id || ""
+				);
 			}
 			router.push(`${pathname}?${currentParams.toString()}`);
 		}
@@ -80,7 +80,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 			const currentParams = new URLSearchParams(searchParams.toString());
 			currentParams.set("participantId", participantId);
 			currentParams.set("activeChatId", id);
-			if(chat?.listingItem?._id){
+			if (chat?.listingItem?._id) {
 				currentParams.set("listingId", chat?.listingItem?._id || "");
 			}
 			router.push(`${pathname}?${currentParams.toString()}`);
@@ -177,47 +177,48 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 				</div>
 			</div>
 			<div className={styles.chat_body_mob} data-show={showScreen.chatBody}>
-			{/* <ReUseableChatHeader data={data} listing={listing} /> */}
-			<div className={styles.header}>
-			<div className={styles.left}>
-				<span className={styles.user_alias}>{data?.data.userName[0]}</span>
-				<div>
-					<p className={styles.name}>
-						{data?.data?.name || data?.data?.userName}
-						{
-							data?.data?.isVerified &&
-							<span className={styles.verfiy_icon}>
-								<VerifyIcon />
-							</span>
-						}
-					</p>
-					<div className={styles.date_convo_about}>
-						{/* <span className={styles.date}> </span>{" "} */}
-						<span className={styles.convo_about}>
-							conversations about	{listing?.data?.productName}
+				{/* <ReUseableChatHeader data={data} listing={listing} /> */}
+				<div className={styles.header}>
+					<div className={styles.left}>
+						<span className={styles.user_alias}>
+							{data?.data.userName[0]}
+						</span>
+						<div>
+							<p className={styles.name}>
+								{data?.data?.name || data?.data?.userName}
+								{data?.data?.isVerified && (
+									<span className={styles.verfiy_icon}>
+										<VerifyIcon />
+									</span>
+								)}
+							</p>
+							<div className={styles.date_convo_about}>
+								{/* <span className={styles.date}> </span>{" "} */}
+								<span className={styles.convo_about}>
+									conversations about {listing?.data?.productName}
+								</span>
+							</div>
+						</div>
+					</div>
+					<div className={styles.right}>
+						<span className={styles.icon}>
+							<Image
+								src="/svgs/call.svg"
+								alt="phone-icon"
+								height={30}
+								width={30}
+							/>
+						</span>
+						<span className={styles.icon}>
+							<Image
+								src="/svgs/error.svg"
+								alt="error-icon"
+								height={30}
+								width={30}
+							/>
 						</span>
 					</div>
 				</div>
-			</div>
-			<div className={styles.right}>
-				<span className={styles.icon}>
-					<Image
-						src="/svgs/call.svg"
-						alt="phone-icon"
-						height={30}
-						width={30}
-					/>
-				</span>
-				<span className={styles.icon}>
-					<Image
-						src="/svgs/error.svg"
-						alt="error-icon"
-						height={30}
-						width={30}
-					/>
-				</span>
-			</div>
-		</div>
 				<ChatBodyElement />
 			</div>
 			<div className={styles.user_profile_mob} data-show={showScreen.userProfile}>
@@ -244,13 +245,16 @@ const ChatItem = ({
 	const lastMessage = chat.messages[chat?.messages?.length - 1];
 	const lastMessageTime = timeSince(new Date(lastMessage?.timestamp));
 
-
 	return (
 		<div className={styles.chat} data-active={active} onClick={onClick}>
 			<div className={styles.left}>
 				<div className={styles.chat_image}>
 					<CustomImage
-						src={!!participant?.avatar ? participant?.avatar : "/svgs/avatar-user.svg"}
+						src={
+							!!participant?.avatar
+								? participant?.avatar
+								: "/svgs/avatar-user.svg"
+						}
 						height={40}
 						width={40}
 						alt="avatar"
@@ -259,9 +263,7 @@ const ChatItem = ({
 				</div>
 				<div className={styles.details}>
 					<div className={styles.name}>{participant?.userName}</div>
-					<div className={styles.message}>
-						{lastMessage?.message}
-					</div>
+					<div className={styles.message}>{lastMessage?.message}</div>
 				</div>
 			</div>
 			<div className={styles.right}>

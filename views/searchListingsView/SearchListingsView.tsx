@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./SearchListingsView.module.scss";
 import { ListingType } from "@/interfaces";
-import { Button, Listing, Pagination } from "@/shared";
+import { Button, Listing, NoSearchResult, Pagination } from "@/shared";
 import { usePathname, useRouter } from "next/navigation";
 import { BreadCrumbSelect, Filter } from "@/components/listings";
 import { PageLoader } from "@/shared/loaders";
@@ -13,16 +13,19 @@ import { useListings } from "@/hooks/useListings";
 import { iCategory } from "@/app/api/hooks/listings/types";
 import { useGetCategories } from "@/app/api/hooks/listings";
 
+const pageSize: number = 12;
 const SearchListingsView = () => {
 	useListings(true);
-	const { data: categories } = useGetCategories();
+	const { data: categories, isFetching: isFetchingCategories } = useGetCategories();
+	const { isFetching: isFetchingListings } = useListings(true);
 
 	const { searchedListings, listings } = useAppSelector(
 		(state: AppState) => state.listings
 	);
 	const router = useRouter();
 	const search = useSearchParams();
-	const pathName = search.get("type");
+	const typePathName = search.get("type");
+	const categoryPathName = search.get("category");
 
 	const [hideFilters, setHideFilters] = useState<boolean>(false);
 	const [selectedCategory, setSelectedCategory] = useState<iCategory | null>(null);
@@ -31,30 +34,33 @@ const SearchListingsView = () => {
 	);
 	const [isMobile, setIsMobile] = useState<boolean>(true);
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [showOnMaps, setShowOnMaps] = useState<boolean>(false);
-	const pageSize: number = 12;
 	const elementRef: any = useRef(null);
-
 
 	const listingsData = searchedListings.length > 0 ? searchedListings : listings;
 
 	const filteredListings = useMemo(() => {
+		let initialFilteredListing = listingsData;
+		if (typePathName) {
+			initialFilteredListing = listingsData.filter(l => {
+				return l.listingType === typePathName || l.listingType === "both";
+			});
+		}
 		if (!!selectedCategory && !!selectedSubCategory) {
-			return listingsData.filter(l => {
+			return initialFilteredListing.filter(l => {
 				if (l.subCategory) return l.subCategory._id === selectedSubCategory.id;
 				return l.category._id === selectedCategory.id;
 			});
 		} else if (!!selectedCategory) {
-			return listingsData.filter(l => {
+			return initialFilteredListing.filter(l => {
 				return l.category._id === selectedCategory.id;
 			});
 		}
 
-		return listingsData;
-	}, [listingsData, selectedCategory, selectedSubCategory]);
+		return initialFilteredListing;
+	}, [listingsData, selectedCategory, selectedSubCategory, typePathName]);
 
 	const checkActive = (url: string) => {
-		return url === pathName;
+		return url === typePathName;
 	};
 
 	const currentTableData = useMemo(() => {
@@ -88,6 +94,19 @@ const SearchListingsView = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (!isFetchingCategories && categoryPathName) {
+			const foundCategory = categories?.data.find(
+				category => category.name.toLowerCase() === categoryPathName
+			);
+			const category = foundCategory || null;
+			setSelectedCategory(category);
+		}
+		if (!categoryPathName) {
+			setSelectedCategory(null);
+		}
+	}, [categoryPathName, isFetchingCategories]);
+
 	const onChangeSelectedCategory = (option: iCategory) => {
 		setSelectedCategory(option);
 		setSelectedSubCategory(null);
@@ -118,6 +137,9 @@ const SearchListingsView = () => {
 					hideFilters={hideFilters}
 					setHideFilters={setHideFilters}
 					isMobile={isMobile}
+					categories={categories?.data}
+					selectedCategory={selectedCategory}
+					selectedSubCategory={selectedSubCategory}
 				/>
 				<div className={styles.block}>
 					<div className={styles.row}>
@@ -125,7 +147,7 @@ const SearchListingsView = () => {
 							<Button
 								buttonType="transparent"
 								className={styles.button_container}
-								onClick={() => router.push("/rent")}
+								onClick={() => router.push("/listings?type=rent")}
 							>
 								<div
 									className={styles.button}
@@ -137,7 +159,7 @@ const SearchListingsView = () => {
 							<Button
 								buttonType="transparent"
 								className={styles.button_container}
-								onClick={() => router.push("/buy")}
+								onClick={() => router.push("/listings?type=buy")}
 							>
 								<div
 									className={styles.button}
@@ -161,27 +183,34 @@ const SearchListingsView = () => {
 							</label>
 						</div> */}
 					</div>
-					{currentTableData && currentTableData.length ? (
-						<>
-							<div className={styles.grid}>
-								{currentTableData.map((listing, index: number) => (
-									<Listing
-										props={listing}
-										className={styles.card}
-										actionType={pathName || ''}
-										key={index}
-									/>
-								))}
+
+					{!isFetchingListings ? (
+						currentTableData.length ? (
+							<>
+								<div className={styles.grid}>
+									{currentTableData.map((listing, index: number) => (
+										<Listing
+											props={listing}
+											className={styles.card}
+											actionType={typePathName || ""}
+											key={index}
+										/>
+									))}
+								</div>
+								<Pagination
+									currentPage={currentPage}
+									totalCount={filteredListings?.length}
+									pageSize={pageSize}
+									onPageChange={(page: any) => setCurrentPage(page)}
+									startNumber={startNumber}
+									endNumber={endNumber}
+								/>
+							</>
+						) : (
+							<div className={styles.empty}>
+								<NoSearchResult />
 							</div>
-							<Pagination
-								currentPage={currentPage}
-								totalCount={filteredListings?.length}
-								pageSize={pageSize}
-								onPageChange={(page: any) => setCurrentPage(page)}
-								startNumber={startNumber}
-								endNumber={endNumber}
-							/>
-						</>
+						)
 					) : (
 						<PageLoader />
 					)}

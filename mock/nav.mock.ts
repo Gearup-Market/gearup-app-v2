@@ -13,90 +13,90 @@ export const navLinks: NavLink[] = [
 				menu: [
 					{
 						label: "All gears",
-						href: "/all-gears",
+						href: "/listings?type=rent",
 						icon: "/svgs/icon-all-gears.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "Camera",
-						href: "/camera",
+						href: "/listings?type=rent&category=cameras",
 						icon: "/svgs/icon-camera.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "Lenses",
-						href: "/lenses",
+						href: "/listings?type=rent&category=lenses",
 						icon: "/svgs/icon-lenses.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "Audio",
-						href: "/audio",
+						href: "/listings?type=rent&category=audio",
 						icon: "/svgs/icon-audio.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "Lighting",
-						href: "/lighting",
+						href: "/listings?type=rent&category=lighting",
 						icon: "/svgs/icon-lighting.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "Gimbals",
-						href: "/gimbals",
+						href: "/listings?type=rent&category=gimbals",
 						icon: "/svgs/icon-camera.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "Drones",
-						href: "/drones",
+						href: "/listings?type=rent&category=drones",
 						icon: "/svgs/icon-drones.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "Grip",
-						href: "/grip",
+						href: "/listings?type=rent&category=grip",
 						icon: "/svgs/icon-grip.svg",
-						external: false,
-					},
-				],
+						external: false
+					}
+				]
 			},
 			{
 				label: "get started",
 				menu: [
 					{
 						label: "How it works",
-						href: "/",
+						href: "/how-it-works-rent",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "Gearup Insurance Coverage",
-						href: "/",
+						href: "/insurance-coverage",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "Can I cancel my rental?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "How do I get verified?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "How much fee do I pay?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
-					},
-				],
-			},
-		],
+						external: false
+					}
+				]
+			}
+		]
 	},
 	{
 		label: "buy gears",
@@ -110,90 +110,90 @@ export const navLinks: NavLink[] = [
 				menu: [
 					{
 						label: "all gears",
-						href: "/all-gears",
+						href: "/listings?type=buy",
 						icon: "/svgs/icon-all-gears.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "camera",
-						href: "/camera",
+						href: "/listings?type=buy&category=cameras",
 						icon: "/svgs/icon-camera.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "lenses",
-						href: "/lenses",
+						href: "/listings?type=buy&category=lenses",
 						icon: "/svgs/icon-lenses.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "audio",
-						href: "/audio",
+						href: "/listings?type=buy&category=audio",
 						icon: "/svgs/icon-audio.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "lighting",
-						href: "/lighting",
+						href: "/listings?type=buy&category=lighting",
 						icon: "/svgs/icon-lighting.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "gimbals",
-						href: "/gimbals",
+						href: "/listings?type=buy&category=gimbals",
 						icon: "/svgs/icon-camera.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "drones",
-						href: "/drones",
+						href: "/listings?type=buy&category=drones",
 						icon: "/svgs/icon-drones.svg",
-						external: false,
+						external: false
 					},
 					{
 						label: "grip",
-						href: "/grip",
+						href: "/listings?type=buy&category=grip",
 						icon: "/svgs/icon-grip.svg",
-						external: false,
-					},
-				],
+						external: false
+					}
+				]
 			},
 			{
 				label: "get started",
 				menu: [
 					{
 						label: "how it works",
-						href: "/",
+						href: "/how-it-works-buy",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "Gearup Insurance Coverage",
-						href: "/",
+						href: "/insurance-coverage",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "Can I cancel my rental?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "How do I get verified?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "How much fee do I pay?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
-					},
-				],
-			},
-		],
+						external: false
+					}
+				]
+			}
+		]
 	},
 	{
 		label: "sell gears",
@@ -211,31 +211,31 @@ export const navLinks: NavLink[] = [
 				menu: [
 					{
 						label: "how it works",
-						href: "/",
+						href: "/how-it-works-sell",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "Gearup Insurance Coverage",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "Can I cancel my rental?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "How do I get verified?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
-					},
-				],
-			},
-		],
+						external: false
+					}
+				]
+			}
+		]
 	},
 	{
 		label: "rent out",
@@ -252,44 +252,44 @@ export const navLinks: NavLink[] = [
 				menu: [
 					{
 						label: "how it works",
-						href: "/",
+						href: "/how-it-works-rentout",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "Gearup Insurance Coverage",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "Can I cancel my rental?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
+						external: false
 					},
 					{
 						label: "How do I get verified?",
 						href: "/",
 						id: "faq-how-it-works",
-						external: false,
-					},
-				],
-			},
-		],
+						external: false
+					}
+				]
+			}
+		]
 	},
 	{
 		label: "courses",
 		href: "/courses",
 		icon: "/svgs/icon-courses.svg",
-		external: false,
+		external: false
 	},
 	{
 		label: "blog",
 		href: "/blog",
 		icon: "/svgs/icon-courses.svg",
-		external: true,
-	},
+		external: true
+	}
 ];
 
 export const footerNavLink = [
@@ -298,123 +298,123 @@ export const footerNavLink = [
 		links: [
 			{
 				label: "How it works",
-				href: "#",
-				external: false,
+				href: "/how-it-works-rent",
+				external: false
 			},
 			{
 				label: "Escrow Payment",
-				href: "#",
-				external: false,
+				href: "/escrow-payment",
+				external: false
 			},
 			{
 				label: "Insurance coverage",
-				href: "#",
-				external: false,
+				href: "/insurance-coverage",
+				external: false
 			},
 			{
 				label: "Cancellation",
-				href: "#",
-				external: false,
-			},
-		],
+				href: "/cancellation-policy",
+				external: false
+			}
+		]
 	},
 	{
 		label: "Buy gear",
 		links: [
 			{
 				label: "How it works",
-				href: "#",
-				external: false,
+				href: "/how-it-works-buy",
+				external: false
 			},
 			{
 				label: "Buyer Protection",
-				href: "#",
-				external: false,
-			},
-		],
+				href: "/buyer-protection",
+				external: false
+			}
+		]
 	},
 	{
 		label: "Sell gear",
 		links: [
 			{
 				label: "How it works",
-				href: "#",
-				external: false,
+				href: "/how-it-works-sell",
+				external: false
 			},
 			{
 				label: "Create listing",
-				href: "#",
-				external: false,
+				href: "/new-listing",
+				external: false
 			},
 			{
 				label: "Seller protection",
-				href: "#",
-				external: false,
-			},
-		],
+				href: "seller-protection",
+				external: false
+			}
+		]
 	},
 	{
 		label: "Rent out",
 		links: [
 			{
 				label: "How it works",
-				href: "#",
-				external: false,
+				href: "/how-it-works-rentout",
+				external: false
 			},
 			{
 				label: "Create listing",
-				href: "#",
-				external: false,
+				href: "/new-listing",
+				external: false
 			},
 			{
 				label: "Insurance coverage",
-				href: "#",
-				external: false,
-			},
-		],
+				href: "/insurance-coverage",
+				external: false
+			}
+		]
 	},
 	{
 		label: "Courses",
 		links: [
 			{
 				label: "Masterclass",
-				href: "#",
-				external: false,
+				href: "/masterclass",
+				external: false
 			},
 			{
 				label: "Learn film-making",
-				href: "#",
-				external: false,
+				href: "/learn-film-making",
+				external: false
 			},
 			{
 				label: "Learn photography",
-				href: "#",
-				external: false,
+				href: "/learn-photography",
+				external: false
 			},
 			{
 				label: "Learn cinematography",
-				href: "#",
-				external: false,
-			},
-		],
-	},
+				href: "/learn-cinematography",
+				external: false
+			}
+		]
+	}
 ];
 
 export const socialMediaLinks = [
 	{
 		label: "twitter",
 		href: "https://x.com/gearupmarket",
-		icon: "/svgs/x-footer-icon.svg",
+		icon: "/svgs/x-footer-icon.svg"
 	},
 	{
 		label: "linkedIn",
 		href: "https://www.linkedin.com/company/gearup-market/",
-		icon: "/svgs/icon-linkedin.svg",
+		icon: "/svgs/icon-linkedin.svg"
 	},
 	{
 		label: "facebook",
 		href: "https://www.facebook.com/GearUpmarket",
-		icon: "/svgs/icon-facebook.svg",
+		icon: "/svgs/icon-facebook.svg"
 	},
 	// {
 	// 	label: "github",
@@ -424,11 +424,11 @@ export const socialMediaLinks = [
 	{
 		label: "instagram",
 		href: "https://www.instagram.com/gearup.market",
-		icon: "/svgs/inst-footer-icon.svg",
+		icon: "/svgs/inst-footer-icon.svg"
 	},
 	{
 		label: "tiktok",
 		href: "hhttps://www.tiktok.com/@gearup.market",
-		icon: "/svgs/tiktok-footer-icon.svg",
-	},
+		icon: "/svgs/tiktok-footer-icon.svg"
+	}
 ];
