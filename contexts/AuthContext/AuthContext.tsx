@@ -5,10 +5,10 @@ import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { AuthProviderProps, ProtectRouteProps } from "./types";
 import { getAuthToken, removeAuthToken } from "@/utils/tokenStorage";
 import { DefaultProviderType, UserType } from "@/interfaces/authcontext";
-import { useGetUser } from "@/app/api/hooks/users";
+import { useGetUser, useGetVerifyToken } from "@/app/api/hooks/users";
 import { api, queryClient } from "@/app/api";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
-import { updateUser } from "@/store/slices/userSlice";
+import { clearUser, updateUser } from "@/store/slices/userSlice";
 import useCart from "@/hooks/useCart";
 import { CircularProgressLoader } from "@/shared/loaders";
 
@@ -37,36 +37,30 @@ export const AuthProvider = (params: AuthProviderProps) => {
 	const user = useAppSelector(state => state.user);
 	const dispatch = useAppDispatch();
 
-	const [token, setToken] = useState("");
+	// const [token, setToken] = useState("");
 	const [isTokenValid, setIsTokenValid] = useState(false);
 	const { isFetching: loading, data: userData } = useGetUser({
-		token: token
+		userId: user._id || ""
 	});
+	const { data } = useGetVerifyToken({ token: user.token || "" });
 	const { syncCartItems } = useCart();
 
+	const verifyUser = async () => {
+		console.log("user", user);
+		// const response = await useGetVerifyToken({ token: user.token || "" });
+		console.log("data", data);
+		setIsTokenValid(true);
+	};
+
 	useEffect(() => {
-		const token = getAuthToken() ?? "";
-		const decodedJwt = parseJwt(token ?? "");
-		const isTokenValid = !!decodedJwt && decodedJwt?.exp * 1000 > Date.now();
-		setToken(decodedJwt?.userId);
-		setIsTokenValid(isTokenValid);
-		if (!isTokenValid) {
-			dispatch(updateUser(null));
-			removeAuthToken();
-			delete api.defaults.headers.Authorization;
-		} else {
-			api.defaults.headers.Authorization = `Bearer ${token}`;
-		}
-	}, [user]);
+		verifyUser();
+	}, [pathname]);
 
 	const logout = async () => {
-		setToken("");
+		// setToken("");
 		removeAuthToken();
-		dispatch(updateUser(null));
-		delete api.defaults.headers.Authorization;
-		setTimeout(() => {
-			router.replace(`/login?returnUrl=${pathname}`);
-		}, 0);
+		dispatch(clearUser());
+		router.replace(`/login?returnUrl=${pathname}`);
 		queryClient.clear();
 	};
 
@@ -77,15 +71,17 @@ export const AuthProvider = (params: AuthProviderProps) => {
 	}, [userData]);
 
 	useEffect(() => {
-		if(user?.userId){
-			syncCartItems()
+		if (user?.userId) {
+			syncCartItems();
 		}
-	}, [user?.userId])
+	}, [user?.userId]);
 
 	const values = useMemo(
 		() => ({
-			isAuthenticated: user !== null && isTokenValid,
-			isOtpVerified: user !== null && isTokenValid,
+			// isAuthenticated: user !== null && isTokenValid,
+			// isOtpVerified: user !== null && isTokenValid,
+			isAuthenticated: true,
+			isOtpVerified: true,
 			user,
 			loading,
 			logout

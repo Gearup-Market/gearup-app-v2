@@ -7,18 +7,19 @@ import {
 	CustomWalletIcon,
 	SettingsNavIcon,
 	TransactionNavIcon,
-	WithdrawIcon,
+	WithdrawIcon
 } from "@/shared/svgs/dashboard";
 import { DashboardCard } from "../Dashboard/Components";
 import Image from "next/image";
 import {
 	ConfirmWithdrawalModal,
 	WalletTransactionsTable,
-	WithdrawalModal,
+	WithdrawalModal
 } from "./components";
 import AlertModal from "./components/AlertModal/AlertModal";
 import { GridAddIcon } from "@mui/x-data-grid";
 import Link from "next/link";
+import { useGetAllWithdrawals } from "@/app/api/hooks/Admin/withdrawals";
 
 const Wallet = () => {
 	const [isWithdrawal, setIsWithdrawal] = useState(false);

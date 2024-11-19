@@ -13,9 +13,9 @@ import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateTransaction } from "@/store/slices/transactionSlice";
 import { useEffect } from "react";
 
-export default function useTransactions() {
+export default function useTransactions(userid?: string) {
 	const userId = useAppSelector(s => s.user.userId);
-	const { data, isFetching, error } = useGetTransactions(userId);
+	const { data, isFetching, error } = useGetTransactions(userid || userId);
 	return { data: data?.data || [], isFetching, error };
 }
 

@@ -10,14 +10,16 @@ import {
 import { useListingFilters } from "./useListings";
 import { useResponsive } from "./useResponsive";
 import { useChatSocket } from "./useChatSocket";
+import { useAuthCheck } from "./useAuthCheck";
 
 export {
+	useAuthCheck,
 	useCopy,
 	usePagination,
 	useFetch,
 	useWalletTransactions,
 	useWallet,
-    useStellarWallet,
+	useStellarWallet,
 	useStellarWalletTransactions,
 	useListingFilters,
 	useResponsive,

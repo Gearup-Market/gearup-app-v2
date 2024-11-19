@@ -148,22 +148,36 @@ const useGetVerifyOTP = ({ otp }: { otp: string }) => {
 };
 
 // ----------------------------------------------
+
+const useGetVerifyToken = ({ token }: { token: string }) => {
+	return useQuery<any, any, any>({
+		queryKey: ["verifyToken"],
+		queryFn: async () => {
+			const response = await api.get(`${API_URL.verifyToken}/${token}`);
+			return response.data;
+		},
+		enabled: !!token
+	});
+};
+
+// ----------------------------------------------
 export type IGetCardHistoriesErr = AxiosError<{ status: string }>;
 
 const useGetUser = (
-	{ token }: { token: string },
+	{ userId }: { userId: string },
 	options?: UseQueryOptions<any, IGetCardHistoriesErr>
 ) =>
 	useQuery<any, IGetCardHistoriesErr>({
 		queryKey: ["user"],
-		queryFn: async () => (await api.get(`${API_URL.getUser}/${token}`)).data,
+		queryFn: async () => (await api.get(`${API_URL.getUser}/${userId}`)).data,
 		...options,
-		enabled: !!token,
+		enabled: !!userId,
 		refetchOnMount: false
 	});
 
 const useGetUserDetails = (
 	{ userId }: { userId: string },
+	// refetchOnMount?: boolean,
 	options?: UseQueryOptions<IUserResp, IGetCardHistoriesErr>
 ) =>
 	useQuery<IUserResp, IGetCardHistoriesErr>({
@@ -306,21 +320,18 @@ const usePostReview = (
 		...options
 	});
 
-	const usePostUpdateUser = (
-		options?: Omit<
-			UseMutationOptions<UserUpdateResp, AxiosError, any>,
-			"mutationFn"
-		>
-	) =>
-		useMutation<UserUpdateResp, AxiosError, any>({
-			mutationFn: async props =>
-				(
-					await api.post(API_URL.updateUser, {
-						...props
-					})
-				).data.data,
-			...options
-		});
+const usePostUpdateUser = (
+	options?: Omit<UseMutationOptions<UserUpdateResp, AxiosError, any>, "mutationFn">
+) =>
+	useMutation<UserUpdateResp, AxiosError, any>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.updateUser, {
+					...props
+				})
+			).data.data,
+		...options
+	});
 
 export {
 	useResetPassword,
@@ -337,5 +348,6 @@ export {
 	usePostUpdateBank,
 	usePostReview,
 	useGetUserDetails,
-	usePostUpdateUser
+	usePostUpdateUser,
+	useGetVerifyToken
 };

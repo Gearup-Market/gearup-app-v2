@@ -6,6 +6,7 @@ import { ToggleSwitch } from "@/shared";
 import { useRouter } from "next/navigation";
 import { useAdminListingFilters, useListings } from "@/hooks/useListings";
 import { ReuseableFilters } from "@/components/UserDashboard";
+import HeaderSubText from "../HeaderSubText/HeaderSubText";
 
 enum Type {
 	Rent = "Rent",
@@ -13,11 +14,12 @@ enum Type {
 	Courses = "Courses"
 }
 
-interface Props{
+interface Props {
 	showTitle?: boolean;
+	userid?: string;
 }
 
-const Listings = ({showTitle}:Props) => {
+const Listings = ({ showTitle, userid }: Props) => {
 	useListings();
 	const [activeFilterId, setActiveFilterId] = useState<number | string>(1);
 	const [activeSubFilterId, setActiveSubFilterId] = useState<number | string>(1);
@@ -42,7 +44,7 @@ const Listings = ({showTitle}:Props) => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.title_toggle}>
-				{/* <HeaderSubText title="Listings" variant="main" /> */}
+				<HeaderSubText title="Listings" variant="main" />
 				<div className={styles.listing_text}>
 					<p>Hide All Listings</p>
 					<ToggleSwitch />
@@ -69,6 +71,7 @@ const Listings = ({showTitle}:Props) => {
 				activeSubFilterId={activeSubFilterId}
 				filters={parentFilters}
 				handleAddItem={handleButtonClick}
+				userid={userid}
 			/>
 		</div>
 	);
