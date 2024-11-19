@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { Source_Sans_3 } from "next/font/google";
 import "@/styles/index.scss";
 import styles from "./layout.module.scss";
 import { Footer, Header } from "@/shared";
-
-import { AppProvider } from "@/contexts/AppContext";
 
 export const metadata: Metadata = {
 	title: "Gear Up",
