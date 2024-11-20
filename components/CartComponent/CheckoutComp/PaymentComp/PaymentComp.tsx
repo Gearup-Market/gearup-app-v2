@@ -124,7 +124,6 @@ const PaymentComp = ({
 		});
 
 		if (res.data) {
-			console.log(res.data, "res.data");
 			toast.success("Request submitted");
 			dispatch(resetCheckout());
 			removeItemFromCart(item._id);

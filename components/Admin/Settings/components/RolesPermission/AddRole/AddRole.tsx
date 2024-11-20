@@ -29,8 +29,6 @@ const AddRole = ({ openModal, setOpenModal }: AddMemberProps) => {
     });
 
     const handleSubmit = async(values: RoleFormValues) => {
-        // Handle form submission
-        console.log(values);
         // You can also call an API to create the role here
         await postCreateRole(values,{
             onSuccess: () => {
@@ -38,7 +36,6 @@ const AddRole = ({ openModal, setOpenModal }: AddMemberProps) => {
                 setOpenModal(false);
             },
             onError: (err) => {
-                console.log('Error creating role');
                 toast.error('Error creating role');
             }
         })

@@ -18,7 +18,7 @@ export const defaultAuthProvider: DefaultProviderType = {
 	isOtpVerified: false,
 	user: null,
 	loading: false,
-	logout: async () => {}
+	logout: async () => {},
 };
 
 const AuthContext = createContext(defaultAuthProvider);
@@ -84,7 +84,7 @@ export const AuthProvider = (params: AuthProviderProps) => {
 			isOtpVerified: true,
 			user,
 			loading,
-			logout
+			logout,
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[user, loading, userData, isTokenValid]

@@ -12,7 +12,7 @@ interface Props {
 }
 
 const PieChartComponent = ({ data, colors,totalEarnings }: Props) => {
-    console.log(data,"data")
+
 
     return (
         <div className={styles.container}>

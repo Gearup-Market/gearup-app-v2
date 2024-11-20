@@ -20,7 +20,6 @@ const TransactionOngoing = ({ handleNext, isTimeElapsed }: Props) => {
 
     const handleInitiateReturn = () => {
         setOpenPaymentRequest(true)
-        console.log('Initiate return')
     }
 
     

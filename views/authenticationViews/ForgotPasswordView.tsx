@@ -20,14 +20,11 @@ const ForgotPasswordView = () => {
 	const onSubmit = async () => {
 		try {
 			const res = await postResetPassword({ email });
-			console.log(res, "res");
-			console.log(data, "dta");
 			if (isSuccess) {
 				toast.success("Verification code sent successfully");
 			}
 			router.push("/reset");
 		} catch (error: any) {
-			console.log(error, "error");
 			toast.error(
 				error?.response?.data?.message || "Something went wrong, please try again"
 			);

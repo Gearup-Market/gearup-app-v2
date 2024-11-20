@@ -33,8 +33,7 @@ const ChatBox = ({message, setMessage,placeholder}:Props) => {
   
 
   const handleSend = () => {
-    console.log('Message sent:', message);
-    setMessage(''); // clear message after sending
+    setMessage('');
   };
 
   return (

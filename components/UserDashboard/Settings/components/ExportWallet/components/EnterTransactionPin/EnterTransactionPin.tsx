@@ -6,6 +6,7 @@ import { Button, InputField } from '@/shared';
 import toast from 'react-hot-toast';
 import { useAppSelector } from '@/store/configureStore';
 import * as Yup from 'yup';
+import { useConfirmTransactionPin } from '@/app/api/hooks/settings';
 
 interface PinFormValues {
     accountPin: string;
@@ -14,9 +15,11 @@ interface PinFormValues {
 interface Props{
     openModal: boolean;
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+    setShowXlmExportModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-const EnterTransactionPin = ({openModal, setOpenModal}:Props) => {
+const EnterTransactionPin = ({openModal, setOpenModal, setShowXlmExportModal}:Props) => {
     const user = useAppSelector(state => state.user);
+    const {mutateAsync:confirmPin, isPending} = useConfirmTransactionPin()
 
     const initialValues: PinFormValues = {
         accountPin: '',
@@ -24,30 +27,28 @@ const EnterTransactionPin = ({openModal, setOpenModal}:Props) => {
 
     const validationSchema = Yup.object().shape({
         accountPin: Yup.string()
-            .required('New account pin is required')
+            .required('Please enter transaction pin to continue')
             .matches(/^\d{6}$/, 'Pin must be exactly 6 digits'),
     });
 
     const handleSubmit = async  (values: PinFormValues, { resetForm }: { resetForm: () => void }) => {
-      /*   try {
-            const resp = await postUpdateUser({ userId: user._id, pin:values.accountPin }, {
+            await confirmPin({userId: user._id as string, pin: parseInt(values.accountPin)},{
                 onSuccess: (value) => {
-                    toast.success('Pin updated successfully');
+                    setOpenModal(false)
+                    setShowXlmExportModal(true)
                     resetForm()
                 },
-                onError: () => {
-                    toast.error('An error occurred while updating your account pin');
+                onError: (error: any) => {
+                    toast.error(error?.response?.data?.message ?? "Could not confirm transaction pin, try again later!!!");
                 },
-            });
-        } catch (error) {
-            console.error('Submit error:', error);
-        } */
+            })
     };
 
 
     const onClose = () => {
         setOpenModal(false)
     }
+
   return (
     <Modal title='Transaction pin' openModal={openModal} setOpenModal={onClose} >
         <div className={styles.container}>
@@ -79,14 +80,14 @@ const EnterTransactionPin = ({openModal, setOpenModal}:Props) => {
                                     type="submit"
                                     disabled={isSubmitting}
                                     >
-                                    {isSubmitting ? 'Saving...' : 'Proceed'}
+                                    {isPending ? 'Processing...' : 'Proceed'}
                                 </Button>
                             </div>
 
                             <div className={styles.forgot_pin_container}>
                                 <p>Forgot pin? <span className={styles.contact_support}>Contact support</span></p>
                             </div>
-                                    </div>
+                            </div>
                         </Form>
                     )}
                 </Formik>

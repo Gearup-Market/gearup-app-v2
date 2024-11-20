@@ -50,7 +50,6 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 
 	// Set the first chat as active chat if no chat is active
 	useEffect(() => {
-		console.log(allUserMessages, "allUserMessages");
 		if (!participantId && !activeChatId && allUserMessages?.length) {
 			const currentParams = new URLSearchParams(searchParams.toString());
 			currentParams.set(

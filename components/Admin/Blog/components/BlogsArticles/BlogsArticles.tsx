@@ -24,8 +24,7 @@ const BlogsTable = () => {
     const router = useRouter();
     const [selectedRow, setSelectedRow] = useState<any | undefined>();
     const blogsPosts = data?.data || [];
-
-    console.log(blogsPosts,"posts")
+    
     const sharedColDef: GridColDef = {
         field: "",
         sortable: true,

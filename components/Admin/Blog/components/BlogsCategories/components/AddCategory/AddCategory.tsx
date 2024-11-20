@@ -41,7 +41,6 @@ const AddCategory = ({ openModal, setOpenModal, category, setCategory, refetch }
                     refetch && refetch();
                 },
                 onError: (err) => {
-                    console.log(err);
                     toast.error("Error creating category");
                 },
             }

@@ -86,12 +86,11 @@ const SignupView = () => {
 					initialValues={initialValues}
 					validationSchema={signupSchema}
 					onSubmit={values => {
-						console.log(values);
 						handleSubmit(values);
 					}}
 				>
 					{({ errors, touched, isSubmitting }) => {
-						console.log(errors);
+
 						return (
 							<Form>
 								<div className={styles.input_block}>

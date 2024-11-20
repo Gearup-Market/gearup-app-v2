@@ -97,7 +97,6 @@ const BlogsCategories = () => {
     ];
 
     const handleEditCategory = (id: string) => {
-        console.log(id,"string id")
         setActiveCategoryId(id);
         setShowEditCategory(true);
     }
