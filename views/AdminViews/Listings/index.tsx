@@ -1,14 +1,13 @@
-import React from 'react'
-import { HeaderSubText, Listings } from '../../../components/Admin'
+import React from "react";
+import { HeaderSubText, Listings } from "../../../components/Admin";
 
 interface Props {
-    showTitle?: boolean
+	showTitle?: boolean;
+	userid?: string;
 }
 
-const ListingsView = ({ showTitle = false }: Props) => {
-    return (
-        <Listings showTitle={showTitle} />
-    )
-}
+const ListingsView = ({ showTitle = false, userid }: Props) => {
+	return <Listings showTitle={showTitle} userid={userid} />;
+};
 
-export default ListingsView
+export default ListingsView;

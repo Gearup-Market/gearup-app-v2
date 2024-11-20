@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/store/configureStore";
 import { updateToken, updateUser } from "@/store/slices/userSlice";
 import { usePostUserSignIn } from "@/app/api/hooks/users";
 import toast from "react-hot-toast";
+import { usePostAdminSignIn } from "@/app/api/hooks/Admin/users";
 
 // Validation schema using Yup
 const loginSchema = Yup.object().shape({
@@ -24,10 +25,10 @@ const initialValues = {
 	password: ""
 };
 
-const LoginView = () => {
+const AdminLoginView = () => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
-	const { mutateAsync: postSignIn } = usePostUserSignIn();
+	const { mutateAsync: postSignIn } = usePostAdminSignIn();
 	const searchParams = useSearchParams();
 	const returnUrl = searchParams.get("returnUrl");
 
@@ -44,7 +45,7 @@ const LoginView = () => {
 				router.push(
 					returnUrl && !returnUrl.includes("login")
 						? returnUrl
-						: "/user/dashboard"
+						: "/admin/dashboard"
 				);
 				// window.location.reload();
 			}
@@ -80,7 +81,7 @@ const LoginView = () => {
 					<Logo className={styles.logo_mob} type="dark" />
 				</Link>
 				<div className={styles.text}>
-					<h3>Welcome back!</h3>
+					<h3>Admin Login</h3>
 					<p>
 						Rent, buy and sell gears and studio spaces or{" "}
 						<Link href="/signup">Sign up</Link> if you don’t have an account
@@ -147,4 +148,4 @@ const LoginView = () => {
 	);
 };
 
-export default LoginView;
+export default AdminLoginView;

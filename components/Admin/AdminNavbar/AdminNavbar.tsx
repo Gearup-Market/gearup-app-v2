@@ -1,18 +1,19 @@
 "use client";
 
-import React, { useState } from 'react';
-import styles from './AdminNavbar.module.scss';
-import { Button, Logo, UrlPath } from '@/shared';
-import { ArrowDownIcon } from '@/shared/svgs/dashboard';
-import Image from 'next/image';
-import AdminSidebar from '../AdminSidebar/AdminSidebar';
-import { usePathname } from 'next/navigation';
+import React, { useState } from "react";
+import styles from "./AdminNavbar.module.scss";
+import { Button, Logo, UrlPath } from "@/shared";
+import { ArrowDownIcon } from "@/shared/svgs/dashboard";
+import Image from "next/image";
+import AdminSidebar from "../AdminSidebar/AdminSidebar";
+import { usePathname } from "next/navigation";
+import { useAppSelector } from "@/store/configureStore";
 
 const AdminNavbar = () => {
+	const user = useAppSelector(s => s.user);
 	const [collapsed, setCollapsed] = useState<boolean>(false);
 	const pathname = usePathname();
 	const [showMenubar, setShowMenubar] = useState<boolean>(false);
-
 
 	return (
 		<div className={styles.navbar_container}>
@@ -58,16 +59,16 @@ const AdminNavbar = () => {
 			<div className={styles.navbar_container__details}>
 				<div className={styles.avatar}>
 					<Image
-						src="/images/admin-img.jpg"
+						src={user.avatar || "/svgs/user.svg"}
 						width={40}
 						height={40}
 						alt="avatar"
 					/>
 				</div>
-				<span className={styles.name}>Waden Warren</span>
-				<span>
+				<span className={styles.name}>{user.userName}</span>
+				{/* <span>
 					<ArrowDownIcon />
-				</span>
+				</span> */}
 			</div>
 
 			{showMenubar && (

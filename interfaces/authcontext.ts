@@ -24,5 +24,4 @@ export interface DefaultProviderType {
   user: null | UserType;
   loading: boolean;
   logout: () => Promise<void>;
-  refetchUser: () => void;
 }

@@ -6,13 +6,21 @@
 	justify-content: space-between;
 	flex-direction: column;
 	width: 100%;
+	.image {
+		border-radius: 50%;
+		position: relative;
+		width: 4rem;
+		height: 4rem;
+		overflow: hidden;
+	}
 
 	&__header {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		width: 100%;
 		background: $col-bg;
-		padding: 1rem;
+		padding: 1.6rem;
 		border-bottom: 1px solid $col-grey-300;
 
 		&[data-lastele="true"] {
@@ -31,12 +39,12 @@
 			gap: 1rem;
 
 			.avatar {
-				width: 4.8rem;
-				height: 4.8rem;
+				width: 4rem;
+				height: 4rem;
 
 				img {
-					width: 4.8rem;
-					height: 4.8rem;
+					width: 4rem;
+					height: 4rem;
 					border-radius: 4px;
 				}
 			}
@@ -71,8 +79,8 @@
 
 		&__icon {
 			cursor: pointer;
-			height: 2rem;
-			width: 2rem;
+			height: 1.6rem;
+			width: 1.6rem;
 			&[data-rotate="true"] {
 				transform: rotate(180deg);
 			}

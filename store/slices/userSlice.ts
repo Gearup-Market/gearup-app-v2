@@ -39,9 +39,12 @@ const userSlice = createSlice({
 			}
 			Object.assign(state, action.payload);
 		},
+		updateToken: (state, action: PayloadAction<string>) => {
+			state.token = action.payload;
+		},
 		clearUser: state => initialState
 	}
 });
 
 export default userSlice.reducer;
-export const { updateUser, clearUser } = userSlice.actions;
+export const { updateUser, clearUser, updateToken } = userSlice.actions;

@@ -29,12 +29,14 @@ interface Props {
 	activeSubFilterId: number | string;
 	filters: Filter[];
 	handleAddItem: () => void;
+	userid?: string;
 }
 
 const ListingTable = ({
 	activeFilter,
 	activeSubFilterId,
 	filters,
+	userid,
 	handleAddItem
 }: Props) => {
 	const [activeLayout, setActiveLayout] = useState("list");
@@ -43,12 +45,10 @@ const ListingTable = ({
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 	const { userId } = useAppSelector(s => s.user);
-	const {
-		data,
-		isFetching,
-		refetch,
-		isLoading
-	} = useGetListings({ userId, shouldFetchAll: true });
+	const { data, isFetching, refetch, isLoading } = useGetListings({
+		userId: userid || userId,
+		shouldFetchAll: !userid
+	});
 	const listings = data?.data || [];
 
 	const dispatch = useAppDispatch();
@@ -170,7 +170,7 @@ const ListingTable = ({
 				toast.success("Status updated");
 				window.location.reload();
 			}
-		} catch (error) { }
+		} catch (error) {}
 	};
 
 	const columns: GridColDef[] = [
@@ -274,7 +274,9 @@ const ListingTable = ({
 			minWidth: 150,
 			renderCell: ({ row, value }) => (
 				<Link href={`/admin/listings/${row.id}`} className={styles.action_btn}>
-					<Button buttonType="transparent" className={styles.view_btn}>View details</Button>
+					<Button buttonType="transparent" className={styles.view_btn}>
+						View details
+					</Button>
 				</Link>
 			)
 		}
@@ -488,7 +490,11 @@ const ListingTable = ({
 						<>
 							<div className={styles.container__grid}>
 								{mappedListings.map((item, ind) => (
-									<Link key={ind} href={`/admin/listings/${item.id}`} className={styles.action_btn}>
+									<Link
+										key={ind}
+										href={`/admin/listings/${item.id}`}
+										className={styles.action_btn}
+									>
 										<ListingCard
 											props={item}
 											activeFilter={activeFilter}
