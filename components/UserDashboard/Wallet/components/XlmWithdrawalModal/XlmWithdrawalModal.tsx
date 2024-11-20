@@ -133,7 +133,6 @@ const WalletWithdrawalModalModal = ({ setOpenModal, openModal, refetch }: Props)
 				userId
 			});
 			if (res.data) {
-				console.log(res, "result");
 				setOpenModal(false);
 				setModalTitle("Choose withdrawal method");
 				setModalType(ModalType.SHOW_OPTIONS);

@@ -118,7 +118,6 @@ const MembersTable = () => {
                             )}
                         </Popper>
                         < MoreIcon onClick={(e) => {
-                            console.log('clicked')
                             setOpenPopoverAction(true);
                             setSelectedRowAction(row);
                             handlePopoverOpenAction(e);

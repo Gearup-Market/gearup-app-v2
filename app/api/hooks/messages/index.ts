@@ -53,16 +53,8 @@ export const useGetUserMessages = (
           })
         ).data;
       },
-      ...options, // Spread the options passed in case you want to override defaults
-      mutationKey: ["createChatMessage"], // Optionally define mutation key for caching, etc.
-      onMutate: async (variables) => {
-        // Optimistically update UI before the mutation happens
-        console.log("Sending message:", variables.message);
-      },
-      onError: (error) => {
-        // Handle mutation error
-        console.error("Failed to send message:", error);
-      },
+      ...options,
+      mutationKey: ["createChatMessage"],
     });
   };
 
@@ -71,22 +63,14 @@ export const useGetUserMessages = (
   ) => {
     return useMutation<ICreateChatMessageResp, IGetMessagesErr, IChatMessageReq>({
       mutationFn: async ({ senderId, chatId, message, attachments }) => {
-        // Perform the API call
         return (
           await api.post(`${API_URL.addMessage(chatId)}`, {
             senderId, chatId, message, attachments
           })
         ).data;
       },
-      ...options, // Spread the options passed in case you want to override defaults
-      mutationKey: ["addChatAddMessage"], // Optionally define mutation key for caching, etc.
-      onMutate: async (variables) => {
-        // Optimistically update UI before the mutation happens
-        console.log("Sending message:", variables.message);
-      },
-      onError: (error) => {
-        // Handle mutation error
-        console.error("Failed to send message:", error);
-      },
+      ...options,
+      mutationKey: ["addChatAddMessage"],
+
     });
   };

@@ -322,6 +322,22 @@ const usePostReview = (
 			...options
 		});
 
+	const usePostUpdateUserPin = (
+		options?: Omit<
+			UseMutationOptions<UserUpdateResp, AxiosError, any>,
+			"mutationFn"
+		>
+	) =>
+		useMutation<UserUpdateResp, AxiosError, any>({
+			mutationFn: async props =>
+				(
+					await api.post(API_URL.updateUserPin, {
+						...props
+					})
+				).data.data,
+			...options
+		});
+
 export {
 	useResetPassword,
 	useResetPasswordRequest,
@@ -337,5 +353,6 @@ export {
 	usePostUpdateBank,
 	usePostReview,
 	useGetUserDetails,
-	usePostUpdateUser
+	usePostUpdateUser,
+	usePostUpdateUserPin
 };

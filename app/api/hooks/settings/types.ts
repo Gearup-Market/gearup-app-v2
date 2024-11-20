@@ -23,3 +23,9 @@ export interface iPostCreateAminMemberReq {
     lastName: string;
     role: string;
   };
+
+
+  export interface iPostCheckPinReq{
+    userId: string,
+    pin: number
+  }

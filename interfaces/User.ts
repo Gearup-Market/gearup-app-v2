@@ -24,4 +24,5 @@ export interface User {
   accountName?: string;
   accountNumber?: string;
   bankName?: string;
+  hasPin?: boolean;
 }

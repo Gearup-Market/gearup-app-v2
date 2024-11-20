@@ -56,8 +56,6 @@ const ListingTypeView = () => {
 		setChecked(prev => ({ ...prev, [title]: !isIncluded }));
 	};
 
-	console.log(newListing, "newlisting");
-
 	useEffect(() => {
 		if (newListing.listingType && !type.length) {
 			setType(

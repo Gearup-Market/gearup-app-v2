@@ -10,7 +10,7 @@ import HeaderSubText from '../HeaderSubText/HeaderSubText'
 const Settings = () => {
   const searchParams = useSearchParams()
   const searchQuery = searchParams.get('q')
-  const [active, setActive] = useState<string>('/admin/settings?q=payments')
+  const [active, setActive] = useState<string>('/user/settings?q=payments')
 
   const settingsLists = [
     {
@@ -60,6 +60,9 @@ const Settings = () => {
   ]
 
   useEffect(() => {
+    if(!searchQuery){
+      window.location.href = '/user/settings?q=payments'
+    }
     setActive(searchQuery || 'payments')
   }, [searchQuery])
 

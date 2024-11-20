@@ -34,8 +34,6 @@ const WalletDepositModal = ({ openModal, close }: Props) => {
 	};
 
 	const onPaystackSuccess = (reference: any) => {
-		console.log(reference, "reference");
-
 		onClose();
 	};
 

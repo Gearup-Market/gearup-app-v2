@@ -14,7 +14,6 @@ const Users = () => {
     const [page, setPage] = useState(1)
     const [limit, setLimit] = useState(7)
     const {data: usersCount} = useGetUsersTotal()
-    console.log(usersCount,"count")
 
     const [paginatedData, setPaginatedData] = useState<GridRowsProp>(usersData.slice(0, limit));
 

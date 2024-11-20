@@ -64,9 +64,6 @@ const Listing = ({ props, className, actionType }: Props) => {
 				setIsFavorite(!isFavorite);
 				toast.success(!isFavorite ? "Removed from favorites" : "Added to favorites");
 			},
-			onError: (error) => {
-				console.log(error);
-			}
 		});
 	}
 

@@ -28,8 +28,6 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 		subCategory
 	} = listing;
 
-    console.log(listing,'lisint')
-
 	const [mainGroup, subGroup] = useMemo(() => {
 		if (!fieldValues) return [[], []];
 		const mainGroup: { key: string; value: string }[] = [];

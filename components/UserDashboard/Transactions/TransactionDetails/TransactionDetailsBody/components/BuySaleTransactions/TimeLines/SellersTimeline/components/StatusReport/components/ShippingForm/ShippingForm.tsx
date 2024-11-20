@@ -29,7 +29,6 @@ const ShippingForm = ({ showShippingDetailsForm, setShowShippingDetailsForm }: P
     const pathname = usePathname()
 
     const closeModal = () => {
-        console.log("closed")
         setShowShippingDetailsForm(false)
     }
 
@@ -51,8 +50,6 @@ const ShippingForm = ({ showShippingDetailsForm, setShowShippingDetailsForm }: P
     });
 
     const handleSubmit = (values: ShippingDetailsProps) => {
-        // Handle form submission
-        console.log(values);
         const currentPath = pathname;
         // Navigate to the new URL with the updated query parameters
         router.push(`${currentPath}?return_goods=true`);

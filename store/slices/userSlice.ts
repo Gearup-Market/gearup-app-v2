@@ -22,6 +22,7 @@ const initialState: User = {
 	token: "",
 	isAuthenticated: false,
 	isSuperAdmin: false,
+	hasPin: false,
 	role: "",
 	accountName: "",
 	accountNumber: "",

@@ -26,7 +26,6 @@ const PaymentForm = ({ showPaymentForm, setShowPaymentForm, handleNext }: Props)
     const router = useRouter();
 
     const closeModal = () => {
-        console.log("closed")
         setShowPaymentForm(false)
     }
 
@@ -45,8 +44,6 @@ const PaymentForm = ({ showPaymentForm, setShowPaymentForm, handleNext }: Props)
     });
 
     const handleSubmit = (values: ShippingDetailsProps) => {
-        // Handle form submission
-        console.log(values);
         setShowPaymentForm(false)
         // handleNext(TransactionStage.AwaitingItemReturn)
     };

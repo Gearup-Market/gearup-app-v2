@@ -19,23 +19,6 @@ enum MoreModalActions {
 const MoreModal = ({ row }: MoreModalProps) => {
     const [checked, setChecked] = React.useState(false)
 
-    const handleActions = (id: number) => {
-        console.log(id)
-        switch (id) {
-            case MoreModalActions.EDIT:
-
-                console.log(`editing ${row.title}`)
-                break;
-            case MoreModalActions.PREVIEW:
-                console.log(`previewing ${row.title}`)
-                break;
-            case MoreModalActions.DELETE:
-                console.log(`deleting ${row.title}`)
-                break;
-            default:
-                break;
-        }
-    }
 
     return (
         <div className={styles.container}>

@@ -8,7 +8,13 @@
     min-width: 40rem;
     width: 100%;
 
+    .error_message{
+      color: #FF0000;
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
     &__form_container {
+
     
         .submit_btn_container {
           display: flex;

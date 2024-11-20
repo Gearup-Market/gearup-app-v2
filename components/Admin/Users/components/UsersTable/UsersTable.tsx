@@ -29,8 +29,6 @@ const UsersTable = ({  page, limit, handlePagination, url, totalCount }: Props) 
 
     const {data, isLoading} = useGetAllUsers()
     const users = data?.data || []
-    console.log(users,"users ss")
-
 
     const columns: GridColDef[] = [
         {

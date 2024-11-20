@@ -20,18 +20,12 @@ const WishlistCard = ({ item, ind, lastEle, activeFilter, setShowWishList, onDel
     const subHeaderText = item.listingType === ""
     const {data, isLoading, refetch} = useGetUserDetails({userId:item.user as string});
     const user = data?.data
-    console.log(data,"user data")
-    console.log(item,"items")
 
     const forSellPrice = item?.listingType === "sell" ? item?.offer?.forSell?.pricing : ""
     const forRentPrice = item?.listingType === "rent" ? item?.offer?.forRent?.day1Offer : ""
     const bothPrice = item?.listingType === "both" ? item?.offer?.forSell?.pricing : ""
     const rentOrBuyPrice = forSellPrice || forRentPrice || bothPrice  
 
-    console.log(forSellPrice,"for sell price")
-    console.log(forRentPrice,"for rent price")
-    console.log(bothPrice,"for booth price")
-    console.log(rentOrBuyPrice,"rent sell price")
     if(!item) return null
 
     return (

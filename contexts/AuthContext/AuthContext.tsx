@@ -18,7 +18,8 @@ export const defaultAuthProvider: DefaultProviderType = {
 	isOtpVerified: false,
 	user: null,
 	loading: false,
-	logout: async () => {}
+	logout: async () => {},
+	refetchUser: () => {}
 };
 
 const AuthContext = createContext(defaultAuthProvider);
@@ -39,7 +40,7 @@ export const AuthProvider = (params: AuthProviderProps) => {
 
 	const [token, setToken] = useState("");
 	const [isTokenValid, setIsTokenValid] = useState(false);
-	const { isFetching: loading, data: userData } = useGetUser({
+	const { isFetching: loading, data: userData, refetch: refetchUser } = useGetUser({
 		token: token
 	});
 	const { syncCartItems } = useCart();
@@ -88,7 +89,8 @@ export const AuthProvider = (params: AuthProviderProps) => {
 			isOtpVerified: user !== null && isTokenValid,
 			user,
 			loading,
-			logout
+			logout,
+			refetchUser
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[user, loading, userData, isTokenValid]

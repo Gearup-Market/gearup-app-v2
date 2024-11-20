@@ -38,7 +38,6 @@ const lists = [
 
 ]
 const BlogArticleCardMob = ({ item, lastEle, ind, refetch }: Props) => {
-    console.log(item,"blogmob")
 
     // return null
 

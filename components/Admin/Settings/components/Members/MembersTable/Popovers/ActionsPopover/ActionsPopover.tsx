@@ -25,7 +25,6 @@ const actions = [
 const ActionsPopover = ({ row }: ActionsProps) => {
 
     const handleActions = (id: number) => {
-        console.log(id)
         switch (id) {
             case ActionsEnum.PREVIEW:
                 console.log(`previewing ${row.title}`)
