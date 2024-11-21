@@ -40,7 +40,6 @@ const AddRole = ({ openModal, setOpenModal, refetch, categoryId }: AddMemberProp
                     refetch && refetch();
                 },
                 onError: (err) => {
-                    console.log(err);
                     toast.error("Error updating category");
                 },
             }

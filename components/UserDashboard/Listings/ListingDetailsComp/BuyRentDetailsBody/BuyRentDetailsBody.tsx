@@ -43,8 +43,6 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 		return [mainGroup, subGroup];
 	}, [fieldValues]);
 
-	console.log(listingType, "type")
-
 	return (
 		<div className={styles.section}>
 			<div className={styles.body}>

@@ -32,8 +32,6 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 
 	const listings = data?.data?.listings || [];
 
-	console.log(data, "wish lists")
-
 	const onPageChange = () => {
 		console.log(page);
 	};

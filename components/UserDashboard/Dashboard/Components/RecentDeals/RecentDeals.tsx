@@ -102,10 +102,6 @@ const RecentDeals = () => {
         },
     ];
 
-    const handleClickMore = (id: number) => {
-        console.log('More clicked', id)
-    };
-
     return (
         <div className={styles.container}>
             <h2 className={styles.container__title}> RecentDeals</h2>

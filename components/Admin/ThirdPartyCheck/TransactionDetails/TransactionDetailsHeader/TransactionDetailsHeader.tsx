@@ -29,8 +29,6 @@ const TransactionDetailsHeader = ({ slug, item }: Props) => {
         setValue(text)
     }
 
-    console.log(value, 'value')
-
     return (
         <div className={styles.container}>
             <div className={styles.nav_container} onClick={handleBack}>

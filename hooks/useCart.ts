@@ -102,7 +102,6 @@ export default function useCart() {
 			toast.error(
 				error?.response?.data?.message || "Could not remove item from cart"
 			);
-			console.log(error, "error from cart");
 		}
 	};
 
@@ -141,7 +140,6 @@ export default function useCart() {
 				}
 			}
 		} catch (error: any) {
-			console.log(error?.response?.data);
 			if (error?.response?.data?.message.includes("already in cart")) {
 				dispatch(clearCart());
 			}

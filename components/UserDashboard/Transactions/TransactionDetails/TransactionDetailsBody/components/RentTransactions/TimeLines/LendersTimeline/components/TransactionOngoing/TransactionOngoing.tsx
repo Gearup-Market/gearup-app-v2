@@ -13,7 +13,6 @@ const TransactionOngoing = ({ isTimeElapsed }: Props) => {
     const [openPaymentForm, setOpenPaymentForm] = useState<boolean>(false)
 
     const showPaymentForm = () => {
-        console.log('show')
         setOpenPaymentForm(true)
     }
 

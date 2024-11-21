@@ -46,6 +46,7 @@ export const API_URL = {
 	getUserMessages: (id: string) => `/chats/all/${id}`,
 	getChatMessages: (id: string) => `/chats/${id}`,
 	updateUser: "/users/update",
+	updateUserPin: "/users/update-pin",
 	updateAccountPin: "/users/update-pin",
 	adminBlogsArticles: "/admin/blog",
 	adminBlogsArticlesById: "/admin/blog/",
@@ -69,5 +70,6 @@ export const API_URL = {
 	adminGetAllWithdraws: "/withdrawals/admin",
 	verifyAdminToken: "/admin/auth/authenticate",
 	courses: "/courses",
-	wishlists: "/wishlist"
+	wishlists: "/wishlist",
+	confirmTransactionPin: "/users/check-pin"
 };

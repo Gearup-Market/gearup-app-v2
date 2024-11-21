@@ -21,7 +21,7 @@ const RolesPermissionTable = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const { data, isLoading } = useGetAdminRoles()
     const rolesAndPermissions = data || []
-    console.log(data, "data")
+
     const [paginatedData, setPaginatedData] = useState(permissionsData);
     const sharedColDef: GridColDef = {
         field: "",
@@ -92,7 +92,6 @@ const RolesPermissionTable = () => {
             minWidth: 150,
             renderCell: ({ row, value }) => {
                 const adminPermissions = getPermissionsByRoleName("admin")
-                console.log(adminPermissions, "adminPermissions")
                 return (
                     <div className={styles.super_admin}>
                         <ul>

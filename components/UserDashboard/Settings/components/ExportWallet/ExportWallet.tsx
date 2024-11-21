@@ -5,6 +5,7 @@ import { HeaderSubText } from '@/components/Admin'
 import Image from 'next/image'
 import { WarningIcon } from '@/shared/svgs/dashboard'
 import { EnterTransactionPin, XlmExportModal, SetTransactionPinModal } from './components'
+import { useAppSelector } from '@/store/configureStore'
 
 enum ModalType {
     SHOW_SECRET_PHRASE = 'Show secret phrase',
@@ -23,14 +24,21 @@ const importOptions = [
 ]
 
 const ImportWallet = () => {
-    const hasTransactionPinSet = false;
     const [showTransactionPinModal, setShowTransactionPinModal] = useState(false);
     const [showSetTransactionPinModal, setShowSetTransactionPinModal] = useState(false);
     const [showXlmExportModal, setShowXlmExportModal] = useState(false);
+    const user = useAppSelector(state => state.user);
+    const hasSetTransactionPin = !!user.hasPin
 
     const handleOpenModal = (modalType: string) => {
-        // setShowTransactionPinModal(true);
-        setShowXlmExportModal(true);
+        
+        if (hasSetTransactionPin) {
+            setShowTransactionPinModal(true);
+            return
+        }else{
+            setShowSetTransactionPinModal(true);
+            return
+        }
     }
 
     return (
@@ -68,10 +76,9 @@ const ImportWallet = () => {
                 </div>
             </div>
 
-           <XlmExportModal openModal={showXlmExportModal} setOpenModal={setShowXlmExportModal} />
-            
-          <SetTransactionPinModal openModal={showSetTransactionPinModal} setOpenModal={setShowSetTransactionPinModal} />
-            <EnterTransactionPin openModal={showTransactionPinModal} setOpenModal={setShowTransactionPinModal}/>
+            <XlmExportModal openModal={showXlmExportModal} setOpenModal={setShowXlmExportModal} />
+            <SetTransactionPinModal openModal={showSetTransactionPinModal} setOpenModal={setShowSetTransactionPinModal} />
+            <EnterTransactionPin openModal={showTransactionPinModal} setOpenModal={setShowTransactionPinModal} setShowXlmExportModal={setShowXlmExportModal}/>
         </div>
     )
 }

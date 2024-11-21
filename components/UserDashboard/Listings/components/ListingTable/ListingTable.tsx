@@ -48,8 +48,6 @@ const ListingTable = ({
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 
-	console.log(courseListings, "course lisitngs")
-
 	const mappedListings = useMemo(() => {
 		const activeSubFilter = filters
 			.find(filter => filter.name.toLowerCase() === activeFilter)
@@ -105,7 +103,6 @@ const ListingTable = ({
 	// const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
 	// 	mappedListings.map((item, ind) => { return { ...item } }).slice(0, limit)
 	// );
-	// console.log(mappedListings, "mappedListing");
 
 	const sharedColDef: GridColDef = {
 		field: "",

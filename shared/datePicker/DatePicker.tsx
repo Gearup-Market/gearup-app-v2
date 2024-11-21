@@ -32,7 +32,6 @@ const DatePicker = ({
 	useEffect(() => {
 		document.body.style.overflow = openModal ? "hidden" : "auto";
 		return () => {
-			console.log('open')
 			document.body.style.overflow = "auto";
 		};
 	}, [openModal]);
