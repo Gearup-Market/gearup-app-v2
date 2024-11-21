@@ -28,7 +28,8 @@ const initialState: User = {
 	accountNumber: "",
 	bankName: "",
 	wallet: null,
-	stellarWallet: null
+	stellarWallet: null,
+	hasPin: false
 };
 
 const userSlice = createSlice({
