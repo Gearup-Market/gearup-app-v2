@@ -27,4 +27,5 @@ export interface User {
 	bankName?: string;
 	wallet?: any;
 	stellarWallet?: any;
+	hasPin: boolean;
 }
