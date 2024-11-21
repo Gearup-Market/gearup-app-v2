@@ -7,6 +7,7 @@ const initialState: User = {
 	userName: "",
 	isVerified: false,
 	createdAt: "",
+	updatedAt: "",
 	name: "",
 	email: "",
 	firstName: "",
@@ -21,12 +22,13 @@ const initialState: User = {
 	twitter: "",
 	token: "",
 	isAuthenticated: false,
-	isSuperAdmin: false,
-	hasPin: false,
+	isAdmin: false,
 	role: "",
 	accountName: "",
 	accountNumber: "",
-	bankName: ""
+	bankName: "",
+	wallet: null,
+	stellarWallet: null
 };
 
 const userSlice = createSlice({

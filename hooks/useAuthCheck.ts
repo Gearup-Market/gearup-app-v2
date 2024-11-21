@@ -37,7 +37,7 @@ export const useAuthCheck = () => {
 				// }
 			} catch (error) {
 				dispatch(clearUser());
-				router.push("/signin");
+				router.push(`/login?returnUrl=${pathName}`);
 			}
 		};
 		checkAuth();

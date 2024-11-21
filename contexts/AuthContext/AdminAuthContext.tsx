@@ -12,6 +12,7 @@ import useCart from "@/hooks/useCart";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { queryClient } from "@/app/api";
 import { useQueryClient } from "@tanstack/react-query";
+import { useGetAdmin, useGetVerifyAdminToken } from "@/app/api/hooks/Admin/users";
 
 const AuthContext = createContext<DefaultProviderType>({
 	isAuthenticated: false,
@@ -21,28 +22,28 @@ const AuthContext = createContext<DefaultProviderType>({
 	logout: async () => {}
 });
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AdminAuthProvider = ({ children }: AuthProviderProps) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const dispatch = useAppDispatch();
 	const user = useAppSelector(state => state.user);
 
 	const [isTokenValid, setIsTokenValid] = useState(false);
-	const { isFetching: isUserLoading, data: userData } = useGetUser({
-		userId: user._id as string
+	const { isFetching: isAdminLoading, data: adminData } = useGetAdmin({
+		adminId: user._id as string
 	});
-	const { data: tokenData, isFetched } = useGetVerifyToken({
+	const { data: tokenData, isFetched } = useGetVerifyAdminToken({
 		token: user.token as string
 	});
 	const { syncCartItems } = useCart();
 
-	console.log("Auth context", pathname, isTokenValid);
+	console.log("Admin Auth context", pathname, isTokenValid);
 
 	const queryClient = useQueryClient();
 
 	useEffect(() => {
 		queryClient.invalidateQueries({
-			queryKey: ["verifyToken"],
+			queryKey: ["verifyAdminToken"],
 			exact: true
 		});
 	}, [pathname, queryClient]);
@@ -54,12 +55,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	// Sync User Data
 	useEffect(() => {
-		if (userData) {
+		if (adminData) {
 			dispatch(
-				updateUser({ isAdmin: false, isAuthenticated: true, ...userData.data })
+				updateUser({ isAdmin: true, isAuthenticated: true, ...adminData.data })
 			);
 		}
-	}, [userData, dispatch]);
+	}, [adminData, dispatch]);
 
 	// Sync Cart Data
 	useEffect(() => {
@@ -71,7 +72,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		removeAuthToken();
 		dispatch(clearUser());
 		queryClient.clear();
-		router.replace(`/login?returnUrl=${pathname}`);
+		router.replace(`/admin/login?returnUrl=${pathname}`);
 	};
 
 	const authValues = useMemo(
@@ -79,35 +80,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			isAuthenticated: isTokenValid,
 			isOtpVerified: isTokenValid,
 			user,
-			loading: isUserLoading,
+			loading: isAdminLoading,
 			logout
 		}),
-		[user, isTokenValid, isUserLoading, logout]
+		[user, isTokenValid, isAdminLoading, logout]
 	);
 
 	return <AuthContext.Provider value={authValues}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAdminAuth = () => useContext(AuthContext);
 
-export const ProtectRoute = ({ children }: ProtectRouteProps) => {
+export const AdminProtectRoute = ({ children }: ProtectRouteProps) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const { isAuthenticated, loading } = useAuth();
+	const { isAuthenticated, loading } = useAdminAuth();
+	console.log("isAuthenticated==>", isAuthenticated);
 
-	const UNPROTECTED_ROUTES = useMemo(
-		() => ["/login", "/signup", "/forgot-password", "/password-reset", "/verify"],
-		[]
-	);
+	const UNPROTECTED_ROUTES = useMemo(() => ["/admin/login"], []);
 
-	const returnUrl = searchParams.get("returnUrl") || "/user/dashboard";
+	const returnUrl = searchParams.get("returnUrl") || "/admin/dashboard";
 
 	useEffect(() => {
 		if (!loading) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
-				router.replace(`/login?returnUrl=${pathname}`);
-			} else if (isAuthenticated && pathname === "/login") {
+				router.replace(`/admin/login?returnUrl=${pathname}`);
+			} else if (isAuthenticated && pathname === "/admin/login") {
 				router.replace(returnUrl);
 			}
 		}

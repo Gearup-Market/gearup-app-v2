@@ -153,10 +153,14 @@ const useGetVerifyToken = ({ token }: { token: string }) => {
 	return useQuery<any, any, any>({
 		queryKey: ["verifyToken"],
 		queryFn: async () => {
-			const response = await api.get(`${API_URL.verifyToken}/${token}`);
+			const response = await api.get(`${API_URL.verifyToken}`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			});
 			return response.data;
 		},
-		enabled: !!token
+		refetchOnMount: true
 	});
 };
 

@@ -18,54 +18,72 @@ import useTransactions from "@/hooks/useTransactions";
 import { usePathname } from "next/navigation";
 import { TransactionType, UserRole } from "@/app/api/hooks/transactions/types";
 import NoTransactions from "@/components/UserDashboard/Transactions/components/NoTransactions/NoTransactions";
+import { formatDate, formatNum } from "@/utils";
+import { Filter } from "@/interfaces/Listing";
+import { useAppSelector } from "@/store/configureStore";
+import { useGetListings } from "@/app/api/hooks/listings";
 
 interface Props {
 	transactionType: string;
+	activeFilter: string;
+	activeSubFilterId: number | string;
+	filters: Filter[];
 }
+// const activeFilter = 'rent'
 
-const TransactionTable = ({ transactionType }: Props) => {
+const TransactionTable = ({
+	transactionType,
+	activeFilter,
+	activeSubFilterId,
+	filters
+}: Props) => {
 	const pathname = usePathname();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(7);
 	const [isNoSearchResult, setIsNoSearchResult] = useState(false);
-	const userId = useMemo(
-		() => pathname.split("/")[pathname.split("/").length - 1],
-		[pathname]
-	);
-	const { data, isFetching } = useTransactions(userId);
+	// const userId = useMemo(
+	// 	() => pathname.split("/")[pathname.split("/").length - 1],
+	// 	[pathname]
+	// );
+	const { userId } = useAppSelector(s => s.user);
+	const { data, isFetching, refetch, isLoading } = useGetListings({
+		userId: userId,
+		shouldFetchAll: true
+	});
+	const listings = data?.data || [];
 
-	const transactions = useMemo(
-		() =>
-			data.map(({ _id, item, buyer, amount, type, status, createdAt }) => {
-				const isBuyer = userId === buyer;
-				const transactionType =
-					type === TransactionType.Sale && isBuyer
-						? "Purchase"
-						: type === TransactionType.Sale && !isBuyer
-						? "Sale"
-						: TransactionType.Rental;
+	// const transactions = useMemo(
+	// 	() =>
+	// 		data.map(({ _id, item, buyer, amount, type, status, createdAt }) => {
+	// 			const isBuyer = userId === buyer;
+	// 			const transactionType =
+	// 				type === TransactionType.Sale && isBuyer
+	// 					? "Purchase"
+	// 					: type === TransactionType.Sale && !isBuyer
+	// 					? "Sale"
+	// 					: TransactionType.Rental;
 
-				const userRole =
-					transactionType === "Purchase"
-						? UserRole.Buyer
-						: transactionType === "Sale"
-						? UserRole.Seller
-						: transactionType === "Rental" && isBuyer
-						? UserRole.Renter
-						: UserRole.Lender;
-				return {
-					id: _id,
-					gearName: item.productName,
-					amount,
-					transactionDate: createdAt,
-					transactionType,
-					transactionStatus: status,
-					gearImage: item.listingPhotos[0],
-					userRole
-				};
-			}),
-		[data]
-	);
+	// 			const userRole =
+	// 				transactionType === "Purchase"
+	// 					? UserRole.Buyer
+	// 					: transactionType === "Sale"
+	// 					? UserRole.Seller
+	// 					: transactionType === "Rental" && isBuyer
+	// 					? UserRole.Renter
+	// 					: UserRole.Lender;
+	// 			return {
+	// 				id: _id,
+	// 				gearName: item.productName,
+	// 				amount,
+	// 				transactionDate: createdAt,
+	// 				transactionType,
+	// 				transactionStatus: status,
+	// 				gearImage: item.listingPhotos[0],
+	// 				userRole
+	// 			};
+	// 		}),
+	// 	[data]
+	// );
 
 	// const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
 	// 	transactions.slice(0, limit)
@@ -77,6 +95,57 @@ const TransactionTable = ({ transactionType }: Props) => {
 		() => transactions.slice(page - 1 * limit, paginatedTransactions),
 		[transactions, paginatedTransactions]
 	);
+
+	const mappedListings = useMemo(() => {
+		// const activeSubFilter = filters
+		// 	?.find(filter => filter.name.toLowerCase() === activeFilter)
+		// 	?.name.toLowerCase();
+
+		return listings
+			.map(
+				({
+					_id,
+					productName,
+					offer,
+					createdAt,
+					listingType,
+					status,
+					listingPhotos,
+					category
+				}) => {
+					const type = listingType === "both" ? "rent | sell" : listingType;
+					const price =
+						type === "rent"
+							? offer?.forRent?.day1Offer
+							: offer?.forSell?.pricing;
+					const image = listingPhotos?.[0] || null;
+					return {
+						id: _id,
+						title: productName,
+						price,
+						transaction_date: createdAt,
+						type,
+						status,
+						image,
+						availability: status === "available" ? "active" : "inactive",
+						date: createdAt,
+						sold_count: 0,
+						revenue: 0,
+						category: category?.name?.toLowerCase() || null
+					};
+				}
+			)
+			.filter(l => {
+				if (!l.type.includes(activeFilter)) return false;
+				/* if (
+					activeSubFilter &&
+					activeSubFilter !== l.category &&
+					activeSubFilterId !== 1
+				)
+					return false; */
+				return true;
+			});
+	}, [listings, activeFilter, activeSubFilterId, filters]);
 
 	const sharedColDef: GridColDef = {
 		field: "",
@@ -91,17 +160,94 @@ const TransactionTable = ({ transactionType }: Props) => {
 		setPage(page);
 	};
 
+	// const columns: GridColDef[] = [
+	// 	{
+	// 		...sharedColDef,
+	// 		field: "gear_name",
+	// 		cellClassName: styles.table_cell,
+	// 		headerClassName: styles.table_header,
+	// 		headerName: "Name",
+	// 		minWidth: 250,
+	// 		renderCell: ({ row, value }) => (
+	// 			<div className={styles.container__name_container}>
+	// 				<Image src={row.gear_image} alt={value} width={16} height={16} />
+	// 				<p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
+	// 					{value}
+	// 				</p>
+	// 			</div>
+	// 		)
+	// 	},
+	// 	{
+	// 		...sharedColDef,
+	// 		field: "amount",
+	// 		cellClassName: styles.table_cell,
+	// 		headerClassName: styles.table_header,
+	// 		headerName: "Amount",
+	// 		minWidth: 200
+	// 	},
+	// 	{
+	// 		...sharedColDef,
+	// 		field: "transaction_date",
+	// 		cellClassName: styles.table_cell,
+	// 		headerClassName: styles.table_header,
+	// 		headerName: "Transaction Date",
+	// 		minWidth: 150
+	// 	},
+	// 	{
+	// 		...sharedColDef,
+	// 		field: "transaction_status",
+	// 		cellClassName: styles.table_cell,
+	// 		headerClassName: styles.table_header,
+	// 		align: "center",
+	// 		headerAlign: "center",
+	// 		headerName: "Status",
+	// 		minWidth: 150,
+	// 		renderCell: ({ value }) => (
+	// 			<div className={styles.container__status_container}>
+	// 				<p
+	// 					style={{ fontSize: "1.2rem" }}
+	// 					className={styles.container__status_container__status}
+	// 					data-status={value.toLowerCase()}
+	// 				>
+	// 					{value}
+	// 				</p>
+	// 			</div>
+	// 		)
+	// 	},
+	// 	{
+	// 		...sharedColDef,
+	// 		field: "id",
+	// 		cellClassName: styles.table_cell,
+	// 		headerClassName: styles.table_header,
+	// 		headerName: "Actions",
+	// 		align: "center",
+	// 		headerAlign: "center",
+	// 		minWidth: 150,
+	// 		renderCell: ({ row, value }) => (
+	// 			<Link
+	// 				href={`/admin/transactions/${row.id}?transaction_type=${transactionType}&user_role=${row.user_role}&third_party=${row.third_party_verification}&timeElapsed=${row.timeElapsed}`}
+	// 				className={styles.container__action_btn}
+	// 			>
+	// 				<Button>View details</Button>
+	// 			</Link>
+	// 		)
+	// 	}
+	// ];
+
 	const columns: GridColDef[] = [
 		{
 			...sharedColDef,
-			field: "gear_name",
+
+			field: "title",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Name",
-			minWidth: 250,
+			minWidth: 300,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
-					<Image src={row.gear_image} alt={value} width={16} height={16} />
+					{row.image && (
+						<Image src={row.image} alt={value} width={16} height={16} />
+					)}
 					<p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
 						{value}
 					</p>
@@ -110,37 +256,38 @@ const TransactionTable = ({ transactionType }: Props) => {
 		},
 		{
 			...sharedColDef,
-			field: "amount",
+
+			field: "date",
+			cellClassName: styles.table_cell,
+			headerClassName: styles.table_header,
+			headerName: "Transaction date",
+			minWidth: 150,
+			renderCell: ({ value }) => formatDate(value)
+		},
+		{
+			...sharedColDef,
+
+			field: "price",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Amount",
-			minWidth: 200
+			minWidth: 150,
+			renderCell: ({ value }) => "₦" + formatNum(value)
 		},
 		{
 			...sharedColDef,
-			field: "transaction_date",
+			field: "status",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
-			headerName: "Transaction Date",
-			minWidth: 150
-		},
-		{
-			...sharedColDef,
-			field: "transaction_status",
-			cellClassName: styles.table_cell,
-			headerClassName: styles.table_header,
-			align: "center",
-			headerAlign: "center",
 			headerName: "Status",
 			minWidth: 150,
-			renderCell: ({ value }) => (
+			renderCell: ({ row, value }) => (
 				<div className={styles.container__status_container}>
 					<p
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status}
-						data-status={value.toLowerCase()}
 					>
-						{value}
+						{value?.toLowerCase() === "available" ? "Live" : "Paused"}
 					</p>
 				</div>
 			)
@@ -148,18 +295,20 @@ const TransactionTable = ({ transactionType }: Props) => {
 		{
 			...sharedColDef,
 			field: "id",
+			align: "center",
+			headerAlign: "center",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Actions",
-			align: "center",
-			headerAlign: "center",
 			minWidth: 150,
 			renderCell: ({ row, value }) => (
 				<Link
 					href={`/admin/transactions/${row.id}?transaction_type=${transactionType}&user_role=${row.user_role}&third_party=${row.third_party_verification}&timeElapsed=${row.timeElapsed}`}
-					className={styles.container__action_btn}
+					className={styles.action_btn}
 				>
-					<Button>View details</Button>
+					<Button buttonType="transparent" className={styles.view_btn}>
+						View details
+					</Button>
 				</Link>
 			)
 		}
@@ -171,7 +320,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 
 	return (
 		<div className={styles.container}>
-			{data.length < 1 ? (
+			{mappedListings.length < 1 ? (
 				<NoTransactions />
 			) : (
 				<>
@@ -182,12 +331,12 @@ const TransactionTable = ({ transactionType }: Props) => {
 							iconTitle="search-icon"
 							onChange={handleSearch}
 						/>
-						<div
+						{/* <div
 							className={styles.no_search_result}
 							data-show={isNoSearchResult}
 						>
 							<NoSearchResult />
-						</div>
+						</div> */}
 					</div>
 
 					<div
@@ -195,7 +344,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 						style={{ width: "100%", height: "100%" }}
 					>
 						<DataGrid
-							rows={transactions}
+							rows={mappedListings}
 							columns={columns}
 							paginationMode="server"
 							sx={customisedTableClasses}
@@ -206,15 +355,15 @@ const TransactionTable = ({ transactionType }: Props) => {
 					</div>
 
 					<MobileCardContainer>
-						{!!transactions.length ? (
+						{!!mappedListings.length ? (
 							<>
-								{filteredTransactions.map((item, ind) => (
+								{mappedListings.map((item, ind) => (
 									<TransactionCardMob
 										key={item.id}
 										item={item}
 										ind={ind}
 										lastEle={
-											ind + 1 === filteredTransactions.length
+											ind + 1 === mappedListings.length
 												? true
 												: false
 										}
