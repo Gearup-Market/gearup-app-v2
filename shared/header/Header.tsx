@@ -19,7 +19,6 @@ enum Scroll {
 }
 
 const Header = () => {
-	const { isAuthenticated } = useAuth();
 	const { heroHeight }: any = useGlobalContext();
 	const [collapsed, setCollapsed] = useState<boolean>(true);
 	const [scroll, setScroll] = useState<Scroll>(Scroll.Idle);
@@ -277,8 +276,11 @@ const Header = () => {
 							</Link>
 						</div>
 					</Button>
-					{isAuthenticated ? (
-						<Link className={styles.user_account} href="/user/dashboard">
+					{user.isAuthenticated ? (
+						<Link
+							className={styles.user_account}
+							href={user.isAdmin ? "/admin/dashboard" : "/user/dashboard"}
+						>
 							<Button
 								onClick={() => setCollapsed(!collapsed)}
 								className={styles.my_account}

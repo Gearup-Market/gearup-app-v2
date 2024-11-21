@@ -5,12 +5,18 @@ import { TransactionsTable } from "./components";
 import HeaderSubText from "../HeaderSubText/HeaderSubText";
 import ReuseableFilters from "../ReuseableFilter/ReuseableFilter";
 
+enum Type {
+	Rent = "Rent",
+	Buy = "Sell",
+	Courses = "Courses"
+}
 interface Props {
 	showTitle?: boolean;
 }
 const Transactions = ({ showTitle = false }: Props) => {
 	const [activeFilterId, setActiveFilterId] = useState(1);
 	const [activeSubFilterId, setActiveSubFilterId] = useState(1);
+	const [activeFilter, setActiveFilter] = useState<Type>(Type.Rent);
 	const parentFilters = [
 		{
 			id: 1,
@@ -18,21 +24,21 @@ const Transactions = ({ showTitle = false }: Props) => {
 			subFilters: [
 				{
 					id: 1,
-					name: "Requested",
+					name: "Requested"
 				},
 				{
 					id: 2,
-					name: "Accepted/Ongoing",
+					name: "Accepted/Ongoing"
 				},
 				{
 					id: 3,
-					name: "Completed",
+					name: "Completed"
 				},
 				{
 					id: 4,
-					name: "Canceled/declined",
-				},
-			],
+					name: "Canceled/declined"
+				}
+			]
 		},
 		{
 			id: 2,
@@ -40,21 +46,21 @@ const Transactions = ({ showTitle = false }: Props) => {
 			subFilters: [
 				{
 					id: 1,
-					name: "Requested",
+					name: "Requested"
 				},
 				{
 					id: 2,
-					name: "Accepted/Ongoing",
+					name: "Accepted/Ongoing"
 				},
 				{
 					id: 3,
-					name: "Completed",
+					name: "Completed"
 				},
 				{
 					id: 4,
-					name: "Canceled/declined",
-				},
-			],
+					name: "Canceled/declined"
+				}
+			]
 		},
 		{
 			id: 3,
@@ -62,28 +68,26 @@ const Transactions = ({ showTitle = false }: Props) => {
 			subFilters: [
 				{
 					id: 1,
-					name: "Ebooks",
+					name: "Ebooks"
 				},
 				{
 					id: 2,
-					name: "Live",
+					name: "Live"
 				},
 				{
 					id: 3,
-					name: "Video",
+					name: "Video"
 				},
 				{
 					id: 4,
-					name: "Audio",
-				},
-			],
-		},
+					name: "Audio"
+				}
+			]
+		}
 	];
 	return (
 		<div className={styles.container}>
-			{
-				showTitle && <HeaderSubText title='Transactions' />
-			}
+			{showTitle && <HeaderSubText title="Transactions" />}
 			<div className={styles.container__download_filter}>
 				<ReuseableFilters
 					parentFilters={parentFilters}
@@ -97,6 +101,9 @@ const Transactions = ({ showTitle = false }: Props) => {
 				</span>
 			</div>
 			<TransactionsTable
+				activeFilter={activeFilter?.toLowerCase()}
+				activeSubFilterId={activeSubFilterId}
+				filters={parentFilters}
 				transactionType={
 					parentFilters
 						.find(item => item.id === activeFilterId)

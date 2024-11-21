@@ -9,13 +9,14 @@ import AdminSidebar from "../AdminSidebar/AdminSidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import WishlistComponent from "../WishlistComponent/WishlistComponent";
+import { useAdminAuth } from "@/contexts/AuthContext/AdminAuthContext";
 
 const AdminNavbar = () => {
 	const [collapsed, setCollapsed] = useState<boolean>(false);
 	const [showMenubar, setShowMenubar] = useState<boolean>(false);
 	const [showDropDown, setShowDropDown] = useState(false);
 	const [showWishList, setShowWishList] = useState(false);
-	const { user } = useAuth();
+	const { user } = useAdminAuth();
 
 	useEffect(() => {
 		// Function to handle click events
@@ -44,7 +45,7 @@ const AdminNavbar = () => {
 		<div className={styles.navbar_container}>
 			<div className={styles.logo_icon}>
 				<Link href="/">
-				<Logo type="dark" />
+					<Logo type="dark" />
 				</Link>
 			</div>
 
@@ -143,7 +144,7 @@ const MenuDropDown = ({
 	showDropDownMenu: boolean;
 	setShowWishList: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user } = useAuth();
+	const { user } = useAdminAuth();
 	return (
 		<div
 			className={`${styles.drop_down_menu_container} drop-down-menu-class`}
@@ -167,7 +168,10 @@ const MenuDropDown = ({
 					<Image src="/svgs/user.svg" alt="user-icon" height={32} width={32} />
 					<h3>Profile</h3>
 				</Link>
-				<li className={`${styles.menu_item} ${styles.cursor} wishlist_icon`} onClick={() => setShowWishList(true)}>
+				<li
+					className={`${styles.menu_item} ${styles.cursor} wishlist_icon`}
+					onClick={() => setShowWishList(true)}
+				>
 					<Image src="/svgs/star.svg" alt="user-icon" height={32} width={32} />
 					<h3>Wishlist</h3>
 				</li>

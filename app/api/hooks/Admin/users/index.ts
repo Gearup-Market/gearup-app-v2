@@ -81,6 +81,35 @@ export const usePostAdminSignIn = (
 		...options
 	});
 
+// ----------------------------------------------
+
+export const useGetVerifyAdminToken = ({ token }: { token: string }) => {
+	return useQuery<any, any, any>({
+		queryKey: ["verifyAdminToken"],
+		queryFn: async () => {
+			const response = await api.get(`${API_URL.verifyAdminToken}`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			});
+			return response.data;
+		},
+		refetchOnMount: true
+	});
+};
+
+export const useGetAdmin = (
+	{ adminId }: { adminId: string },
+	options?: UseQueryOptions<any, any>
+) =>
+	useQuery<any, any>({
+		queryKey: ["admin"],
+		queryFn: async () => (await api.get(`${API_URL.getAdmin}${adminId}`)).data,
+		...options,
+		enabled: !!adminId,
+		refetchOnMount: false
+	});
+
 export const useGetAllUsers = (options?: UseQueryOptions<IGetAllUsersResp, IGetErr>) =>
 	useQuery<IGetAllUsersResp, IGetErr>({
 		queryKey: ["getAllAdminUsers"],
@@ -119,4 +148,23 @@ export const useGetAdminDashboard = (
 			).data,
 		...options,
 		refetchOnMount: true
+	});
+
+export const useGetAdminMembers = (options?: UseQueryOptions<any, any>) =>
+	useQuery<any, any>({
+		queryKey: ["getAdminMembers"],
+		queryFn: async () => (await api.get(`${API_URL.adminMembers}`)).data,
+		...options,
+		refetchOnMount: true
+	});
+
+export const usePostUpdateAdmin = (options?: UseMutationOptions<any, AxiosError, any>) =>
+	useMutation<any, AxiosError, any>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.updateAdminUser, {
+					...props
+				})
+			).data.data,
+		...options
 	});
