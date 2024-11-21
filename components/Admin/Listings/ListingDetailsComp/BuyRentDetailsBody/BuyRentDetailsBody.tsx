@@ -43,8 +43,6 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 		return [mainGroup, subGroup];
 	}, [fieldValues]);
 
-	console.log(listingType, "type")
-
 	return (
 		<div className={styles.section}>
 			<div className={styles.body}>
@@ -248,7 +246,13 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 									<p className={styles.view_explorer_title}>
 										Transaction ID
 									</p>
-									<Link href={getExplorerUrl(`txns/${listing.transactionId}`)} target="_blank" className={styles.view_explorer}>
+									<Link
+										href={getExplorerUrl(
+											`txns/${listing.transactionId}`
+										)}
+										target="_blank"
+										className={styles.view_explorer}
+									>
 										View explorer
 									</Link>
 								</div>
@@ -262,7 +266,9 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 											alt="copy-icon"
 											width={10}
 											height={10}
-											onClick={()=>copyText(listing?.transactionId ?? "")}
+											onClick={() =>
+												copyText(listing?.transactionId ?? "")
+											}
 										/>
 									</p>
 								</div>

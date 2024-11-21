@@ -16,7 +16,7 @@ const AdminNavbar = () => {
 	const [showMenubar, setShowMenubar] = useState<boolean>(false);
 	const [showDropDown, setShowDropDown] = useState(false);
 	const [showWishList, setShowWishList] = useState(false);
-	const { user } = useAdminAuth();
+	const { user } = useAuth();
 
 	useEffect(() => {
 		// Function to handle click events
@@ -144,7 +144,7 @@ const MenuDropDown = ({
 	showDropDownMenu: boolean;
 	setShowWishList: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user } = useAdminAuth();
+	const { user } = useAuth();
 	return (
 		<div
 			className={`${styles.drop_down_menu_container} drop-down-menu-class`}

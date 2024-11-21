@@ -37,8 +37,6 @@ export const AdminAuthProvider = ({ children }: AuthProviderProps) => {
 	});
 	const { syncCartItems } = useCart();
 
-	console.log("Admin Auth context", pathname, isTokenValid);
-
 	const queryClient = useQueryClient();
 
 	useEffect(() => {
@@ -96,7 +94,6 @@ export const AdminProtectRoute = ({ children }: ProtectRouteProps) => {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const { isAuthenticated, loading } = useAdminAuth();
-	console.log("isAuthenticated==>", isAuthenticated);
 
 	const UNPROTECTED_ROUTES = useMemo(() => ["/admin/login"], []);
 

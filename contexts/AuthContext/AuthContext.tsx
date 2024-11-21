@@ -36,8 +36,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	});
 	const { syncCartItems } = useCart();
 
-	console.log("Auth context", pathname, isTokenValid);
-
 	const queryClient = useQueryClient();
 
 	useEffect(() => {
