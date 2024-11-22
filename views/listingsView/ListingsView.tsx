@@ -144,6 +144,8 @@ const ListingsView = () => {
 					categories={categories?.data}
 					selectedCategory={selectedCategory}
 					selectedSubCategory={selectedSubCategory}
+					setSelectedCategory={onChangeSelectedCategory}
+					setSelectedSubCategory={setSelectedSubCategory}
 				/>
 				<div className={styles.block}>
 					<div className={styles.row}>

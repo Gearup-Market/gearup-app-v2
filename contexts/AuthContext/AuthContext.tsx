@@ -95,7 +95,14 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	const { isAuthenticated, loading } = useAuth();
 
 	const UNPROTECTED_ROUTES = useMemo(
-		() => ["/login", "/signup", "/forgot-password", "/password-reset", "/verify"],
+		() => [
+			"/login",
+			"/signup",
+			"/forgot-password",
+			"/password-reset",
+			"/verify",
+			"/reset"
+		],
 		[]
 	);
 
