@@ -53,6 +53,21 @@ const useGetStellarWallet = ({
 		refetchOnMount: false
 	});
 
+const useGetExportWallet = ({
+	userId,
+	options
+}: {
+	userId?: string;
+	options?: UseQueryOptions<any, IGetErr>;
+}) =>
+	useQuery<any, IGetErr>({
+		queryKey: ["exportWallet"],
+		queryFn: async () => (await api.get(`${API_URL.exportWallet}/${userId}`)).data,
+		...options,
+		enabled: !!userId,
+		refetchOnMount: false
+	});
+
 const useGetStellarTransactions = ({
 	userId,
 	query,
@@ -121,5 +136,6 @@ export {
 	useGetWalletTransactions,
 	useGetStellarWallet,
 	useGetStellarTransactions,
-	usePostTransferXLM
+	usePostTransferXLM,
+	useGetExportWallet
 };

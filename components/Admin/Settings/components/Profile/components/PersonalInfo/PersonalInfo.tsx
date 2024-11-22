@@ -172,8 +172,8 @@ const PersonalInfoForm: React.FC = () => {
 									</Field> */}
 									<InputField
 										label="My role"
-										placeholder="enter address"
-										value={user.role.roleName}
+										placeholder="role"
+										value={user.role ? user.role.roleName : ""}
 										disabled
 										inputClassName={styles.disabled_field}
 									/>
