@@ -24,8 +24,11 @@ const DashboardUserHeader = ({ data }: any) => {
 						<div>
 							<div className={styles.name_container}>
 								<h3 className={styles.user_name}>{data.userName}</h3>
-								<span className={styles.verification_status}>
-									Verified
+								<span
+									className={styles.verification_status}
+									data-verified={data.isVerified}
+								>
+									{data.isVerified ? "Verified" : "Not verified"}
 								</span>
 							</div>
 							<p className={styles.faded_text}>{data.email}</p>

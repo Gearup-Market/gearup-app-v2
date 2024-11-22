@@ -26,6 +26,7 @@ export const API_URL = {
 	categories: "/listings/categories",
 	categoriesDetailed: "/listings/categories/detailed",
 	stellarWallet: "/stellar/wallets",
+	exportWallet: "/stellar/wallets/export",
 	stellarWalletTransactions: "/stellar/wallets/transactions",
 	transferXlm: "/stellar/wallets/transfer",
 	addCart: "/cart/create",

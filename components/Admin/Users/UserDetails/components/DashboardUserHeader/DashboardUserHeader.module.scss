@@ -97,11 +97,16 @@
 
 					.verification_status {
 						font-size: 1.6rem;
-						font-weight: 700;
-						background-color: #ecfdf3;
-						color: #027a48;
 						padding: 0.5rem 1rem;
 						border-radius: 1.6rem;
+						background-color: #f2f4f7;
+						color: #344054;
+						font-weight: 500;
+						&[data-verified="true"] {
+							font-weight: 700;
+							background-color: #ecfdf3;
+							color: #027a48;
+						}
 					}
 				}
 
