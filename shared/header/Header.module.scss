@@ -447,6 +447,8 @@
 						@include flex(flex-start, center);
 						gap: 0.8rem;
 						margin-left: 1.6rem;
+						z-index: 1;
+						position: relative;
 					}
 					.link_icon {
 						position: relative;
@@ -480,6 +482,8 @@
 						border-top: 0.1rem solid #dedfe0;
 						background-color: transparent;
 						backdrop-filter: unset;
+						pointer-events: auto;
+						z-index: 2;
 						.subMenu {
 							padding: 0;
 							.subMenu_title {
@@ -507,6 +511,9 @@
 							}
 						}
 					}
+					&::after {
+						display: none;
+					}
 					&:hover {
 						&::after {
 							width: 0;
@@ -520,6 +527,7 @@
 					&[data-active="true"] {
 						max-height: 1000rem;
 						transition: all 0.5s ease-in-out;
+						overflow-y: auto;
 						.mob_chevron {
 							rotate: 180deg;
 							transition: rotate 0.5s ease-in-out;

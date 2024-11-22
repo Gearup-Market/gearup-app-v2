@@ -11,6 +11,7 @@ import Image from "next/image";
 import { iCategory } from "@/app/api/hooks/listings/types";
 import { Accordion, CheckBox, RadioButton } from "@/shared";
 import RadioBox from "@/shared/Radio/Radio";
+import BreadCrumbSelect from "../breadCrumbSelet/BreadCrumbSelect";
 
 interface Props {
 	hideFilters: boolean;
@@ -19,6 +20,8 @@ interface Props {
 	categories?: iCategory[];
 	selectedCategory: iCategory | null;
 	selectedSubCategory: iCategory | null;
+	setSelectedSubCategory: React.Dispatch<React.SetStateAction<iCategory | null>>;
+	setSelectedCategory: (option: iCategory) => void;
 }
 
 const Filter = ({
@@ -26,7 +29,10 @@ const Filter = ({
 	setHideFilters,
 	categories,
 	selectedCategory,
-	selectedSubCategory
+	selectedSubCategory,
+	setSelectedSubCategory,
+	setSelectedCategory,
+	isMobile
 }: Props) => {
 	const [filterRange, setFilterRange] = useState<any>(null);
 	const [selectedValue, setSelectedValue] = useState<string>("");
@@ -56,6 +62,15 @@ const Filter = ({
 				</div>
 			</div>
 			<div className={styles.body}>
+				<BreadCrumbSelect
+					className={styles.desk_breadcrumb}
+					isMobile={isMobile}
+					categories={categories}
+					selectedCategory={selectedCategory}
+					selectedSubCategory={selectedSubCategory}
+					setSelectedCategory={setSelectedCategory}
+					setSelectedSubCategory={setSelectedSubCategory}
+				/>
 				<RangeSlider min={0} max={1000000} onChange={setFilterRange} />
 				{selectedSubCategory &&
 					selectedSubCategory.fields.map((subCategories: any) => (

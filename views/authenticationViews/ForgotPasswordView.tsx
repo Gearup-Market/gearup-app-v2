@@ -6,9 +6,18 @@ import Link from "next/link";
 import { useResetPasswordRequest } from "@/app/api/hooks/users";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/configureStore";
+import { updateUser } from "@/store/slices/userSlice";
+import * as Yup from "yup";
+
+const schema = {
+	email: Yup.string().email("Invalid email format").required("Email is required")
+};
 
 const ForgotPasswordView = () => {
 	const [email, setEmail] = useState("");
+	const [errors, setErrors] = useState<any>({});
+	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const {
 		mutateAsync: postResetPassword,
@@ -18,11 +27,36 @@ const ForgotPasswordView = () => {
 	} = useResetPasswordRequest();
 
 	const onSubmit = async () => {
+		const validateFormData = async () => {
+			const validationSchema = Yup.object().shape(schema);
+
+			try {
+				await validationSchema?.validate({ email }, { abortEarly: false });
+				return true;
+			} catch (validationErrors: any) {
+				const formattedErrors = validationErrors.inner.reduce(
+					(acc: any, curr: any) => ({
+						...acc,
+						[curr.path]: curr.message
+					}),
+					{}
+				);
+				setErrors(formattedErrors);
+				return false;
+			}
+		};
+
+		setErrors({});
+		const isValid = await validateFormData();
+		if (!isValid) {
+			return;
+		}
 		try {
 			const res = await postResetPassword({ email });
 			if (isSuccess) {
 				toast.success("Verification code sent successfully");
 			}
+			dispatch(updateUser({ email }));
 			router.push("/reset");
 		} catch (error: any) {
 			toast.error(
@@ -46,7 +80,9 @@ const ForgotPasswordView = () => {
 					placeholder="Enter email address"
 					className={styles.input}
 					value={email}
+					type="email"
 					onChange={e => setEmail(e.target.value)}
+					error={errors.email}
 				/>
 				<Button className={styles.button} onClick={onSubmit}>
 					{isPending ? (

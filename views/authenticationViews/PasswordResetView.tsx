@@ -22,7 +22,10 @@ const PasswordResetView = () => {
 						to your gearup dashboard
 					</p>
 				</div>
-				<Button className={styles.button}>
+				<Button className={styles.button} style={{ marginBottom: 0 }}>
+					<Link href="/login">Login</Link>
+				</Button>
+				<Button className={styles.button} buttonType="secondary">
 					<Link href="/">Back to homepage</Link>
 				</Button>
 			</div>
