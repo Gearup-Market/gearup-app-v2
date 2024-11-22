@@ -34,6 +34,7 @@ export type IResetPasswordErr = AxiosError<{
 }>;
 
 export interface IResetPasswordProps {
+	email: string;
 	newPassword: string;
 	token: string;
 }
@@ -195,7 +196,7 @@ export type iPostRegisterKycReq = {
 	lastName: string;
 	birthday: string;
 	bvn: string;
-	phoneNumber: string;
+	phoneNumber?: string;
 	country: string;
 	address: string;
 	city: string;

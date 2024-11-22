@@ -97,6 +97,7 @@ const TotalEarnings = () => {
 					hideFooter
 					autoHeight
 					paginationMode="server"
+					getRowId={row => row.id}
 				/>
 			</div>
 			<ul className={styles.container__cards}>

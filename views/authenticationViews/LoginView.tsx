@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/store/configureStore";
 import { updateToken, updateUser } from "@/store/slices/userSlice";
 import { usePostUserSignIn } from "@/app/api/hooks/users";
 import toast from "react-hot-toast";
+import { setAuthToken } from "@/utils/tokenStorage";
 
 // Validation schema using Yup
 const loginSchema = Yup.object().shape({
@@ -39,8 +40,11 @@ const LoginView = () => {
 			});
 			if (res?.data?.token) {
 				toast.success("Login successful");
+				console.log(res?.data, "user from login");
+				
 				dispatch(updateUser(res?.data?.user));
 				dispatch(updateToken(res.data.token));
+				setAuthToken(res.data.token);
 				router.push(
 					returnUrl && !returnUrl.includes("login")
 						? returnUrl
@@ -49,7 +53,12 @@ const LoginView = () => {
 				// window.location.reload();
 			}
 		} catch (error: any) {
+			console.log("error occurred....", error.response.data.message, error.response?.status);
 			toast.error(error.response.data.message || "Login failed");
+
+			if(error?.response?.data?.message.includes("Please verify your email")) {
+				router.push("/verify");
+			}
 		}
 	};
 

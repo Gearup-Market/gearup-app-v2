@@ -112,7 +112,7 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 		};
 
 		const initialValues: PhoneNumberForm = {
-			phoneNumber: verificationState.phoneNumber
+			phoneNumber: verificationState.phoneNumber || ""
 		};
 
 		const validationSchema = Yup.object().shape({

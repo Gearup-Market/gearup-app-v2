@@ -54,7 +54,7 @@ const PersonalIdentification = forwardRef<
 		firstName: verificationState.firstName,
 		lastName: verificationState.lastName,
 		bvn: verificationState.bvn,
-		phoneNumber: verificationState.phoneNumber,
+		// phoneNumber: verificationState.phoneNumber,
 		birthday: verificationState.birthday,
 		country: verificationState.country,
 		city: verificationState.city,
@@ -116,7 +116,7 @@ const PersonalIdentification = forwardRef<
 					updateUser({
 						firstName: res.data.firstName || payload.firstName,
 						lastName: res.data.lastName || payload.lastName,
-						phoneNumber: res.data.phoneNumber || payload.phoneNumber,
+						// phoneNumber: res.data.phoneNumber || payload.phoneNumber,
 						address: res.data.address || payload.address
 					})
 				);

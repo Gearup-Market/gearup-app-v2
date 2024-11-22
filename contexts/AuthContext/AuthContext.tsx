@@ -3,11 +3,11 @@ import { Box } from "@mui/material";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { AuthProviderProps, ProtectRouteProps } from "./types";
-import { removeAuthToken } from "@/utils/tokenStorage";
+import { removeAuthToken, setAuthToken } from "@/utils/tokenStorage";
 import { DefaultProviderType } from "@/interfaces/authcontext";
 import { useGetUser, useGetVerifyToken } from "@/app/api/hooks/users";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
-import { clearUser, updateUser } from "@/store/slices/userSlice";
+import { clearUser, updateToken, updateUser } from "@/store/slices/userSlice";
 import useCart from "@/hooks/useCart";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { queryClient } from "@/app/api";
@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const { isFetching: isUserLoading, data: userData } = useGetUser({
 		userId: user._id as string
 	});
+
 	const { data: tokenData, isFetched } = useGetVerifyToken({
 		token: user.token as string
 	});
@@ -47,6 +48,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	// Verify Token
 	useEffect(() => {
+		if(tokenData?.token){
+			dispatch(updateToken(tokenData.token));
+			setAuthToken(tokenData.token);
+		}
+		
 		setIsTokenValid(!!tokenData);
 	}, [isFetched, tokenData]);
 
@@ -106,12 +112,15 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 		[]
 	);
 
-	const returnUrl = searchParams.get("returnUrl") || "/user/dashboard";
+	const returnUrl =  searchParams.get("returnUrl") || "/user/dashboard";
+
 
 	useEffect(() => {
+		console.log(isAuthenticated, "is authenticated");
+		
 		if (!loading) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
-				router.replace(`/login?returnUrl=${pathname}`);
+				router.replace(`/login?returnUrl=${returnUrl}`);
 			} else if (isAuthenticated && pathname === "/login") {
 				router.replace(returnUrl);
 			}

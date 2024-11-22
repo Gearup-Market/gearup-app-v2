@@ -13,12 +13,12 @@ interface Props {
 }
 
 const VerifiedView = ({ token }: Props) => {
-	const { isLoading, isSuccess, isError, error, status } = useGetVerifyOTP({
-		otp: token as string
-	});
-	const { mutateAsync: postOTP } = usePostResendOTP();
 	const searchParams = useSearchParams();
 	const email = searchParams.get("email");
+	const { isLoading, isSuccess, isError, error, status } = useGetVerifyOTP({
+		otp: token as string,
+	});
+	const { mutateAsync: postOTP } = usePostResendOTP();
 
 	useEffect(() => {
 		if (isSuccess) {

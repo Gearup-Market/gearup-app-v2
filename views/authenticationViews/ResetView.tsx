@@ -48,8 +48,6 @@ const ResetView = () => {
 		setResetData({ ...resetData, [name]: value });
 	};
 
-	console.log(user);
-
 	const onSubmit = async () => {
 		const validateFormData = async (data: ResetData) => {
 			const validationSchema = Yup.object().shape(schema);
@@ -78,6 +76,7 @@ const ResetView = () => {
 
 		try {
 			const res = await postResetPassword({
+				email: user.email,
 				token: resetData.otp,
 				newPassword: resetData.confirmPassword
 			});

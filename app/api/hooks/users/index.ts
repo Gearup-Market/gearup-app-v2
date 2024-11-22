@@ -43,6 +43,7 @@ const useResetPassword = (
 		mutationFn: async props =>
 			(
 				await api.post(API_URL.resetPassword, {
+					email: props.email,
 					newPassword: props.newPassword,
 					token: props.token
 				})
@@ -153,13 +154,10 @@ const useGetVerifyToken = ({ token }: { token: string }) => {
 	return useQuery<any, any, any>({
 		queryKey: ["verifyToken"],
 		queryFn: async () => {
-			const response = await api.get(`${API_URL.verifyToken}`, {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			});
+			const response = await api.get(`${API_URL.verifyToken}/${token}`);
 			return response.data;
 		},
+		enabled: !!token,
 		refetchOnMount: true
 	});
 };
@@ -337,21 +335,18 @@ const usePostUpdateUser = (
 		...options
 	});
 
-	const usePostUpdateUserPin = (
-		options?: Omit<
-			UseMutationOptions<UserUpdateResp, AxiosError, any>,
-			"mutationFn"
-		>
-	) =>
-		useMutation<UserUpdateResp, AxiosError, any>({
-			mutationFn: async props =>
-				(
-					await api.post(API_URL.updateUserPin, {
-						...props
-					})
-				).data.data,
-			...options
-		});
+const usePostUpdateUserPin = (
+	options?: Omit<UseMutationOptions<UserUpdateResp, AxiosError, any>, "mutationFn">
+) =>
+	useMutation<UserUpdateResp, AxiosError, any>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.updateUserPin, {
+					...props
+				})
+			).data.data,
+		...options
+	});
 
 export {
 	useResetPassword,
