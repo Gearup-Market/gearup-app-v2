@@ -41,21 +41,19 @@ const TotalEarnings = () => {
 						}
 					/>
 					<p style={{ fontSize: "1.2rem" }}>
-                        {
-                            tableEnum[value as keyof typeof tableEnum]
-                        }
-                    </p>
+						{tableEnum[value as keyof typeof tableEnum]}
+					</p>
 				</div>
 			)
 		},
-		 {
-		 	...sharedColDef,
-		 	field: "productCount",
-		 	cellClassName: styles.table_cell,
-		 	headerName: "No of Products",
-		 	headerClassName: styles.table_header,
-		 	minWidth: 200
-		 },
+		{
+			...sharedColDef,
+			field: "productCount",
+			cellClassName: styles.table_cell,
+			headerName: "No of Products",
+			headerClassName: styles.table_header,
+			minWidth: 200
+		},
 		{
 			...sharedColDef,
 			field: "percentage",
@@ -74,12 +72,16 @@ const TotalEarnings = () => {
 		}
 	];
 
-    const rows = convertObjToArray(salesData?.breakdown as GearData) || [];
+	const rows = convertObjToArray(salesData?.breakdown as GearData) || [];
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__pie_chart_container}>
-				<PieChartComponent data={rows} colors={COLORS} totalEarnings={salesData?.totalEarnings}/>
+				<PieChartComponent
+					data={rows}
+					colors={COLORS}
+					totalEarnings={salesData?.totalEarnings}
+				/>
 				<ul>
 					{rows?.map((item, index) => (
 						<li key={index}>
@@ -111,20 +113,20 @@ const TotalEarnings = () => {
 
 export default TotalEarnings;
 
-
 export enum tableEnum {
-    "gearSales" = "Gear Sales",
-    "gearRentals" = "Gear Rentals",
-	"productCount" = "No of Products",
+	"gearSales" = "Gear Sales",
+	"gearRentals" = "Gear Rentals",
+	"productCount" = "No of Products"
 }
 
 export const convertObjToArray = (obj: GearData) => {
-    if (!obj) return [];
-    return Object.entries(obj).map(([key, value]) => ({
-        id: key,
-        name: key,
-        amount: !!value.amount ? value.amount : 50,
-        percentage: value.percentage,
-		productCount: value.productCount
-    }));
+	if (!obj) return [];
+	return Object.entries(obj).map(([key, value]) => ({
+		id: key,
+		name: key,
+		amount: value.amount,
+		percentage: value.percentage,
+		productCount: value.productCount,
+		value: !!value.amount ? value.amount : 50
+	}));
 };
