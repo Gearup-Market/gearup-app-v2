@@ -10,6 +10,15 @@
 		justify-content: space-between;
 		align-items: center;
 		gap: 2rem;
+		.modal {
+			width: 50rem;
+			max-width: 95%;
+			min-height: 20rem;
+			.button {
+				width: 100%;
+				margin-top: 4rem;
+			}
+		}
 
 		.btns_container {
 			display: flex;

@@ -116,7 +116,7 @@ const RecentDeals = () => {
 
 	return (
 		<div className={styles.container}>
-			<h2 className={styles.container__title}> RecentDeals</h2>
+			<h2 className={styles.container__title}> Recent Deals</h2>
 			{!!paginatedTransactions?.length && (
 				<div className={styles.container__input_filter_container}>
 					<InputField

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import styles from "./layout.module.scss";
+import { ProtectRoute } from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
 	title: "Create a Listing",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function ListingLayout({ children }: { children: React.ReactNode }) {
-	return <main className={styles.main}>{children}</main>;
+	return (
+		<ProtectRoute>
+			<main className={styles.main}>{children}</main>
+		</ProtectRoute>
+	);
 }

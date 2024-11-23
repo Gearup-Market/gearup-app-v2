@@ -81,7 +81,7 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 		},
 		{
 			...sharedColDef,
-			field: "account_status",
+			field: "isActive",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Account status",
@@ -91,9 +91,9 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 					<p
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status}
-						data-status={value?.toLowerCase()}
+						data-status={value}
 					>
-						{value}
+						{value ? "Active" : "In-active"}
 					</p>
 				</div>
 			)
