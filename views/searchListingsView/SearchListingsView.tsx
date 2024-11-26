@@ -100,12 +100,13 @@ const SearchListingsView = () => {
 				category => category.name.toLowerCase() === categoryPathName
 			);
 			const category = foundCategory || null;
+			console.log(category, categoryPathName, foundCategory);
 			setSelectedCategory(category);
 		}
 		if (!categoryPathName) {
 			setSelectedCategory(null);
 		}
-	}, [categoryPathName, isFetchingCategories]);
+	}, [categoryPathName, isFetchingCategories, categories?.data]);
 
 	const onChangeSelectedCategory = (option: iCategory) => {
 		setSelectedCategory(option);
