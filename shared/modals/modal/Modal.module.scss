@@ -20,16 +20,16 @@
 		background-color: $col-white;
 		border-radius: 1.6rem;
 		padding: 4rem;
-		overflow:hidden;
+		overflow: hidden;
 		.header {
 			position: relative;
 			margin-bottom: 2.4rem;
 
-			span{
+			span {
 				display: flex;
 				align-items: center;
 				gap: 1rem;
-				.back_icon{
+				.back_icon {
 					height: 3rem;
 					width: 3rem;
 				}
@@ -77,20 +77,22 @@
 				}
 			}
 		}
-		.body{
+		.body {
 			overflow-y: auto;
 			height: 100%;
 			@include noScrollBar;
 		}
 	}
 
-	@include screenMax("mobile"){
+	@include screenMax("mobile") {
 		padding: 1rem;
 
-		.modal{
+		.modal {
 			padding: 2rem;
 			min-width: 100%;
-
+			.body {
+				height: 80%;
+			}
 			.header {
 				position: relative;
 				margin-bottom: 2.4rem;

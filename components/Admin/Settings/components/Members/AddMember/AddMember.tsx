@@ -57,6 +57,7 @@ const AddMember = ({ openModal, setOpenModal }: AddMemberProps) => {
 			});
 			setOpenModal(false);
 			toast.success("Admin created successfully");
+			window.location.reload();
 		} catch (error) {
 			toast.error("Error creating admin");
 		}
