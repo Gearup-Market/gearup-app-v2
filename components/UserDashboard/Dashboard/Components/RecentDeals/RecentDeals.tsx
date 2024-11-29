@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./RecentDeals.module.scss";
 import { DataGrid, GridAddIcon, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -10,6 +10,9 @@ import { customisedTableClasses } from "@/utils/classes";
 import Link from "next/link";
 import { recentDeals } from "@/mock/RecentDealsData.mock";
 import useTransactions from "@/hooks/useTransactions";
+import { useAppSelector } from "@/store/configureStore";
+import { debounce } from "lodash";
+import { formatNum } from "@/utils";
 const sharedColDef: GridColDef = {
 	field: "",
 	sortable: true,
@@ -18,33 +21,75 @@ const sharedColDef: GridColDef = {
 const RecentDeals = () => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(5);
+	const [searchInput, setSearchInput] = useState<string>("");
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const pageSize: number = 12;
 	const { data, isFetching, error } = useTransactions();
 	const [paginatedTransactions, setPaginatedTransactions] =
 		useState<GridRowsProp>(data);
 
-	const handlePagination = (page: number) => {
-		const start = (page - 1) * limit;
-		const end = start + limit;
-		setPaginatedTransactions(recentDeals.slice(start, end));
-		setPage(page);
-	};
+	const transactions = useMemo(
+		() =>
+			data.map(({ _id, item, amount, type, status, createdAt }) => {
+				return {
+					id: _id,
+					gearName: item.productName,
+					amount: `₦${formatNum(amount)}`,
+					transactionDate: createdAt.split("T")[0],
+					transactionType: type,
+					transactionStatus: status,
+					gearImage: item.listingPhotos[0]
+				};
+			}),
+		[data]
+	);
+
+	const filteredUsers = useMemo(() => {
+		if (!searchInput) return transactions;
+		return transactions.filter(
+			transaction =>
+				transaction.gearName.toLowerCase().includes(searchInput.toLowerCase()) ||
+				transaction.id.toLowerCase().includes(searchInput.toLowerCase())
+		);
+	}, [searchInput, transactions]);
+
+	const currentTableData = useMemo(() => {
+		const firstPageIndex = (currentPage - 1) * pageSize;
+		const lastPageIndex = firstPageIndex + pageSize;
+		return filteredUsers.slice(firstPageIndex, lastPageIndex);
+	}, [currentPage, filteredUsers]);
+
+	const startNumber = (currentPage - 1) * pageSize + 1;
+	const endNumber = Math.min(
+		startNumber + currentTableData?.length - 1,
+		filteredUsers?.length
+	);
+
+	const debouncedSearch = useMemo(
+		() =>
+			debounce((value: string) => {
+				setSearchInput(value);
+			}, 300),
+		[]
+	);
+
+	useEffect(() => {
+		return () => {
+			debouncedSearch.cancel();
+		};
+	}, [debouncedSearch]);
 
 	const columns: GridColDef[] = [
 		{
 			...sharedColDef,
-			field: "title",
+			field: "gearName",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Name",
 			minWidth: 250,
-			renderCell: ({ value }) => (
+			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
-					<Image
-						src="/images/admin-img.jpg"
-						alt={value}
-						width={16}
-						height={16}
-					/>
+					<Image src={row.gearImage} alt={value} width={16} height={16} />
 					<p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
 						{value}
 					</p>
@@ -53,7 +98,7 @@ const RecentDeals = () => {
 		},
 		{
 			...sharedColDef,
-			field: "price",
+			field: "amount",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Amount",
@@ -61,7 +106,7 @@ const RecentDeals = () => {
 		},
 		{
 			...sharedColDef,
-			field: "transaction_date",
+			field: "transactionDate",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Transaction Date",
@@ -69,7 +114,7 @@ const RecentDeals = () => {
 		},
 		{
 			...sharedColDef,
-			field: "type",
+			field: "transactionType",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Type",
@@ -77,7 +122,7 @@ const RecentDeals = () => {
 		},
 		{
 			...sharedColDef,
-			field: "status",
+			field: "transactionStatus",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Status",
@@ -120,9 +165,10 @@ const RecentDeals = () => {
 			{!!paginatedTransactions?.length && (
 				<div className={styles.container__input_filter_container}>
 					<InputField
-						placeholder="Search"
+						placeholder="Enter name or id"
 						icon="/svgs/icon-search-dark.svg"
 						iconTitle="search-icon"
+						onChange={e => debouncedSearch(e.target.value)}
 					/>
 					<div className={styles.filter_icon_container}>
 						<Image
@@ -136,7 +182,7 @@ const RecentDeals = () => {
 				</div>
 			)}
 
-			{paginatedTransactions?.length < 1 ? (
+			{currentTableData?.length < 1 ? (
 				<div className={styles.empty_rows}>
 					<span className={styles.transaction_icon}>
 						<TransactionNavIcon color="#FFB30F" />
@@ -147,7 +193,7 @@ const RecentDeals = () => {
 				<>
 					<div className={styles.container__table} style={{ width: "100%" }}>
 						<DataGrid
-							rows={paginatedTransactions}
+							rows={currentTableData}
 							columns={columns}
 							hideFooterPagination={true}
 							hideFooter
@@ -155,30 +201,30 @@ const RecentDeals = () => {
 							sx={customisedTableClasses}
 							autoHeight
 							loading={isFetching}
-							getRowId={row => row._id}
+							getRowId={row => row.id}
 						/>
 					</div>
 
 					<MobileCardContainer>
-						{paginatedTransactions.map((item, ind) => (
+						{currentTableData.map((item, ind) => (
 							<RecentDealsCard
 								key={item.id}
 								item={item}
 								ind={ind}
 								lastEle={
-									ind + 1 === paginatedTransactions.length
-										? true
-										: false
+									ind + 1 === currentTableData.length ? true : false
 								}
 							/>
 						))}
 					</MobileCardContainer>
 
 					<Pagination
-						currentPage={page}
-						onPageChange={handlePagination}
-						totalCount={recentDeals.length}
-						pageSize={limit}
+						currentPage={currentPage}
+						totalCount={transactions?.length}
+						pageSize={pageSize}
+						onPageChange={(page: any) => setCurrentPage(page)}
+						startNumber={startNumber}
+						endNumber={endNumber}
 					/>
 				</>
 			)}
