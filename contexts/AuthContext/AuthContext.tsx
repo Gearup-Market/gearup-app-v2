@@ -48,11 +48,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	// Verify Token
 	useEffect(() => {
-		if(tokenData?.token){
+		if (tokenData?.token) {
 			dispatch(updateToken(tokenData.token));
 			setAuthToken(tokenData.token);
 		}
-		
+
 		setIsTokenValid(!!tokenData);
 	}, [isFetched, tokenData]);
 
@@ -112,12 +112,11 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 		[]
 	);
 
-	const returnUrl =  searchParams.get("returnUrl") || "/user/dashboard";
-
+	const returnUrl = searchParams.get("returnUrl") || pathname;
 
 	useEffect(() => {
-		console.log(isAuthenticated, "is authenticated");
-		
+		console.log(isAuthenticated, "is authenticated", returnUrl);
+
 		if (!loading) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
 				router.replace(`/login?returnUrl=${returnUrl}`);

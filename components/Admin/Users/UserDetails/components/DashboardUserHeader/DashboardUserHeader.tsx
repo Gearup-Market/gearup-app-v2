@@ -23,7 +23,6 @@ const DashboardUserHeader = ({ data }: any) => {
 			});
 			if (res?.data?.token) {
 				toast.success("Successfully deactivated user");
-				console.log(res?.data, "user from login");
 				router.back();
 				// window.location.reload();
 			}

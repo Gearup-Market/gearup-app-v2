@@ -45,6 +45,7 @@
 			border: 0.1rem solid #dedfe0;
 			@include flex(flex-start, center);
 			gap: 0.8rem;
+			cursor: pointer;
 			.icon {
 				position: relative;
 				width: 2rem;

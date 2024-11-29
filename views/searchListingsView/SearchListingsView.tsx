@@ -38,6 +38,8 @@ const SearchListingsView = () => {
 
 	const listingsData = searchedListings.length > 0 ? searchedListings : listings;
 
+	// console.log(searchedListings, listings);
+
 	const filteredListings = useMemo(() => {
 		let initialFilteredListing = listingsData;
 		if (typePathName) {

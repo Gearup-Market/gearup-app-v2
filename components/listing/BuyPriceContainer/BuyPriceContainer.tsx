@@ -7,17 +7,21 @@ import Image from "next/image";
 import { Button, DatePicker, Logo, ToggleSwitch } from "@/shared";
 import format from "date-fns/format";
 import { Listing } from "@/store/slices/listingsSlice";
-import { formatNumber, getDaysDifference } from "@/utils";
+import { AppRoutes, formatNumber, getDaysDifference } from "@/utils";
 import useCart from "@/hooks/useCart";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { useAppSelector } from "@/store/configureStore";
 
 const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 	const { addItemToCart } = useCart();
 	const search = useSearchParams();
 	const actionType = search.get("type");
+	const router = useRouter();
+	const user = useAppSelector(state => state.user);
+	const pathname = usePathname();
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
 	const [inputDate, setInputDate] = useState([
 		{
@@ -63,6 +67,14 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 		}
 	};
 
+	const goToChat = () => {
+		router.push(
+			user.isAuthenticated
+				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}`
+				: `/login?returnUrl=${pathname}`
+		);
+	};
+
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	return (
 		<div className={styles.container}>
@@ -100,12 +112,17 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 					<Button className={styles.button} onClick={handleAddToCart}>
 						Add to cart
 					</Button>
-					<Button buttonType="secondary" className={styles.button}>
+					<Button
+						buttonType="secondary"
+						className={styles.button}
+						onClick={goToChat}
+					>
 						Make an offer
 					</Button>
 					<Button
 						buttonType="transparent"
 						className={`${styles.button} ${styles.ask_question}`}
+						onClick={goToChat}
 					>
 						Ask a question
 					</Button>
