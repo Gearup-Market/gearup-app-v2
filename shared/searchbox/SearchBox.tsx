@@ -44,7 +44,7 @@ const SearchBox = ({ className, onClick }: Props) => {
 			if (res.data) {
 				dispatch(
 					setListings({
-						searchedListings: res.data.listings
+						searchedListings: res.data
 					})
 				);
 				router.push(`/listings?type=${activeButton}`);

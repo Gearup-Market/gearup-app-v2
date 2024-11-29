@@ -39,6 +39,8 @@ const Listings = () => {
 		}
 	};
 
+	console.log(listings);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.title_toggle}>

@@ -23,8 +23,8 @@ export function useListings(shouldFetchAll: boolean = false) {
 	useEffect(() => {
 		if (listings) {
 			const dataToAdd = shouldFetchAll
-				? { listings: listings.data.listings }
-				: { owned: listings.data.listings };
+				? { listings: listings.data }
+				: { owned: listings.data };
 			dispatch(setListings(dataToAdd));
 		}
 	}, [isFetching, listings, shouldFetchAll]);

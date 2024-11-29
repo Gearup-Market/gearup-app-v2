@@ -10,7 +10,7 @@ import {
 	Equipments,
 	Courses,
 	Reviews,
-	Faq,
+	Faq
 } from "@/components/home";
 import dynamic from "next/dynamic";
 const ScrollComponent = dynamic(
@@ -27,7 +27,7 @@ const HomeView = () => {
 			<Listings />
 			<Gears />
 			<Equipments />
-			<Courses />
+			{/* <Courses /> */}
 			<Reviews />
 			<ScrollComponent />
 			<Faq />

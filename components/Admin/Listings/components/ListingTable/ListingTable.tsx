@@ -49,7 +49,7 @@ const ListingTable = ({
 		userId: userid || userId,
 		shouldFetchAll: !userid
 	});
-	const listings = data?.data.listings || [];
+	const listings = data?.data || [];
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
