@@ -51,7 +51,12 @@ export interface iPostListingResp {
 }
 
 export interface iGetListingsResp {
-	data: Listing[];
+	data: {
+		listings: Listing[];
+		limit: number;
+		total: number;
+		page: number;
+	};
 	message: string
 }
 

@@ -12,8 +12,14 @@ export interface OptionProps {
 	icon: string;
 }
 
+export interface Option {
+	label: string;
+	value: string | number;
+}
+
+export type SelectOption = string | Option;
 export interface SelectProps {
-	options?: any[];
+	options?: Array<SelectOption>;
 	onOptionChange?: (option?: any) => void;
 	label?: string;
 	defaultOptionIndex?: number;
@@ -31,7 +37,7 @@ export interface SelectProps {
 }
 
 const Select: React.FunctionComponent<SelectProps> = ({
-	options,
+	options = [],
 	onOptionChange,
 	defaultOptionIndex = -1,
 	className,
@@ -44,8 +50,8 @@ const Select: React.FunctionComponent<SelectProps> = ({
 	optionClassName,
 	bodyClassName,
 	label,
-	required=false,
-	error,
+	required = false,
+	error
 }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [selectedOptionIndex, setSelectedOptionIndex] =
@@ -61,7 +67,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 		setIsOpen(false);
 
 		if (onOptionChange) {
-			onOptionChange(options![selectedIndex]);
+			onOptionChange(typeof options?.[selectedIndex] === 'string' ? options[selectedIndex] : options?.[selectedIndex]?.value);
 		}
 	};
 
@@ -78,7 +84,19 @@ const Select: React.FunctionComponent<SelectProps> = ({
 
 	return (
 		<div className={styles.select_wrapper}>
-			{!!label && <label className={styles.input_label}>{label} {required && <Image src='/svgs/required-icon.svg' alt="required" height={20} width={20}/>}</label>}
+			{!!label && (
+				<label className={styles.input_label}>
+					{label}{" "}
+					{required && (
+						<Image
+							src="/svgs/required-icon.svg"
+							alt="required"
+							height={20}
+							width={20}
+						/>
+					)}
+				</label>
+			)}
 			<div
 				className={`${styles.select} ${className}`}
 				data-type={isTransparent}
@@ -104,7 +122,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 										{selectedOptionIndex === -1
 											? defaultOption
 											: shortenTitle(
-													options![selectedOptionIndex],
+													typeof options?.[selectedOptionIndex] === 'string' ? options[selectedOptionIndex] : options?.[selectedOptionIndex]?.label,
 													42
 											  )}
 									</span>
@@ -128,7 +146,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 				{isOpen && (
 					<div className={`${styles.select_body} ${bodyClassName}`}>
 						<ul className={styles.select_listContainer}>
-							{options!.map((option: string, index) =>
+							{options.map((option: SelectOption, index) =>
 								index !== selectedOptionIndex ? (
 									<li
 										onClick={onOptionClicked(index)}
@@ -136,7 +154,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 										className={styles.select_listItem}
 									>
 										<div className={styles.select_row}>
-											<p className={optionClassName}>{option}</p>
+											<p className={optionClassName}>{typeof option === 'string' ? option : option?.label}</p>
 										</div>
 									</li>
 								) : null

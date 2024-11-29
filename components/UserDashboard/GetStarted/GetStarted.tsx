@@ -29,7 +29,7 @@ const GetStarted = ({
 			},
 			{
 				title: "ID verification",
-				completed: verificationState.isSubmitted
+				completed: verificationState.documentPhoto && verificationState.documentPhoto.length > 0
 			},
 			// {
 			// 	title: "Set up account pin",
@@ -37,7 +37,7 @@ const GetStarted = ({
 			// },
 			{
 				title: "Face match",
-				completed: false
+				completed: verificationState.isSubmitted
 			}
 		],
 		[verificationState]
@@ -56,12 +56,12 @@ const GetStarted = ({
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__subtext_container}>
-				<p className={styles.container__subtext_container__subtext}>{title}</p>
+				<p className={styles.container__subtext_container__subtext}>{verificationState.isRejected ? 'KYC was rejected' : title}</p>
 				<p className={styles.container__subtext_container__percentage}>
 					{totalCompleted}% Complete
 				</p>
 			</div>
-			<p className={styles.container__description}>{description}</p>
+			<p className={styles.container__description}>{verificationState.rejectionMessage ? verificationState.rejectionMessage : description}</p>
 			<ProgressBar
 				percent={totalCompleted}
 				height={8}

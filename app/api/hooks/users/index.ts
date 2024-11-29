@@ -20,6 +20,8 @@ import {
 	iPostRegisterKycResp,
 	iPostReviewResp,
 	iPostReviewRsq,
+	iPostSubmitKycReq,
+	iPostSubmitKycRes,
 	iPostUpdateBankResp,
 	iPostUpdateBankRsq,
 	iPostUserSignInErr,
@@ -226,6 +228,22 @@ const usePostUpdateKyc = (
 		mutationFn: async props =>
 			(
 				await api.post(API_URL.updateKyc, {
+					...props
+				})
+			).data,
+		...options
+	});
+
+export const usePostSubmitKycDoc = (
+	options?: Omit<
+		UseMutationOptions<iPostSubmitKycRes, iPostUserSignUpErr, iPostSubmitKycReq>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostSubmitKycRes, iPostUserSignUpErr, iPostSubmitKycReq>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.submitKycDoc, {
 					...props
 				})
 			).data,

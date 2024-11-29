@@ -1,18 +1,23 @@
-import { iPostRegisterKycReq } from "@/app/api/hooks/users/types";
+import { iPostRegisterKycReq, iPostSubmitKycReq } from "@/app/api/hooks/users/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { string } from "yup";
 
 export type VerificationState = Omit<iPostRegisterKycReq, "userId" | "documentType"> & {
 	userId?: string;
-	documentType?: iPostRegisterKycReq["documentType"];
+	documentNo?: string;
+	documentType?: iPostSubmitKycReq["documentType"];
+	selfie?: string;
 	birthDate: string;
 	birthMonth: string;
 	birthYear: string;
-  resendCodeCountdown: number;
-  _id: string;
-  isPhoneNumberVerified?: boolean;
-  isLoading: boolean;
-  isSubmitted: boolean;
-  isApproved: boolean;
+	resendCodeCountdown: number;
+	_id: string;
+	isPhoneNumberVerified?: boolean;
+	isLoading: boolean;
+	isSubmitted: boolean;
+	isApproved: boolean;
+	isRejected: boolean;
+	rejectionMessage: string;
 };
 
 const initialState: VerificationState = {
@@ -28,13 +33,17 @@ const initialState: VerificationState = {
 	birthMonth: "",
 	birthYear: "",
 	phoneNumber: "",
+	documentNo: "",
 	documentType: "intl_passport",
 	documentPhoto: [],
-  resendCodeCountdown: 60,
-  _id: "",
-  isLoading: false,
-  isSubmitted: false,
-  isApproved: false
+	selfie: "",
+	resendCodeCountdown: 60,
+	_id: "",
+	isLoading: false,
+	isSubmitted: false,
+	isApproved: false,
+	isRejected: false,
+	rejectionMessage: ""
 };
 
 const verificationSlice = createSlice({

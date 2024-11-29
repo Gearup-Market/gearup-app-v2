@@ -31,6 +31,24 @@
                 padding: 1rem;
                 width: 100%;
                 height: 25.5rem;
+                position: relative;
+
+                // .addimage_container {
+				// 	border: 0.1rem dashed #dedfe0;
+				// 	border-radius: 0.8rem;
+				// 	width: 100%;
+				// 	padding: 4.8rem;
+				// 	@extend %center;
+				// 	position: relative;
+					.file_input {
+						width: 100%;
+						height: 100%;
+						z-index: 1;
+						position: absolute;
+						inset: 0;
+						opacity: 0;
+						cursor: pointer;
+					}
 
                 .rotate_icon{
                     transform: rotate(90deg);

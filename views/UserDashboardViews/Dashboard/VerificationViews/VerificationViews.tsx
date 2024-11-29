@@ -14,15 +14,20 @@ import { PersonalIdentificationHandle } from "@/components/UserDashboard/GetStar
 import { PhoneNumberFormHandle } from "@/components/UserDashboard/GetStarted/components/PhoneVerification/PhoneVerification";
 import { useAppSelector } from "@/store/configureStore";
 import { SmallLoader } from "@/shared/loaders";
+import { IdentificationDocumentHandle } from "@/components/UserDashboard/GetStarted/components/IdVerification/IdVerification";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const VerificationViews = () => {
 	const [stepCount, setStepCount] = useState(4);
 	const [currentStep, setCurrentStep] = useState(1);
 	const [isTokenVerified, setIsTokenVerified] = useState(false);
 	const [isTokenVerification, setIsTokenVerification] = useState(false);
-  	const verificationState = useAppSelector(s => s.verification)
+	const verificationState = useAppSelector(s => s.verification);
 	const personalIdentificationRef = useRef<PersonalIdentificationHandle>(null);
+	const documentsRef = useRef<IdentificationDocumentHandle>(null);
 	const phoneNumberFormRef = useRef<PhoneNumberFormHandle>(null);
+	const router = useRouter();
 
 	const onClose = () => {
 		console.log("Close");
@@ -35,18 +40,28 @@ const VerificationViews = () => {
 		"Face Match"
 	];
 
-  useEffect(() => {
-    if(verificationState._id){
-      setCurrentStep(2);
-    }
-    if(verificationState.isPhoneNumberVerified){
-      setIsTokenVerified(true);
-      setCurrentStep(3);
-    }
-    if(verificationState.isSubmitted){
-      setCurrentStep(4)
-    }
-  }, [verificationState])
+	useEffect(() => {
+		if (verificationState.isSubmitted && !verificationState.isRejected) {
+			toast.success("KYC already submitted");
+			router.push("user/dashboard");
+		} else {
+			if (verificationState._id) {
+				setCurrentStep(2);
+			}
+			if (verificationState.isPhoneNumberVerified) {
+				setIsTokenVerified(true);
+				setCurrentStep(3);
+			}
+			if (
+				verificationState.documentNo &&
+				verificationState.documentPhoto &&
+				verificationState.documentPhoto.length > 0 &&
+				!verificationState.isRejected
+			) {
+				setCurrentStep(4);
+			}
+		}
+	}, [verificationState]);
 
 	const handleNextStep = () => {
 		if (currentStep === stepCount) return;
@@ -57,6 +72,10 @@ const VerificationViews = () => {
 		}
 		if (currentStep === 2 && !isTokenVerified) {
 			phoneNumberFormRef.current?.submitForm();
+			return;
+		}
+		if (currentStep === 3) {
+			documentsRef.current?.submitForm();
 			return;
 		}
 		setCurrentStep(currentStep + 1);
@@ -91,7 +110,12 @@ const VerificationViews = () => {
 							setIsTokenVerified={setIsTokenVerified}
 						/>
 					)}
-					{currentStep === 3 && <IdVerification />}
+					{currentStep === 3 && (
+						<IdVerification
+							ref={documentsRef}
+							onSubmitSuccess={() => setCurrentStep(currentStep + 1)}
+						/>
+					)}
 					{currentStep === 4 && <FaceMatch />}
 				</div>
 				<div className={styles.container__main_content__right_side}>
@@ -121,7 +145,7 @@ const VerificationViews = () => {
 						buttonType="primary"
 						iconSuffix="/svgs/color-arrow.svg"
 						className={styles.container__btn_started}
-            disabled={verificationState.isLoading}
+						disabled={verificationState.isLoading}
 					>
 						Continue {verificationState.isLoading && <SmallLoader />}
 					</Button>
