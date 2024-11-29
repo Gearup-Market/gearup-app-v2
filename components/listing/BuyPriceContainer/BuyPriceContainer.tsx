@@ -78,8 +78,13 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 						</h1>
 					</div>
 					<div className={styles.third_party_container}>
-                    <span className={styles.flex_items}>
-							<Image src="/svgs/shield.svg" alt="shield-icon" height={40} width={40} />
+						<span className={styles.flex_items}>
+							<Image
+								src="/svgs/shield.svg"
+								alt="shield-icon"
+								height={40}
+								width={40}
+							/>
 							<p>Add Gearup third party check</p>
 						</span>
 						<span className={styles.flex_items}>
@@ -98,55 +103,60 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 					<Button buttonType="secondary" className={styles.button}>
 						Make an offer
 					</Button>
-					<Button buttonType="transparent" className={`${styles.button} ${styles.ask_question}`}>Ask a question</Button>
+					<Button
+						buttonType="transparent"
+						className={`${styles.button} ${styles.ask_question}`}
+					>
+						Ask a question
+					</Button>
 				</div>
 			</div>
 			<div className={styles.additional_offers_container}>
-                <h2 className={styles.title}>Additional offers</h2>
-                <ul className={styles.offers_container}>
-                    {
-                        additionalOffers.map((item)=>(
-                            <li key={item.id} className={styles.offer}>
-                                <Image src={item.icon} alt={item.name} height={40} width={40}/>
-                                <h3>{item.name}</h3>
-                                {
-                                    !!item.link && <Link href={item.link}>Learn more</Link>
-                                }
-                            </li>
-                        ))
-                    }
-                </ul>
-            </div>
+				<h2 className={styles.title}>Additional offers</h2>
+				<ul className={styles.offers_container}>
+					{additionalOffers.map(item => (
+						<li key={item.id} className={styles.offer}>
+							<Image
+								src={item.icon}
+								alt={item.name}
+								height={40}
+								width={40}
+							/>
+							<h3>{item.name}</h3>
+							{!!item.link && <Link href={item.link}>Learn more</Link>}
+						</li>
+					))}
+				</ul>
+			</div>
 		</div>
 	);
 };
 
 export default BuyPriceContainer;
 
-
 const additionalOffers = [
-    {
-        id: 1,
-        name: "Free gearup buyer’s protection",
-        icon: "/svgs/ad_protection_icon.svg",
-        link: "/policy"
-    },
-    {
-        id: 2,
-        name: "48 hours return policy Learn more",
-        icon: "/svgs/ad_return_icon.svg",
-        link: "/policy"
-    },
-    {
-        id: 3,
-        name: "Accept local pickup",
-        icon: "/svgs/ad_pickup_icon.svg",
-        link: ""
-    },
-    {
-        id: 4,
-        name: "Make an offer",
-        icon: "/svgs/ad_make_offer_icon.svg",
-        link: ""
-    },
-]
+	{
+		id: 1,
+		name: "Free gearup buyer’s protection",
+		icon: "/svgs/ad_protection_icon.svg",
+		link: "/policy"
+	},
+	{
+		id: 2,
+		name: "48 hours return policy Learn more",
+		icon: "/svgs/ad_return_icon.svg",
+		link: "/policy"
+	},
+	{
+		id: 3,
+		name: "Accept local pickup",
+		icon: "/svgs/ad_pickup_icon.svg",
+		link: ""
+	},
+	{
+		id: 4,
+		name: "Make an offer",
+		icon: "/svgs/ad_make_offer_icon.svg",
+		link: ""
+	}
+];

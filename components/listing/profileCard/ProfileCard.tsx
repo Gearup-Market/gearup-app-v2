@@ -21,7 +21,7 @@ const ProfileCard = ({ listing }: { listing: Listing }) => {
 				<div className={styles.small_row}>
 					<div className={styles.avatar}>
 						<Image
-							src={user.avatar || "/svgs/avatar.svg"}
+							src={user.avatar || "/svgs/user.svg"}
 							alt={user.userName!}
 							fill
 							sizes="100vw"

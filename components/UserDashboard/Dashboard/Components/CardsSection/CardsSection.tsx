@@ -94,7 +94,7 @@ const CardsSection = () => {
 						onClick={() => setOpenModal(true)}
 					>
 						<p>
-							{format(inputDate[0].startDate, "MM/dd/yyyy")} - {" "}
+							{format(inputDate[0].startDate, "MM/dd/yyyy")} -{" "}
 							{format(inputDate[0].endDate, "MM/dd/yyyy")}
 						</p>
 					</div>
@@ -117,12 +117,13 @@ const CardsSection = () => {
 										height={16}
 									/>
 									<div>
-										<Link
+										{/* <Link
 											href={`/user/listings?status=${card.title.toLowerCase()}`}
 											className={styles.title}
 										>
 											{card.title}
-										</Link>
+										</Link> */}
+										<div className={styles.title}>{card.title}</div>
 										<p className={styles.amount}>
 											{fetchingData ? (
 												<Spinner size="small" />

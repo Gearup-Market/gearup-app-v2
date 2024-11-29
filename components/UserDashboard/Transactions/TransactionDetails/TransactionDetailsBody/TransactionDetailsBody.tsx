@@ -10,6 +10,7 @@ const TransactionDetailsBody = () => {
 	// if (!transaction) return null;
 
 	const transactionType = transaction?.transactionType;
+	// console.log(transactionType);
 	return (
 		<div className={styles.container}>
 			{transactionType === "Rental" && <RentTransactions />}

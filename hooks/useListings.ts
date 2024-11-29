@@ -1,6 +1,10 @@
 "use client";
 
-import { useGetCategories, useGetListingById, useGetListings } from "@/app/api/hooks/listings";
+import {
+	useGetCategories,
+	useGetListingById,
+	useGetListings
+} from "@/app/api/hooks/listings";
 import { Filter } from "@/interfaces/Listing";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { setListings } from "@/store/slices/listingsSlice";
@@ -19,8 +23,8 @@ export function useListings(shouldFetchAll: boolean = false) {
 	useEffect(() => {
 		if (listings) {
 			const dataToAdd = shouldFetchAll
-				? { listings: listings.data }
-				: { owned: listings.data };
+				? { listings: listings.data.listings }
+				: { owned: listings.data.listings };
 			dispatch(setListings(dataToAdd));
 		}
 	}, [isFetching, listings, shouldFetchAll]);
@@ -31,18 +35,15 @@ export function useListings(shouldFetchAll: boolean = false) {
 export function useSingleListing(listingId: string) {
 	const dispatch = useAppDispatch();
 
-	const {
-		data: listing,
-		isFetching,
-		refetch,
-		error
-	} = useGetListingById(listingId);
+	const { data: listing, isFetching, refetch, error } = useGetListingById(listingId);
 
 	useEffect(() => {
 		if (listing) {
-			dispatch(setListings({
-				currentListing: listing.data
-			}));
+			dispatch(
+				setListings({
+					currentListing: listing.data
+				})
+			);
 		}
 	}, [isFetching, listing, listingId, error]);
 
@@ -85,32 +86,36 @@ const adminParentFilters: Filter[] = [
 	{
 		id: 1,
 		name: "Rent",
-		subFilters:[
+		subFilters: [
 			{
 				id: 1,
-				name: "Pending",
-			}, {
+				name: "Pending"
+			},
+			{
 				id: 2,
-				name: "Approved",
-			}, {
+				name: "Approved"
+			},
+			{
 				id: 3,
-				name: "Declined",
+				name: "Declined"
 			}
 		]
 	},
 	{
 		id: 2,
 		name: "Sell",
-		subFilters:[
+		subFilters: [
 			{
 				id: 1,
-				name: "Pending",
-			}, {
+				name: "Pending"
+			},
+			{
 				id: 2,
-				name: "Approved",
-			}, {
+				name: "Approved"
+			},
+			{
 				id: 3,
-				name: "Declined",
+				name: "Declined"
 			}
 		]
 	},
@@ -129,15 +134,17 @@ const adminParentFilters: Filter[] = [
 const adminSubListingFilters = [
 	{
 		id: 1,
-		name: "Pending",
-	}, {
+		name: "Pending"
+	},
+	{
 		id: 2,
-		name: "Approved",
-	}, {
+		name: "Approved"
+	},
+	{
 		id: 3,
-		name: "Declined",
+		name: "Declined"
 	}
-]
+];
 
 export function useListingFilters() {
 	const [filters, setFilters] = useState<Filter[]>(parentFilters);
@@ -166,7 +173,6 @@ export function useListingFilters() {
 
 export function useAdminListingFilters() {
 	const [filters, setFilters] = useState<Filter[]>(parentFilters);
-
 
 	return { adminParentFilters, adminSubListingFilters };
 }

@@ -51,13 +51,13 @@ export interface iPostListingResp {
 }
 
 export interface iGetListingsResp {
-	data: Listing[];
-	message: string
+	data: { listings: Listing[]; limit: number; page: number; total: number };
+	message: string;
 }
 
 export interface iGetListingResp {
 	data: Listing;
-	message: string
+	message: string;
 }
 
 export interface iCategory {
@@ -106,5 +106,5 @@ export interface SearchQuery {
 	category?: string;
 	productName?: string;
 	listingType?: string;
-	location?: Partial<ListingLocation>
+	location?: Partial<ListingLocation>;
 }
