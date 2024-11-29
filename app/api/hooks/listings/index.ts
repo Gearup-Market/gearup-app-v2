@@ -158,8 +158,6 @@ const useGetCategoriesDetailed = (
 		refetchOnMount: false
 	});
 
-
-
 export {
 	usePostCreateListing,
 	useUploadFiles,
