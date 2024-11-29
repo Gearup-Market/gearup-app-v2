@@ -50,7 +50,7 @@ const TransactionTable = ({
 		userId: userId,
 		shouldFetchAll: true
 	});
-	const listings = data?.data || [];
+	const listings = data?.data.listings || [];
 
 	// const transactions = useMemo(
 	// 	() =>

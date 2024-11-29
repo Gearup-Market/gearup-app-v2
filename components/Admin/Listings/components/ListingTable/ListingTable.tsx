@@ -49,7 +49,7 @@ const ListingTable = ({
 		userId: userid || userId,
 		shouldFetchAll: !userid
 	});
-	const listings = data?.data || [];
+	const listings = data?.data.listings || [];
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -108,7 +108,7 @@ const ListingTable = ({
 	// const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
 	// 	mappedListings.map((item, ind) => { return { ...item } }).slice(0, limit)
 	// );
-	
+
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,
