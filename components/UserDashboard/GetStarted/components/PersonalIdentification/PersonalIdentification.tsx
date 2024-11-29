@@ -108,7 +108,7 @@ const PersonalIdentification = forwardRef<
 				dispatch(
 					updateVerification({
 						_id: res.data._id,
-						isPhoneNumberVerified: res.data.isPhoneNumberVerified
+						isPhoneNumberVerified: !!res.data.isPhoneNumberVerified
 					})
 				);
 

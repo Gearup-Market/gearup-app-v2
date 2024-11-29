@@ -9,6 +9,7 @@ export const API_URL = {
 	verifyToken: "/auth/authenticate",
 	registerKyc: "/users/kyc/register",
 	updateKyc: "/users/kyc/update",
+	submitKycDoc: "/users/kyc/submit-documents",
 	resendKycOtp: "/users/kyc/resend-otp",
 	validateKycOtp: "/users/kyc/validate-otp",
 	wallet: "/wallets",

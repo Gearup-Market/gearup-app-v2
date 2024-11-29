@@ -201,13 +201,29 @@ export type iPostRegisterKycReq = {
 	address: string;
 	city: string;
 	postalCode: string;
-	documentType?:
-		| "intl_passport"
-		| "driver_license"
-		| "national_id"
-		| "voters_card"
-		| "nin";
+	documentType?: "intl_passport" | "driver_license" | "national_id" | "voters_card";
 	documentPhoto?: string[];
+};
+
+export type iPostSubmitKycRes = {
+	message: string;
+	status: string;
+	data: {
+		userId: string;
+		documentNo: string;
+		documentType: "intl_passport" | "driver_license" | "national_id" | "voters_card";
+		documentPhoto: string[];
+		selfie: string;
+		isSubmitted: boolean;
+	}
+};
+
+export type iPostSubmitKycReq = {
+	userId: string;
+	documentNo: string;
+	documentType: "intl_passport" | "driver_license" | "national_id" | "voters_card";
+	documentPhoto?: string[];
+	selfie?: string;
 };
 
 export type iPostUpdateBankResp = {
@@ -257,10 +273,9 @@ export type iPostReviewRsq = {
 export interface IUserResp {
 	data: UserUpdateResp;
 	message: string;
-  }
-  
+}
 
-  export interface IUser {
+export interface IUser {
 	_id: string;
 	userId: string;
 	email: string;
@@ -275,22 +290,22 @@ export interface IUserResp {
 	userName: string;
 	about: string;
 	__v: number;
-  };
+}
 
-  interface Coordinates {
+interface Coordinates {
 	longitude: number;
 	latitude: number;
-  }
-  
-  export interface Location {
+}
+
+export interface Location {
 	address?: string;
 	city?: string;
 	state?: string;
 	country?: string;
 	coords?: Coordinates;
-  }
-  
-  export interface UserUpdateResp {
+}
+
+export interface UserUpdateResp {
 	userId: string;
 	name: string;
 	email: string;
@@ -312,5 +327,4 @@ export interface IUserResp {
 	accountNumber: string;
 	rating: number;
 	bankName: string;
-  }
-  
+}
