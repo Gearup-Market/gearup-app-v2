@@ -27,11 +27,9 @@ const UserDetails = ({ userId }: Props) => {
 		shouldFetchAll: false
 	});
 
-	// console.log(data);
-
 	const mappedListings = useMemo(() => {
 		if (!data?.data) return [];
-		return data?.data?.listings.map(
+		return data?.data?.map(
 			({
 				_id,
 				productName,
@@ -41,7 +39,7 @@ const UserDetails = ({ userId }: Props) => {
 				status,
 				listingPhotos,
 				category
-			}: any) => {
+			}) => {
 				const type = listingType === "both" ? "rent | sell" : listingType;
 				const price =
 					type === "rent" ? offer?.forRent?.day1Offer : offer?.forSell?.pricing;
