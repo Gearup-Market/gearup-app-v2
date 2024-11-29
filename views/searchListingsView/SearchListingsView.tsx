@@ -38,6 +38,8 @@ const SearchListingsView = () => {
 
 	const listingsData = searchedListings.length > 0 ? searchedListings : listings;
 
+	// console.log(searchedListings, listings);
+
 	const filteredListings = useMemo(() => {
 		let initialFilteredListing = listingsData;
 		if (typePathName) {
@@ -100,12 +102,13 @@ const SearchListingsView = () => {
 				category => category.name.toLowerCase() === categoryPathName
 			);
 			const category = foundCategory || null;
+			console.log(category, categoryPathName, foundCategory);
 			setSelectedCategory(category);
 		}
 		if (!categoryPathName) {
 			setSelectedCategory(null);
 		}
-	}, [categoryPathName, isFetchingCategories]);
+	}, [categoryPathName, isFetchingCategories, categories?.data]);
 
 	const onChangeSelectedCategory = (option: iCategory) => {
 		setSelectedCategory(option);

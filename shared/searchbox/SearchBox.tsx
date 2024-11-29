@@ -24,34 +24,35 @@ enum ActiveButton {
 const SearchBox = ({ className, onClick }: Props) => {
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const [activeButton, setActiveButton] = useState<ActiveButton>(ActiveButton.RENT);
-	const {mutateAsync: searchListing, isPending} = usePostSearchListing()
+	const { mutateAsync: searchListing, isPending } = usePostSearchListing();
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 
 	const handleSearch = async () => {
 		try {
-			if(!searchTerm) {
-				toast.error('Enter a search query');
+			if (!searchTerm) {
+				toast.error("Enter a search query");
 				return;
-			};
+			}
 			const payload = {
 				productName: searchTerm,
 				description: searchTerm,
 				listingType: activeButton === ActiveButton.BUY ? "sell" : "rent"
 			};
-			
 
 			const res = await searchListing(payload);
-			if(res.data) {
-				dispatch(setListings({
-					searchedListings: res.data
-				}))
-				router.push(`/listings?type=${activeButton}`)
+			if (res.data) {
+				dispatch(
+					setListings({
+						searchedListings: res.data
+					})
+				);
+				router.push(`/listings?type=${activeButton}`);
 			}
 		} catch (error: any) {
-			toast.error(error?.response?.data?.message || 'Failed to search')
+			toast.error(error?.response?.data?.message || "Failed to search");
 		}
-	}
+	};
 	return (
 		<div className={`${styles.searchBox} ${className}`} onClick={onClick}>
 			<div className={styles.small_button_container}>
@@ -89,7 +90,7 @@ const SearchBox = ({ className, onClick }: Props) => {
 								type="text"
 								autoComplete="off"
 								placeholder="Try e.g Nikon SR ..."
-								onChange={(e) => setSearchTerm(e.target.value)}
+								onChange={e => setSearchTerm(e.target.value)}
 							/>
 						</div>
 					</div>
@@ -112,7 +113,13 @@ const SearchBox = ({ className, onClick }: Props) => {
 						</div>
 					</div>
 				</div>
-				<Button className={styles.button} onClick={handleSearch} disabled={isPending}>Search</Button>
+				<Button
+					className={styles.button}
+					onClick={handleSearch}
+					disabled={isPending}
+				>
+					Search
+				</Button>
 			</div>
 		</div>
 	);

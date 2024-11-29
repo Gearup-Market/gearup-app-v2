@@ -7,16 +7,21 @@ import Image from "next/image";
 import { Button, DatePicker, Logo } from "@/shared";
 import format from "date-fns/format";
 import { Listing } from "@/store/slices/listingsSlice";
-import { formatNumber, getDaysDifference } from "@/utils";
+import { AppRoutes, formatNumber, getDaysDifference } from "@/utils";
 import useCart from "@/hooks/useCart";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import { useAppSelector } from "@/store/configureStore";
+import Link from "next/link";
 
 const PriceContainer = ({ listing }: { listing: Listing }) => {
 	const { addItemToCart } = useCart();
 	const search = useSearchParams();
+	const pathname = usePathname();
+	const router = useRouter();
 	const actionType = search.get("type");
+	const user = useAppSelector(state => state.user);
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
 	const [inputDate, setInputDate] = useState([
 		{
@@ -64,6 +69,14 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 		}
 	};
 
+	const askToAvailability = () => {
+		router.push(
+			user.isAuthenticated
+				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}`
+				: `/login?returnUrl=${pathname}`
+		);
+	};
+
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	return (
 		<div className={styles.container}>
@@ -103,8 +116,11 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 					</div>
 				</div>
 				{(listingType !== "sell" || actionType === "rent") && (
-					<div className={styles.input_field}>
-						<div className={styles.icon} onClick={() => setOpenModal(true)}>
+					<div
+						className={styles.input_field}
+						onClick={() => setOpenModal(true)}
+					>
+						<div className={styles.icon}>
 							<Image src="/svgs/calendar.svg" fill alt="" sizes="100vw" />
 						</div>
 						<div className={styles.text}>
@@ -120,7 +136,11 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 					</div>
 				)}
 				<div className={styles.buttons}>
-					<Button buttonType="secondary" className={styles.button}>
+					<Button
+						buttonType="secondary"
+						className={styles.button}
+						onClick={askToAvailability}
+					>
 						Ask for availability
 					</Button>
 					<Button className={styles.button} onClick={handleAddToCart}>
@@ -144,22 +164,27 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 					<p>Call us and we’ll secure it for you.</p>
 				</div>
 				<div className={styles.row}>
-					<div className={styles.small_row}>
+					<Link
+						href="https://wa.me/+2348060226040?text=Hello%2C%20I%27d%20like%20to%20rent%20some%20gear.%20Can%20I%20have%20more%20details%20on%20how%20to%20go%20about%20it%3F"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={styles.small_row}
+					>
 						<div className={styles.icon}>
 							<Image src="/svgs/whatsapp.svg" alt="" fill sizes="100vw" />
 						</div>
 						<div className={styles.title}>
 							<p>Whatsapp</p>
 						</div>
-					</div>
-					<div className={styles.small_row}>
+					</Link>
+					<Link href="tel:+2348060226040" className={styles.small_row}>
 						<div className={styles.icon}>
 							<Image src="/svgs/phone.svg" alt="" fill sizes="100vw" />
 						</div>
 						<div className={styles.title}>
 							<p>Phone call</p>
 						</div>
-					</div>
+					</Link>
 				</div>
 			</div>
 		</div>

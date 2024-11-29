@@ -81,6 +81,20 @@ export const usePostAdminSignIn = (
 		...options
 	});
 
+export const usePostDeactivateUser = (
+	{ userId }: { userId: string },
+	options?: UseMutationOptions<any, any, any>
+) =>
+	useMutation<any, any, any>({
+		mutationFn: async props =>
+			(
+				await api.post(`${API_URL.adminDeactivateUser}/${userId}/deactivate`, {
+					...props
+				})
+			).data,
+		...options
+	});
+
 // ----------------------------------------------
 
 export const useGetVerifyAdminToken = ({ token }: { token: string }) => {

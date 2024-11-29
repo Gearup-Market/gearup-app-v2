@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@/shared";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "@/store/configureStore";
-import {  updateNewListing } from "@/store/slices/addListingSlice";
+import { updateNewListing } from "@/store/slices/addListingSlice";
 import { Item } from "@/interfaces/Listing";
 
 interface Option {
@@ -18,7 +18,7 @@ const options: Option[] = [
 	{ name: "camera", id: 1 },
 	{ name: "drone", id: 2 },
 	{ name: "lense", id: 3 },
-	{ name: "gimbal", id: 4 },
+	{ name: "gimbal", id: 4 }
 ];
 
 interface Props {
@@ -29,7 +29,7 @@ const AddSearchbox = ({ addItem }: Props) => {
 	const [item, setItem] = useState<Item>({
 		quantity: 1,
 		name: "",
-		id: 0,
+		id: 0
 	});
 	const [isTyping, setIsTyping] = useState<boolean>(false);
 
@@ -73,7 +73,7 @@ const AddSearchbox = ({ addItem }: Props) => {
 					<Image src="/svgs/check.svg" alt="" fill sizes="100vw" />
 				</div>
 			</Button>
-			{isTyping && (
+			{/* {isTyping && (
 				<div className={styles.body}>
 					<ul className={styles.select_listContainer}>
 						{options.map((option: Option, index) => (
@@ -96,7 +96,7 @@ const AddSearchbox = ({ addItem }: Props) => {
 						))}
 					</ul>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 };

@@ -18,11 +18,10 @@ interface Props {
 }
 
 const UserDetails = ({ userId }: Props) => {
-
-    // get user details
+	// get user details
 	const { fetchingUser, user } = useFetchUserDetailsById(userId);
 
-    // get user listings using id
+	// get user listings using id
 	const { data, isFetching, refetch } = useGetListings({
 		userId: user?.userId,
 		shouldFetchAll: false
@@ -62,11 +61,10 @@ const UserDetails = ({ userId }: Props) => {
 			}
 		);
 	}, [data]);
-    
 
-    if(fetchingUser){
-        return (
-            <Box
+	if (fetchingUser) {
+		return (
+			<Box
 				sx={{
 					display: "flex",
 					justifyContent: "center",
@@ -76,8 +74,8 @@ const UserDetails = ({ userId }: Props) => {
 			>
 				<CircularProgress style={{ color: "#FFB30F" }} />
 			</Box>
-        )
-    }
+		);
+	}
 
 	// if(user?.data) return null
 
@@ -156,7 +154,7 @@ const UserDetails = ({ userId }: Props) => {
 							</>
 						)}
 					</div>
-                <LatestReviews/>
+					<LatestReviews />
 				</div>
 			</div>
 		</div>

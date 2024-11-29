@@ -108,7 +108,7 @@ const ListingTable = ({
 	// const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
 	// 	mappedListings.map((item, ind) => { return { ...item } }).slice(0, limit)
 	// );
-	
+
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,

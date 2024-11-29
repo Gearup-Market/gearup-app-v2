@@ -40,8 +40,7 @@ const LoginView = () => {
 			});
 			if (res?.data?.token) {
 				toast.success("Login successful");
-				console.log(res?.data, "user from login");
-				
+
 				dispatch(updateUser(res?.data?.user));
 				dispatch(updateToken(res.data.token));
 				setAuthToken(res.data.token);
@@ -53,10 +52,14 @@ const LoginView = () => {
 				// window.location.reload();
 			}
 		} catch (error: any) {
-			console.log("error occurred....", error.response.data.message, error.response?.status);
+			console.log(
+				"error occurred....",
+				error.response.data.message,
+				error.response?.status
+			);
 			toast.error(error.response.data.message || "Login failed");
 
-			if(error?.response?.data?.message.includes("Please verify your email")) {
+			if (error?.response?.data?.message.includes("Please verify your email")) {
 				router.push("/verify");
 			}
 		}
