@@ -58,6 +58,8 @@ export const API_URL = {
 	adminSignIn: "/admin/auth/login",
 	getAdmin: "/admin/user/",
 	adminGetAllUsers: "/users",
+	adminGetAllKycSubmission: "/admin/user/kyc/all",
+	adminUpdateKyc: "/admin/user/kyc/update",
 	adminGetUserById: "/admin/user/",
 	adminUpdateUser: "/admin/user/update",
 	adminDeleteUser: "/admin/user",

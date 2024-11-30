@@ -245,4 +245,6 @@ const IdVerification = forwardRef<
 	);
 });
 
+IdVerification.displayName = 'IdVerification'
+
 export default IdVerification;

@@ -10,6 +10,7 @@ import { api } from "@/app/api/api";
 import {
 	ICreateRoleReq,
 	IGetAdminRolesResp,
+	IGetAllKycResp,
 	IGetAllUsersResp,
 	IGetErr,
 	IGetUsersTotalResp,
@@ -101,11 +102,7 @@ export const useGetVerifyAdminToken = ({ token }: { token: string }) => {
 	return useQuery<any, any, any>({
 		queryKey: ["verifyAdminToken"],
 		queryFn: async () => {
-			const response = await api.get(`${API_URL.verifyAdminToken}`, {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			});
+			const response = await api.get(`${API_URL.verifyAdminToken}/${token}`);
 			return response.data;
 		},
 		refetchOnMount: true
@@ -128,6 +125,14 @@ export const useGetAllUsers = (options?: UseQueryOptions<IGetAllUsersResp, IGetE
 	useQuery<IGetAllUsersResp, IGetErr>({
 		queryKey: ["getAllAdminUsers"],
 		queryFn: async () => (await api.get(`${API_URL.adminGetAllUsers}/all`)).data,
+		...options,
+		refetchOnMount: true
+	});
+
+export const useGetAllKyc = (options?: UseQueryOptions<IGetAllKycResp, IGetErr>) =>
+	useQuery<IGetAllKycResp, IGetErr>({
+		queryKey: ["getAllKyc"],
+		queryFn: async () => (await api.get(`${API_URL.adminGetAllKycSubmission}`)).data,
 		...options,
 		refetchOnMount: true
 	});
