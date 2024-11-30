@@ -67,7 +67,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 		setIsOpen(false);
 
 		if (onOptionChange) {
-			onOptionChange(typeof options?.[selectedIndex] === 'string' ? options[selectedIndex] : options?.[selectedIndex]?.value);
+			onOptionChange(typeof options?.[selectedIndex] === 'string' ? options[selectedIndex] : (options?.[selectedIndex] as any)?.value);
 		}
 	};
 
@@ -122,7 +122,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 										{selectedOptionIndex === -1
 											? defaultOption
 											: shortenTitle(
-													typeof options?.[selectedOptionIndex] === 'string' ? options[selectedOptionIndex] : options?.[selectedOptionIndex]?.label,
+													typeof options?.[selectedOptionIndex] === 'string' ? options[selectedOptionIndex] : (options?.[selectedOptionIndex] as any)?.label,
 													42
 											  )}
 									</span>
@@ -154,7 +154,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
 										className={styles.select_listItem}
 									>
 										<div className={styles.select_row}>
-											<p className={optionClassName}>{typeof option === 'string' ? option : option?.label}</p>
+											<p className={optionClassName}>{typeof option === 'string' ? option : (option as any)?.label}</p>
 										</div>
 									</li>
 								) : null

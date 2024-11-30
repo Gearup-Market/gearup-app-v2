@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import { IUser, IUserResp } from "../../users/types";
+import { VerificationState } from "@/store/slices/verificationSlice";
 
 export interface Permissions {
 	view: boolean;
@@ -32,6 +33,11 @@ export interface RoleProps {
 
 export interface IGetAllUsersResp {
 	data: IUser[];
+}
+
+type Kyc = VerificationState & {userId: IUser}
+export interface IGetAllKycResp {
+	data: Kyc[];
 }
 
 export interface IGetUsersTotalResp {

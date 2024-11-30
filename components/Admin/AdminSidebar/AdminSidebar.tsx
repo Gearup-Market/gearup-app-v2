@@ -43,6 +43,11 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 			link: "/admin/users"
 		},
 		{
+			name: "Kyc",
+			icon: <UserIcon />,
+			link: "/admin/kyc"
+		},
+		{
 			name: "Wallet",
 			icon: <WalletNavIcon />,
 			link: "/admin/wallet"
