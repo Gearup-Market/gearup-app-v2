@@ -33,6 +33,8 @@ export interface RoleProps {
 
 export interface IGetAllUsersResp {
 	data: IUser[];
+	message?: string;
+	pagination?: { limit: number; page: number; total: number; totalPages: number };
 }
 
 type Kyc = VerificationState & {userId: IUser}

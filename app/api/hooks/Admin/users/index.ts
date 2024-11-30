@@ -121,10 +121,14 @@ export const useGetAdmin = (
 		refetchOnMount: false
 	});
 
-export const useGetAllUsers = (options?: UseQueryOptions<IGetAllUsersResp, IGetErr>) =>
+export const useGetAllUsers = (
+	page: number,
+	options?: UseQueryOptions<IGetAllUsersResp, IGetErr>
+) =>
 	useQuery<IGetAllUsersResp, IGetErr>({
 		queryKey: ["getAllAdminUsers"],
-		queryFn: async () => (await api.get(`${API_URL.adminGetAllUsers}/all`)).data,
+		queryFn: async () =>
+			(await api.get(`${API_URL.adminGetAllUsers}/all?page=${page}`)).data,
 		...options,
 		refetchOnMount: true
 	});

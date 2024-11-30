@@ -11,6 +11,7 @@ import { Button, InputField, MobileCardContainer, Pagination } from "@/shared";
 import UserCardMob from "../UserCardMob/UserCardMob";
 import { useGetAllUsers } from "@/app/api/hooks/Admin/users";
 import { debounce } from "lodash";
+import { PageLoader } from "@/shared/loaders";
 const sharedColDef: GridColDef = {
 	field: "",
 	sortable: true,
@@ -27,12 +28,18 @@ interface Props {
 }
 
 const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) => {
-	const { data, isLoading } = useGetAllUsers();
 	const [currentPage, setCurrentPage] = useState<number>(1);
+	const { data, isLoading, refetch } = useGetAllUsers(currentPage);
 	// const [users, setUsers] = useState<any[]>(data?.data || []);
 	const [searchInput, setSearchInput] = useState("");
 	const pageSize: number = 12;
+	// console.log(data);
 	const users = data?.data || [];
+
+	const updatePage = (page: number) => {
+		setCurrentPage(page);
+		refetch();
+	};
 
 	const columns: GridColDef[] = [
 		{
@@ -159,64 +166,62 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 
 	return (
 		<div className={styles.container}>
-			{!!users && users?.length < 1 ? (
-				<div className={styles.empty_rows}>
-					<span className={styles.transaction_icon}>
-						<UserIcon color="#FFB30F" />
-					</span>
-					No data available
-				</div>
-			) : (
-				<>
-					<div className={styles.container__input_filter_container}>
-						<InputField
-							placeholder="Enter username or email"
-							icon="/svgs/icon-search-dark.svg"
-							iconTitle="search-icon"
-							onChange={e => debouncedSearch(e.target.value)}
-						/>
+			{!isLoading ? (
+				!users?.length ? (
+					<div className={styles.empty_rows}>
+						<span className={styles.transaction_icon}>
+							<UserIcon color="#FFB30F" />
+						</span>
+						No data available
 					</div>
-					<div className={styles.container__table}>
-						<DataGrid
-							rows={currentTableData || []}
-							columns={columns}
-							hideFooterPagination={true}
-							hideFooter
-							paginationMode="server"
-							sx={customisedTableClasses}
-							autoHeight
-							scrollbarSize={20}
-							loading={isLoading}
-							getRowId={row => row._id}
-						/>
-					</div>
-					<MobileCardContainer>
-						{currentTableData?.map((item, ind) => (
-							<UserCardMob
-								key={item._id}
-								item={item}
-								url="users"
-								lastEle={
-									ind + 1 === currentTableData.length ? true : false
-								}
-								ind={ind}
+				) : (
+					<>
+						<div className={styles.container__input_filter_container}>
+							<InputField
+								placeholder="Enter username or email"
+								icon="/svgs/icon-search-dark.svg"
+								iconTitle="search-icon"
+								onChange={e => debouncedSearch(e.target.value)}
 							/>
-						))}
-					</MobileCardContainer>
+						</div>
+						<div className={styles.container__table}>
+							<DataGrid
+								rows={users}
+								columns={columns}
+								hideFooterPagination={true}
+								hideFooter
+								paginationMode="server"
+								sx={customisedTableClasses}
+								autoHeight
+								scrollbarSize={20}
+								loading={isLoading}
+								getRowId={row => row._id}
+							/>
+						</div>
+						<MobileCardContainer>
+							{users?.map((item, ind) => (
+								<UserCardMob
+									key={item._id}
+									item={item}
+									url="users"
+									lastEle={
+										ind + 1 === currentTableData.length ? true : false
+									}
+									ind={ind}
+								/>
+							))}
+						</MobileCardContainer>
 
-					<Pagination
-						// currentPage={page}
-						// onPageChange={handlePagination}
-						// totalCount={totalCount || 0}
-						// pageSize={limit}
-						currentPage={currentPage}
-						totalCount={users?.length}
-						pageSize={pageSize}
-						onPageChange={(page: any) => setCurrentPage(page)}
-						startNumber={startNumber}
-						endNumber={endNumber}
-					/>
-				</>
+						<Pagination
+							currentPage={currentPage}
+							totalCount={data?.pagination?.total || 0}
+							pageSize={10}
+							onPageChange={(page: any) => updatePage(page)}
+						/>
+					</>
+				)
+			) : (
+				<PageLoader />
 			)}
 		</div>
 	);

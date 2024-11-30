@@ -72,6 +72,7 @@ export const API_URL = {
 	adminCreateMember: "/admin/create-members",
 	updateAdminUser: "/admin/user/update",
 	adminGetAllWithdraws: "/withdrawals/admin",
+	adminGetAllListings: "/admin/listing/all",
 	verifyAdminToken: "/admin/auth/authenticate",
 	courses: "/courses",
 	wishlists: "/wishlist",
