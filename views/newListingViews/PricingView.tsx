@@ -40,6 +40,8 @@ const initialForRentDetails: RentingOffer = {
 	currency: "NGN",
 	pricing: undefined,
 	priceStructure: undefined,
+	hour3Offer: 0,
+	hour7Offer: 0,
 	day1Offer: 0,
 	day3Offer: 0,
 	day7Offer: 0,
@@ -186,7 +188,7 @@ const PricingView = () => {
 
 export default PricingView;
 
-const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: SellingOffer, setForSellDetails: React.Dispatch<React.SetStateAction<SellingOffer>>}) => {
+const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: SellingOffer, setForSellDetails: React.Dispatch<React.SetStateAction<SellingOffer>> }) => {
 
 	return (
 		<div>
@@ -216,6 +218,7 @@ const BuyView = ({ forSellDetails, setForSellDetails }: { forSellDetails: Sellin
 							value={forSellDetails?.pricing}
 							onChange={(e: any) => {
 								setForSellDetails((prev) => ({ ...prev, pricing: Number(e.target.value) }))
+
 							}}
 
 						/>
@@ -308,7 +311,7 @@ const RentView = ({ forRentDetails, setForRentDetails, errorFields, setErrorFiel
 	});
 
 	const updateFieldPrice = (field: string) => {
-		if(!forRentDetails.priceStructure){
+		if (!forRentDetails.priceStructure) {
 			setErrorFields((prev) => ({ ...prev, isRentPriceStructure: true }));
 			return;
 		}
@@ -330,6 +333,9 @@ const RentView = ({ forRentDetails, setForRentDetails, errorFields, setErrorFiel
 
 	const defaultOptionIndex = priceStructures.findIndex((item) => item === forRentDetails.priceStructure);
 
+	const selectedPriceStructure = forRentDetails.priceStructure
+	const dayPriceStructure = selectedPriceStructure === "per day";
+
 	return (
 		<div>
 			<div className={styles.text}>
@@ -347,14 +353,13 @@ const RentView = ({ forRentDetails, setForRentDetails, errorFields, setErrorFiel
 						<div>
 							<InputField
 								placeholder="Enter amount"
-								type="number"
-								min={1}
 								onChange={(e: any) => {
 									setForRentDetails((prev) => ({ ...prev, pricing: +e.target.value }))
+									setForRentDetails((prev) => ({ ...prev, day1Offer: +e.target.value }))
 								}}
-								label="Price"
+								label={`Price ( ${forRentDetails.priceStructure ?? "per day"} )`}
 								className={`${styles.input}`}
-								value={forRentDetails?.pricing ?? 0}
+								value={forRentDetails?.pricing}
 							/>
 						</div>
 						<div>
@@ -362,7 +367,7 @@ const RentView = ({ forRentDetails, setForRentDetails, errorFields, setErrorFiel
 								setForRentDetails((prev) => ({ ...prev, priceStructure: value }))
 								setErrorFields((prev) => ({ ...prev, isRentPriceStructure: false }))
 
-							}} className={errorFields.isRentPriceStructure ? styles.error_border : ""} defaultOptionIndex={defaultOptionIndex}/>
+							}} className={errorFields.isRentPriceStructure ? styles.error_border : ""} defaultOptionIndex={defaultOptionIndex === -1 ? 0 : defaultOptionIndex} />
 							{
 								!!errorFields.isRentPriceStructure &&
 								<p className={styles.error_text}>Please select a price structure to proceed</p>
@@ -383,37 +388,40 @@ const RentView = ({ forRentDetails, setForRentDetails, errorFields, setErrorFiel
 							<h3 className={styles.offer_title}>Additional offers <span className={styles.optional_text}>(Optional)</span></h3>
 							<RentOffer
 								title={3}
-								value={forRentDetails?.day3Offer}
+								value={dayPriceStructure ? forRentDetails?.day3Offer : forRentDetails?.hour3Offer}
 								toggleInput={(field) => {
 									updateFieldPrice(field);
 								}}
 								checked={toggleValues.threeDayRent}
 								name={DayOfferEnum.THREE_DAYS}
-								onChange={(e: any) => setForRentDetails((prev) => ({ ...prev, day3Offer: +e.target.value }))}
-								priceStructure={forRentDetails.priceStructure}
+								onChange={(e: any) => setForRentDetails((prev) => (dayPriceStructure ? { ...prev, hour3Offer: 0, day3Offer: +e.target.value } : { ...prev, hour3Offer: +e.target.value, day3Offer: 0 }))}
+								priceStructure={selectedPriceStructure}
 							/>
 							<RentOffer
 								title={7}
-								value={forRentDetails.day7Offer}
+								value={dayPriceStructure ? forRentDetails?.day7Offer : forRentDetails?.hour7Offer}
 								toggleInput={(field) => {
 									updateFieldPrice(field);
 								}}
 								checked={toggleValues.sevenDayRent}
 								name={DayOfferEnum.SEVEN_DAYS}
-								onChange={(e: any) => setForRentDetails((prev) => ({ ...prev, day7Offer: +e.target.value }))}
-								priceStructure={forRentDetails.priceStructure}
+								onChange={(e: any) => setForRentDetails((prev) => (dayPriceStructure ? { ...prev, hour7Offer: 0, day7Offer: +e.target.value } : { ...prev, hour7Offer: +e.target.value, day7Offer: 0 }))}
+								priceStructure={selectedPriceStructure}
 							/>
-							<RentOffer
-								title={forRentDetails.priceStructure === "per hour" ? 24 : 30}
-								value={forRentDetails?.day30Offer}
-								toggleInput={(field) => {
-									updateFieldPrice(field);
-								}}
-								checked={toggleValues.thirtyDayRent}
-								name={DayOfferEnum.THIRTY_DAYS}
-								onChange={(e: any) => setForRentDetails((prev) => ({ ...prev, day30Offer: +e.target.value }))}
-								priceStructure={forRentDetails.priceStructure}
-							/>
+							{
+								dayPriceStructure &&
+								<RentOffer
+									title={30}
+									value={forRentDetails?.day30Offer}
+									toggleInput={(field) => {
+										updateFieldPrice(field);
+									}}
+									checked={toggleValues.thirtyDayRent}
+									name={DayOfferEnum.THIRTY_DAYS}
+									onChange={(e: any) => setForRentDetails((prev) => ({ ...prev, day30Offer: +e.target.value }))}
+									priceStructure={selectedPriceStructure}
+								/>
+							}
 						</div>
 					</div>
 				</div>
@@ -430,7 +438,7 @@ const RentView = ({ forRentDetails, setForRentDetails, errorFields, setErrorFiel
 						prefix="N"
 						placeholder="0"
 						type="number"
-						value={forRentDetails?.totalReplacementValue ?? 0}
+						value={forRentDetails?.totalReplacementValue}
 						onChange={(e: any) => setForRentDetails((prev) => ({ ...prev, totalReplacementValue: e.target.value ?? 0 }))}
 						label="Total replacement value"
 						className={styles.input}
