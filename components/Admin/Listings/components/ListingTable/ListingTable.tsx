@@ -23,6 +23,7 @@ import { formatDate, formatNum } from "@/utils";
 import NoListings from "@/components/UserDashboard/Listings/NoListings/NoListings";
 import ListingCardMob from "./ListingCarMob/ListingCarMob";
 import Link from "next/link";
+import { useAdminGetAllListings } from "@/app/api/hooks/Admin/listings";
 
 interface Props {
 	activeFilter: string;
@@ -45,11 +46,9 @@ const ListingTable = ({
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 	const { userId } = useAppSelector(s => s.user);
-	const { data, isFetching, refetch, isLoading } = useGetListings({
-		userId: userid || userId,
-		shouldFetchAll: !userid
-	});
+	const { data, isFetching, refetch, isLoading } = useAdminGetAllListings();
 	const listings = data?.data || [];
+	// console.log(data);
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
