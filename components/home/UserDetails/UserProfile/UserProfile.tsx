@@ -11,7 +11,7 @@ interface Props {
 }
 
 const UserDetailsProfile = ({ user }: Props) => {
-	const loggedInUser = useAppSelector((state) => state.user);
+	const { userId } = useAppSelector((state) => state.user);
 	return (
 		<div className={styles.container}>
 			<div className={styles.profile_details}>
@@ -40,13 +40,13 @@ const UserDetailsProfile = ({ user }: Props) => {
 				</div>
 				<p>0 deals</p>
 				{
-					user?.userId !== loggedInUser?._id &&
+					user?.userId !== userId &&
 					<Link href={`/user/messages`}>
 						<Button buttonType="secondary" iconPrefix="/svgs/send.svg">Send a message</Button>
 					</Link>
 				}
 			</div>
-			
+
 		</div>
 	);
 };

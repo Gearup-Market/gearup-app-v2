@@ -79,6 +79,49 @@
 				width: 100%;
 			}
 		}
+
+		.price_details_container{
+			background: #fff;
+			border-radius: 0.8rem;
+			padding: 2.4rem;
+			margin-top: 1.6rem;
+			display: flex;
+			flex-direction: column;
+			gap: 1.6rem;
+
+			.divider{
+				border-top: 1px solid $col-border;
+				width: 100%;
+				margin-bottom: 0.4rem;
+			}
+
+			.total_styles{
+				font-weight: 900;
+				font-size: 2.4rem;
+				color: #1B1E21;
+			}
+
+			.content{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				.price_item{
+					font-size: 1.6rem;
+					color: #7B8086;
+					font-weight: 400;
+				}
+
+				.price_value{
+					color: #1B1E21;
+					font-weight: 700;
+					font-size: 1.6rem;
+				}
+
+			
+			
+			}
+		}
 	}
 	.ad_card {
 		width: 100%;

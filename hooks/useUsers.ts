@@ -1,10 +1,10 @@
 import { useFetchUserAnalytics } from "@/app/api/hooks/analytics";
 import { useGetUserDetails } from "@/app/api/hooks/users";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAppSelector } from "@/store/configureStore";
 
 export const useGetUserAnalyticsById = () => {
-	const { user } = useAuth();
-	const { data, isFetching } = useFetchUserAnalytics(user?._id ?? "");
+	const { userId } = useAppSelector(state => state.user);
+	const { data, isFetching } = useFetchUserAnalytics(userId ?? "");
 	return {
 		data: data?.data,
 		fetchingData: isFetching

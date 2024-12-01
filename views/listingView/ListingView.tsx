@@ -14,7 +14,6 @@ import { useAppSelector } from "@/store/configureStore";
 import { useParams } from "next/navigation";
 import { useSingleListing } from "@/hooks/useListings";
 import { getIdFromSlug } from "@/utils";
-import { PageLoader } from "@/shared/loaders";
 import { BackNavigation, Listing } from "@/shared";
 import BuyPriceContainer from "@/components/listing/BuyPriceContainer/BuyPriceContainer";
 import { Box, CircularProgress } from "@mui/material";

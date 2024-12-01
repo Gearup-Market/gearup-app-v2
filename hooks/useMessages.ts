@@ -1,9 +1,9 @@
 import { useFetchChatMessages, useGetUserMessages } from "@/app/api/hooks/messages";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAppSelector } from "@/store/configureStore";
 
 export const useMessages = () => {
-	const { user } = useAuth();
-	const { data, isFetching } = useGetUserMessages(user?._id);
+	const {userId} = useAppSelector(state => state.user);
+	const { data, isFetching } = useGetUserMessages(userId);
 	return {
 		allUserMessages: data?.data || [],
 		isFetchingAllUserMessages: isFetching

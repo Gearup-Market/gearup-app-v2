@@ -1,17 +1,15 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect } from "react";
 import styles from "./Listing.module.scss";
 import Image from "next/image";
 import { Button, FavoriteStar } from "..";
 import { formatNumber, shortenTitle } from "@/utils";
-import Link from "next/link";
 import { Listing as iListing, setListings } from "@/store/slices/listingsSlice";
-import { useAppDispatch } from "@/store/configureStore";
+import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { useRouter } from "next/navigation";
 import { useAddItemToWishlist, usePostCheckItemInWishlist } from "@/app/api/hooks/wishlists";
 import toast from "react-hot-toast";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface Props {
 	props: iListing;
@@ -21,10 +19,11 @@ interface Props {
 
 const Listing = ({ props, className, actionType }: Props) => {
 	const dispatch = useAppDispatch();
-	const {mutateAsync: addFavorite} = useAddItemToWishlist();
-	const {mutateAsync: checkIsFavorite} = usePostCheckItemInWishlist();
+	const { mutateAsync: addFavorite } = useAddItemToWishlist();
+	const { mutateAsync: checkIsFavorite } = usePostCheckItemInWishlist();
 	const [isFavorite, setIsFavorite] = React.useState(false);
-	const { user:loggedInUser } = useAuth();
+	const { userId } = useAppSelector((state) => state.user)
+
 	const router = useRouter();
 	const {
 		_id: id,
@@ -41,8 +40,8 @@ const Listing = ({ props, className, actionType }: Props) => {
 	const forRent = !!offer?.forRent;
 
 	const listingUrl = actionType
-	? `/listings/${productSlug}?type=${actionType}`
-	: `/listings/${productSlug}`;
+		? `/listings/${productSlug}?type=${actionType}`
+		: `/listings/${productSlug}`;
 
 	const onClickListing = () => {
 		dispatch(
@@ -53,13 +52,13 @@ const Listing = ({ props, className, actionType }: Props) => {
 		router.push(listingUrl);
 	};
 
-	const handleToggleFavorites = async(isFavorite: boolean) => {
+	const handleToggleFavorites = async (isFavorite: boolean) => {
 		const data = {
-			userId: loggedInUser?._id,
+			userId,
 			listingId: id
 		}
 
-		await addFavorite(data,{
+		await addFavorite(data, {
 			onSuccess: (resp) => {
 				setIsFavorite(!isFavorite);
 				toast.success(!isFavorite ? "Removed from favorites" : "Added to favorites");
@@ -68,10 +67,10 @@ const Listing = ({ props, className, actionType }: Props) => {
 	}
 
 	useEffect(() => {
-		if(!user || !id) return;
-		const checkFavorite = async() => {
+		if (!user || !id) return;
+		const checkFavorite = async () => {
 			const data = {
-				userId: loggedInUser?._id,
+				userId,
 				listingId: id
 			}
 			const response = await checkIsFavorite(data);
@@ -79,7 +78,7 @@ const Listing = ({ props, className, actionType }: Props) => {
 		}
 
 		checkFavorite();
-	}, [id, user]);
+	}, [id, userId]);
 
 	return (
 		<div
@@ -147,9 +146,8 @@ const Listing = ({ props, className, actionType }: Props) => {
 				<div className={styles.small_row}>
 					<div className={styles.verified}>
 						<Image
-							src={`/svgs/icon-${
-								averageRating ? "filled-star" : "star"
-							}.svg`}
+							src={`/svgs/icon-${averageRating ? "filled-star" : "star"
+								}.svg`}
 							alt=""
 							fill
 							sizes="100vw"

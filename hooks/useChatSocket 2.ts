@@ -1,6 +1,7 @@
 "use client";
 import { queryClient } from "@/app/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAppSelector } from "@/store/configureStore";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -8,9 +9,11 @@ const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_BASE_URL_SOCKET;
 
 export const useChatSocket = (chatId?: string) => {
 	const [socket, setSocket] = useState<Socket | null>(null);
-	const { user } = useAuth();
+	const { userId } = useAppSelector((state) => state.user)
 
 	useEffect(() => {
+		console.log("i am in the socket hook")
+		console.log(chatId,"xchat id ")
 		if (!chatId) return;
 
 		// Establish socket connection
@@ -33,9 +36,12 @@ export const useChatSocket = (chatId?: string) => {
 				});
 			});
 		}
+
+		console.log(socketInstance,"socketInstance")
 		// Listen for chat overview updates (all chats)
 		socketInstance.on("getMessages", newChatData => {
-			queryClient.setQueryData(["getUserMessages", user?._id], (oldData: any) => {
+			console.log("i was caleed")
+			queryClient.setQueryData(["getUserMessages", userId], (oldData: any) => {
 				return {
 					...oldData,
 					data: oldData?.data?.map((chat: any) =>
@@ -53,7 +59,7 @@ export const useChatSocket = (chatId?: string) => {
 		return () => {
 			socketInstance.disconnect();
 		};
-	}, [chatId, user?._id]);
+	}, [chatId, userId]);
 
 	return { socket };
 };

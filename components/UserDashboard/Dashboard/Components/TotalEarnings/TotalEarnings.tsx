@@ -7,12 +7,12 @@ import { EllipseIcon } from "@/shared/svgs/dashboard";
 import { PieChartComponent } from "@/shared";
 import TotalEarningsCard from "./Components/TotalEarningsCard/TotalEarningsCard";
 import { useFetchUserSalesAnalytics } from "@/app/api/hooks/analytics";
-import { useAuth } from "@/contexts/AuthContext";
 import { GearData } from "@/app/api/hooks/analytics/types";
+import { useAppSelector } from "@/store/configureStore";
 
 const TotalEarnings = () => {
-	const { user } = useAuth();
-	const { data: salesData } = useFetchUserSalesAnalytics(user?._id as string);
+	const { userId } = useAppSelector(state => state.user);
+	const { data: salesData } = useFetchUserSalesAnalytics(userId as string);
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,
@@ -36,8 +36,8 @@ const TotalEarnings = () => {
 							value === "gearRentals"
 								? "#FFB30F"
 								: value === "gearSales"
-								? "#B57F0B"
-								: "#FFE7B5"
+									? "#B57F0B"
+									: "#FFE7B5"
 						}
 					/>
 					<p style={{ fontSize: "1.2rem" }}>

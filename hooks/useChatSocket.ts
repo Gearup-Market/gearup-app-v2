@@ -1,6 +1,6 @@
 "use client";
 import { queryClient } from "@/app/api";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAppSelector } from "@/store/configureStore";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -8,24 +8,28 @@ const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_BASE_URL_SOCKET;
 
 export const useChatSocket = (chatId?: string) => {
 	const [socket, setSocket] = useState<Socket | null>(null);
-	const { user } = useAuth();
+	const { userId } = useAppSelector((state) => state.user)
 
 	useEffect(() => {
 		if (!chatId) return;
 
 		// Establish socket connection
-		const socketInstance = io(SOCKET_SERVER_URL, {
+		const socketInstance = io(SOCKET_SERVER_URL,{
 			withCredentials: true,
 			transports: ["websocket"]
 		});
 
-		setSocket(socketInstance);
+		socketInstance.on("connect",()=>{
+			console.log("connected to server with socket id:", socketInstance.id)
+		})
+
+
+		setSocket(()=>socketInstance);
 
 		// Join a specific chat room and listen for new messages
 		if (chatId) {
 			socketInstance.emit("joinChat", chatId);
 			socketInstance.on("getMessages", message => {
-				// console.log("socket message==>", message);
 				queryClient.setQueryData(["getChatMessages", chatId], (oldData: any) => {
 					return {
 						...oldData,
@@ -37,7 +41,7 @@ export const useChatSocket = (chatId?: string) => {
 		// Listen for chat overview updates (all chats)
 		socketInstance.on("getMessages", newChatData => {
 			console.log("socket message==>", newChatData);
-			queryClient.setQueryData(["getUserMessages", user?._id], (oldData: any) => {
+			queryClient.setQueryData(["getUserMessages", userId], (oldData: any) => {
 				return {
 					...oldData,
 					data: oldData?.data?.map((chat: any) =>
@@ -55,7 +59,7 @@ export const useChatSocket = (chatId?: string) => {
 		return () => {
 			socketInstance.disconnect();
 		};
-	}, [chatId, user?._id]);
+	}, [chatId, userId]);
 
 	return { socket };
 };

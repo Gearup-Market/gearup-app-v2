@@ -2,7 +2,7 @@
 import React from 'react'
 import styles from './WishlistCard.module.scss'
 import Image from 'next/image'
-import { Button, CustomImage, MobileCard, Ratings, ToggleSwitch } from '@/shared'
+import { Button, CustomImage, LoadingSpinner, MobileCard, Ratings, ToggleSwitch } from '@/shared'
 import Link from 'next/link'
 import { useGetUserDetails } from '@/app/api/hooks/users'
 import { formatNumber } from '@/utils'
@@ -14,19 +14,20 @@ interface Props {
     activeFilter?: string
     setShowWishList: React.Dispatch<React.SetStateAction<boolean>>
     onDeleteItem: (id: string) => void
+    deletingItem: boolean
 }
 
-const WishlistCard = ({ item, ind, lastEle, activeFilter, setShowWishList, onDeleteItem }: Props) => {
+const WishlistCard = ({ item, ind, lastEle, activeFilter, setShowWishList, onDeleteItem, deletingItem }: Props) => {
     const subHeaderText = item.listingType === ""
-    const {data, isLoading, refetch} = useGetUserDetails({userId:item.user as string});
+    const { data, isLoading, refetch } = useGetUserDetails({ userId: item.user as string });
     const user = data?.data
 
     const forSellPrice = item?.listingType === "sell" ? item?.offer?.forSell?.pricing : ""
     const forRentPrice = item?.listingType === "rent" ? item?.offer?.forRent?.day1Offer : ""
     const bothPrice = item?.listingType === "both" ? item?.offer?.forSell?.pricing : ""
-    const rentOrBuyPrice = forSellPrice || forRentPrice || bothPrice  
+    const rentOrBuyPrice = forSellPrice || forRentPrice || bothPrice
 
-    if(!item) return null
+    if (!item) return null
 
     return (
         <MobileCard
@@ -61,11 +62,11 @@ const WishlistCard = ({ item, ind, lastEle, activeFilter, setShowWishList, onDel
                                 <p className={styles.value}>
                                     <div className={styles.listing_user}>
 
-                                    <Image src={user?.avatar || "/svgs/avatar-user.svg"} alt={user?.userName||"n/a"} width={30} height={30} />
-                                    <span>
-                                    {user?.userName}
-                                    </span>
-                                    <Ratings rating={user?.rating} readOnly/>
+                                        <Image src={user?.avatar || "/svgs/avatar-user.svg"} alt={user?.userName || "n/a"} width={30} height={30} />
+                                        <span>
+                                            {user?.userName}
+                                        </span>
+                                        <Ratings rating={user?.rating} readOnly />
                                     </div>
                                 </p>
                             </div>
@@ -85,9 +86,14 @@ const WishlistCard = ({ item, ind, lastEle, activeFilter, setShowWishList, onDel
                             See details
                         </Link>
                     </Button>
-                    <p className={`${styles.value} ${styles.action_icons}`} onClick={() => onDeleteItem(item._id)}>
-                        <Image src={'/svgs/red-trash.svg'} alt={item.title} width={16} height={16} />
-                    </p>
+                    {
+                        deletingItem ?
+                            <LoadingSpinner size="small" />
+                            :
+                            <p className={`${styles.value} ${styles.action_icons}`} onClick={() => onDeleteItem(item._id)}>
+                                <Image src={'/svgs/red-trash.svg'} alt={item.title} width={16} height={16} />
+                            </p>
+                    }
                 </div>
             </div>
         </MobileCard>

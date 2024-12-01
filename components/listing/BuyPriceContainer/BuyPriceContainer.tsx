@@ -75,7 +75,7 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 		);
 	};
 
-	const [openModal, setOpenModal] = useState<boolean>(false);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.price_card}>

@@ -17,6 +17,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "@/shared";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
+import { useAppSelector } from "@/store/configureStore";
 
 interface Props {
 	isMobile?: boolean;
@@ -26,7 +27,8 @@ interface Props {
 
 const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 	const pathname = usePathname();
-	const { logout, user } = useAuth();
+	const { logout } = useAuth();
+	const user = useAppSelector(state => state.user);
 	const sidebarItems = [
 		{
 			name: "Dashboard",
