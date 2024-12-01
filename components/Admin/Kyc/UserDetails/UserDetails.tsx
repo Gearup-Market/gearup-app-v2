@@ -9,6 +9,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useGetUser, useGetUserDetails } from "@/app/api/hooks/users";
 import { PageLoader } from "@/shared/loaders";
+import { useGetKyc } from "@/app/api/hooks/Admin/users";
 
 const DashboardUserComponent = ({ slug }: { slug: string }) => {
 	const pathname = usePathname();
@@ -18,6 +19,7 @@ const DashboardUserComponent = ({ slug }: { slug: string }) => {
 		[pathname]
 	);
 	const { data: userData, isLoading: userLoading } = useGetUserDetails({ userId });
+	const { data: kycData, isLoading: kycLoading } = useGetKyc({ userId });
 
 	const handleBack = () => {
 		router.back();
@@ -44,17 +46,14 @@ const DashboardUserComponent = ({ slug }: { slug: string }) => {
 					<p>Back</p>
 				</div>
 			)}
-			{userLoading ? (
+			{userLoading && kycLoading ? (
 				<PageLoader />
 			) : (
 				<div className={styles.about_document}>
-					<DashboardUserHeader data={userData?.data} />
-					<About data={userData?.data} />
-					<Documents data={userData?.data} />
+					<DashboardUserHeader data={userData?.data} kycData={kycData?.data} />
+					<Documents data={userData?.data} kycData={kycData?.data} />
 				</div>
 			)}
-			<TransactionsView showTitle={true} />
-			<ListingsView showTitle={true} userid={userId} />
 		</div>
 	);
 };

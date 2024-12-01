@@ -35,9 +35,13 @@ export interface IGetAllUsersResp {
 	data: IUser[];
 }
 
-type Kyc = VerificationState & {userId: IUser}
+export type Kyc = VerificationState & { userId: IUser };
 export interface IGetAllKycResp {
 	data: Kyc[];
+}
+
+export interface IGetKycResp {
+	data: Kyc;
 }
 
 export interface IGetUsersTotalResp {
@@ -68,4 +72,10 @@ export type iPostAdminSignInErr = AxiosError<{
 export type iPostAdminSignInRsq = {
 	email: string;
 	password: string;
+};
+
+export type iPostAdminUpdateKycRsq = {
+	userId: string;
+	action: "approve" | "reject";
+	rejectionMessage?: string;
 };

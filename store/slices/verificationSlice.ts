@@ -18,6 +18,7 @@ export type VerificationState = Omit<iPostRegisterKycReq, "userId" | "documentTy
 	isApproved: boolean;
 	isRejected: boolean;
 	rejectionMessage: string;
+	createdAt?: string;
 };
 
 const initialState: VerificationState = {

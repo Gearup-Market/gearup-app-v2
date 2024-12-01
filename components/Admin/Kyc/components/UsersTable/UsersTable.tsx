@@ -33,8 +33,6 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 	const pageSize: number = 12;
 	const users = data?.data || [];
 
-	console.log(data, "sdjka d");
-
 	const columns: GridColDef[] = [
 		{
 			...sharedColDef,
@@ -137,7 +135,7 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 					<p
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status}
-						data-status={value}
+						data-status={value ? "declined" : false}
 					>
 						{value ? "Yes" : "No"}
 					</p>
