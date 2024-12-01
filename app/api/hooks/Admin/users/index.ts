@@ -13,10 +13,12 @@ import {
 	IGetAllKycResp,
 	IGetAllUsersResp,
 	IGetErr,
+	IGetKycResp,
 	IGetUsersTotalResp,
 	iPostAdminSignInErr,
 	iPostAdminSignInResp,
 	iPostAdminSignInRsq,
+	iPostAdminUpdateKycRsq,
 	RoleProps
 } from "./types";
 
@@ -96,6 +98,25 @@ export const usePostDeactivateUser = (
 		...options
 	});
 
+export const usePostAdminUpdateKyc = (
+	options?: Omit<
+		UseMutationOptions<
+			any,
+			iPostAdminSignInErr,
+			iPostAdminUpdateKycRsq
+		>,
+		"mutationFn"
+	>
+) =>
+	useMutation<any, iPostAdminSignInErr, iPostAdminUpdateKycRsq>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.adminUpdateKyc, {
+					...props
+				})
+			).data,
+		...options
+	});
 // ----------------------------------------------
 
 export const useGetVerifyAdminToken = ({ token }: { token: string }) => {
@@ -136,9 +157,22 @@ export const useGetAllUsers = (
 export const useGetAllKyc = (options?: UseQueryOptions<IGetAllKycResp, IGetErr>) =>
 	useQuery<IGetAllKycResp, IGetErr>({
 		queryKey: ["getAllKyc"],
-		queryFn: async () => (await api.get(`${API_URL.adminGetAllKycSubmission}`)).data,
+		queryFn: async () => (await api.get(`${API_URL.adminGetKycSubmission}/all`)).data,
 		...options,
 		refetchOnMount: true
+	});
+
+export const useGetKyc = (
+	{ userId }: { userId: string },
+	options?: UseQueryOptions<IGetKycResp, IGetErr>
+) =>
+	useQuery<IGetKycResp, IGetErr>({
+		queryKey: ["getKyc"],
+		queryFn: async () =>
+			(await api.get(`${API_URL.adminGetKycSubmission}/${userId}`)).data,
+		...options,
+		enabled: !!userId,
+		refetchOnMount: false
 	});
 
 export const useGetUsersTotal = (

@@ -76,10 +76,10 @@
 			//     background-color:#F0F9FF;
 			//     color:#026AA2;
 			// }
-			// &[data-status="declined"]{
-			//     background-color: #FEF3F2;
-			//     color: #B42318;
-			// }
+			&[data-status="declined"]{
+			    background-color: #FEF3F2;
+			    color: #B42318;
+			}
 		}
 	}
 
