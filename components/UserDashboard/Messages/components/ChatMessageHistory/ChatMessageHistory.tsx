@@ -14,6 +14,7 @@ import { timeSince } from "@/utils";
 import { useGetUserDetails } from "@/app/api/hooks/users";
 import { useGetListingById } from "@/app/api/hooks/listings";
 import Image from "next/image";
+import { useAppSelector } from "@/store/configureStore";
 
 interface ShowScreen {
 	chatHistory: boolean;
@@ -33,7 +34,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 	const [showMessageDetails, setShowMessageDetails] = useState<boolean>(false);
 	const participantId = searchParams.get("participantId");
 	const router = useRouter();
-	const { user } = useAuth();
+	const { userId } = useAppSelector(state => state.user);
 	const { isMobile } = useResponsive();
 	const [showScreen, setShowScreen] = useState<ShowScreen>({
 		chatHistory: true,
@@ -54,7 +55,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 			const currentParams = new URLSearchParams(searchParams.toString());
 			currentParams.set(
 				"participantId",
-				allUserMessages[0]?.participants?.find(item => item?.userId !== user?._id)
+				allUserMessages[0]?.participants?.find(item => item?.userId !== userId)
 					?.userId || ""
 			);
 			currentParams.set("activeChatId", allUserMessages[0]?._id || "");
@@ -71,7 +72,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 	const handleMessageClick = (chat: MessageData) => {
 		const id = chat._id;
 		const participantId =
-			chat?.participants?.find(item => item?.userId !== user?._id)?.userId || "";
+			chat?.participants?.find(item => item?.userId !== userId)?.userId || "";
 		setShowMessageDetails(true);
 		setActiveChatId(id);
 		// return
@@ -238,9 +239,9 @@ const ChatItem = ({
 	onClick: () => void;
 	active: boolean;
 }) => {
-	const { user } = useAuth();
+	const { userId } = useAppSelector(state => state.user);
 
-	const participant = chat.participants.find(item => item.userId !== user?._id);
+	const participant = chat.participants.find(item => item.userId !== userId);
 	const lastMessage = chat.messages[chat?.messages?.length - 1];
 	const lastMessageTime = timeSince(new Date(lastMessage?.timestamp));
 

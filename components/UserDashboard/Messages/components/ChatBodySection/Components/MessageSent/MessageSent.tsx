@@ -1,17 +1,16 @@
 import React from 'react'
 import styles from './MessageSent.module.scss'
 
-interface Props{
+interface Props {
   message?: string
 }
 
-const MessageSent = ({message}:Props) => {
+const MessageSent = ({ message }: Props) => {
   return (
     <div className={styles.container}>
-        <p className={styles.text}>
-
+      <p className={styles.text}>
         {message}
-        </p>
+      </p>
     </div>
   )
 }

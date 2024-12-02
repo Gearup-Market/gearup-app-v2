@@ -21,7 +21,8 @@ const BreadCrumbSelect = ({
 	className,
 	selectedCategory,
 	setSelectedCategory,
-	setSelectedSubCategory
+	setSelectedSubCategory,
+	selectedSubCategory
 }: Props) => {
 	const { data: categories } = useGetCategories();
 
@@ -75,7 +76,8 @@ const BreadCrumbSelect = ({
 								? selectedCategory.subCategories
 								: []
 						}
-						defaultOptionIndex={0}
+						// defaultOptionIndex={0}
+						defaultOption={selectedSubCategory?.name}
 						titleClassName={styles.titleClassName}
 						bodyClassName={styles.select_body}
 						optionClassName={styles.option_text}

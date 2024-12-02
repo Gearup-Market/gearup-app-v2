@@ -1,15 +1,15 @@
 import React from 'react'
 import styles from './MessageReceived.module.scss'
 
-interface Props{
+interface Props {
   message?: string
 }
 
-const MessageReceived = ({message}:Props) => {
+const MessageReceived = ({ message }: Props) => {
   return (
     <div className={styles.container}>
       <p className={styles.text}>
-{message}
+        {message}
       </p>
     </div>
   )

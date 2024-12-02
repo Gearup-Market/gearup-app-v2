@@ -39,17 +39,14 @@ export const useGetUserMessages = (
 
 
   export const useCreateChatMessage = (
-    options?: UseMutationOptions<ICreateChatMessageResp, IGetMessagesErr, { participants: string[], listingId: string, message: string }>
+    options?: UseMutationOptions<ICreateChatMessageResp, IGetMessagesErr, { participants: string[], listingId: string }>
   ) => {
-    return useMutation<ICreateChatMessageResp, IGetMessagesErr, { participants: string[], listingId: string, message: string, chatId?: string }>({
-      mutationFn: async ({ participants, listingId, message, chatId }) => {
-        // Perform the API call
-        if(!!chatId) return
+    return useMutation<ICreateChatMessageResp, IGetMessagesErr, { participants: string[], listingId: string }>({
+      mutationFn: async ({ participants, listingId }) => {
         return (
           await api.post(`${API_URL.createMessages}`, {
             participants,
             listingId,
-            message,
           })
         ).data;
       },

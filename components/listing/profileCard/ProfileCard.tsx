@@ -8,9 +8,10 @@ import { Listing } from "@/store/slices/listingsSlice";
 import Link from "next/link";
 import { AppRoutes } from "@/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAppSelector } from "@/store/configureStore";
 
 const ProfileCard = ({ listing }: { listing: Listing }) => {
-	const { user: loggedInUser } = useAuth();
+	const {userId} = useAppSelector(state => state.user);
 	const { location, user, reviews, averageRating, ownerTotalListings } = listing;
 	return (
 		<div className={styles.card}>
@@ -57,7 +58,7 @@ const ProfileCard = ({ listing }: { listing: Listing }) => {
 						</div>
 					</div>
 				</div>
-				{loggedInUser?._id !== user._id && (
+				{userId !== user._id && (
 					<Link
 						href={`${AppRoutes.userDashboard.messages}?participantId=${user?._id}&listingId=${listing?._id}`}
 					>

@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const [isTokenValid, setIsTokenValid] = useState(false);
 	const { isFetching: isUserLoading, data: userData } = useGetUser({
-		userId: user._id as string
+		userId: user.userId as string
 	});
 
 	const { data: tokenData, isFetched } = useGetVerifyToken({
@@ -99,6 +99,7 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const { isAuthenticated, loading } = useAuth();
+	const user = useAppSelector(state => state.user);
 
 	const UNPROTECTED_ROUTES = useMemo(
 		() => [
@@ -115,9 +116,7 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	const returnUrl = searchParams.get("returnUrl") || pathname;
 
 	useEffect(() => {
-		console.log(isAuthenticated, "is authenticated", returnUrl);
-
-		if (!loading) {
+		if (!loading && !user.isAuthenticated) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
 				router.replace(`/login?returnUrl=${returnUrl}`);
 			} else if (isAuthenticated && pathname === "/login") {

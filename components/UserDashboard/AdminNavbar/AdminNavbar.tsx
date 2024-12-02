@@ -10,6 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import WishlistComponent from "../WishlistComponent/WishlistComponent";
 import { useAdminAuth } from "@/contexts/AuthContext/AdminAuthContext";
+import { useAppSelector } from "@/store/configureStore";
 
 const AdminNavbar = () => {
 	const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -144,7 +145,7 @@ const MenuDropDown = ({
 	showDropDownMenu: boolean;
 	setShowWishList: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user } = useAuth();
+		const user = useAppSelector(state => state.user);
 	return (
 		<div
 			className={`${styles.drop_down_menu_container} drop-down-menu-class`}

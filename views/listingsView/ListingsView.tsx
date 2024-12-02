@@ -23,6 +23,7 @@ const ListingsView = () => {
 	const pagePathName = pathName.split("/")[1];
 	const search = useSearchParams();
 	const category = search.get("category");
+	const subCategory = search.get("subCategory");
 
 	const [hideFilters, setHideFilters] = useState<boolean>(false);
 	const [selectedCategory, setSelectedCategory] = useState<iCategory | null>(null);
@@ -100,21 +101,49 @@ const ListingsView = () => {
 		};
 	}, []);
 
+	// to update the selectedCategory and selectedSubCategory from the query
 	useEffect(() => {
 		if (category) {
 			const _category = categories?.data.find(
-				c => c.name.toLowerCase() === category.toLowerCase()
+				c => c.name.toLowerCase() == category.toLowerCase()
 			);
 			if (_category) {
 				setSelectedCategory(_category);
+				const _subCategory = _category.subCategories.find(
+					c => c.name.toLowerCase() == subCategory?.toLowerCase()
+				);
+				if (_subCategory) {
+					setSelectedSubCategory(_subCategory);
+				}
 			}
 		}
-	}, [category]);
+
+	}, [category, categories, subCategory]);
 
 	const onChangeSelectedCategory = (option: iCategory) => {
 		setSelectedCategory(option);
 		setSelectedSubCategory(null);
 	};
+
+	// to update the query params when the selectedCategory and selectedSubCategory changes
+	useEffect(() => {
+		if (selectedCategory) {
+			updateQueryParam("category", selectedCategory.name);
+		}
+		if (selectedSubCategory) {
+			updateQueryParam("subCategory", selectedSubCategory.name);
+		}
+	}, [selectedCategory, selectedSubCategory])
+
+
+	const updateQueryParam = (key: string, value: string) => {
+		const currentParams = new URLSearchParams(search.toString());
+		if (key === "category") {
+			currentParams.delete("subCategory");
+		}
+		currentParams.set(key, value);
+		router.push(`${pathName}?${currentParams.toString()}`);
+	}
 
 	return (
 		<section className={styles.section} data-hidden={hideFilters} ref={elementRef}>

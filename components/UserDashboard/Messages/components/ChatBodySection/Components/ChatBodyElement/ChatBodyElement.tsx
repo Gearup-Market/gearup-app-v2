@@ -4,7 +4,6 @@ import MessageReceived from "../MessageReceived/MessageReceived";
 import MessageSent from "../MessageSent/MessageSent";
 import { Button } from "@/shared";
 import Image from "next/image";
-import { useAuth } from "@/contexts/AuthContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAddChatMessage, useCreateChatMessage, useFetchChatMessages } from "@/app/api/hooks/messages";
 import { Formik, Form, Field } from "formik";
@@ -13,9 +12,7 @@ import toast from "react-hot-toast";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { Box } from "@mui/material";
 import { useChatSocket } from "@/hooks";
-import { ReUseableChatHeader } from "../../ChatBodySection";
-import { useGetUserDetails } from "@/app/api/hooks/users";
-import { useGetListingById } from "@/app/api/hooks/listings";
+import { useAppSelector } from "@/store/configureStore";
 
 // Define the validation schema using Yup
 const ChatMessageSchema = Yup.object().shape({
@@ -35,39 +32,36 @@ const ChatBodyElement = () => {
 	useChatSocket(chatId); 
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
-	const { user } = useAuth();
 	const router = useRouter();
 	const pathname = usePathname();
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
 	const { mutateAsync: addChatMessage } = useAddChatMessage();
 	const {data: chatMessages, isFetching: isPending, refetch, isLoading} = useFetchChatMessages(chatId);
-
+	const { userId } = useAppSelector((state) => state.user)
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
-		if (user && participantId && listingId) {
+		if (userId && participantId && listingId) {
 			try {
-				const resp = await createChatMessage({
-					participants: [user?._id as string, participantId],
-					listingId,
-					message: values.message,
-					chatId: chatId
-				});
-
+				let newChatId = "";
 				// update the chatId in the URL if it's a new chat
-				if (resp?.success && !chatId) {
+				if (!chatId) {
+					const resp = await createChatMessage({
+						participants: [userId as string, participantId],
+						listingId,
+					});
 					const currentParams = new URLSearchParams(searchParams.toString());
 					currentParams.set("activeChatId", resp?.data?._id);
 					router.push(`${pathname}?${currentParams.toString()}`);
+					newChatId = resp?.data?._id;
 				}
 
 				await addChatMessage({
-					senderId: user?._id as string,
-					chatId: chatId ?? resp.data._id,
+					senderId: userId as string,
+					chatId: chatId || newChatId,
 					message: values.message,
 					attachments: []
 				});
-
-				resetForm(); // Clear the form after submission
+				resetForm();
 			} catch (error) {
 				toast.error("Failed to send message");
 			}
@@ -102,7 +96,7 @@ const ChatBodyElement = () => {
 									key={index}
 									ref={index === chatMessages?.data?.messages.length - 1 ? lastMessageRef : null}
 								>
-									{message.sender._id === user?._id ? (
+									{message.sender._id === userId ? (
 										<MessageSent message={message.message} />
 									) : (
 										<MessageReceived message={message.message} />

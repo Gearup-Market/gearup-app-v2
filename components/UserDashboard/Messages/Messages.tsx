@@ -8,12 +8,12 @@ import ChatBodySection from "./components/ChatBodySection/ChatBodySection";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { Box } from "@mui/material";
 import { useGetUserMessages } from "@/app/api/hooks/messages";
-import { useAuth } from "@/contexts/AuthContext";
 import { useSearchParams } from "next/navigation";
+import { useAppSelector } from "@/store/configureStore";
 
 const Messages = () => {
-	const { user } = useAuth();
-	const { data: allUserMessages, isFetching: isFetchingAllUserMessages } = useGetUserMessages(user?._id);
+	const { userId } = useAppSelector((state) => state.user)
+	const { data: allUserMessages, isFetching: isFetchingAllUserMessages } = useGetUserMessages(userId);
 	const searchParams = useSearchParams()
 	const participantId = searchParams.get("participantId")
 	const listingId = searchParams.get("listingId")

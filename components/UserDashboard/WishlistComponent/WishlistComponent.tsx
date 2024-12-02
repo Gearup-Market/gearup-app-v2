@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Box } from "@mui/material";
 import { CircularProgressLoader } from "@/shared/loaders";
 import toast from "react-hot-toast";
+import { useAppSelector } from "@/store/configureStore";
 
 interface Props {
 	showWishList: boolean;
@@ -21,10 +22,10 @@ interface Props {
 const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 	const wishlists = [] as any;
 	const [page, setPage] = useState(1);
-	const { user } = useAuth();
+	const { userId } = useAppSelector(state => state.user);
 
-	const { data, isLoading, refetch } = useGetUserWishlists(user?._id as string, {
-		enabled: !!showWishList && !!user?._id
+	const { data, isLoading, refetch } = useGetUserWishlists(userId as string, {
+		enabled: !!showWishList && !!userId
 	});
 
 	const { mutateAsync: removeWishlist, isPending } = useRemoveItemFromWishlist()
@@ -60,9 +61,9 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 	}, []);
 
 	const onDeleteItem = async (wishlistId: string) => {
-		if(!wishlistId) return
+		if (!wishlistId) return
 		const data = {
-			userId: user?._id,
+			userId: userId,
 			listingId: wishlistId
 		}
 		await removeWishlist(data, {
@@ -119,6 +120,7 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 												lastEle={ind + 1 === wishlists.length ? true : false}
 												setShowWishList={setShowWishList}
 												onDeleteItem={onDeleteItem}
+												deletingItem={isPending}
 											/>
 										))}
 									</div>
