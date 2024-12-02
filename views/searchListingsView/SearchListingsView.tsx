@@ -25,8 +25,9 @@ const SearchListingsView = () => {
 	const router = useRouter();
 	const search = useSearchParams();
 	const typePathName = search.get("type");
-	const categoryPathName = search.get("category");
-
+	// const categoryPathName = search.get("category");
+	const category = search.get("category");
+	const subCategory = search.get("subCategory");
 	const [hideFilters, setHideFilters] = useState<boolean>(false);
 	const [selectedCategory, setSelectedCategory] = useState<iCategory | null>(null);
 	const [selectedSubCategory, setSelectedSubCategory] = useState<iCategory | null>(
@@ -35,7 +36,7 @@ const SearchListingsView = () => {
 	const [isMobile, setIsMobile] = useState<boolean>(true);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const elementRef: any = useRef(null);
-
+	const pathName = usePathname();
 	const listingsData = searchedListings.length > 0 ? searchedListings : listings;
 
 	// console.log(searchedListings, listings);
@@ -96,24 +97,62 @@ const SearchListingsView = () => {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (!isFetchingCategories && categoryPathName) {
-			const foundCategory = categories?.data.find(
-				category => category.name.toLowerCase() === categoryPathName
-			);
-			const category = foundCategory || null;
-			console.log(category, categoryPathName, foundCategory);
-			setSelectedCategory(category);
-		}
-		if (!categoryPathName) {
-			setSelectedCategory(null);
-		}
-	}, [categoryPathName, isFetchingCategories, categories?.data]);
+		// to update the selectedCategory and selectedSubCategory from the query
+		useEffect(() => {
+			if (category) {
+				const _category = categories?.data.find(
+					c => c.name.toLowerCase() == category.toLowerCase()
+				);
+				if (_category) {
+					setSelectedCategory(_category);
+					const _subCategory = _category.subCategories.find(
+						c => c.name.toLowerCase() == subCategory?.toLowerCase()
+					);
+					if (_subCategory) {
+						setSelectedSubCategory(_subCategory);
+					}
+				}
+			}
+	
+		}, [category, categories, subCategory]);
+
+	// useEffect(() => {
+	// 	if (!isFetchingCategories && categoryPathName) {
+	// 		const foundCategory = categories?.data.find(
+	// 			category => category.name.toLowerCase() === categoryPathName
+	// 		);
+	// 		const category = foundCategory || null;
+	// 		console.log(category, categoryPathName, foundCategory);
+	// 		setSelectedCategory(category);
+	// 	}
+	// 	if (!categoryPathName) {
+	// 		setSelectedCategory(null);
+	// 	}
+	// }, [categoryPathName, isFetchingCategories, categories?.data]);
 
 	const onChangeSelectedCategory = (option: iCategory) => {
 		setSelectedCategory(option);
 		setSelectedSubCategory(null);
 	};
+
+		useEffect(() => {
+		if (selectedCategory) {
+			updateQueryParam("category", selectedCategory.name);
+		}
+		if (selectedSubCategory) {
+			updateQueryParam("subCategory", selectedSubCategory.name);
+		}
+	}, [selectedCategory, selectedSubCategory])
+
+
+	const updateQueryParam = (key: string, value: string) => {
+		const currentParams = new URLSearchParams(search.toString());
+		if (key === "category") {
+			currentParams.delete("subCategory");
+		}
+		currentParams.set(key, value);
+		router.push(`${pathName}?${currentParams.toString()}`);
+	}
 
 	return (
 		<section className={styles.section} data-hidden={hideFilters} ref={elementRef}>
