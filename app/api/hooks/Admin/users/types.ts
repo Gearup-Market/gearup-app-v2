@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import { IUser, IUserResp } from "../../users/types";
+import { VerificationState } from "@/store/slices/verificationSlice";
 
 export interface Permissions {
 	view: boolean;
@@ -32,6 +33,17 @@ export interface RoleProps {
 
 export interface IGetAllUsersResp {
 	data: IUser[];
+	message?: string;
+	pagination?: { limit: number; page: number; total: number; totalPages: number };
+}
+
+export type Kyc = VerificationState & { userId: IUser };
+export interface IGetAllKycResp {
+	data: Kyc[];
+}
+
+export interface IGetKycResp {
+	data: Kyc;
 }
 
 export interface IGetUsersTotalResp {
@@ -62,4 +74,10 @@ export type iPostAdminSignInErr = AxiosError<{
 export type iPostAdminSignInRsq = {
 	email: string;
 	password: string;
+};
+
+export type iPostAdminUpdateKycRsq = {
+	userId: string;
+	action: "approve" | "reject";
+	rejectionMessage?: string;
 };

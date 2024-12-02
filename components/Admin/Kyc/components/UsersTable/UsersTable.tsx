@@ -9,9 +9,8 @@ import Link from "next/link";
 import RecentDealsCard from "@/components/UserDashboard/Dashboard/Components/RecentDeals/components/RecentDealsCard/RecentDealsCard";
 import { Button, InputField, MobileCardContainer, Pagination } from "@/shared";
 import UserCardMob from "../UserCardMob/UserCardMob";
-import { useGetAllUsers } from "@/app/api/hooks/Admin/users";
+import { useGetAllKyc, useGetAllUsers } from "@/app/api/hooks/Admin/users";
 import { debounce } from "lodash";
-import { PageLoader } from "@/shared/loaders";
 const sharedColDef: GridColDef = {
 	field: "",
 	sortable: true,
@@ -28,37 +27,30 @@ interface Props {
 }
 
 const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) => {
+	const { data, isLoading } = useGetAllKyc();
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const { data, isLoading, refetch } = useGetAllUsers(currentPage);
-	// const [users, setUsers] = useState<any[]>(data?.data || []);
 	const [searchInput, setSearchInput] = useState("");
 	const pageSize: number = 12;
-	// console.log(data);
 	const users = data?.data || [];
-
-	const updatePage = (page: number) => {
-		setCurrentPage(page);
-		refetch();
-	};
 
 	const columns: GridColDef[] = [
 		{
 			...sharedColDef,
-			field: "userName",
+			field: "firstName",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
-			headerName: "Username",
+			headerName: "Full name",
 			minWidth: 250,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
 					<Image
-						src={row.avatar || "/svgs/user.svg"}
+						src={row?.userId?.avatar || "/svgs/user.svg"}
 						alt={value}
 						width={16}
 						height={16}
 					/>
 					<p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
-						{value}
+						{row?.firstName} {row?.lastName}
 					</p>
 				</div>
 			)
@@ -69,14 +61,21 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Email",
-			minWidth: 200
+			minWidth: 200,
+			renderCell: ({ row, value }) => (
+				<div className={styles.container__name_container}>
+					<p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
+						{row?.userId?.email}
+					</p>
+				</div>
+			)
 		},
 		{
 			...sharedColDef,
 			field: "createdAt",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
-			headerName: "Joined Date",
+			headerName: "Created Date",
 			minWidth: 150,
 			renderCell: ({ value }) => (
 				<div className={styles.container__name_container}>
@@ -88,10 +87,10 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 		},
 		{
 			...sharedColDef,
-			field: "isActive",
+			field: "isSubmitted",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
-			headerName: "Account status",
+			headerName: "Kyc submitted",
 			minWidth: 150,
 			renderCell: ({ value }) => (
 				<div className={styles.container__status_container}>
@@ -100,7 +99,45 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 						className={styles.container__status_container__status}
 						data-status={value}
 					>
-						{value ? "Active" : "In-active"}
+						{value ? "Yes" : "No"}
+					</p>
+				</div>
+			)
+		},
+		{
+			...sharedColDef,
+			field: "isApproved",
+			cellClassName: styles.table_cell,
+			headerClassName: styles.table_header,
+			headerName: "Kyc Approved",
+			minWidth: 150,
+			renderCell: ({ value }) => (
+				<div className={styles.container__status_container}>
+					<p
+						style={{ fontSize: "1.2rem" }}
+						className={styles.container__status_container__status}
+						data-status={value}
+					>
+						{value ? "Yes" : "No"}
+					</p>
+				</div>
+			)
+		},
+		{
+			...sharedColDef,
+			field: "isRejected",
+			cellClassName: styles.table_cell,
+			headerClassName: styles.table_header,
+			headerName: "Kyc Rejected",
+			minWidth: 150,
+			renderCell: ({ value }) => (
+				<div className={styles.container__status_container}>
+					<p
+						style={{ fontSize: "1.2rem" }}
+						className={styles.container__status_container__status}
+						data-status={value ? "declined" : false}
+					>
+						{value ? "Yes" : "No"}
 					</p>
 				</div>
 			)
@@ -115,11 +152,11 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 			minWidth: 200,
 			renderCell: ({ value }) => (
 				<Link
-					href={`/admin/${url}/${value}`}
+					href={`/admin/kyc/${value?.userId}`}
 					onClick={() => handleClickMore(value)}
 					className={styles.container__action_btn}
 				>
-					<Button>View Profile</Button>
+					<Button>View documents</Button>
 				</Link>
 			)
 		}
@@ -129,8 +166,9 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 		if (!searchInput) return users;
 		return users.filter(
 			user =>
-				user.userName.toLowerCase().includes(searchInput.toLowerCase()) ||
-				user.email.toLowerCase().includes(searchInput.toLowerCase())
+				user.firstName.toLowerCase().includes(searchInput.toLowerCase()) ||
+				user.lastName.toLowerCase().includes(searchInput.toLowerCase()) ||
+				user.userId?.email.toLowerCase().includes(searchInput.toLowerCase())
 		);
 	}, [searchInput, users]);
 
@@ -166,62 +204,64 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 
 	return (
 		<div className={styles.container}>
-			{!isLoading ? (
-				!users?.length ? (
-					<div className={styles.empty_rows}>
-						<span className={styles.transaction_icon}>
-							<UserIcon color="#FFB30F" />
-						</span>
-						No data available
-					</div>
-				) : (
-					<>
-						<div className={styles.container__input_filter_container}>
-							<InputField
-								placeholder="Enter username or email"
-								icon="/svgs/icon-search-dark.svg"
-								iconTitle="search-icon"
-								onChange={e => debouncedSearch(e.target.value)}
-							/>
-						</div>
-						<div className={styles.container__table}>
-							<DataGrid
-								rows={users}
-								columns={columns}
-								hideFooterPagination={true}
-								hideFooter
-								paginationMode="server"
-								sx={customisedTableClasses}
-								autoHeight
-								scrollbarSize={20}
-								loading={isLoading}
-								getRowId={row => row._id}
-							/>
-						</div>
-						<MobileCardContainer>
-							{users?.map((item, ind) => (
-								<UserCardMob
-									key={item._id}
-									item={item}
-									url="users"
-									lastEle={
-										ind + 1 === currentTableData.length ? true : false
-									}
-									ind={ind}
-								/>
-							))}
-						</MobileCardContainer>
-
-						<Pagination
-							currentPage={currentPage}
-							totalCount={data?.pagination?.total || 0}
-							pageSize={10}
-							onPageChange={(page: any) => updatePage(page)}
-						/>
-					</>
-				)
+			{!!users && users?.length < 1 ? (
+				<div className={styles.empty_rows}>
+					<span className={styles.transaction_icon}>
+						<UserIcon color="#FFB30F" />
+					</span>
+					No data available
+				</div>
 			) : (
-				<PageLoader />
+				<>
+					<div className={styles.container__input_filter_container}>
+						<InputField
+							placeholder="Enter username or email"
+							icon="/svgs/icon-search-dark.svg"
+							iconTitle="search-icon"
+							onChange={e => debouncedSearch(e.target.value)}
+						/>
+					</div>
+					<div className={styles.container__table}>
+						<DataGrid
+							rows={currentTableData || []}
+							columns={columns}
+							hideFooterPagination={true}
+							hideFooter
+							paginationMode="server"
+							sx={customisedTableClasses}
+							autoHeight
+							scrollbarSize={20}
+							loading={isLoading}
+							getRowId={row => row._id}
+						/>
+					</div>
+					<MobileCardContainer>
+						{currentTableData?.map((item, ind) => (
+							<UserCardMob
+								key={item._id}
+								item={item}
+								url="users"
+								lastEle={
+									ind + 1 === currentTableData.length ? true : false
+								}
+								ind={ind}
+							/>
+						))}
+					</MobileCardContainer>
+
+					<Pagination
+						// currentPage={page}
+						// onPageChange={handlePagination}
+						// totalCount={totalCount || 0}
+						// pageSize={limit}
+						currentPage={currentPage}
+						totalCount={users?.length}
+						pageSize={pageSize}
+						onPageChange={(page: any) => setCurrentPage(page)}
+						startNumber={startNumber}
+						endNumber={endNumber}
+					/>
+				</>
 			)}
 		</div>
 	);

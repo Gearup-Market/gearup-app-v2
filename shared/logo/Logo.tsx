@@ -12,7 +12,9 @@ const Logo = ({ type = "light", className }: Props) => {
 	return (
 		<div className={`${styles.logo} ${className}`}>
 			<Image
-				src={type === "light" ? "/svgs/logo.svg" : "/svgs/logo-dark.svg"}
+				src={
+					type === "light" ? "/images/logo_white.png" : "/images/logo_dark.png"
+				}
 				loading="eager"
 				priority={true}
 				alt="Gear Up"

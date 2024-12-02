@@ -27,6 +27,7 @@ const Users = () => {
 		setPaginatedData(usersData.slice(start, end));
 		setPage(page);
 	};
+	
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__item}>
@@ -50,7 +51,7 @@ const Users = () => {
 				limit={limit}
 				handlePagination={handlePagination}
 				url="users"
-				totalCount={usersCount?.totalUsers}
+				totalCount={usersData.length}
 			/>
 		</div>
 	);
