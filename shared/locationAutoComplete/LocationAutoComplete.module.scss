@@ -1,0 +1,26 @@
+@import "@/styles/imports";
+
+.container {
+	width: 100%;
+	position: relative;
+	.body {
+		min-width: 100%;
+		border-radius: 0.4rem;
+		position: absolute;
+		top: 6rem;
+		left: 0;
+		background-color: $col-white;
+		border-radius: 0.8rem;
+		box-shadow: 0px 0.2rem 3rem 0px rgba(18, 14, 6, 0.08);
+		z-index: 2;
+		max-height: 18rem;
+		overflow-y: scroll;
+		@include noScrollBar;
+		.listItem {
+			border-bottom: 0.1rem solid #dedfe0;
+			padding: 0.8rem 1.6rem;
+			@extend %text-14;
+			cursor: pointer;
+		}
+	}
+}

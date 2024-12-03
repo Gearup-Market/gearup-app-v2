@@ -18,6 +18,9 @@ interface Props {
 	setActiveRow?: React.Dispatch<React.SetStateAction<number>>;
 	showMoreIcon?: boolean;
 	showStatusIcon?: boolean;
+	onClickEdit?: (listingId: string) => void;
+	refetch?: () => void;
+	closePopOver?: () => void;
 }
 
 const ListingCard = ({
@@ -27,7 +30,10 @@ const ListingCard = ({
 	activeRow,
 	setActiveRow,
 	showMoreIcon = true,
-	showStatusIcon = true
+	showStatusIcon = true,
+	onClickEdit,
+	refetch,
+	closePopOver
 }: Props) => {
 	const [showMoreModal, setShowMoreModal] = useState(false);
 
@@ -57,10 +63,10 @@ const ListingCard = ({
 		<div className={`${styles.container} ${className}`}>
 			<div
 				className={styles.image}
-				data-disabled={props.status.toLowerCase() !== "ongoing"}
+				data-disabled={props.status.toLowerCase() !== "unavailable"}
 			>
 				<CustomImage
-					src={!!props?.listingPhotos?.length ? props.listingPhotos[0] : ""}
+					src={props?.image ? props.image : ""}
 					alt={props.title}
 					fill
 					sizes="100vw"
@@ -79,7 +85,13 @@ const ListingCard = ({
 						onClick={e => e.stopPropagation()}
 					>
 						{" "}
-						<MoreModal row={props} activeFilter={activeFilter} />
+						<MoreModal
+							row={props}
+							activeFilter={activeFilter}
+							onClickEdit={onClickEdit}
+							refetch={refetch}
+							closePopOver={closePopOver}
+						/>
 					</div>
 				)}
 				<div className={styles.button_container}>

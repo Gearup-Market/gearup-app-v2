@@ -9,9 +9,12 @@ import ThirdPartyCheck from "@/components/CartComponent/CheckoutComp/ThirdPartyC
 import { useAppSelector } from "@/store/configureStore";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { useAuth } from "@/contexts/AuthContext";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const PaymentComp = dynamic(() => import('@/components/CartComponent/CheckoutComp').then(mod => mod.PaymentComp), { ssr: false });
+const PaymentComp = dynamic(
+	() => import("@/components/CartComponent/CheckoutComp").then(mod => mod.PaymentComp),
+	{ ssr: false }
+);
 
 enum BuyTimeLineEnum {
 	THIRD_PARTY_CHECK = "THIRD_PARTY_CHECK",
@@ -58,6 +61,7 @@ const CheckoutView = () => {
 	const prevStep = () => {
 		setStep(prev => prev - 1);
 	};
+	console.log(checkout);
 
 	useEffect(() => {
 		if (!checkout) {
@@ -65,9 +69,9 @@ const CheckoutView = () => {
 		}
 	}, []);
 
-	useEffect(() => {
-		if (!isAuthenticated || !userId) router.push(`/login?returnUrl=${pathname}`);
-	}, [isAuthenticated]);
+	// useEffect(() => {
+	// 	if (!isAuthenticated || !userId) router.push(`/login?returnUrl=${pathname}`);
+	// }, [isAuthenticated]);
 
 	return (
 		<div className={styles.container}>

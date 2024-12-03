@@ -4,7 +4,14 @@ import React, { useState } from "react";
 import { Formik, Form, Field, FieldProps } from "formik";
 import * as Yup from "yup";
 import styles from "./PersonalInfo.module.scss";
-import { Button, ImageUploader, InputField, Select, TextArea } from "@/shared";
+import {
+	Button,
+	ImageUploader,
+	InputField,
+	LocationAutoComplete,
+	Select,
+	TextArea
+} from "@/shared";
 import HeaderSubText from "@/components/Admin/HeaderSubText/HeaderSubText";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { Map } from "@/components/listing";
@@ -27,8 +34,8 @@ interface PayoutFormValues {
 const PersonalInfoForm: React.FC = () => {
 	const user = useAppSelector(s => s.user);
 	const dispatch = useAppDispatch();
-	const { mutateAsync: postUpdateUser, isPending } = usePostUpdateUser()
-	const {mutateAsync: postUploadImage, isPending: uploadingImage} = useUploadFiles()
+	const { mutateAsync: postUpdateUser, isPending } = usePostUpdateUser();
+	const { mutateAsync: postUploadImage, isPending: uploadingImage } = useUploadFiles();
 	const [location, setLocation] = React.useState<Location>();
 	const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -52,34 +59,35 @@ const PersonalInfoForm: React.FC = () => {
 	});
 
 	const handleSubmit = async (values: PayoutFormValues) => {
-	
 		if (imageFile) {
-			const response = await postUploadImage([imageFile],{
+			const response = await postUploadImage([imageFile], {
 				onSuccess: (value: any) => {
-					handleUpdate({...values, avatar: value?.imageUrls[0]})
-					setImageFile(null)
+					handleUpdate({ ...values, avatar: value?.imageUrls[0] });
+					setImageFile(null);
 				},
 				onError: () => {
-					toast.error("An error occurred while updating your profile	")
+					toast.error("An error occurred while updating your profile	");
 				}
 			});
-		}else{
-			handleUpdate(values)
+		} else {
+			handleUpdate(values);
 		}
-
 	};
 
-	const handleUpdate=async(values:any)=>{
-		const resp = await postUpdateUser({ userId: user._id, ...values }, {
-			onSuccess: (value) => {
-				dispatch(updateUser({ ...user, ...value }));
-				toast.success("Profile updated successfully")
-			},
-			onError: () => {
-				toast.error("An error occurred while updating your profile	")
+	const handleUpdate = async (values: any) => {
+		const resp = await postUpdateUser(
+			{ userId: user._id, ...values },
+			{
+				onSuccess: value => {
+					dispatch(updateUser({ ...user, ...value }));
+					toast.success("Profile updated successfully");
+				},
+				onError: () => {
+					toast.error("An error occurred while updating your profile	");
+				}
 			}
-		})
-	}
+		);
+	};
 
 	return (
 		<div className={styles.container}>
@@ -97,7 +105,10 @@ const PersonalInfoForm: React.FC = () => {
 					{({ errors, touched, isSubmitting }) => (
 						<Form>
 							<div className={styles.uploader_container}>
-								<ImageUploader onChange={(file) => setImageFile(file)} imageUrl={user.avatar}/>
+								<ImageUploader
+									onChange={file => setImageFile(file)}
+									imageUrl={user.avatar}
+								/>
 								<h3 className={styles.name}>{user.userName}</h3>
 								<p className={styles.email}>{user.email}</p>
 							</div>
@@ -138,7 +149,6 @@ const PersonalInfoForm: React.FC = () => {
 											<InputField
 												{...field}
 												label="Display name"
-												
 												readOnly={true}
 												error={
 													(touched.userName &&
@@ -190,20 +200,24 @@ const PersonalInfoForm: React.FC = () => {
 													""
 												}
 												value={location?.address}
-												onChange={(e) => {
+												onChange={e => {
 													field.onChange(e);
 													setLocation({
 														...location,
 														address: e.target.value
-													})
-												}
-												}
+													});
+												}}
 											/>
 										)}
 									</Field>
 								</div>
+								{/* <LocationAutoComplete /> */}
 								<div className={styles.map_container}>
-									<Map showTitle={false} location={location} setLocation={setLocation} />
+									<Map
+										showTitle={false}
+										location={location}
+										setLocation={setLocation}
+									/>
 								</div>
 								<div className={styles.text_area_container}>
 									<Field name="about">
@@ -223,10 +237,10 @@ const PersonalInfoForm: React.FC = () => {
 								</div>
 							</div>
 							<div className={styles.submit_btn_container}>
-								<Button buttonType="primary" type="submit" >
-									{
-										isPending || uploadingImage ? "Updating..." : "Save changes"
-									}
+								<Button buttonType="primary" type="submit">
+									{isPending || uploadingImage
+										? "Updating..."
+										: "Save changes"}
 								</Button>
 							</div>
 						</Form>

@@ -29,17 +29,18 @@ interface Props {
 
 const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const { data, isLoading, refetch } = useGetAllUsers(currentPage);
-	// const [users, setUsers] = useState<any[]>(data?.data || []);
+	const { data, refetch, isFetching } = useGetAllUsers(currentPage);
 	const [searchInput, setSearchInput] = useState("");
-	const pageSize: number = 12;
-	// console.log(data);
 	const users = data?.data || [];
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
-		refetch();
+		// refetch();
 	};
+
+	useEffect(() => {
+		refetch();
+	}, [currentPage, refetch]);
 
 	const columns: GridColDef[] = [
 		{
@@ -115,7 +116,7 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 			minWidth: 200,
 			renderCell: ({ value }) => (
 				<Link
-					href={`/admin/${url}/${value}`}
+					href={`/admin/users/${value}`}
 					onClick={() => handleClickMore(value)}
 					className={styles.container__action_btn}
 				>
@@ -133,18 +134,6 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 				user.email.toLowerCase().includes(searchInput.toLowerCase())
 		);
 	}, [searchInput, users]);
-
-	const currentTableData = useMemo(() => {
-		const firstPageIndex = (currentPage - 1) * pageSize;
-		const lastPageIndex = firstPageIndex + pageSize;
-		return filteredUsers.slice(firstPageIndex, lastPageIndex);
-	}, [currentPage, filteredUsers]);
-
-	const startNumber = (currentPage - 1) * pageSize + 1;
-	const endNumber = Math.min(
-		startNumber + currentTableData?.length - 1,
-		filteredUsers?.length
-	);
 
 	const debouncedSearch = useMemo(
 		() =>
@@ -166,62 +155,56 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 
 	return (
 		<div className={styles.container}>
-			{!isLoading ? (
-				!users?.length ? (
-					<div className={styles.empty_rows}>
-						<span className={styles.transaction_icon}>
-							<UserIcon color="#FFB30F" />
-						</span>
-						No data available
-					</div>
-				) : (
-					<>
-						<div className={styles.container__input_filter_container}>
-							<InputField
-								placeholder="Enter username or email"
-								icon="/svgs/icon-search-dark.svg"
-								iconTitle="search-icon"
-								onChange={e => debouncedSearch(e.target.value)}
-							/>
-						</div>
-						<div className={styles.container__table}>
-							<DataGrid
-								rows={users}
-								columns={columns}
-								hideFooterPagination={true}
-								hideFooter
-								paginationMode="server"
-								sx={customisedTableClasses}
-								autoHeight
-								scrollbarSize={20}
-								loading={isLoading}
-								getRowId={row => row._id}
-							/>
-						</div>
-						<MobileCardContainer>
-							{users?.map((item, ind) => (
-								<UserCardMob
-									key={item._id}
-									item={item}
-									url="users"
-									lastEle={
-										ind + 1 === currentTableData.length ? true : false
-									}
-									ind={ind}
-								/>
-							))}
-						</MobileCardContainer>
-
-						<Pagination
-							currentPage={currentPage}
-							totalCount={data?.pagination?.total || 0}
-							pageSize={10}
-							onPageChange={(page: any) => updatePage(page)}
-						/>
-					</>
-				)
+			<div className={styles.container__input_filter_container}>
+				<InputField
+					placeholder="Enter username or email"
+					icon="/svgs/icon-search-dark.svg"
+					iconTitle="search-icon"
+					onChange={e => debouncedSearch(e.target.value)}
+				/>
+			</div>
+			{!filteredUsers?.length ? (
+				<div className={styles.empty_rows}>
+					<span className={styles.transaction_icon}>
+						<UserIcon color="#FFB30F" />
+					</span>
+					No data available
+				</div>
 			) : (
-				<PageLoader />
+				<>
+					<div className={styles.container__table}>
+						<DataGrid
+							rows={filteredUsers}
+							columns={columns}
+							hideFooterPagination={true}
+							hideFooter
+							paginationMode="server"
+							sx={customisedTableClasses}
+							autoHeight
+							scrollbarSize={20}
+							loading={isFetching}
+							getRowId={row => row._id}
+						/>
+					</div>
+					<MobileCardContainer>
+						{filteredUsers?.map((item, ind) => (
+							<UserCardMob
+								key={item._id}
+								item={item}
+								url="users"
+								lastEle={ind + 1 === filteredUsers.length ? true : false}
+								ind={ind}
+							/>
+						))}
+					</MobileCardContainer>
+
+					<Pagination
+						currentPage={currentPage}
+						totalCount={data?.pagination?.total || 0}
+						pageSize={10}
+						onPageChange={(page: any) => updatePage(page)}
+					/>
+				</>
 			)}
 		</div>
 	);

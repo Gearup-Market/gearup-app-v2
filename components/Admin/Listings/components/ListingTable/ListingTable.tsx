@@ -45,7 +45,7 @@ const ListingTable = ({
 	const [page, setPage] = useState(1);
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
-	const { userId } = useAppSelector(s => s.user);
+	// const { userId } = useAppSelector(s => s.user);
 	const { data, isFetching, refetch, isLoading } = useAdminGetAllListings();
 	const listings = data?.data || [];
 	// console.log(data);
@@ -68,7 +68,8 @@ const ListingTable = ({
 					listingType,
 					status,
 					listingPhotos,
-					category
+					category,
+					user
 				}) => {
 					const type = listingType === "both" ? "rent | sell" : listingType;
 					const price =
@@ -88,7 +89,8 @@ const ListingTable = ({
 						date: createdAt,
 						sold_count: 0,
 						revenue: 0,
-						category: category?.name?.toLowerCase() || null
+						category: category?.name?.toLowerCase() || null,
+						user
 					};
 				}
 			)
@@ -104,61 +106,54 @@ const ListingTable = ({
 			});
 	}, [listings, activeFilter, activeSubFilterId, filters]);
 
-	// const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
-	// 	mappedListings.map((item, ind) => { return { ...item } }).slice(0, limit)
-	// );
-
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,
 		flex: 1
 	};
 
-	// const handlePagination = (page: number) => {
-	// 	const start = (page - 1) * limit;
-	// 	const end = start + limit;
-	// 	setPaginatedTransactions(userListingsData.slice(start, end));
-	// 	setPage(page);
-	// };
-
 	const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
 
-	const onClickEdit = (listingId: string) => {
-		const listing = listings.find(l => l._id === listingId);
-		const {
-			productName,
-			description,
-			category,
-			subCategory,
-			condition,
-			offer,
-			listingPhotos,
-			_id
-		} = listing!;
-		const payload = {
-			_id,
-			productName,
-			description,
-			category,
-			subCategory,
-			condition,
-			offer,
-			listingPhotos,
-			fieldValues: [],
-			tempPhotos: [],
-			userId
-		};
+	// const onClickEdit = (listingId: string) => {
+	// 	const listing = listings.find(l => l._id === listingId);
+	// 	const {
+	// 		productName,
+	// 		description,
+	// 		category,
+	// 		subCategory,
+	// 		condition,
+	// 		offer,
+	// 		listingPhotos,
+	// 		_id
+	// 	} = listing!;
+	// 	const payload = {
+	// 		_id,
+	// 		productName,
+	// 		description,
+	// 		category,
+	// 		subCategory,
+	// 		condition,
+	// 		offer,
+	// 		listingPhotos,
+	// 		fieldValues: [],
+	// 		tempPhotos: [],
+	// 		userId
+	// 	};
 
-		dispatch(updateNewListing(payload));
-		router.push(`/new-listing/listing-details`);
-	};
+	// 	dispatch(updateNewListing(payload));
+	// 	router.push(`/new-listing/listing-details`);
+	// };
 
 	const { mutateAsync: postChangeListingStatus, isPending: isPendingUpdate } =
 		usePostChangeListingStatus();
 
-	const onToggleHideListing = async (listingId: string, status: string) => {
+	const onToggleHideListing = async (
+		listingId: string,
+		status: string,
+		userId: string
+	) => {
 		try {
 			const res = await postChangeListingStatus({
 				status: status === "available" ? "unavailable" : "available",
@@ -167,7 +162,8 @@ const ListingTable = ({
 			});
 			if (res.data) {
 				toast.success("Status updated");
-				window.location.reload();
+				refetch();
+				// window.location.reload();
 			}
 		} catch (error) {}
 	};
@@ -222,7 +218,9 @@ const ListingTable = ({
 				<div className={styles.container__status_container}>
 					<ToggleSwitch
 						checked={value?.toLowerCase() === "available"}
-						onChange={() => onToggleHideListing(row.id, row.status)}
+						onChange={() =>
+							onToggleHideListing(row.id, row.status, row.user.userId)
+						}
 					/>
 					<p
 						style={{ fontSize: "1.2rem" }}
@@ -459,7 +457,7 @@ const ListingTable = ({
 									hideFooter
 									autoHeight
 									sx={customisedTableClasses}
-									loading={isLoading}
+									loading={isFetching}
 								/>
 							</div>
 

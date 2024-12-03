@@ -10,14 +10,17 @@ import { calculateItemPrice, formatNum, getDaysDifference } from "@/utils";
 import toast from "react-hot-toast";
 
 const CartItems = () => {
-	const { getCartItems, removeItemFromCart } = useCart();
+	const { getCartItems, removeItemFromCart, refetchcartItems } = useCart();
 	const cartItems = getCartItems();
 
 	// if (!cartItems) return null;
 
 	const handleDeleteItem = async (id: string) => {
 		const res = await removeItemFromCart(id);
-		if (res) toast.success("Item removed from cart");
+		if (res) {
+			toast.success("Item removed from cart");
+			refetchcartItems();
+		}
 	};
 
 	return (
@@ -36,6 +39,7 @@ const CartItems = () => {
 									handleDeleteItem={handleDeleteItem}
 									type={item?.type}
 									id={item?.listing?._id}
+									mainHeaderImage={item?.listing.listingPhotos[0]}
 								>
 									<RentalComp item={item} />
 								</CartItemCardContainer>
@@ -50,6 +54,7 @@ const CartItems = () => {
 									handleDeleteItem={handleDeleteItem}
 									type={item?.type}
 									id={item?.listing?._id}
+									mainHeaderImage={item?.listing.listingPhotos[0]}
 								>
 									<GearSaleComp item={item} />
 								</CartItemCardContainer>
@@ -65,7 +70,7 @@ const CartItems = () => {
 export default CartItems;
 
 const RentalComp = ({ item }: { item: CartItem }) => {
-	const price = calculateItemPrice(item)
+	const price = calculateItemPrice(item);
 	return (
 		<div>
 			<div className={styles.summary_item}>
@@ -95,7 +100,10 @@ const RentalComp = ({ item }: { item: CartItem }) => {
 			</div> */}
 			<div className={styles.summary_item}>
 				<h4>Duration</h4>
-				<p>{getDaysDifference(item.rentalPeriod?.start, item.rentalPeriod?.end)} days</p>
+				<p>
+					{getDaysDifference(item.rentalPeriod?.start, item.rentalPeriod?.end)}{" "}
+					days
+				</p>
 			</div>
 			<div className={`${styles.summary_item} ${styles.total_amount}`}>
 				<h4>Total</h4>

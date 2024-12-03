@@ -18,11 +18,15 @@ import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { Filter } from "@/interfaces/Listing";
 import { useRouter } from "next/navigation";
 import { updateNewListing } from "@/store/slices/addListingSlice";
-import { usePostChangeListingStatus } from "@/app/api/hooks/listings";
+import {
+	usePostChangeListingStatus,
+	usePostChangeUserListingStatus
+} from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
 import { formatNum } from "@/utils";
 import NoListings from "../../NoListings/NoListings";
 import { useGetAllCourses } from "@/app/api/hooks/courses";
+import { useListings } from "@/hooks/useListings";
 
 interface Props {
 	activeFilter: string;
@@ -43,10 +47,11 @@ const ListingTable = ({
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 	const { userId } = useAppSelector(s => s.user);
-	const {data:courseListings, isLoading} = useGetAllCourses()
+	// const { data: courseListings, isLoading } = useGetAllCourses();
 	const listings = useAppSelector(s => s.listings.owned);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
+	const { refetch, isFetching, listings: userListings } = useListings();
 
 	const mappedListings = useMemo(() => {
 		const activeSubFilter = filters
@@ -100,25 +105,18 @@ const ListingTable = ({
 			});
 	}, [listings, activeFilter, activeSubFilterId, filters]);
 
-	// const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
-	// 	mappedListings.map((item, ind) => { return { ...item } }).slice(0, limit)
-	// );
-
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,
 		flex: 1
 	};
 
-	// const handlePagination = (page: number) => {
-	// 	const start = (page - 1) * limit;
-	// 	const end = start + limit;
-	// 	setPaginatedTransactions(userListingsData.slice(start, end));
-	// 	setPage(page);
-	// };
-
 	const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
+	};
+
+	const closePopOver = () => {
+		setOpenPopover(false);
 	};
 
 	const onClickEdit = (listingId: string) => {
@@ -152,18 +150,19 @@ const ListingTable = ({
 	};
 
 	const { mutateAsync: postChangeListingStatus, isPending: isPendingUpdate } =
-		usePostChangeListingStatus();
+		usePostChangeUserListingStatus();
 
 	const onToggleHideListing = async (listingId: string, status: string) => {
+		if (status === "unavailable")
+			return toast.error("This listing has not been approved yet");
 		try {
 			const res = await postChangeListingStatus({
-				status: status === "available" ? "unavailable" : "available",
 				userId,
 				listingId
 			});
-			if (res.data) {
+			if (res.message === "Listing visibility updated successfully") {
 				toast.success("Status updated");
-				window.location.reload();
+				refetch();
 			}
 		} catch (error) {}
 	};
@@ -223,7 +222,7 @@ const ListingTable = ({
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status}
 					>
-						{value?.toLowerCase() === "available" ? "Live" : "Paused"}
+						{value?.toLowerCase() === "available" ? "Live" : "draft"}
 					</p>
 				</div>
 			)
@@ -281,6 +280,8 @@ const ListingTable = ({
 										row={selectedRow}
 										activeFilter={activeFilter}
 										onClickEdit={onClickEdit}
+										refetch={refetch}
+										closePopOver={closePopOver}
 									/>
 								</div>
 							</Fade>
@@ -384,6 +385,8 @@ const ListingTable = ({
 									<MoreModal
 										row={selectedRow}
 										activeFilter={activeFilter}
+										refetch={refetch}
+										closePopOver={closePopOver}
 									/>
 								</div>
 							</Fade>
@@ -477,6 +480,7 @@ const ListingTable = ({
 									hideFooter
 									autoHeight
 									sx={customisedTableClasses}
+									loading={isFetching}
 								/>
 							</div>
 
@@ -487,6 +491,9 @@ const ListingTable = ({
 										key={ind}
 										item={item}
 										ind={ind}
+										refetch={refetch}
+										onClickEdit={onClickEdit}
+										onToggleHideListing={onToggleHideListing}
 										lastEle={
 											ind + 1 === mappedListings.length
 												? true
@@ -515,6 +522,9 @@ const ListingTable = ({
 										activeFilter={activeFilter}
 										activeRow={selectedRow}
 										setActiveRow={setSelectedRow}
+										onClickEdit={onClickEdit}
+										refetch={refetch}
+										closePopOver={closePopOver}
 									/>
 								))}
 							</div>

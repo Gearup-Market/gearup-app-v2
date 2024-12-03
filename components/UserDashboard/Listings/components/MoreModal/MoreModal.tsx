@@ -1,12 +1,11 @@
 "use client";
-import { Switch } from "@mui/material";
 import React from "react";
 import styles from "./MoreModal.module.scss";
 import { ToggleSwitch } from "@/shared";
 import Link from "next/link";
 import { useAppSelector } from "@/store/configureStore";
 import {
-	usePostChangeListingStatus,
+	usePostChangeUserListingStatus,
 	usePostRemoveListing
 } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
@@ -15,28 +14,35 @@ interface MoreModalProps {
 	row?: any;
 	activeFilter?: string;
 	onClickEdit?: (listingId: string) => void;
+	refetch?: () => void;
+	closePopOver?: () => void;
 }
 
-const MoreModal = ({ row, activeFilter, onClickEdit }: MoreModalProps) => {
+const MoreModal = ({
+	row,
+	activeFilter,
+	onClickEdit,
+	refetch,
+	closePopOver
+}: MoreModalProps) => {
 	const { userId } = useAppSelector(s => s.user);
-	const [checked, setChecked] = React.useState(false);
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
 		usePostRemoveListing();
 	const { mutateAsync: postChangeListingStatus, isPending: isPendingUpdate } =
-		usePostChangeListingStatus();
+		usePostChangeUserListingStatus();
 
-	const onToggleHideListing = async (event: React.ChangeEvent<HTMLInputElement>) => {
+	const onToggleHideListing = async () => {
+		if (row.status === "unavailable")
+			return toast.error("This listing has not been approved yet");
 		try {
-			setChecked(prev => !prev);
-			const status = checked ? "available" : "unavailable";
 			const res = await postChangeListingStatus({
-				status,
 				userId,
 				listingId: row.id
 			});
-			if (res.data) {
+			if (res.message === "Listing visibility updated successfully") {
 				toast.success("Status updated");
-				window.location.reload();
+				refetch!();
+				closePopOver!();
 			}
 		} catch (error) {}
 	};
@@ -47,7 +53,8 @@ const MoreModal = ({ row, activeFilter, onClickEdit }: MoreModalProps) => {
 			const res = await postRemoveListing(payload);
 			if (res.data) {
 				toast.success("Listing deleted");
-				window.location.reload();
+				refetch!();
+				closePopOver!();
 			}
 		} catch (error) {}
 	};
@@ -78,7 +85,7 @@ const MoreModal = ({ row, activeFilter, onClickEdit }: MoreModalProps) => {
 							checked={row.status.toLowerCase() === "available"}
 							disabled={isPendingUpdate}
 						/>
-						{checked ? "Live" : "Hidden"}
+						{row.status.toLowerCase() === "available" ? "Live" : "Draft"}
 					</span>
 				</div>
 			)}

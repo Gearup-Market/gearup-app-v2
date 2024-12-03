@@ -155,7 +155,6 @@ export interface Item {
 	name: string;
 }
 
-
 export interface ListingState {
 	_id?: string;
 	productName: string;
@@ -174,6 +173,15 @@ export interface ListingState {
 		forSell?: SellingOffer;
 		forRent?: RentingOffer;
 	};
+	location?: {
+		city?: string;
+		country?: string;
+		state?: string;
+		coords?: {
+			latitude?: number;
+			longitude?: number;
+		};
+	};
 	perks?: {
 		buyNow: boolean;
 		freeShipping: boolean;
@@ -185,25 +193,25 @@ export interface ListingState {
 }
 
 interface SelectedValue {
-  id: number;
-  name: string;
+	id: number;
+	name: string;
 }
 
 interface Field {
-  name: string;
-  selectedValues: SelectedValue[];
-  fieldType: "single" | "multiple";
+	name: string;
+	selectedValues: SelectedValue[];
+	fieldType: "single" | "multiple";
 }
 
 export enum DayOfferEnum {
 	ONE_DAY = "ONE_DAY",
 	THREE_DAYS = "THREE_DAYS",
 	SEVEN_DAYS = "SEVEN_DAYS",
-	THIRTY_DAYS = "THIRTY_DAYS", 
+	THIRTY_DAYS = "THIRTY_DAYS"
 }
 
 export type Filter = {
 	id: string | number;
 	name: string;
-	subFilters: Omit<Filter, 'subFilters'>[];
+	subFilters: Omit<Filter, "subFilters">[];
 };
