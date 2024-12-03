@@ -115,8 +115,6 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	const returnUrl = searchParams.get("returnUrl") || pathname;
 
 	useEffect(() => {
-		console.log(isAuthenticated, "is authenticated", returnUrl);
-
 		if (!loading) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
 				router.replace(`/login?returnUrl=${returnUrl}`);

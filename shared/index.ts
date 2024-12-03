@@ -46,8 +46,10 @@ import FavoriteStar from "./FavoriteStar/FavoriteStar";
 import NoSearchResult from "./NoSearchResult/NoSearchResult";
 import SecondaryHero from "./secondaryHero/SecondaryHero";
 import RadioButton from "./radioButton/RadioButton";
+import LocationAutoComplete from "./locationAutoComplete/LocationAutoComplete";
 
 export {
+	LocationAutoComplete,
 	RadioButton,
 	SecondaryHero,
 	Header,

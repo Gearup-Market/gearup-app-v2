@@ -102,7 +102,6 @@ const SearchListingsView = () => {
 				category => category.name.toLowerCase() === categoryPathName
 			);
 			const category = foundCategory || null;
-			console.log(category, categoryPathName, foundCategory);
 			setSelectedCategory(category);
 		}
 		if (!categoryPathName) {

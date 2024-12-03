@@ -19,6 +19,9 @@ html {
 		-ms-overflow-style: none; /* IE and Edge */
 		scrollbar-width: none; /* Firefox */
 	}
+	@media screen and (min-width: 1441px) {
+		font-size: 10px;
+	}
 	@include flex(stretch, stretch, column);
 	@include screenMax("tablet") {
 		font-size: calc(100vw / 950 * 10);

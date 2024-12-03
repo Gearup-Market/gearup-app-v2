@@ -49,6 +49,7 @@
 		"stellar-sdk": "^12.3.0",
 		"swiper": "^11.0.5",
 		"swr": "^2.2.4",
+		"use-places-autocomplete": "^4.0.1",
 		"yup": "^1.4.0"
 	},
 	"devDependencies": {

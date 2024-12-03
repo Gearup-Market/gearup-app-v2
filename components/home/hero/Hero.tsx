@@ -71,11 +71,11 @@ const Hero = () => {
 				</div>
 				<div className={styles.row}>
 					<div className={styles.textbox}>
-						<h2>12,000+</h2>
+						<h2>100+</h2>
 						<p>Trusted members (Verified)</p>
 					</div>
 					<div className={styles.textbox}>
-						<h2>10,000+</h2>
+						<h2>500+</h2>
 						<p>Listings to choose from</p>
 					</div>
 					<div className={styles.textbox}>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Listing.module.scss";
 import Image from "next/image";
 import { Button, FavoriteStar } from "..";
@@ -9,7 +9,10 @@ import Link from "next/link";
 import { Listing as iListing, setListings } from "@/store/slices/listingsSlice";
 import { useAppDispatch } from "@/store/configureStore";
 import { useRouter } from "next/navigation";
-import { useAddItemToWishlist, usePostCheckItemInWishlist } from "@/app/api/hooks/wishlists";
+import {
+	useAddItemToWishlist,
+	usePostCheckItemInWishlist
+} from "@/app/api/hooks/wishlists";
 import toast from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -21,10 +24,10 @@ interface Props {
 
 const Listing = ({ props, className, actionType }: Props) => {
 	const dispatch = useAppDispatch();
-	const {mutateAsync: addFavorite} = useAddItemToWishlist();
-	const {mutateAsync: checkIsFavorite} = usePostCheckItemInWishlist();
+	const { mutateAsync: addFavorite } = useAddItemToWishlist();
+	const { mutateAsync: checkIsFavorite } = usePostCheckItemInWishlist();
 	const [isFavorite, setIsFavorite] = React.useState(false);
-	const { user:loggedInUser } = useAuth();
+	const { user: loggedInUser } = useAuth();
 	const router = useRouter();
 	const {
 		_id: id,
@@ -41,8 +44,8 @@ const Listing = ({ props, className, actionType }: Props) => {
 	const forRent = !!offer?.forRent;
 
 	const listingUrl = actionType
-	? `/listings/${productSlug}?type=${actionType}`
-	: `/listings/${productSlug}`;
+		? `/listings/${productSlug}?type=${actionType}`
+		: `/listings/${productSlug}`;
 
 	const onClickListing = () => {
 		dispatch(
@@ -53,39 +56,38 @@ const Listing = ({ props, className, actionType }: Props) => {
 		router.push(listingUrl);
 	};
 
-	const handleToggleFavorites = async(isFavorite: boolean) => {
+	const handleToggleFavorites = async (isFavorite: boolean) => {
 		const data = {
 			userId: loggedInUser?._id,
 			listingId: id
-		}
+		};
 
-		await addFavorite(data,{
-			onSuccess: (resp) => {
+		await addFavorite(data, {
+			onSuccess: resp => {
 				setIsFavorite(!isFavorite);
-				toast.success(!isFavorite ? "Removed from favorites" : "Added to favorites");
-			},
+				toast.success(
+					!isFavorite ? "Removed from favorites" : "Added to favorites"
+				);
+			}
 		});
-	}
+	};
 
 	useEffect(() => {
-		if(!user || !id) return;
-		const checkFavorite = async() => {
+		if (!user || !id) return;
+		const checkFavorite = async () => {
 			const data = {
 				userId: loggedInUser?._id,
 				listingId: id
-			}
+			};
 			const response = await checkIsFavorite(data);
 			setIsFavorite(response.data);
-		}
+		};
 
 		checkFavorite();
 	}, [id, user]);
 
 	return (
-		<div
-			className={`${styles.container} ${className}`}
-			onClick={onClickListing}
-		>
+		<div className={`${styles.container} ${className}`} onClick={onClickListing}>
 			<div className={styles.image}>
 				<Image
 					src={listingPhotos[0]}
@@ -98,7 +100,10 @@ const Listing = ({ props, className, actionType }: Props) => {
 					{forRent && <Button className={styles.button}>Rent</Button>}
 				</div>
 				<span className={styles.fave_icon}>
-					<FavoriteStar onToggle={handleToggleFavorites} isFavorite={isFavorite} />
+					<FavoriteStar
+						onToggle={handleToggleFavorites}
+						isFavorite={isFavorite}
+					/>
 				</span>
 			</div>
 			<div className={styles.row} style={{ alignItems: "flex-start" }}>
@@ -130,16 +135,14 @@ const Listing = ({ props, className, actionType }: Props) => {
 			</div>
 			<div className={styles.row}>
 				<div className={styles.small_row}>
-					{user?.avatar && (
-						<div className={styles.avatar}>
-							<Image
-								src={user.avatar}
-								alt={user.userName || ""}
-								fill
-								sizes="100vw"
-							/>
-						</div>
-					)}
+					<div className={styles.avatar}>
+						<Image
+							src={user.avatar || "/svgs/user.svg"}
+							alt={user.userName || ""}
+							fill
+							sizes="100vw"
+						/>
+					</div>
 					<div className={styles.text} style={{ marginBottom: 0 }}>
 						<p>{user?.name || user?.userName}</p>
 					</div>

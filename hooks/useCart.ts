@@ -32,7 +32,11 @@ export default function useCart() {
 	const { userId } = useAppSelector(s => s.user);
 	const { mutateAsync: addToCart, isPending } = useAddToCart();
 	const { mutateAsync: syncLocalCart } = useAddAllToCart();
-	const { data: cartItems, isPending: isLoading, refetch } = useGetCart(userId);
+	const {
+		data: cartItems,
+		isPending: isLoading,
+		refetch: refetchcartItems
+	} = useGetCart(userId);
 	const { mutateAsync: removeFromCart, isPending: isRemoveFromCartPending } =
 		useRemoveFromCart();
 	const dispatch = useAppDispatch();
@@ -96,7 +100,7 @@ export default function useCart() {
 			} else {
 				// user not signed in so use localstorage
 				dispatch(removeCartItem(listingId));
-				return listingId
+				return listingId;
 			}
 		} catch (error: any) {
 			toast.error(
@@ -151,6 +155,7 @@ export default function useCart() {
 		removeItemFromCart,
 		getCartItems,
 		syncCartItems,
-		isPending: isPending || isSubmitting
+		isPending: isPending || isSubmitting,
+		refetchcartItems
 	};
 }

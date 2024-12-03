@@ -32,6 +32,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					name="google-site-verification"
 					content="Z9wM7qen8ZcGMvJLxRsK_PbpRFsla2POZgNiM_DBaWI"
 				/> */}
+				<script
+					async
+					src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+				/>
 				<link rel="icon" href="/favicon.ico" sizes="any" />
 				<meta property="og:type" content="website" />
 				<meta property="og:url" content="https://gearup.market/" />

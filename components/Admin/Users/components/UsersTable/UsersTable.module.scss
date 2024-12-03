@@ -30,6 +30,16 @@
 		margin-bottom: 1rem;
 		color: $col-grey-1;
 	}
+	.transaction_icon {
+		width: 2.4rem;
+		height: 2.4rem;
+		display: block;
+	}
+	.empty_rows {
+		margin-top: 3rem;
+		@extend %center;
+		margin-inline: auto;
+	}
 
 	&__action_btn {
 		display: flex;

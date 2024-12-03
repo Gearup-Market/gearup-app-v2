@@ -17,6 +17,7 @@ export const API_URL = {
 	createListings: "/listings/create",
 	deleteListing: "/listings/delete",
 	changeListingStatus: "/listings/change-status",
+	changeUserListingStatus: "/listings/toggle-visibility",
 	updateListing: "/listings/update",
 	listings: "/listings/all",
 	listingById: "/listings",
