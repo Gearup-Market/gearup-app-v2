@@ -15,7 +15,6 @@ const initialState: CartState = {
 	createdAt: "",
 	_id: "",
 	items: []
-
 };
 
 const cartSlice = createSlice({
@@ -24,12 +23,14 @@ const cartSlice = createSlice({
 	reducers: {
 		addCart: (state, action: PayloadAction<CartItem>) => {
 			const { payload } = action;
-			const itemInCart = state.items.find(item => item.listing._id === payload.listing._id);
-			if(itemInCart) throw new Error('Item already added to cart');
-			state.items.push(payload)
+			const itemInCart = state.items.find(
+				item => item.listing._id === payload.listing._id
+			);
+			if (itemInCart) throw new Error("Item already added to cart");
+			state.items.push(payload);
 		},
 		removeCartItem: (state, action: PayloadAction<string>) => {
-			state.items = state.items.filter(item => item.id === action.payload)
+			state.items = state.items.filter(item => item.id === action.payload);
 		},
 		clearCart: state => initialState
 	}

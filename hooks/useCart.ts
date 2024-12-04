@@ -57,6 +57,7 @@ export default function useCart() {
 
 				if (res.data._id) {
 					toast.success("Item added to cart");
+					refetchcartItems();
 					return res.data;
 				}
 			} else {
@@ -76,6 +77,7 @@ export default function useCart() {
 					})
 				);
 				toast.success("Item added to cart");
+				refetchcartItems();
 			}
 		} catch (error: any) {
 			toast.error(error?.response?.data?.message || "Could not add to cart");
@@ -115,7 +117,7 @@ export default function useCart() {
 		}
 
 		return cart as unknown as Cart;
-	}, [userId, cartItems, cart]);
+	}, [userId, cartItems, cart, !!refetchcartItems]);
 
 	const syncCartItems = useCallback(async () => {
 		try {

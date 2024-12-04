@@ -84,26 +84,26 @@ const usePostTransactionStage = (
 	>
 ) =>
 	useMutation<iPostTransactionRes, iPostCartErr, iPostTransactionStageReq>({
-		mutationFn: async (props) => { 
-			const { id, ...payload } = props
-			return (await api.post(`${API_URL.changeTxStage}/${id}`, payload)).data
+		mutationFn: async props => {
+			const { id, ...payload } = props;
+			return (await api.post(`${API_URL.changeTxStage}/${id}`, payload)).data;
 		},
 		...options
 	});
 
-	const usePostTransactionStatus = (
-		options?: Omit<
-			UseMutationOptions<iPostTransactionRes, iPostCartErr, iPostTransactionStatusReq>,
-			"mutationFn"
-		>
-	) =>
-		useMutation<iPostTransactionRes, iPostCartErr, iPostTransactionStatusReq>({
-			mutationFn: async (props) => { 
-				const { id, ...payload } = props
-				return (await api.post(`${API_URL.changeTxStatus}/${id}`, payload)).data
-			},
-			...options
-		});
+const usePostTransactionStatus = (
+	options?: Omit<
+		UseMutationOptions<iPostTransactionRes, iPostCartErr, iPostTransactionStatusReq>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostTransactionRes, iPostCartErr, iPostTransactionStatusReq>({
+		mutationFn: async props => {
+			const { id, ...payload } = props;
+			return (await api.post(`${API_URL.changeTxStatus}/${id}`, payload)).data;
+		},
+		...options
+	});
 
 const useGetTransactions = (
 	userId?: string,
@@ -119,7 +119,7 @@ const useGetTransactions = (
 
 const useGetSingleTransactions = (
 	transactionId?: string,
-	options?: Omit<UseQueryOptions<iGetSingleTransactionRes, IGetErr>, 'queryKey'>
+	options?: Omit<UseQueryOptions<iGetSingleTransactionRes, IGetErr>, "queryKey">
 ) =>
 	useQuery<iGetSingleTransactionRes, IGetErr>({
 		queryKey: ["getSingleTransaction"],
