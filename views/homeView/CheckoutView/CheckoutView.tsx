@@ -61,7 +61,6 @@ const CheckoutView = () => {
 	const prevStep = () => {
 		setStep(prev => prev - 1);
 	};
-	console.log(checkout);
 
 	useEffect(() => {
 		if (!checkout) {

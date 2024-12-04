@@ -16,7 +16,7 @@ import { useAppSelector } from "@/store/configureStore";
 import Link from "next/link";
 
 const PriceContainer = ({ listing }: { listing: Listing }) => {
-	const { addItemToCart } = useCart();
+	const { addItemToCart, refetchcartItems } = useCart();
 	const search = useSearchParams();
 	const pathname = usePathname();
 	const router = useRouter();
@@ -59,11 +59,12 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 				rentalPeriod:
 					transactionType === TransactionType.Rental
 						? {
-							start: inputDate[0].startDate,
-							end: inputDate[0].endDate
-						}
+								start: inputDate[0].startDate,
+								end: inputDate[0].endDate
+						  }
 						: undefined
 			});
+			refetchcartItems();
 		} catch (error) {
 			console.log(error);
 		}
@@ -127,9 +128,9 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 							<p>
 								{isDateSelected
 									? `${format(
-										inputDate[0].startDate,
-										"MM/dd/yyyy"
-									)} to ${format(inputDate[0].endDate, "MM/dd/yyyy")}`
+											inputDate[0].startDate,
+											"MM/dd/yyyy"
+									  )} to ${format(inputDate[0].endDate, "MM/dd/yyyy")}`
 									: "Choose pickup / return dates"}
 							</p>
 						</div>
@@ -144,16 +145,16 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 						item="Gearup service fee"
 						value={`${currency}${formatNumber(0)}`}
 					/>
-					<PriceItem
-						item="VAT"
-						value={`${currency}${formatNumber(0)}`}
-					/>
-					<div className={styles.divider}/>
+					<PriceItem item="VAT" value={`${currency}${formatNumber(0)}`} />
+					<div className={styles.divider} />
 					<PriceItem
 						item="Total"
-						value={ <span className={styles.total_styles}>{`${currency}${formatNumber(0)}`}</span>}
+						value={
+							<span
+								className={styles.total_styles}
+							>{`${currency}${formatNumber(0)}`}</span>
+						}
 					/>
-
 				</div>
 				<div className={styles.buttons}>
 					<Button
@@ -213,12 +214,11 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 
 export default PriceContainer;
 
-
 const PriceItem = ({ item, value }: { item: string; value: React.ReactNode }) => {
 	return (
 		<div className={styles.content}>
 			<h3 className={styles.price_item}>{item}</h3>
 			<p className={styles.price_value}>{value}</p>
 		</div>
-	)
-}
+	);
+};

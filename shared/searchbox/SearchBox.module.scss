@@ -66,7 +66,7 @@
 	}
 	.small_row {
 		@include flex();
-		flex-wrap: nowrap;
+		flex-wrap: nowrap !important;
 		position: relative;
 		flex-grow: 1;
 	}

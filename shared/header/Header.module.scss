@@ -185,7 +185,8 @@
 	.button_container {
 		@include flex(flex-start, center);
 		gap: 1.6rem;
-		.small_icon {
+		.small_icon,
+		.cart_icon {
 			width: 4rem;
 			height: 4rem;
 			padding: 1.2rem;
@@ -198,6 +199,30 @@
 			border-color: $col-white;
 			&:hover {
 				background-color: rgba($col-white, 0.12);
+			}
+		}
+		.cart_icon {
+			width: auto;
+			gap: 0.8rem;
+			&[data-cart="true"] {
+				border-radius: 4rem;
+			}
+			div {
+				width: 2rem;
+				height: 2rem;
+			}
+			.cart {
+				background-color: #7f1b14;
+				border-radius: 50%;
+				width: 2.4rem;
+				height: 2.4rem;
+				@extend %center;
+				p {
+					color: white;
+					font-weight: 700;
+					font-size: 1.4rem;
+					line-height: 1.4rem;
+				}
 			}
 		}
 		.trans_button {
@@ -370,7 +395,8 @@
 			}
 		}
 		.button_container {
-			.small_icon {
+			.small_icon,
+			.cart_icon {
 				border-color: #dedfe0;
 			}
 			.trans_button {
@@ -400,7 +426,8 @@
 		.mob_buttons {
 			@include flex(flex-start, center);
 			gap: 1.6rem;
-			.small_icon {
+			.small_icon,
+			.cart_icon {
 				position: relative;
 				width: 3.2rem;
 				height: 3.2rem;
@@ -418,7 +445,8 @@
 		&[data-collapsed="true"] {
 			border-bottom: 0.1rem solid #dedfe0;
 			.mob_buttons {
-				.small_icon {
+				.small_icon,
+				.cart_icon {
 					border-color: #dedfe0;
 				}
 			}

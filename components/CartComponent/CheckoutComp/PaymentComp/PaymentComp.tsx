@@ -206,12 +206,11 @@ function PaymentOption({
 	onClick,
 	disabled
 }: PaymentOptionsProps) {
-
 	return (
 		<div
 			className={styles.payment_container}
 			onClick={() => {
-				if(disabled) return;
+				if (disabled) return;
 
 				onClick?.();
 			}}

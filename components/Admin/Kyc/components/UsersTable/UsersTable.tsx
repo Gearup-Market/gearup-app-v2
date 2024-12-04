@@ -27,7 +27,7 @@ interface Props {
 }
 
 const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) => {
-	const { data, isLoading } = useGetAllKyc();
+	const { data, isLoading, refetch, isFetching } = useGetAllKyc();
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [searchInput, setSearchInput] = useState("");
 	const pageSize: number = 12;

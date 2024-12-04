@@ -12,33 +12,40 @@ import Image from "next/image";
 
 const reviews = [
 	{
-		review: "Joining this platform has been a game-changer for my creative journey. The seamless process of buying and renting gears, coupled with the enriching courses in the Academy, has elevated my skills and expanded my creative horizons.",
-		user: "Kelly Williams",
-		avatar: "/svgs/avatar.svg",
-		role: "cinematographer",
-		rating: 5,
+		review: "I appreciate how GearUp genuinely listens to feedback and carefully curates the gear available on the platform. It perfectly meets my needs, and because of that, I’ll continue using GearUp.",
+		user: "Itojie Daniel",
+		avatar: "/svgs/user.svg",
+		role: "portrait photographer",
+		rating: 5
 	},
 	{
-		review: "Joining this platform has been a game-changer for my creative journey. The seamless process of buying and renting gears, coupled with the enriching courses in the Academy, has elevated my skills and expanded my creative horizons.",
-		user: "Kelly Williams",
-		avatar: "/svgs/avatar.svg",
-		role: "cinematographer",
-		rating: 5,
+		review: "I love the flexibility of their rental process, it allows me work with my schedule and I get value for my money.",
+		user: "Mildred",
+		avatar: "/svgs/user.svg",
+		role: "portrait photographer",
+		rating: 5
 	},
 	{
-		review: "Joining this platform has been a game-changer for my creative journey. The seamless process of buying and renting gears, coupled with the enriching courses in the Academy, has elevated my skills and expanded my creative horizons.",
-		user: "Kelly Williams",
-		avatar: "/svgs/avatar.svg",
-		role: "cinematographer",
-		rating: 5,
+		review: "I love renting from the platform because they’re accessible and it’s easy to communicate. They help you pick the right gear for your project if you’re unsure about what you need.",
+		user: "Barbra Felix",
+		avatar: "/svgs/user.svg",
+		role: "portrait and wedding photographer",
+		rating: 5
 	},
 	{
-		review: "Joining this platform has been a game-changer for my creative journey. The seamless process of buying and renting gears, coupled with the enriching courses in the Academy, has elevated my skills and expanded my creative horizons.",
-		user: "Kelly Williams",
-		avatar: "/svgs/avatar.svg",
-		role: "cinematographer",
-		rating: 5,
+		review: "They’re very accessible and respond quickly. The rental process is straightforward. The condition of the gear I rent on the platform is always top notch.",
+		user: "Samuel",
+		avatar: "/svgs/user.svg",
+		role: "filmmaker, CEO weirdman films",
+		rating: 5
 	},
+	{
+		review: "I love their customer support. They’ve always assisted with any challenge that I have encountered in the past while using the equipment I rent through them. I’ll recommend them to my colleagues any time any day.",
+		user: "Dominic visuals",
+		avatar: "/svgs/user.svg",
+		role: "conceptual portrait photographer and cinematographer",
+		rating: 5
+	}
 ];
 
 const Reviews = () => {
@@ -57,7 +64,7 @@ const Reviews = () => {
 				<Swiper
 					slidesPerView={1}
 					pagination={{
-						clickable: true,
+						clickable: true
 					}}
 					modules={[Pagination]}
 				>

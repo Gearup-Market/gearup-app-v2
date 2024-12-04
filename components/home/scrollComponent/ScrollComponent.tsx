@@ -5,16 +5,43 @@ import { scrollData } from "@/mock";
 import Image from "next/image";
 import { Button } from "@/shared";
 import Link from "next/link";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from "react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ScrollComponent = () => {
+	const sectionRef = useRef(null);
+	const containerRef = useRef(null);
+
+	// useEffect(() => {
+	// 	const container: any = containerRef.current;
+
+	// 	gsap.to(container, {
+	// 		x: () => -(container?.scrollWidth - window.innerWidth),
+	// 		ease: "none",
+	// 		scrollTrigger: {
+	// 			trigger: sectionRef.current,
+	// 			start: "top top",
+	// 			// end: () => `+=${container?.scrollWidth}`,
+	// 			end: "bottom bottom",
+	// 			scrub: true,
+	// 			pin: true
+	// 			// anticipatePin: 1,
+	// 			// markers: true
+	// 		}
+	// 	});
+	// }, []);
 	return (
 		<section
 			className={styles.section}
 			id="summary"
+			ref={sectionRef}
 			data-nav-section="Summary"
 			data-animation="scroll"
 		>
-			<div className={styles.row} data-animation="cards">
+			<div className={styles.row} data-animation="cards" ref={containerRef}>
 				{scrollData.map((card: any, index: number) => (
 					<div
 						className={styles.card}
@@ -30,7 +57,7 @@ const ScrollComponent = () => {
 								<span
 									className={styles.indicator_active}
 									style={{
-										left: `${index * 35.333}%`,
+										left: `${index * 35.333}%`
 									}}
 								></span>
 							</div>
