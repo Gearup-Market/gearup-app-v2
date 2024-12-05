@@ -3,7 +3,7 @@ import { NavLink } from "@/interfaces";
 export const navLinks: NavLink[] = [
 	{
 		label: "rent gears",
-		href: "/rent",
+		href: "/listings?type=rent",
 		external: false,
 		videoUrl: "#",
 		icon: "/svgs/icon-rent-gear.svg",
@@ -100,7 +100,7 @@ export const navLinks: NavLink[] = [
 	},
 	{
 		label: "buy gears",
-		href: "/buy",
+		href: "/listings?type=buy",
 		external: false,
 		videoUrl: "#",
 		icon: "/svgs/icon-buy-gear.svg",

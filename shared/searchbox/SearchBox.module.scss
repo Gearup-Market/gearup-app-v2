@@ -104,7 +104,7 @@
 			}
 		}
 		.small_row {
-			flex-wrap: wrap;
+			flex-wrap: wrap !important;
 			background-color: $col-white;
 			border-top-right-radius: 1.6rem;
 			border-bottom-right-radius: 1.6rem;

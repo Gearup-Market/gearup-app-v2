@@ -1,13 +1,15 @@
 @import "@/styles/imports";
 
 .section {
-	@include flex(space-between);
+	// @include flex(space-between);
+	@include grid(repeat(4, 1fr), 2.4rem);
 	gap: 2.2rem;
 	.box {
 		background-color: #fafafa;
-		padding: 4rem;
+		padding: 2.4rem;
 		border-radius: 0.8rem;
-		width: 41.1rem;
+		// width: 41.1rem;
+		width: 100%;
 		.icon {
 			position: relative;
 			width: 5.6rem;
@@ -27,6 +29,7 @@
 		}
 	}
 	@include screenMax("mobile") {
+		grid-template-columns: 100%;
 		.box {
 			width: 100%;
 		}

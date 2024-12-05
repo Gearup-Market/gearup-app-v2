@@ -64,13 +64,13 @@ const Box = ({
 	url,
 	urlLabel,
 	activeNumber,
-	setActiveNumber,
+	setActiveNumber
 }: BoxProps) => {
 	return (
 		<div
 			className={styles.box}
 			data-active={id === activeNumber}
-			onClick={() => setActiveNumber(id)}
+			onMouseEnter={() => setActiveNumber(id)}
 		>
 			<Title title={title} description={description} titleType="small" />
 			<Link href={url}>

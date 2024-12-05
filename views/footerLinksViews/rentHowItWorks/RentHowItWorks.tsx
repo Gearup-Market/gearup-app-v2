@@ -51,7 +51,7 @@ const RentHowItWorks = () => {
 				data={platform}
 				image="/images/categories-1.png"
 				type="rent"
-				href="/rent"
+				href="/listings?type=rent"
 				button="Explore marketplace"
 			/>
 			<Benefits

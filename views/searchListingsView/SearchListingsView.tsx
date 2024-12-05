@@ -229,7 +229,7 @@ const SearchListingsView = () => {
 					{!isFetchingListings ? (
 						currentTableData.length ? (
 							<>
-								<div className={styles.grid}>
+								<div className={styles.grid} data-filter={!hideFilters}>
 									{currentTableData.map((listing, index: number) => (
 										<Listing
 											props={listing}

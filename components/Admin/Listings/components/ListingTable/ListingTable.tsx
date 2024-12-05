@@ -226,7 +226,7 @@ const ListingTable = ({
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status}
 					>
-						{value?.toLowerCase() === "available" ? "Live" : "Paused"}
+						{value?.toLowerCase() === "available" ? "Live" : value}
 					</p>
 				</div>
 			)
