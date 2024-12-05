@@ -7,7 +7,7 @@ export const scrollData = [
 		alert: "Save Cost Renting Gears",
 		icon: "/svgs/scroll-icon-1.svg",
 		button: "Browse available rentals",
-		url: "/buy",
+		url: "/listings",
 		backgroundColor: "#1B1E21"
 	},
 	{

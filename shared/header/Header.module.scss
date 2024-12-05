@@ -7,7 +7,7 @@
 	transition: $all-transition;
 	z-index: 10;
 	background-color: $col-grey-700;
-	padding: 2.6rem 8rem;
+	padding: 0 8rem;
 	@include flex(space-between, center, nowrap);
 	background-color: transparent;
 	a {
@@ -20,13 +20,14 @@
 		min-width: 35%;
 		.header_navList {
 			@include flex(space-between, center, nowrap);
+			gap: 2.5rem;
 			padding: 0;
 			margin: 0;
 			// position: relative;
 			// z-index: 1;
 			.header_navLink {
-				padding: 1rem 0;
-				margin: 0 2.5rem;
+				padding: 3.6rem 0;
+				// margin: 0 2.5rem;
 				position: relative;
 				.link_icon,
 				.mob_chevron {
@@ -45,7 +46,7 @@
 				&::after {
 					content: "";
 					position: absolute;
-					bottom: 0;
+					bottom: 2.6rem;
 					left: 0;
 					background: $orange-grad;
 					width: 0;
@@ -54,15 +55,21 @@
 				}
 				.subMenu_container {
 					position: fixed;
-					width: 100vw;
-					height: 100vh;
-					padding: 10rem;
-					top: 0;
-					left: 0;
-					background-color: rgba(2, 1, 6, 0.58);
-					backdrop-filter: blur(6px);
+					// width: 100vw;
+					// height: 100vh;
+					// padding: 10rem;
+					top: 9.7rem;
+					left: 10.4rem;
+					// background-color: rgba(2, 1, 6, 0.58);
+					// backdrop-filter: blur(6px);
 					z-index: -1;
-					display: none;
+					// display: none;
+					opacity: 0;
+					pointer-events: none;
+					transform: translateY(-10%);
+					visibility: hidden;
+					transition: opacity 0.3s ease, transform 0.3s ease,
+						visibility 0.3s ease;
 					.subMenu {
 						width: 100%;
 						background-color: $col-white;
@@ -72,11 +79,12 @@
 						position: relative;
 						// transform: translateY(-100rem);
 						transition: $all-transition;
-						@include flex(space-between);
+						@include flex(space-between, flex-start, nowrap);
 						gap: 3.2rem;
 						.container {
 							@include flex();
 							gap: 3.2rem;
+							flex-wrap: nowrap;
 						}
 						.subMenu_title {
 							margin-bottom: 4rem;
@@ -167,7 +175,11 @@
 					}
 
 					.subMenu_container {
-						display: block;
+						// display: block;
+						opacity: 1;
+						transform: translateY(0);
+						visibility: visible;
+						pointer-events: all;
 						// backdrop-filter: blur(8px);
 						.subMenu {
 							// transform: translateY(0);
@@ -176,7 +188,7 @@
 					}
 				}
 
-				@include screenMax("mobile") {
+				@include screenMax("tablet") {
 					@include flex(flex-start, center, nowrap);
 				}
 			}
@@ -241,7 +253,7 @@
 			// width: 12rem;
 			height: 4rem;
 		}
-		@include screenMax("mobile") {
+		@include screenMax("tablet") {
 			width: 100%;
 			justify-content: center;
 			.my_account {
@@ -257,7 +269,7 @@
 		transition: transform 0.3s ease-out;
 		@include flex(space-between, center);
 
-		@include screenMax("mobile") {
+		@include screenMax("tablet") {
 			order: 3;
 			width: 100%;
 			height: 100%;
@@ -276,7 +288,7 @@
 	}
 
 	.header_wrapper__collapsed {
-		@include screenMax("mobile") {
+		@include screenMax("tablet") {
 			transform: translateX(101vw);
 		}
 	}
@@ -291,7 +303,7 @@
 		border: none;
 		width: 45px;
 
-		@include screenMax("mobile") {
+		@include screenMax("tablet") {
 			order: 2;
 			@include flex(center, flex-end, column nowrap);
 		}
@@ -359,13 +371,35 @@
 			}
 		}
 
-		@include screenMax("mobile") {
+		@include screenMax("tablet") {
 			display: none;
 		}
 	}
 	.mob_buttons {
 		margin-left: auto;
 		display: none;
+	}
+	.background {
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		top: 0;
+		left: 0;
+		background-color: rgba(2, 1, 6, 0.58);
+		backdrop-filter: blur(6px);
+		opacity: 0;
+		pointer-events: none;
+		// transform: translateY(-10%);
+		visibility: hidden;
+		transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+		z-index: -1;
+	}
+	&[data-background="true"] {
+		.background {
+			opacity: 1;
+			// transform: translateY(0);
+			visibility: visible;
+		}
 	}
 	&[data-collapsed="true"] {
 		background-color: $col-white;
@@ -410,8 +444,10 @@
 		padding: 1.6rem;
 		.header_nav {
 			.header_navList {
+				gap: 1.2rem;
 				.header_navLink {
-					margin: 0 1rem;
+					// margin: 0 1rem;
+					padding: 1rem;
 				}
 			}
 		}
@@ -421,8 +457,16 @@
 				padding: 1.2rem;
 			}
 		}
+		.background {
+			display: none;
+		}
+		&[data-background="true"] {
+			.background {
+				display: none;
+			}
+		}
 	}
-	@include screenMax("mobile") {
+	@include screenMax("tablet") {
 		.mob_buttons {
 			@include flex(flex-start, center);
 			gap: 1.6rem;
@@ -452,7 +496,7 @@
 			}
 		}
 	}
-	@include screenMax("mobile") {
+	@include screenMax("tablet") {
 		overflow: hidden;
 		padding: 2rem 1.6rem;
 		.header_nav {
@@ -468,7 +512,7 @@
 					border: 0.1rem solid #dedfe0;
 					border-radius: 0.8rem;
 					@include flex(space-between, center);
-					max-height: 5.6rem;
+					max-height: 5rem;
 					overflow-y: hidden;
 					transition: all 0.5s ease-in-out;
 					.link_row {
@@ -512,8 +556,15 @@
 						backdrop-filter: unset;
 						pointer-events: auto;
 						z-index: 2;
+						left: unset;
+						top: unset;
 						.subMenu {
 							padding: 0;
+							flex-wrap: wrap;
+							.container {
+								flex-wrap: wrap;
+								width: 100%;
+							}
 							.subMenu_title {
 								margin-top: 4rem;
 								h1 {

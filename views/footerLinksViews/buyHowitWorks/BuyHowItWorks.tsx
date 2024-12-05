@@ -51,7 +51,7 @@ const BuyHowItWorks = () => {
 				data={platform}
 				image="/images/HIW-buy.png"
 				type="buy"
-				href="/buy"
+				href="/listings?type=buy"
 				button="Explore marketplace"
 			/>
 			<Benefits

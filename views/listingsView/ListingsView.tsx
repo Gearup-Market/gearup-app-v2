@@ -117,7 +117,6 @@ const ListingsView = () => {
 				}
 			}
 		}
-
 	}, [category, categories, subCategory]);
 
 	const onChangeSelectedCategory = (option: iCategory) => {
@@ -133,8 +132,7 @@ const ListingsView = () => {
 		if (selectedSubCategory) {
 			updateQueryParam("subCategory", selectedSubCategory.name);
 		}
-	}, [selectedCategory, selectedSubCategory])
-
+	}, [selectedCategory, selectedSubCategory]);
 
 	const updateQueryParam = (key: string, value: string) => {
 		const currentParams = new URLSearchParams(search.toString());
@@ -143,7 +141,7 @@ const ListingsView = () => {
 		}
 		currentParams.set(key, value);
 		router.push(`${pathName}?${currentParams.toString()}`);
-	}
+	};
 
 	return (
 		<section className={styles.section} data-hidden={hideFilters} ref={elementRef}>
@@ -182,11 +180,11 @@ const ListingsView = () => {
 							<Button
 								buttonType="transparent"
 								className={styles.button_container}
-								onClick={() => router.push("/rent")}
+								onClick={() => router.push("/listings?type=rent")}
 							>
 								<div
 									className={styles.button}
-									data-active={checkActive("/rent")}
+									data-active={checkActive("/listings?type=rent")}
 								>
 									Rent
 								</div>
@@ -194,11 +192,11 @@ const ListingsView = () => {
 							<Button
 								buttonType="transparent"
 								className={styles.button_container}
-								onClick={() => router.push("/buy")}
+								onClick={() => router.push("/listings?type=buy")}
 							>
 								<div
 									className={styles.button}
-									data-active={checkActive("/buy")}
+									data-active={checkActive("/listings?type=buy")}
 								>
 									Buy
 								</div>

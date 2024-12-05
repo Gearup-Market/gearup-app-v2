@@ -28,7 +28,9 @@ const Categories = () => {
 						</div>
 						<h3 className={styles.category__title}>{category.name}</h3>
 						<p className={styles.gears}>{category.no_of_items} Gears</p>
-						<Link href={`/rent?category=${category.name.toLowerCase()}`}>
+						<Link
+							href={`/listings?type=rent&category=${category.name.toLowerCase()}`}
+						>
 							<Button buttonType="secondary" className={styles.button}>
 								View Gears
 							</Button>

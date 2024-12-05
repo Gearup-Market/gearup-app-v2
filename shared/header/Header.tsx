@@ -23,6 +23,7 @@ const Header = () => {
 	const { heroHeight }: any = useGlobalContext();
 	const [collapsed, setCollapsed] = useState<boolean>(true);
 	const [scroll, setScroll] = useState<Scroll>(Scroll.Idle);
+	const [isBackground, setIsBackground] = useState<boolean>(false);
 	const headerRef: any = useRef(null);
 	const user = useAppSelector((state: AppState) => state.user);
 	const router = useRouter();
@@ -64,7 +65,9 @@ const Header = () => {
 			data-collapsed={!collapsed || scroll === Scroll.FinalScroll}
 			ref={headerRef}
 			data-scroll={scroll}
+			data-background={isBackground}
 		>
+			<div className={styles.background}></div>
 			<Link href="/">
 				<div className={styles.header_logoContainer}>
 					<Logo type={handleLogoShown()} />
@@ -82,6 +85,7 @@ const Header = () => {
 								<LinkItem
 									setCollapsed={setCollapsed}
 									collapsed={collapsed}
+									setIsBackground={setIsBackground}
 									link={link}
 									router={router}
 									key={index}
@@ -202,20 +206,37 @@ const Header = () => {
 export default Header;
 
 interface LinkProps {
-	link: any;
+	link: NavLink;
 	router: any;
 	setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 	collapsed: boolean;
+	setIsBackground: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const LinkItem = ({ link, router, setCollapsed, collapsed }: LinkProps) => {
+const LinkItem = ({
+	link,
+	router,
+	setCollapsed,
+	collapsed,
+	setIsBackground
+}: LinkProps) => {
 	const [isActive, setIsActive] = useState<boolean>(false);
 	const handleDropdown = (label: string) => {
 		if (label !== "blog") {
 			setIsActive(!isActive);
 		}
 	};
+	const showBackground = () => {
+		if (!!link.subMenu) {
+			setIsBackground(true);
+		}
+	};
 	return (
-		<li className={styles.header_navLink} data-active={isActive}>
+		<li
+			className={styles.header_navLink}
+			data-active={isActive}
+			onMouseEnter={showBackground}
+			onMouseLeave={() => setIsBackground(false)}
+		>
 			{link.label === "blog" ? (
 				<Link
 					href={link.href}
