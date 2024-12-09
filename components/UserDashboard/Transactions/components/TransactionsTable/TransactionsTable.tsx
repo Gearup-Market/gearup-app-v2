@@ -60,6 +60,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 			}),
 		[data]
 	);
+	console.log(transactions);
 
 	const filteredUsers = useMemo(() => {
 		if (!searchInput) return transactions;

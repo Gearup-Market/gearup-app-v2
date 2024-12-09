@@ -20,7 +20,7 @@ const TextArea = ({ name, label, className, error, ...options }: Props) => {
 
 			<div className={styles.input_wrapper} data-error={!!error}>
 				<textarea
-					className={styles.input_field}
+					className={styles.text_area}
 					name={name}
 					autoComplete="off"
 					{...options}

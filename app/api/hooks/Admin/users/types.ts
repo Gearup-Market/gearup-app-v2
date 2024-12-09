@@ -40,6 +40,7 @@ export interface IGetAllUsersResp {
 export type Kyc = VerificationState & { userId: IUser };
 export interface IGetAllKycResp {
 	data: Kyc[];
+	meta?: { limit: number; page: number; total: number; totalPages: number };
 }
 
 export interface IGetKycResp {

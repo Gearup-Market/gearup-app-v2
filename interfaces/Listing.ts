@@ -177,6 +177,7 @@ export interface ListingState {
 		city?: string;
 		country?: string;
 		state?: string;
+		address?: string;
 		coords?: {
 			latitude?: number;
 			longitude?: number;

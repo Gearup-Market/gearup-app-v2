@@ -27,9 +27,9 @@ interface Props {
 }
 
 const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) => {
-	const { data, isLoading, refetch, isFetching } = useGetAllKyc();
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [searchInput, setSearchInput] = useState("");
+	const { data, isLoading, refetch, isFetching } = useGetAllKyc(currentPage);
 	const pageSize: number = 12;
 	const users = data?.data || [];
 
@@ -152,7 +152,7 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 			minWidth: 200,
 			renderCell: ({ value }) => (
 				<Link
-					href={`/admin/kyc/${value?.userId}`}
+					href={`/admin/kyc/${value?._id}`}
 					onClick={() => handleClickMore(value)}
 					className={styles.container__action_btn}
 				>
@@ -161,6 +161,15 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 			)
 		}
 	];
+
+	const updatePage = (page: number) => {
+		setCurrentPage(page);
+		// refetch();
+	};
+
+	useEffect(() => {
+		refetch();
+	}, [currentPage, refetch]);
 
 	const filteredUsers = useMemo(() => {
 		if (!searchInput) return users;
@@ -172,17 +181,17 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 		);
 	}, [searchInput, users]);
 
-	const currentTableData = useMemo(() => {
-		const firstPageIndex = (currentPage - 1) * pageSize;
-		const lastPageIndex = firstPageIndex + pageSize;
-		return filteredUsers.slice(firstPageIndex, lastPageIndex);
-	}, [currentPage, filteredUsers]);
+	// const currentTableData = useMemo(() => {
+	// 	const firstPageIndex = (currentPage - 1) * pageSize;
+	// 	const lastPageIndex = firstPageIndex + pageSize;
+	// 	return filteredUsers.slice(firstPageIndex, lastPageIndex);
+	// }, [currentPage, filteredUsers]);
 
-	const startNumber = (currentPage - 1) * pageSize + 1;
-	const endNumber = Math.min(
-		startNumber + currentTableData?.length - 1,
-		filteredUsers?.length
-	);
+	// const startNumber = (currentPage - 1) * pageSize + 1;
+	// const endNumber = Math.min(
+	// 	startNumber + currentTableData?.length - 1,
+	// 	filteredUsers?.length
+	// );
 
 	const debouncedSearch = useMemo(
 		() =>
@@ -223,7 +232,7 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 					</div>
 					<div className={styles.container__table}>
 						<DataGrid
-							rows={currentTableData || []}
+							rows={filteredUsers || []}
 							columns={columns}
 							hideFooterPagination={true}
 							hideFooter
@@ -236,14 +245,12 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 						/>
 					</div>
 					<MobileCardContainer>
-						{currentTableData?.map((item, ind) => (
+						{filteredUsers?.map((item, ind) => (
 							<UserCardMob
 								key={item._id}
 								item={item}
 								url="users"
-								lastEle={
-									ind + 1 === currentTableData.length ? true : false
-								}
+								lastEle={ind + 1 === filteredUsers.length ? true : false}
 								ind={ind}
 							/>
 						))}
@@ -255,11 +262,9 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 						// totalCount={totalCount || 0}
 						// pageSize={limit}
 						currentPage={currentPage}
-						totalCount={users?.length}
-						pageSize={pageSize}
-						onPageChange={(page: any) => setCurrentPage(page)}
-						startNumber={startNumber}
-						endNumber={endNumber}
+						totalCount={data?.meta?.total || 0}
+						pageSize={10}
+						onPageChange={(page: any) => updatePage(page)}
 					/>
 				</>
 			)}

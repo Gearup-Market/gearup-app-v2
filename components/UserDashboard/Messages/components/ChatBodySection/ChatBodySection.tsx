@@ -20,9 +20,7 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 		userId: participantId as string
 	});
 
-	const {
-		data: listing,
-	} = useGetListingById(listingId as string);
+	const { data: listing } = useGetListingById(listingId as string);
 
 	return (
 		<div className={styles.container} data-borders={showAllBorder}>
@@ -34,39 +32,37 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 
 export default ChatBodySection;
 
-
-
-export const ReUseableChatHeader = ({ data, listing }: { data: any, listing: any }) => {
+export const ReUseableChatHeader = ({ data, listing }: { data: any; listing: any }) => {
 	return (
 		<div className={styles.header}>
 			<div className={styles.left}>
-				<span className={styles.user_alias}>{data?.data.userName[0]}</span>
+				<div className={styles.user_alias}>
+					<Image
+						src={data?.data?.avatar || "/svgs/user.svg"}
+						alt={data?.data?.userName}
+						fill
+					/>
+				</div>
 				<div>
 					<p className={styles.name}>
 						{data?.data?.name || data?.data?.userName}
-						{
-							data?.data?.isVerified &&
+						{data?.data?.isVerified && (
 							<span className={styles.verfiy_icon}>
 								<VerifyIcon />
 							</span>
-						}
+						)}
 					</p>
 					<div className={styles.date_convo_about}>
 						{/* <span className={styles.date}> </span>{" "} */}
 						<span className={styles.convo_about}>
-							conversations about	{listing?.data?.productName}
+							conversations about {listing?.data?.productName}
 						</span>
 					</div>
 				</div>
 			</div>
 			<div className={styles.right}>
 				<span className={styles.icon}>
-					<Image
-						src="/svgs/call.svg"
-						alt="phone-icon"
-						height={30}
-						width={30}
-					/>
+					<Image src="/svgs/call.svg" alt="phone-icon" height={30} width={30} />
 				</span>
 				<span className={styles.icon}>
 					<Image
@@ -79,4 +75,4 @@ export const ReUseableChatHeader = ({ data, listing }: { data: any, listing: any
 			</div>
 		</div>
 	);
-}
+};

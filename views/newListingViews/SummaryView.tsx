@@ -145,6 +145,10 @@ const SummaryView = () => {
 								title="Description"
 								description={newListing.description}
 							/>
+							<DetailContainer
+								title="Location"
+								description={newListing.location?.address}
+							/>
 							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
 								{fieldValues?.map(([key, value]) => {
 									return typeof value === "object" ? (

@@ -24,7 +24,7 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 				<h3 className={styles.title}>Summary</h3>
 				<div className={styles.summary_item}>
 					<h4>{isBuyer ? "Paid" : "Received"}</h4>
-					<p>₦{formatNum(amount)}</p>
+					<p>₦{formatNum(amount, true, 2)}</p>
 				</div>
 				{/* <div className={styles.summary_item}>
 					<h4>Funded( Escrow Protection)</h4>
