@@ -18,8 +18,8 @@ export interface CartReq {
 }
 
 export type RentalPeriod = {
-	start: Date;
-	end: Date;
+	start: Date | string;
+	end: Date | string;
 };
 
 export interface CartItem {
@@ -44,7 +44,7 @@ export type Cart = {
 export type iPostRemoveCartReq = {
 	userId: string;
 	listingId: string;
-}
+};
 
 export interface iPostAddCartRes {
 	data: Cart;
@@ -75,7 +75,7 @@ export interface Transaction {
 	reviews: {
 		buyerReviewed: boolean;
 		sellerReviewed: boolean;
-	}
+	};
 	createdAt: string;
 	updatedAt?: string;
 }
@@ -90,9 +90,9 @@ export interface iPostTransactionStageReq {
 	stage: TransactionStage;
 	authority: {
 		id: string;
-		role: 'seller' | 'buyer'
-	},
-	status?: TransactionStatus
+		role: "seller" | "buyer";
+	};
+	status?: TransactionStatus;
 }
 
 export interface iPostTransactionStatusReq {
@@ -100,8 +100,8 @@ export interface iPostTransactionStatusReq {
 	status: TransactionStatus;
 	authority: {
 		id: string;
-		role: 'seller' | 'buyer'
-	}
+		role: "seller" | "buyer";
+	};
 }
 
 export interface iGetTransactionRes {
@@ -109,13 +109,16 @@ export interface iGetTransactionRes {
 	message: string;
 }
 
-export type SingleTransaction = Omit<Transaction, 'buyer' | 'seller' | 'payment' | 'item'> & {
+export type SingleTransaction = Omit<
+	Transaction,
+	"buyer" | "seller" | "payment" | "item"
+> & {
 	buyer: User;
 	seller: User;
 	item: Listing;
 	payment: iWTransaction;
-	updatedAt?: Date
-}
+	updatedAt?: Date;
+};
 
 export interface iGetSingleTransactionRes {
 	data: SingleTransaction;
@@ -123,8 +126,8 @@ export interface iGetSingleTransactionRes {
 }
 
 export enum UserRole {
-	Seller = 'seller',
-	Buyer = 'buyer',
-	Lender = 'lender',
-	Renter = 'renter'
+	Seller = "seller",
+	Buyer = "buyer",
+	Lender = "lender",
+	Renter = "renter"
 }

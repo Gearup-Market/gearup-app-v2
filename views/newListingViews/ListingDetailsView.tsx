@@ -6,6 +6,7 @@ import {
 	AdvanceSelect,
 	Button,
 	InputField,
+	LocationAutoComplete,
 	Logo,
 	MultipleSelect,
 	TextArea
@@ -26,6 +27,25 @@ const ListingDetailsView = () => {
 	const [category, setCategory] = useState<iCategory>();
 	const [subCategory, setSubCategory] = useState<iCategory>();
 	const [selectedFields, setSelectedFields] = useState<any[]>([]);
+	const [location, setLocation] = useState<{
+		city: string;
+		country: string;
+		state: string;
+		coords: {
+			latitude: number;
+			longitude: number;
+		};
+		address: string;
+	}>({
+		city: "",
+		country: "",
+		state: "",
+		address: "",
+		coords: {
+			latitude: 0,
+			longitude: 0
+		}
+	});
 	const [inputValues, setInputValues] = useState<{
 		title: string;
 		description: string;
@@ -56,9 +76,10 @@ const ListingDetailsView = () => {
 			description: inputValues.description,
 			category,
 			subCategory,
-			fieldValues: convertArrToObj(selectedFields)
+			fieldValues: convertArrToObj(selectedFields),
+			location
 		};
-		
+
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/images");
 	};
@@ -76,16 +97,20 @@ const ListingDetailsView = () => {
 	}, [newListing, allCategories]);
 
 	useEffect(() => {
-		if(newListing.items.length === 1){
+		if (newListing.items.length === 1) {
 			setInputValues({
 				...inputValues,
 				title: newListing.items[0].name
-			})
+			});
 		}
-	}, [newListing])
+	}, [newListing]);
 
 	const disabledButton =
-		!inputValues.description || !inputValues.title || !category || !subCategory;
+		!inputValues.description ||
+		!inputValues.title ||
+		!category ||
+		!subCategory ||
+		!location.address;
 
 	return (
 		<div className={styles.section}>
@@ -122,20 +147,19 @@ const ListingDetailsView = () => {
 						</p>
 					</div>
 					<div className={styles.container}>
-						{
-							newListing.items.length > 1 &&
+						{newListing.items.length > 1 && (
 							<InputField
-							label="Package title"
-							placeholder="E.g Zhiyun Weebill Lab Creator Accessory Kit"
-							value={inputValues.title}
-							onChange={(e: any) =>
-								setInputValues((prev: any) => ({
-									...prev,
-									title: e.target.value
-								}))
-							}
+								label="Package title"
+								placeholder="E.g Zhiyun Weebill Lab Creator Accessory Kit"
+								value={inputValues.title}
+								onChange={(e: any) =>
+									setInputValues((prev: any) => ({
+										...prev,
+										title: e.target.value
+									}))
+								}
 							/>
-						}
+						)}
 						<div className={styles.select_row}>
 							<AdvanceSelect
 								label="Category"
@@ -187,7 +211,14 @@ const ListingDetailsView = () => {
 								}))
 							}
 							label="Description"
-							placeholder="Enter Description"
+							placeholder="Enter Description..."
+						/>
+
+						<LocationAutoComplete
+							className={styles.location}
+							label="Listing Location"
+							placeholder="Enter location"
+							onAddressSelect={setLocation}
 						/>
 					</div>
 				</div>

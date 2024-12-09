@@ -36,8 +36,8 @@
 		transition: all 0.1s ease-in;
 	}
 
-	&[data-focus='true'] {
-		border-color: #FFB30F;
+	&[data-focus="true"] {
+		border-color: #ffb30f;
 	}
 }
 
@@ -48,12 +48,13 @@
 	height: 1.6rem;
 	flex-shrink: 0;
 
-	&[data-click='true']{
+	&[data-click="true"] {
 		cursor: pointer;
 	}
 }
 
-.input_field {
+.input_field,
+.text_area {
 	all: unset;
 	flex-grow: 1;
 	height: 100%;
@@ -68,6 +69,11 @@
 		line-height: 2.5rem;
 		color: #a3a7ab;
 	}
+}
+.text_area {
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	min-height: 17rem;
 }
 
 .icon {

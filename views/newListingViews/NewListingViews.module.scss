@@ -3,11 +3,11 @@
 .section {
 	width: 100%;
 
-	.error_border{
-		border: 0.1rem solid #FF3729;
+	.error_border {
+		border: 0.1rem solid #ff3729;
 	}
-	.error_text{
-		color: #FF3729;
+	.error_text {
+		color: #ff3729;
 		font-size: 1.2rem;
 	}
 
@@ -96,20 +96,20 @@
 			.container {
 				margin-top: 4rem;
 
-				.rental_pricing{
+				.rental_pricing {
 					border: 1px solid $col-border;
 					border-radius: 1.6rem;
 					padding: 2.4rem;
 					margin-top: 2.4rem;
 
-					.title{
+					.title {
 						font-size: 2rem;
 						font-weight: 700;
 						margin-bottom: 1.6rem;
-						color: #1B1E21;
+						color: #1b1e21;
 					}
 
-					.content_wrapper{
+					.content_wrapper {
 						background: #fafafa;
 						border-radius: 1.6rem;
 						padding: 1.6rem;
@@ -117,47 +117,44 @@
 						flex-direction: column;
 						gap: 1.6rem;
 
-						.warning_container{
+						.warning_container {
 							display: flex;
 							align-items: center;
 							gap: 1rem;
-							background: #FEF5E6;
+							background: #fef5e6;
 							color: #563600;
 							padding: 1.6rem;
 							border-radius: 1rem;
 							font-size: 1.4rem;
 							border-radius: 1.6rem;
 
-							.icon{
+							.icon {
 								width: 2rem;
 								height: 2rem;
 							}
 
 							p {
 								font-size: 1.4rem;
-								.bold_text{
+								.bold_text {
 									font-weight: 700;
 									font-size: 1.4rem;
 								}
-							
 							}
 						}
 
-						.additional_offer_container{
-
-							.offer_title{
+						.additional_offer_container {
+							.offer_title {
 								text-transform: uppercase;
 								font-size: 1.4rem;
 								font-weight: 700;
-								color: #1B1E21;
+								color: #1b1e21;
 
-								.optional_text{
+								.optional_text {
 									font-size: 1.4rem;
 									font-weight: 700;
-									color: #A3A7AB;
+									color: #a3a7ab;
 								}
 							}
-
 						}
 					}
 				}
@@ -166,12 +163,12 @@
 					.text {
 						margin-bottom: 2rem;
 
-						.perks{
+						.perks {
 							display: flex;
 							align-items: center;
 							gap: 1rem;
 
-							.check{
+							.check {
 								width: 1.4rem;
 								height: 1.4rem;
 							}
@@ -196,15 +193,18 @@
 						cursor: default;
 						font-size: 1.4rem;
 
-					img{
-						height: 2rem;
-						width: 2rem;
-					}
+						img {
+							height: 2rem;
+							width: 2rem;
+						}
 					}
 				}
 				.select_row {
 					@include grid(repeat(2, 1fr), 2rem);
 					margin-block: 1.6rem;
+				}
+				.location {
+					margin-top: 2.4rem;
 				}
 				.addimage_container {
 					border: 0.1rem dashed #dedfe0;
@@ -293,31 +293,31 @@
 					}
 				}
 
-				.location_container{
+				.location_container {
 					position: relative;
 					margin-top: 1.6rem;
 
-					.location_btn_container{
+					.location_btn_container {
 						position: absolute;
 						top: -1rem;
 						right: -2rem;
 						margin-bottom: 1rem;
 
-						button{
-							color: #FFB30F;
+						button {
+							color: #ffb30f;
 							font-size: 1.2rem;
 						}
 
-						.error{
-							border-color: #FF3729;
+						.error {
+							border-color: #ff3729;
 						}
 					}
 
-					.update_text{
-						color: #FF3729;
+					.update_text {
+						color: #ff3729;
 						font-size: 1.2rem;
-						
-						span{
+
+						span {
 							font-size: 1.2rem;
 							text-decoration: underline;
 							font-weight: 700;
@@ -447,6 +447,12 @@
 			}
 			.details {
 				padding: 2.4rem 1.6rem;
+				margin-bottom: 3rem;
+				.container {
+					.select_row {
+						grid-template-columns: 100%;
+					}
+				}
 			}
 		}
 		.footer {

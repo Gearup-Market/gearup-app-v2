@@ -71,21 +71,26 @@ const LocationAutoComplete = ({
 					onClick={() => {
 						getGeocode({ address: description }).then(
 							(r: GeocodeResult[]) => {
-								console.log(r);
-								return (
-									onAddressSelect &&
-									onAddressSelect({
+								const formatted_address = {
+									city: r[0].address_components.find(address =>
+										address.types.includes("locality")
+									)?.long_name,
+									state: r[0].address_components.find(address =>
+										address.types.includes(
+											"administrative_area_level_1"
+										)
+									)?.long_name,
+									country: r[0].address_components.find(address =>
+										address.types.includes("country")
+									)?.long_name,
+									coords: {
 										latitude: r[0]?.geometry?.location?.lat(),
-										longitude: r[0]?.geometry?.location?.lng(),
-										name: description
-										// locationGeocode: {
-										// 	name: description,
-										// 	place_id: r[0]?.place_id,
-										// 	formmatted_address: r[0]?.formatted_address,
-										// 	geometry: r[0]?.geometry,
-										// 	address_components: r[0]?.address_components,
-										// },
-									})
+										longitude: r[0]?.geometry?.location?.lng()
+									},
+									address: r[0].formatted_address
+								};
+								return (
+									onAddressSelect && onAddressSelect(formatted_address)
 								);
 							}
 						);
@@ -104,12 +109,23 @@ const LocationAutoComplete = ({
 	useEffect(() => {
 		if (isLoaded) {
 			getGeocode({ address: placeholderValue }).then((r: GeocodeResult[]) => {
-				console.log(r);
-				onAddressSelect &&
-					onAddressSelect({
+				const formatted_address = {
+					city: r[0].address_components.find(address =>
+						address.types.includes("locality")
+					)?.long_name,
+					state: r[0].address_components.find(address =>
+						address.types.includes("administrative_area_level_1")
+					)?.long_name,
+					country: r[0].address_components.find(address =>
+						address.types.includes("country")
+					)?.long_name,
+					coords: {
 						latitude: r[0]?.geometry?.location?.lat(),
 						longitude: r[0]?.geometry?.location?.lng()
-					});
+					},
+					address: r[0].formatted_address
+				};
+				onAddressSelect && onAddressSelect(formatted_address);
 				setValue(placeholderValue as string);
 			});
 		}

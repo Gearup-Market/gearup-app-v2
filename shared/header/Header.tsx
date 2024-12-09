@@ -230,6 +230,11 @@ const LinkItem = ({
 			setIsBackground(true);
 		}
 	};
+	useEffect(() => {
+		if (!collapsed) {
+			setIsActive(false);
+		}
+	}, [collapsed]);
 	return (
 		<li
 			className={styles.header_navLink}

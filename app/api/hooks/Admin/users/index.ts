@@ -100,11 +100,7 @@ export const usePostDeactivateUser = (
 
 export const usePostAdminUpdateKyc = (
 	options?: Omit<
-		UseMutationOptions<
-			any,
-			iPostAdminSignInErr,
-			iPostAdminUpdateKycRsq
-		>,
+		UseMutationOptions<any, iPostAdminSignInErr, iPostAdminUpdateKycRsq>,
 		"mutationFn"
 	>
 ) =>
@@ -154,10 +150,14 @@ export const useGetAllUsers = (
 		refetchOnMount: true
 	});
 
-export const useGetAllKyc = (options?: UseQueryOptions<IGetAllKycResp, IGetErr>) =>
+export const useGetAllKyc = (
+	page: number,
+	options?: UseQueryOptions<IGetAllKycResp, IGetErr>
+) =>
 	useQuery<IGetAllKycResp, IGetErr>({
 		queryKey: ["getAllKyc"],
-		queryFn: async () => (await api.get(`${API_URL.adminGetKycSubmission}/all`)).data,
+		queryFn: async () =>
+			(await api.get(`${API_URL.adminGetKycSubmission}/all?page=${page}`)).data,
 		...options,
 		refetchOnMount: true
 	});

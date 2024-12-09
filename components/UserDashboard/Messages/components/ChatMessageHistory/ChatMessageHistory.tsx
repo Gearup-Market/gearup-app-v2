@@ -10,7 +10,7 @@ import { MessageData } from "@/app/api/hooks/messages/typesx";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useResponsive } from "@/hooks";
-import { timeSince } from "@/utils";
+import { shortenTitle, timeSince } from "@/utils";
 import { useGetUserDetails } from "@/app/api/hooks/users";
 import { useGetListingById } from "@/app/api/hooks/listings";
 import Image from "next/image";
@@ -262,7 +262,9 @@ const ChatItem = ({
 					/>
 				</div>
 				<div className={styles.details}>
-					<div className={styles.name}>{participant?.userName}</div>
+					<div className={styles.name}>
+						{shortenTitle(participant?.userName || "", 20)}
+					</div>
 					<div className={styles.message}>{lastMessage?.message}</div>
 				</div>
 			</div>

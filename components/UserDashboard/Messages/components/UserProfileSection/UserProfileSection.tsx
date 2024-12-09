@@ -11,6 +11,7 @@ import { useSingleListing } from "@/hooks/useListings";
 import { useGetListingById } from "@/app/api/hooks/listings";
 import UserSocials from "@/shared/userSocials/UserSocials";
 import { UserUpdateResp } from "@/app/api/hooks/users/types";
+import { shortenTitle } from "@/utils";
 
 const UserProfileSection = () => {
 	const searchParams = useSearchParams();
@@ -26,11 +27,15 @@ const UserProfileSection = () => {
 		error
 	} = useGetListingById(listingId as string);
 
-	const isRent = !!listing?.data?.offer
-	const isBuy = !!listing?.data?.offer?.forSell
-	const price = listing?.data?.offer?.forSell?.pricing || listing?.data?.offer?.forRent?.day1Offer;
+	const isRent = !!listing?.data?.offer;
+	const isBuy = !!listing?.data?.offer?.forSell;
+	const price =
+		listing?.data?.offer?.forSell?.pricing ||
+		listing?.data?.offer?.forRent?.day1Offer;
 	const isBoth = isRent && isBuy;
-	const currency = listing?.data?.offer?.forSell?.currency || listing?.data?.offer?.forRent?.currency;
+	const currency =
+		listing?.data?.offer?.forSell?.currency ||
+		listing?.data?.offer?.forRent?.currency;
 
 	return (
 		<div className={styles.container}>
@@ -49,7 +54,11 @@ const UserProfileSection = () => {
 						<h4 className={styles.title}>PROFILE</h4>
 						<div className={styles.profile_image}>
 							<CustomImage
-								src={!!data?.data?.avatar ? data?.data?.avatar : "/svgs/avatar-user.svg"}
+								src={
+									!!data?.data?.avatar
+										? data?.data?.avatar
+										: "/svgs/avatar-user.svg"
+								}
 								height={150}
 								width={150}
 								alt="avatar"
@@ -57,13 +66,13 @@ const UserProfileSection = () => {
 							/>
 						</div>
 						<p className={styles.name}>
-							{data?.data?.name || data?.data?.userName}
-							{
-								data?.data?.isVerified &&
+							{shortenTitle(data?.data?.name || "", 20) ||
+								shortenTitle(data?.data?.userName || "", 20)}
+							{data?.data?.isVerified && (
 								<span className={styles.verfiy_icon}>
 									<VerifyIcon />
 								</span>
-							}
+							)}
 						</p>
 						<p className={styles.location}>{data?.data.address ?? "N//A"}</p>
 						<div className={styles.ratings_container}>
@@ -72,32 +81,32 @@ const UserProfileSection = () => {
 						<p>0 deals</p>
 						<UserSocials user={data?.data as UserUpdateResp} />
 					</div>
-					{
-						listing?.data &&
-					<div className={styles.conversation_about}>
-						<p className={styles.title}>CONVERSATION ABOUT</p>
+					{listing?.data && (
+						<div className={styles.conversation_about}>
+							<p className={styles.title}>CONVERSATION ABOUT</p>
 
-						<div className={styles.conversation_image}>
-							<CustomImage
-								src={listing?.data.listingPhotos[0] ?? "/svgs/convo_image.svg"}
-								height={150}
-								width={150}
-								alt="avatar"
-							/>
+							<div className={styles.conversation_image}>
+								<CustomImage
+									src={
+										listing?.data.listingPhotos[0] ??
+										"/svgs/convo_image.svg"
+									}
+									height={150}
+									width={150}
+									alt="avatar"
+								/>
+							</div>
+							<h2 className={styles.convo_name}>
+								{listing?.data.productName}
+							</h2>
+							<p className={styles.text}>
+								<span
+									className={styles.amount}
+								>{`${currency} ${price}`}</span>
+								{isRent && <span className={styles.day}>/Day</span>}
+							</p>
 						</div>
-						<h2 className={styles.convo_name}>
-							{listing?.data.productName}
-						</h2>
-						<p className={styles.text}>
-							<span className={styles.amount}>{`${currency} ${price}`}</span>
-							{
-								isRent &&
-								<span className={styles.day}>/Day</span>
-							}
-						</p>
-
-					</div>
-							}
+					)}
 				</>
 			)}
 		</div>

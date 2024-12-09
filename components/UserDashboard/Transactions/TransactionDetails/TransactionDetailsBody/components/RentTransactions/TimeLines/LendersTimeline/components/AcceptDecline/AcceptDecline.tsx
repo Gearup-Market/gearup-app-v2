@@ -78,10 +78,12 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 						<div className={styles.details_container}>
 							<p className={styles.details}>
 								<span className={styles.bold}>
-									{listing.user?.name || listing.user?.userName}
+									{item.buyer.userName || listing.user?.userName}
 								</span>{" "}
 								has successfully paid the sum of{" "}
-								<span className={styles.bold}>₦{formatNum(amount)}</span>{" "}
+								<span className={styles.bold}>
+									₦{formatNum(amount, true, 2)}
+								</span>{" "}
 								for the rental of {listing.productName}{" "}
 								{rentalPeriod?.start && (
 									<span className={styles.bold}>

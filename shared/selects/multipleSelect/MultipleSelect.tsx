@@ -17,7 +17,7 @@ const MultipleSelect = ({
 	onOptionChange,
 	label,
 	title,
-	objectOption,
+	objectOption
 }: Props) => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [localArr, setLocalArr] = useState<any[]>([]);
@@ -46,7 +46,7 @@ const MultipleSelect = ({
 			onOptionChange({
 				name: objectOption,
 				selectedValues: localArr,
-				fieldType: "multiple",
+				fieldType: "multiple"
 			});
 			return;
 		}
@@ -106,7 +106,10 @@ const MultipleSelect = ({
 								<h1>{title}</h1>
 								<p>You can select more than one:</p>
 							</div>
-							<div className={styles.closeModal_container} onClick={close}>
+							<div
+								className={styles.closeModal_container}
+								onClick={closeModal}
+							>
 								<div className={styles.closeModal}>
 									<span></span>
 									<span></span>

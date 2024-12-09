@@ -4,11 +4,11 @@
 	padding: 4rem 0;
 	padding-right: 2.4rem;
 
-	.nav_container{
+	.nav_container {
 		display: none;
 		gap: 1rem;
 		font-weight: 700;
-		color: #4B525A;
+		color: #4b525a;
 		align-items: center;
 		cursor: pointer;
 		width: fit-content;
@@ -17,9 +17,7 @@
 		border: none;
 		padding: 0;
 
-		
-	
-		.icon{
+		.icon {
 			@include flex;
 			width: 2.6rem;
 			height: 2.6rem;
@@ -29,7 +27,6 @@
 			padding: 0.5rem;
 			cursor: pointer;
 		}
-	
 	}
 
 	.header {
@@ -127,6 +124,7 @@
 						border-radius: 50%;
 						font-size: 1.2rem;
 						color: #000;
+						opacity: 0.4;
 					}
 				}
 			}
@@ -150,12 +148,12 @@
 					z-index: 20;
 					background: #fff;
 					padding-top: 2rem;
-			
+
 					.left {
 						display: flex;
 						gap: 0.8rem;
 						align-items: flex-start;
-			
+
 						.user_alias {
 							font-size: 1.2rem;
 							font-weight: 700;
@@ -169,25 +167,25 @@
 							align-items: center;
 							flex-shrink: 0;
 						}
-			
+
 						.name {
 							font-size: 1.2rem;
 							font-weight: 700;
 							color: #1b1e21;
 							display: flex;
 							align-items: center;
-			
+
 							.verfiy_icon {
 								width: 2rem;
 								height: 2rem;
 								margin-left: 0.8rem;
 							}
 						}
-			
+
 						.date_convo_about {
 							display: flex;
 							align-items: center;
-			
+
 							.date {
 								font-size: 1.2rem;
 								color: #1b1e21;
@@ -201,18 +199,18 @@
 								align-items: center;
 								gap: 0.8rem;
 							}
-			
+
 							@include screenMax("mobile") {
 								flex-wrap: wrap;
 							}
 						}
 					}
-			
+
 					.right {
 						display: flex;
 						align-items: center;
 						gap: 1.6rem;
-			
+
 						.icon {
 							height: 2.4rem;
 							width: 2.4rem;
@@ -233,11 +231,10 @@
 	}
 
 	@include screenMax("mobile") {
-		padding-top: 0rem ;
+		padding-top: 0rem;
 		padding: 0 0;
 
-		.nav_container{
-
+		.nav_container {
 			&[data-show="true"] {
 				display: flex;
 			}
