@@ -21,7 +21,7 @@ const FaceMatch = () => {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [capturedImage, setCapturedImage] = useState("");
-  const router = useRouter();
+	const router = useRouter();
 
 	const verificationState = useAppSelector(s => s.verification);
 	const user = useAppSelector(s => s.user);
@@ -108,7 +108,8 @@ const FaceMatch = () => {
 					userId: user.userId,
 					documentNo: verificationState.documentNo,
 					documentType: verificationState.documentType,
-					documentPhoto: verificationState.documentPhoto
+					documentPhoto: verificationState.documentPhoto,
+					...(verificationState.isRejected ? { hasResubmitted: true } : null)
 				} as iPostSubmitKycReq;
 
 				if (selfie) {
@@ -117,7 +118,7 @@ const FaceMatch = () => {
 						dispatch(updateVerification(res?.data));
 					}
 					toast.success("Document submitted for review");
-          router.replace("user/dashboard")
+					router.replace("user/dashboard");
 				}
 			} else {
 				toast.error("Please re-capture image");

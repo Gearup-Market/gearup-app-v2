@@ -40,6 +40,11 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 			: TransactionType.Rental;
 
 	const handleAddToCart = () => {
+		if (!user.kyc) {
+			toast.error("Please complete kyc");
+			router.push("/verification");
+			return;
+		}
 		if (transactionType === TransactionType.Rental) {
 			const daysDifference = getDaysDifference(
 				inputDate[0].startDate,
@@ -74,7 +79,6 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 				: `/login?returnUrl=${pathname}`
 		);
 	};
-
 
 	return (
 		<div className={styles.container}>
@@ -143,6 +147,28 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 							{!!item.link && <Link href={item.link}>Learn more</Link>}
 						</li>
 					))}
+					{offer.forSell?.shipping?.offerLocalPickup && (
+						<li className={styles.offer}>
+							<Image
+								src={"/svgs/ad_pickup_icon.svg"}
+								alt={"Accept local pickup"}
+								height={40}
+								width={40}
+							/>
+							<h3>{"Accept local pickup"}</h3>
+						</li>
+					)}
+					{offer.forSell?.acceptOffers && (
+						<li className={styles.offer}>
+							<Image
+								src={"/svgs/ad_make_offer_icon.svg"}
+								alt={"Make an offer"}
+								height={40}
+								width={40}
+							/>
+							<h3>{"Make an offer"}</h3>
+						</li>
+					)}
 				</ul>
 			</div>
 		</div>
@@ -163,17 +189,17 @@ const additionalOffers = [
 		name: "48 hours return policy Learn more",
 		icon: "/svgs/ad_return_icon.svg",
 		link: "/policy"
-	},
-	{
-		id: 3,
-		name: "Accept local pickup",
-		icon: "/svgs/ad_pickup_icon.svg",
-		link: ""
-	},
-	{
-		id: 4,
-		name: "Make an offer",
-		icon: "/svgs/ad_make_offer_icon.svg",
-		link: ""
 	}
+	// {
+	// 	id: 3,
+	// 	name: "Accept local pickup",
+	// 	icon: "/svgs/ad_pickup_icon.svg",
+	// 	link: ""
+	// },
+	// {
+	// 	id: 4,
+	// 	name: "Make an offer",
+	// 	icon: "/svgs/ad_make_offer_icon.svg",
+	// 	link: ""
+	// }
 ];

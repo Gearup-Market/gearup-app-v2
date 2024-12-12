@@ -18,6 +18,7 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 			? getDaysDifference(rentalPeriod?.start, rentalPeriod?.end)
 			: 0;
 	const unitPrice = forSale ? offer.forSell?.pricing : offer.forRent?.day1Offer;
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__summary_container}>

@@ -1,3 +1,5 @@
+import { VerificationState } from "@/store/slices/verificationSlice";
+
 export interface User {
 	_id?: string;
 	userId: string;
@@ -28,4 +30,5 @@ export interface User {
 	wallet?: any;
 	stellarWallet?: any;
 	hasPin: boolean;
+	kyc?: VerificationState | null;
 }

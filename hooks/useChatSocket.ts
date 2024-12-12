@@ -8,28 +8,29 @@ const SOCKET_SERVER_URL = process.env.NEXT_PUBLIC_API_BASE_URL_SOCKET;
 
 export const useChatSocket = (chatId?: string) => {
 	const [socket, setSocket] = useState<Socket | null>(null);
-	const { userId } = useAppSelector((state) => state.user)
+	const { userId } = useAppSelector(state => state.user);
 
 	useEffect(() => {
-		if (!chatId) return;
+		// if (!chatId) return;
 
 		// Establish socket connection
-		const socketInstance = io(SOCKET_SERVER_URL,{
+		const socketInstance = io(SOCKET_SERVER_URL, {
 			withCredentials: true,
 			transports: ["websocket"]
 		});
 
-		socketInstance.on("connect",()=>{
-			console.log("connected to server with socket id:", socketInstance.id)
-		})
+		socketInstance.on("userConnected", userId => {
+			console.log("connected to server with socket id:", socketInstance.id);
+		});
+		socketInstance.emit("userConnected", { userId });
 
-
-		setSocket(()=>socketInstance);
+		setSocket(() => socketInstance);
 
 		// Join a specific chat room and listen for new messages
 		if (chatId) {
 			socketInstance.emit("joinChat", chatId);
-			socketInstance.on("getMessages", message => {
+			socketInstance.on("getMessages", ({ chatId, message }) => {
+				console.log("socket message==>", message, chatId);
 				queryClient.setQueryData(["getChatMessages", chatId], (oldData: any) => {
 					return {
 						...oldData,
@@ -39,7 +40,7 @@ export const useChatSocket = (chatId?: string) => {
 			});
 		}
 		// Listen for chat overview updates (all chats)
-		socketInstance.on("getMessages", newChatData => {
+		socketInstance.on("getMessages", ({ chatId, newChatData }) => {
 			console.log("socket message==>", newChatData);
 			queryClient.setQueryData(["getUserMessages", userId], (oldData: any) => {
 				return {

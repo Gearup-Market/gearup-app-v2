@@ -17,6 +17,7 @@ import useCart from "@/hooks/useCart";
 import { PaystackPaymentButton } from "@/shared";
 import { PaystackProps } from "react-paystack/dist/types";
 import { formatNum } from "@/utils";
+import { useRouter } from "next/navigation";
 
 export enum PaymentMethod {
 	Wallet = "wallet",
@@ -41,6 +42,7 @@ const PaymentComp = ({
 }) => {
 	const { walletResult, isFetching } = useWallet();
 	const { data: xlmWallet, isFetching: xlmWalletFetching } = useStellarWallet();
+	const router = useRouter();
 	const user = useAppSelector(s => s.user);
 	const { mutateAsync: postTransaction, isPending } = usePostTransaction();
 	const { removeItemFromCart } = useCart();
@@ -79,6 +81,7 @@ const PaymentComp = ({
 				if (res.data) {
 					toast.success("Request submitted");
 					dispatch(resetCheckout());
+					router.push("/user/dashboard");
 					removeItemFromCart(item._id);
 					setOpenModal(true);
 				}
@@ -126,6 +129,7 @@ const PaymentComp = ({
 		if (res.data) {
 			toast.success("Request submitted");
 			dispatch(resetCheckout());
+			router.push("/user/dashboard");
 			removeItemFromCart(item._id);
 			setOpenModal(true);
 		}

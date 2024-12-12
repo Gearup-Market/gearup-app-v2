@@ -14,7 +14,6 @@ interface Props {
 	onSkip?: () => void;
 	onSubmit?: () => void;
 	showSuccessWarning?: boolean;
-	
 }
 
 const CustomRatingFeedback = ({
@@ -57,7 +56,7 @@ const CustomRatingFeedback = ({
 				}
 			}
 		} catch (error: any) {
-			toast.error(error?.response?.data?.message || "An error occurred");
+			toast.error(error?.response?.data?.error || "An error occurred");
 		}
 	};
 

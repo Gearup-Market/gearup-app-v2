@@ -221,40 +221,72 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 					<div className={styles.divider}></div>
 				</div>
 			</div>
-			<div className={styles.rental_detail}>
-				<div className={styles.summary_container}>
-					<h3 className={styles.title}>Rental details</h3>
-					<div className={styles.summary_item}>
-						<h4>
-							Duration({rentalPeriod} day
-							{rentalPeriod > 1 ? "s" : ""})
-						</h4>
-						<p>
-							{startDate.split("T")[0]} - {endDate.split("T")[0]}
-						</p>
-					</div>
-					<div className={styles.summary_item}>
-						<h4>Rental price(per day)</h4>
-						<p>₦{formatNum(listingData?.offer.forRent?.day1Offer)}</p>
-					</div>
-					<div className={styles.summary_item}>
-						<h4>Multiple days discount</h4>
-						<p>₦{formatNum(listingData?.offer.forRent?.day3Offer)}</p>
-					</div>
-					<div className={styles.summary_item}>
-						<h4>Rental price( 10 days)</h4>
-						<p>₦40.00</p>
-					</div>
-					<div className={styles.summary_item}>
-						<h4>Gearup fee</h4>
-						<p>₦40.00</p>
-					</div>
-					<div className={styles.summary_item}>
-						<h4>Total amount:</h4>
-						<p>₦40.00</p>
+			{transaction?.transactionType !== "Purchase" ? (
+				<div className={styles.rental_detail}>
+					<div className={styles.summary_container}>
+						<h3 className={styles.title}>Rental details</h3>
+						<div className={styles.summary_item}>
+							<h4>
+								Duration({rentalPeriod} day
+								{rentalPeriod > 1 ? "s" : ""})
+							</h4>
+							<p>
+								{startDate.split("T")[0]} - {endDate.split("T")[0]}
+							</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Rental price(per day)</h4>
+							<p>₦{formatNum(listingData?.offer.forRent?.day1Offer)}</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Multiple days discount</h4>
+							<p>₦{formatNum(listingData?.offer.forRent?.day3Offer)}</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Rental price( 10 days)</h4>
+							<p>₦40.00</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Gearup fee</h4>
+							<p>₦40.00</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Total amount:</h4>
+							<p>₦40.00</p>
+						</div>
 					</div>
 				</div>
-			</div>
+			) : (
+				<div className={styles.rental_detail}>
+					<div className={styles.summary_container}>
+						<h3 className={styles.title}>SHIPMENT INFORMATION</h3>
+						<div className={styles.summary_item}>
+							<h4>Username:</h4>
+							<p>{transaction.seller.userName}</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Shipment type:</h4>
+							<p>{transaction.metadata?.shippingType}</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Country</h4>
+							<p>{transaction.metadata?.country}</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>City</h4>
+							<p>{transaction.metadata?.city}</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Shipping address</h4>
+							<p>{transaction.metadata?.address}</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>Mobile number</h4>
+							<p>{transaction.metadata?.phoneNumber}</p>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

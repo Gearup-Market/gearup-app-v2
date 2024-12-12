@@ -10,7 +10,7 @@ import { UserRole } from "@/app/api/hooks/transactions/types";
 const BuySaleTransactions = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const { transaction } = useAppSelector(s => s.transaction);
-    
+
 	if (!transaction) return null;
 	const timeline = transaction.userRole;
 
