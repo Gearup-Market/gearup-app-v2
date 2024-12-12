@@ -20,7 +20,10 @@ const DashboardUserHeader = ({ data, kycData }: { data: any; kycData?: Kyc }) =>
 	const router = useRouter();
 	const { mutateAsync: postUpdateKyc, isPending } = usePostAdminUpdateKyc();
 
-	const handleSubmit = async (action: 'approve' | 'reject', rejectionMessage?: string) => {
+	const handleSubmit = async (
+		action: "approve" | "reject",
+		rejectionMessage?: string
+	) => {
 		try {
 			const res = await postUpdateKyc({
 				userId: data._id,
@@ -28,26 +31,30 @@ const DashboardUserHeader = ({ data, kycData }: { data: any; kycData?: Kyc }) =>
 				rejectionMessage
 			});
 			if (res?.message) {
-				toast.success(action === 'approve' ? "KYC has been approved" : 'KYC has been rejected');
+				toast.success(
+					action === "approve"
+						? "KYC has been approved"
+						: "KYC has been rejected"
+				);
 				router.back();
 			}
 		} catch (error: any) {
 			console.log(error.response.data.message, error.response?.status);
 			toast.error(error.response.data.message || "Failed to update user KYC");
 		} finally {
-			setShowModal(false)
+			setShowModal(false);
 		}
 	};
 
-	const [rejectionMessage, setRejectionMessage] = useState("")
+	const [rejectionMessage, setRejectionMessage] = useState("");
 
 	const rejectKyc = async () => {
-		if(!rejectionMessage) {
-			toast.error("Rejection message is required")
+		if (!rejectionMessage) {
+			toast.error("Rejection message is required");
 			return;
 		}
-		await handleSubmit('reject', rejectionMessage)
-	}
+		await handleSubmit("reject", rejectionMessage);
+	};
 
 	return (
 		<div className={styles.wrapper}>
@@ -86,22 +93,24 @@ const DashboardUserHeader = ({ data, kycData }: { data: any; kycData?: Kyc }) =>
 						</div>
 					</div>
 				</div>
-				<div className={styles.btns_container}>
-					<Button
-						buttonType="secondary"
-						className={styles.view_profile}
-						onClick={handleSubmit}
-					>
-						Approve KYC
-					</Button>
-					<Button
-						buttonType="secondary"
-						className={styles.deactivate_btn}
-						onClick={() => setShowModal(true)}
-					>
-						Reject KYC
-					</Button>
-				</div>
+				{
+					<div className={styles.btns_container}>
+						<Button
+							buttonType="secondary"
+							className={styles.view_profile}
+							onClick={() => handleSubmit("approve")}
+						>
+							Approve KYC
+						</Button>
+						<Button
+							buttonType="secondary"
+							className={styles.deactivate_btn}
+							onClick={() => setShowModal(true)}
+						>
+							Reject KYC
+						</Button>
+					</div>
+				}
 
 				{showModal && (
 					<Modal
@@ -110,7 +119,11 @@ const DashboardUserHeader = ({ data, kycData }: { data: any; kycData?: Kyc }) =>
 						setOpenModal={setShowModal}
 						className={styles.modal}
 					>
-						<InputField name="rejectionMessage" placeholder="Enter the rejection message here" onChange={(e) => setRejectionMessage(e.target.value)} />
+						<InputField
+							name="rejectionMessage"
+							placeholder="Enter the rejection message here"
+							onChange={e => setRejectionMessage(e.target.value)}
+						/>
 						<Button
 							className={styles.button}
 							disabled={isPending}

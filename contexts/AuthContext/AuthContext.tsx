@@ -12,6 +12,7 @@ import useCart from "@/hooks/useCart";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { queryClient } from "@/app/api";
 import { useQueryClient } from "@tanstack/react-query";
+import { clearState, updateVerification } from "@/store/slices/verificationSlice";
 
 const AuthContext = createContext<DefaultProviderType>({
 	isAuthenticated: false,
@@ -62,6 +63,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			dispatch(
 				updateUser({ isAdmin: false, isAuthenticated: true, ...userData.data })
 			);
+			if (userData.data.kyc) {
+				dispatch(updateVerification(userData.data.kyc));
+			}
 		}
 	}, [userData, dispatch]);
 
@@ -74,6 +78,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const logout = async () => {
 		removeAuthToken();
 		dispatch(clearUser());
+		dispatch(clearState());
 		queryClient.clear();
 		router.replace(`/login?returnUrl=${pathname}`);
 	};

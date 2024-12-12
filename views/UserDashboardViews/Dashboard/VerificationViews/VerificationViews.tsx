@@ -40,28 +40,39 @@ const VerificationViews = () => {
 		"Face Match"
 	];
 
+	// console.log(verificationState);
+
 	useEffect(() => {
 		if (verificationState.isSubmitted && !verificationState.isRejected) {
 			toast.success("KYC already submitted");
 			router.push("user/dashboard");
+		} else if (verificationState.isApproved) {
+			toast.success("KYC has been Approved");
+			router.back();
+		} else if (verificationState.isSubmitted && verificationState.hasResubmitted) {
+			toast.success("KYC has been resubmitted, please await approval");
+			router.push("user/dashboard");
 		} else {
-			if (verificationState._id) {
+			if (verificationState._id && !verificationState.isSubmitted) {
 				setCurrentStep(2);
 			}
 			if (verificationState.isPhoneNumberVerified) {
 				setIsTokenVerified(true);
-				setCurrentStep(3);
+				if (currentStep === 2) {
+					setCurrentStep(step => ++step);
+				}
+				// setCurrentStep(3);
 			}
-			if (
-				verificationState.documentNo &&
-				verificationState.documentPhoto &&
-				verificationState.documentPhoto.length > 0 &&
-				!verificationState.isRejected
-			) {
-				setCurrentStep(4);
-			}
+			// if (
+			// 	verificationState.documentNo &&
+			// 	verificationState.documentPhoto &&
+			// 	verificationState.documentPhoto.length > 0 &&
+			// 	!verificationState.isRejected
+			// ) {
+			// 	setCurrentStep(4);
+			// }
 		}
-	}, [verificationState]);
+	}, [verificationState, currentStep]);
 
 	const handleNextStep = () => {
 		if (currentStep === stepCount) return;
@@ -76,6 +87,7 @@ const VerificationViews = () => {
 		}
 		if (currentStep === 3) {
 			documentsRef.current?.submitForm();
+			setCurrentStep(4);
 			return;
 		}
 		setCurrentStep(currentStep + 1);

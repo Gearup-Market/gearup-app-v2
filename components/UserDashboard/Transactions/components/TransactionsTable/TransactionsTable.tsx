@@ -22,7 +22,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 	const [limit, setLimit] = useState(5);
 	const [searchInput, setSearchInput] = useState<string>("");
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const pageSize: number = 12;
+	const pageSize: number = 10;
 	const { data, isFetching } = useTransactions();
 	const [localData, setLocalData] = useState(data);
 	const { userId } = useAppSelector(s => s.user);
@@ -30,7 +30,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 
 	const transactions = useMemo(
 		() =>
-			localData.map(({ _id, item, buyer, amount, type, status, createdAt }) => {
+			data.map(({ _id, item, buyer, amount, type, status, createdAt }) => {
 				const isBuyer = userId === buyer;
 				const transactionType =
 					type === TransactionType.Sale && isBuyer
@@ -60,7 +60,6 @@ const TransactionTable = ({ transactionType }: Props) => {
 			}),
 		[data]
 	);
-	console.log(transactions);
 
 	const filteredUsers = useMemo(() => {
 		if (!searchInput) return transactions;

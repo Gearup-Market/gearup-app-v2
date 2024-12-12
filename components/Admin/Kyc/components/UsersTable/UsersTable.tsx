@@ -144,6 +144,25 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 		},
 		{
 			...sharedColDef,
+			field: "hasResubmitted",
+			cellClassName: styles.table_cell,
+			headerClassName: styles.table_header,
+			headerName: "Kyc Resubmitted",
+			minWidth: 150,
+			renderCell: ({ value }) => (
+				<div className={styles.container__status_container}>
+					<p
+						style={{ fontSize: "1.2rem" }}
+						className={styles.container__status_container__status}
+						data-status={value}
+					>
+						{value ? "Yes" : "No"}
+					</p>
+				</div>
+			)
+		},
+		{
+			...sharedColDef,
 			field: "userId",
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,

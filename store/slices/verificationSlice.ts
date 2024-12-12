@@ -19,6 +19,7 @@ export type VerificationState = Omit<iPostRegisterKycReq, "userId" | "documentTy
 	isRejected: boolean;
 	rejectionMessage: string;
 	createdAt?: string;
+	hasResubmitted: boolean;
 };
 
 const initialState: VerificationState = {
@@ -44,7 +45,8 @@ const initialState: VerificationState = {
 	isSubmitted: false,
 	isApproved: false,
 	isRejected: false,
-	rejectionMessage: ""
+	rejectionMessage: "",
+	hasResubmitted: false
 };
 
 const verificationSlice = createSlice({

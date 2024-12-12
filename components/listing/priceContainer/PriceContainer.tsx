@@ -42,6 +42,11 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 			: TransactionType.Rental;
 
 	const handleAddToCart = () => {
+		if (!user.kyc) {
+			toast.error("Please complete kyc");
+			router.push("/verification");
+			return;
+		}
 		if (transactionType === TransactionType.Rental) {
 			const daysDifference = getDaysDifference(
 				inputDate[0].startDate,
