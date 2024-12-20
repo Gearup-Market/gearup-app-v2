@@ -13,7 +13,11 @@ const WalletTransactionsTable = () => {
 	const [page, setPage] = useState(1);
 	const [skip, setSkip] = useState(0);
 	const [limit, setLimit] = useState(5);
-	const { data, pagination, isFetching, refetch } = useWalletTransactions({ limit, skip });
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const { data, pagination, isFetching, refetch } = useWalletTransactions({
+		limit,
+		skip
+	});
 
 	useEffect(() => {
 		const handleClick = (event: MouseEvent) => {
@@ -29,76 +33,90 @@ const WalletTransactionsTable = () => {
 		};
 	}, []);
 
-	const handlePagination = (page: number) => {
-		const offset = (page - 1) * limit;
-		setPage(page)
-		setSkip(offset);
+	const updatePage = (page: number) => {
+		setCurrentPage(page);
+		// refetch();
 	};
+
+	useEffect(() => {
+		refetch();
+	}, [currentPage, refetch]);
 
 	return (
 		<div className={styles.container}>
-			{data.length > 0 ? 
-			<>
-			<div className={styles.container__input_filter_container}>
-				<InputField
-					placeholder="Search"
-					icon="/svgs/icon-search-dark.svg"
-					iconTitle="search-icon"
-				/>
-			</div>
+			{data.length > 0 ? (
+				<>
+					<div className={styles.container__input_filter_container}>
+						<InputField
+							placeholder="Search"
+							icon="/svgs/icon-search-dark.svg"
+							iconTitle="search-icon"
+						/>
+					</div>
 
-			<div>
-				<ul className={styles.container__table}>
-					{data.map(transaction => (
-						<li
-							className={styles.container__table__row}
-							key={transaction._id}
-						>
-							<div className={styles.container__table__row__left}>
-								<div
-									className={styles.container__table__row__left__avatar}
+					<div>
+						<ul className={styles.container__table}>
+							{data.map(transaction => (
+								<li
+									className={styles.container__table__row}
+									key={transaction._id}
 								>
-									<Image
-										src={
-											transaction.type.toLowerCase() === "debit"
-												? "/svgs/wallet-deposit-green.svg"
-												: "/svgs/wallet-withdraw-yellow.svg"
-										}
-										alt="admin-img"
-										width={16}
-										height={16}
-									/>
-								</div>
-								<div
-									className={
-										styles.container__table__row__left__name_amount
-									}
-								>
-									<p className={styles.type}>{transaction.type}</p>
-									<p className={styles.amount}>{transaction.amount}</p>
-								</div>
-							</div>
-							<div className={styles.container__table__row__right}>
-								<p
-									className={styles.status}
-									data-status={transaction.status.toLowerCase()}
-								>
-									{transaction.status}
-								</p>
-								<p className={styles.date}>{transaction.createdAt}</p>
-							</div>
-						</li>
-					))}
-				</ul>
-				<Pagination
-					currentPage={page}
-					onPageChange={handlePagination}
-					totalCount={pagination.totalCount}
-					pageSize={limit}
-				/>
-				</div>
-			</>
-			: <NoWalletTransactions />}
+									<div className={styles.container__table__row__left}>
+										<div
+											className={
+												styles.container__table__row__left__avatar
+											}
+										>
+											<Image
+												src={
+													transaction.type.toLowerCase() ===
+													"debit"
+														? "/svgs/wallet-deposit-green.svg"
+														: "/svgs/wallet-withdraw-yellow.svg"
+												}
+												alt="admin-img"
+												width={16}
+												height={16}
+											/>
+										</div>
+										<div
+											className={
+												styles.container__table__row__left__name_amount
+											}
+										>
+											<p className={styles.type}>
+												{transaction.type}
+											</p>
+											<p className={styles.amount}>
+												{transaction.amount}
+											</p>
+										</div>
+									</div>
+									<div className={styles.container__table__row__right}>
+										<p
+											className={styles.status}
+											data-status={transaction.status.toLowerCase()}
+										>
+											{transaction.status}
+										</p>
+										<p className={styles.date}>
+											{transaction.createdAt}
+										</p>
+									</div>
+								</li>
+							))}
+						</ul>
+						<Pagination
+							currentPage={page}
+							onPageChange={(page: any) => updatePage(page)}
+							totalCount={pagination.totalCount}
+							pageSize={10}
+						/>
+					</div>
+				</>
+			) : (
+				<NoWalletTransactions />
+			)}
 		</div>
 	);
 };

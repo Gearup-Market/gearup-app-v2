@@ -47,8 +47,10 @@ import NoSearchResult from "./NoSearchResult/NoSearchResult";
 import SecondaryHero from "./secondaryHero/SecondaryHero";
 import RadioButton from "./radioButton/RadioButton";
 import LocationAutoComplete from "./locationAutoComplete/LocationAutoComplete";
+import BankSelect from "./selects/bankSelect/BankSelect";
 
 export {
+	BankSelect,
 	LocationAutoComplete,
 	RadioButton,
 	SecondaryHero,

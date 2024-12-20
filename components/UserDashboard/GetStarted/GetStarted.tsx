@@ -16,7 +16,6 @@ const GetStarted = ({
 	description = ""
 }: Props) => {
 	const verificationState = useAppSelector(s => s.verification);
-	const user = useAppSelector(s => s.user);
 	const verificationSteps = useMemo(
 		() => [
 			{
@@ -70,7 +69,9 @@ const GetStarted = ({
 				</p>
 			</div>
 			<p className={styles.container__description}>
-				{verificationState.rejectionMessage
+				{verificationState.isApproved
+					? "KYC Approved"
+					: verificationState.rejectionMessage
 					? verificationState.rejectionMessage
 					: description}
 			</p>

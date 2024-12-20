@@ -1,0 +1,151 @@
+@import "@/styles/imports";
+
+.select_wrapper {
+	width: 100%;
+	row-gap: 0.7rem;
+	@include flex(flex-start, flex-start, column);
+	margin-bottom: 5rem;
+
+	img {
+		width: 1.4rem;
+		height: 1.4rem;
+	}
+
+	.input_label {
+		@extend %text-14;
+		color: #1b1e21;
+		font-weight: 400;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.select {
+		// @include screenMin('tablet') {
+		// 	margin-left: 2rem;
+		// }
+		min-width: 100%;
+		border: 0.1rem solid #dedfe0;
+		// margin-right: 0.8rem;
+		padding: 1.2rem;
+		// min-height: 2rem;
+		position: relative;
+		border-radius: 0.8rem;
+		// line-height: 2.5rem;
+
+		.select_header {
+			@include flex(space-between, center, row nowrap);
+			padding: 0;
+			width: 100%;
+			position: relative;
+			cursor: pointer;
+			.select_smallRow,
+			.select_row {
+				@include flex(space-between, center);
+				div {
+					margin-right: 0.8rem;
+				}
+				p,
+				span {
+					@extend %text-14;
+					color: #a3a7ab;
+					text-transform: capitalize;
+				}
+				span {
+					color: #1b1e21;
+				}
+			}
+			//   @include screenMax("ssm-mobile") {
+			//     min-width: 100%;
+			//     max-width: 100%;
+			//     &:not(:last-child) {
+			//       margin-bottom: 2rem;
+			//     }
+			//   }
+			.select_smallRow {
+				width: 100%;
+				// @include screenMax("tablet") {
+				// 	justify-content: center;
+				// }
+			}
+		}
+		.icon {
+			position: relative;
+			width: 2.4rem;
+			height: 2.4rem;
+			margin-right: 0.4rem;
+		}
+
+		.flex {
+			@include flex(flex-start, center);
+		}
+
+		.select_body {
+			min-width: 100%;
+			// width: 100%;
+			border-radius: 0.4rem;
+			// border: 0.1rem solid #121212;
+			// padding: 1.55rem 1.3rem 0;
+			position: absolute;
+			top: 6rem;
+			left: 0;
+			background-color: $col-white;
+			border-radius: 0.8rem;
+			box-shadow: 0px 0.2rem 3rem 0px rgba(18, 14, 6, 0.08);
+			z-index: 2;
+			max-height: 15rem;
+			overflow-y: scroll;
+			@include noScrollBar;
+			@include screenMax("tablet") {
+				// left: -1rem;
+				top: 3.5rem;
+			}
+		}
+
+		.select_listItem {
+			border-bottom: 0.1rem solid #dedfe0;
+			padding: 0.8rem 1.6rem;
+			cursor: pointer;
+		}
+
+		.select_row {
+			@include flex(flex-start, center);
+			// padding-bottom: 2rem;
+			p {
+				font-weight: 500;
+				@extend %text-14;
+				text-transform: capitalize;
+				white-space: nowrap;
+			}
+		}
+
+		.select_dropDownImage {
+			width: 2rem;
+			height: 2rem;
+			position: relative;
+			margin-right: 0 !important;
+		}
+
+		&[data-error="true"] {
+			border: 0.1rem solid #ff0000;
+		}
+
+		&[data-type="true"] {
+			padding-inline: 0;
+			padding-block: 0.4rem;
+			border: none;
+			border-bottom: 0.1rem solid #1b1e21;
+			border-radius: 0;
+			// .select_body {
+			// 	top: 6rem;
+			// }
+		}
+
+		@include screenMax("tablet") {
+			box-sizing: border-box;
+			width: auto;
+			padding: 1.2rem 1rem;
+			// margin-right: 0.5rem;
+			// margin: 1rem 0.5rem 1rem 0;
+		}
+	}
+}

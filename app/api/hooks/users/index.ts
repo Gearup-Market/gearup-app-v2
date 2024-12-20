@@ -192,6 +192,19 @@ const useGetUserDetails = (
 		refetchOnMount: false
 	});
 
+const useGetUserReviews = (
+	{ userId }: { userId: string },
+	// refetchOnMount?: boolean,
+	options?: UseQueryOptions<any, any>
+) =>
+	useQuery<any, any>({
+		queryKey: ["userReviews", userId],
+		queryFn: async () => (await api.get(`${API_URL.getReviews}/${userId}`)).data,
+		...options,
+		enabled: !!userId,
+		refetchOnMount: true
+	});
+
 // ----------------------------------------------
 
 const usePostRegisterKyc = (
@@ -383,5 +396,6 @@ export {
 	useGetUserDetails,
 	usePostUpdateUser,
 	usePostUpdateUserPin,
-	useGetVerifyToken
+	useGetVerifyToken,
+	useGetUserReviews
 };

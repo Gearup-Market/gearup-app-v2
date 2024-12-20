@@ -107,11 +107,13 @@ const usePostTransactionStatus = (
 
 const useGetTransactions = (
 	userId?: string,
+	page?: number,
 	options?: UseQueryOptions<iGetTransactionRes, IGetErr>
 ) =>
 	useQuery<iGetTransactionRes, IGetErr>({
 		queryKey: ["getTransactions"],
-		queryFn: async () => (await api.get(`${API_URL.getTransactions}/${userId}`)).data,
+		queryFn: async () =>
+			(await api.get(`${API_URL.getTransactions}/${userId}?page=${page}`)).data,
 		...options,
 		enabled: !!userId,
 		refetchOnMount: true

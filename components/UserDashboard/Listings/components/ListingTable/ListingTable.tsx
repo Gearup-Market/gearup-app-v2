@@ -43,15 +43,30 @@ const ListingTable = ({
 }: Props) => {
 	const [activeLayout, setActiveLayout] = useState("list");
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-	const [page, setPage] = useState(1);
+	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 	const { userId } = useAppSelector(s => s.user);
 	// const { data: courseListings, isLoading } = useGetAllCourses();
-	const listings = useAppSelector(s => s.listings.owned);
+	// const listings = useAppSelector(s => s.listings.owned);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const { refetch, isFetching, listings: userListings } = useListings();
+	const {
+		refetch,
+		isFetching,
+		listings: userListings
+	} = useListings(false, currentPage);
+
+	const updatePage = (page: number) => {
+		setCurrentPage(page);
+		// refetch();
+	};
+
+	useEffect(() => {
+		refetch();
+	}, [currentPage, refetch]);
+
+	const listings = userListings?.data || [];
 
 	const mappedListings = useMemo(() => {
 		const activeSubFilter = filters
@@ -60,7 +75,7 @@ const ListingTable = ({
 			?.name.toLowerCase();
 
 		return listings
-			.map(
+			?.map(
 				({
 					_id,
 					productName,
@@ -120,7 +135,7 @@ const ListingTable = ({
 	};
 
 	const onClickEdit = (listingId: string) => {
-		const listing = listings.find(l => l._id === listingId);
+		const listing = listings?.find(l => l._id === listingId);
 		const {
 			productName,
 			description,
@@ -440,28 +455,28 @@ const ListingTable = ({
 
 	return (
 		<div className={styles.container}>
-			{mappedListings.length > 0 ? (
+			<div className={styles.container__input_filter_container}>
+				<InputField
+					placeholder="Search"
+					icon="/svgs/icon-search-dark.svg"
+					iconTitle="search-icon"
+				/>
+				<div className={styles.layout_icons}>
+					{listData.map(data => (
+						<span
+							key={data.id}
+							onClick={() => setActiveLayout(data.value)}
+							data-active={activeLayout === data.value}
+							data-type={data.value}
+							className={styles.layout_icons__icon}
+						>
+							{data.icon}
+						</span>
+					))}
+				</div>
+			</div>
+			{mappedListings?.length > 0 ? (
 				<>
-					<div className={styles.container__input_filter_container}>
-						<InputField
-							placeholder="Search"
-							icon="/svgs/icon-search-dark.svg"
-							iconTitle="search-icon"
-						/>
-						<div className={styles.layout_icons}>
-							{listData.map(data => (
-								<span
-									key={data.id}
-									onClick={() => setActiveLayout(data.value)}
-									data-active={activeLayout === data.value}
-									data-type={data.value}
-									className={styles.layout_icons__icon}
-								>
-									{data.icon}
-								</span>
-							))}
-						</div>
-					</div>
 					{activeLayout === "list" ? (
 						<>
 							<div
@@ -485,7 +500,7 @@ const ListingTable = ({
 							</div>
 
 							<MobileCardContainer>
-								{mappedListings.map((item, ind) => (
+								{mappedListings?.map((item, ind) => (
 									<ListingCardMob
 										activeFilter={activeFilter}
 										key={ind}
@@ -502,20 +517,14 @@ const ListingTable = ({
 									/>
 								))}
 							</MobileCardContainer>
-							<Pagination
-								currentPage={1}
-								onPageChange={setPage}
-								totalCount={mappedListings.length}
-								pageSize={5}
-							/>
-							<div className={styles.btn_container}>
+							{/* <div className={styles.btn_container}>
 								<AddBtn onClick={handleAddItem} />
-							</div>
+								</div> */}
 						</>
 					) : (
 						<>
 							<div className={styles.container__grid}>
-								{mappedListings.map(item => (
+								{mappedListings?.map(item => (
 									<ListingCard
 										key={item.id}
 										props={item}
@@ -532,8 +541,14 @@ const ListingTable = ({
 					)}
 				</>
 			) : (
-				<NoListings />
+				<NoListings showCreateButton />
 			)}
+			<Pagination
+				currentPage={currentPage}
+				totalCount={userListings?.meta?.total || 0}
+				pageSize={10}
+				onPageChange={(page: any) => updatePage(page)}
+			/>
 		</div>
 	);
 };

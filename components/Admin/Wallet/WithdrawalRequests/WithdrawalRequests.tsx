@@ -19,7 +19,7 @@ import NoTransactions from "@/components/UserDashboard/Transactions/components/N
 const pageSize: number = 12;
 
 const WithdrawalRequests = () => {
-	const { data: withdrawalHistory, isLoading } = useGetAllWithdrawals();
+	const { data: withdrawalHistory, isLoading, refetch } = useGetAllWithdrawals();
 	const { mutateAsync: postWithdrawalRequest, isPending } = usePostWithdrawalRequest();
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [rejectReason, setRejectReason] = useState<string>("");
@@ -56,7 +56,8 @@ const WithdrawalRequests = () => {
 			if (res?.data) {
 				toast.success(`The withdrawal request has been ${status} successfully`);
 				setRejectedItemId("");
-				window.location.reload();
+				setShowModal(false);
+				refetch();
 			}
 		} catch (error: any) {
 			toast.error(error.response.data.message || "Withdrawal Response failed");

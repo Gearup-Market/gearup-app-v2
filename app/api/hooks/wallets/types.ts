@@ -13,6 +13,23 @@ export interface iWallet {
 	createdAt?: string;
 }
 
+export interface iWithdraw {
+	_id: string;
+	amount: number;
+	accountName: string;
+	accountNumber: string;
+	bankName: string;
+	status: WalletStatus;
+	createdAt?: string;
+	userId?: string;
+}
+
+export interface iPostWithdrawRsq {
+	userId: string;
+	amount: number;
+	pin: number;
+}
+
 export enum WTransactionStatus {
 	Pending = "pending",
 	Completed = "completed",

@@ -13,7 +13,10 @@ import { formatNum } from "@/utils";
 import { PageLoader } from "@/shared/loaders";
 
 const WalletTransactionsTable = () => {
-	const { data: withdrawalHistory, isLoading } = useGetAllWithdrawals();
+	const { data: withdrawalHistory, isLoading } = useGetAllWithdrawals({
+		queryKey: ["getAllWithdrawals"],
+		refetchInterval: 5000
+	});
 	const [page, setPage] = useState(1);
 
 	const sharedColDef: GridColDef = {
