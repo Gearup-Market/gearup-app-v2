@@ -18,15 +18,22 @@ interface Props {
 }
 
 const TransactionTable = ({ transactionType }: Props) => {
-	const [page, setPage] = useState(1);
-	const [limit, setLimit] = useState(5);
 	const [searchInput, setSearchInput] = useState<string>("");
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const pageSize: number = 10;
-	const { data, isFetching } = useTransactions();
-	const [localData, setLocalData] = useState(data);
 	const { userId } = useAppSelector(s => s.user);
+	const { data, isFetching, refetch, pagination } = useTransactions(
+		userId,
+		currentPage
+	);
 	const [isNoSearchResult, setIsNoSearchResult] = useState(false);
+
+	const updatePage = (page: number) => {
+		setCurrentPage(page);
+	};
+
+	useEffect(() => {
+		refetch();
+	}, [currentPage, refetch]);
 
 	const transactions = useMemo(
 		() =>
@@ -70,18 +77,6 @@ const TransactionTable = ({ transactionType }: Props) => {
 		);
 	}, [searchInput, transactions]);
 
-	const currentTableData = useMemo(() => {
-		const firstPageIndex = (currentPage - 1) * pageSize;
-		const lastPageIndex = firstPageIndex + pageSize;
-		return filteredUsers.slice(firstPageIndex, lastPageIndex);
-	}, [currentPage, filteredUsers]);
-
-	const startNumber = (currentPage - 1) * pageSize + 1;
-	const endNumber = Math.min(
-		startNumber + currentTableData?.length - 1,
-		filteredUsers?.length
-	);
-
 	const debouncedSearch = useMemo(
 		() =>
 			debounce((value: string) => {
@@ -100,13 +95,6 @@ const TransactionTable = ({ transactionType }: Props) => {
 		sortable: true,
 		flex: 1
 	};
-
-	// const handlePagination = (page: number) => {
-	// 	const start = (page - 1) * limit;
-	// 	const end = start + limit;
-	// 	setPaginatedTransactions(end);
-	// 	setPage(page);
-	// };
 
 	const columns: GridColDef[] = [
 		{
@@ -195,31 +183,30 @@ const TransactionTable = ({ transactionType }: Props) => {
 
 	return (
 		<div className={styles.container}>
-			{transactions.length < 1 ? (
-				<NoTransactions />
-			) : (
-				<>
-					<div className={styles.container__input_filter_container}>
-						<InputField
-							placeholder="Enter name or id"
-							icon="/svgs/icon-search-dark.svg"
-							iconTitle="search-icon"
-							onChange={e => debouncedSearch(e.target.value)}
-						/>
-						{/* <div
+			<div className={styles.container__input_filter_container}>
+				<InputField
+					placeholder="Enter name or id"
+					icon="/svgs/icon-search-dark.svg"
+					iconTitle="search-icon"
+					onChange={e => debouncedSearch(e.target.value)}
+				/>
+				{/* <div
 							className={styles.no_search_result}
 							data-show={isNoSearchResult}
 						>
 							<NoSearchResult />
 						</div> */}
-					</div>
-
+			</div>
+			{transactions.length < 1 ? (
+				<NoTransactions />
+			) : (
+				<>
 					<div
 						className={styles.container__table}
 						style={{ width: "100%", height: "100%" }}
 					>
 						<DataGrid
-							rows={currentTableData}
+							rows={filteredUsers}
 							columns={columns}
 							paginationMode="server"
 							sx={customisedTableClasses}
@@ -233,13 +220,13 @@ const TransactionTable = ({ transactionType }: Props) => {
 					<MobileCardContainer>
 						{!!transactions.length ? (
 							<>
-								{currentTableData.map((item, ind) => (
+								{filteredUsers.map((item, ind) => (
 									<TransactionCardMob
 										key={item.id}
 										item={item}
 										ind={ind}
 										lastEle={
-											ind + 1 === currentTableData.length
+											ind + 1 === filteredUsers.length
 												? true
 												: false
 										}
@@ -251,16 +238,14 @@ const TransactionTable = ({ transactionType }: Props) => {
 							<NoTransactions />
 						)}
 					</MobileCardContainer>
-					<Pagination
-						currentPage={currentPage}
-						totalCount={transactions?.length}
-						pageSize={pageSize}
-						onPageChange={(page: any) => setCurrentPage(page)}
-						startNumber={startNumber}
-						endNumber={endNumber}
-					/>
 				</>
 			)}
+			<Pagination
+				currentPage={currentPage}
+				totalCount={pagination?.totalCount || 0}
+				pageSize={10}
+				onPageChange={(page: any) => updatePage(page)}
+			/>
 		</div>
 	);
 };

@@ -13,17 +13,27 @@ import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateTransaction } from "@/store/slices/transactionSlice";
 import { useEffect } from "react";
 
-export default function useTransactions(userid?: string) {
+export default function useTransactions(userid?: string, page: number = 1) {
 	const userId = useAppSelector(s => s.user.userId);
-	const { data, isFetching, error } = useGetTransactions(userid || userId);
-	return { data: data?.data || [], isFetching, error };
+	const { data, isFetching, error, refetch } = useGetTransactions(
+		userid || userId,
+		page
+	);
+	return {
+		data: data?.data || [],
+		isFetching,
+		error,
+		refetch,
+		pagination: data?.pagination
+	};
 }
 
 export function useTransaction(id?: string) {
 	const {
 		data: result,
 		isFetching,
-		error
+		error,
+		refetch
 	} = useGetSingleTransactions(id, { refetchInterval: 5000 });
 	const { userId } = useAppSelector(s => s.user);
 	const dispatch = useAppDispatch();
@@ -77,11 +87,12 @@ export function useTransaction(id?: string) {
 				})
 			);
 		}
-	}, [result, isFetching]);
+	}, [result, isFetching, refetch]);
 
 	return {
 		data: result?.data ? formatTransaction(result?.data) : undefined,
 		isFetching,
-		error
+		error,
+		refetch
 	};
 }

@@ -23,11 +23,12 @@ import { GridAddIcon } from "@mui/x-data-grid";
 import XlmTransactionsTable from "./components/XlmTransactionTable/XlmTransactionTable";
 import Link from "next/link";
 import { useAppSelector } from "@/store/configureStore";
-import { formatNumber } from "@/utils";
+import { formatNum, formatNumber } from "@/utils";
 import { WalletStatus } from "@/app/api/hooks/wallets/types";
 import { useStellarWallet } from "@/hooks";
 import { SmallLoader } from "@/shared/loaders";
 import dynamic from "next/dynamic";
+import { useGetWallet } from "@/app/api/hooks/wallets";
 
 const WalletDepositModal = dynamic(
 	() => import("./components").then(mod => mod.WalletDepositModal),
@@ -51,6 +52,7 @@ const toggleOptions = [
 ];
 
 const Wallet = () => {
+	const { userId } = useAppSelector(s => s.user);
 	const [confirmWithdrawal, setConfirmWithdrawal] = useState(false);
 	const [showAlertModal, setShowAlertModal] = useState(false);
 	const [showXlmDepositModal, setShowXlmDepositModal] = useState(false);
@@ -58,12 +60,19 @@ const Wallet = () => {
 	const [showWalletDepositModal, setShowWalletDepositModal] = useState(false);
 	const [showWalletWithdrawalModal, setShowWalletWithdrawalModal] = useState(false);
 	const [activeWallet, setActiveWallet] = useState<ToggleType>(ToggleType.FIAT);
-	const { wallet } = useAppSelector(s => s.wallet);
+	// const { wallet } = useAppSelector(s => s.wallet);
 	const {
 		data: stellarWallet,
 		isFetching: isFetchingStellarWallet,
 		refetch
 	} = useStellarWallet();
+	const {
+		data: walletResult,
+		isFetching,
+		refetch: refetchWallet
+	} = useGetWallet({ userId });
+
+	const wallet = walletResult?.data;
 
 	const handleToggleWallet = (type: ToggleType) => {
 		setActiveWallet(type);
@@ -158,12 +167,12 @@ const Wallet = () => {
 						<BalanceSection
 							balance={walletBalance}
 							text="Wallet balance"
-							loading={isFetchingStellarWallet}
+							loading={isFetching}
 						/>
 						<BalanceSection
 							balance={wallet?.pendingDebit || 0}
 							text="Escrow Balance"
-							loading={isFetchingStellarWallet}
+							loading={isFetching}
 						/>
 					</div>
 					<div className={`${styles.btn_container} ${styles.mobile_btns}`}>
@@ -244,7 +253,8 @@ const Wallet = () => {
 						openModal={showWalletWithdrawalModal}
 						setOpenModal={setShowWalletWithdrawalModal}
 						setConfirmWithdrawal={setConfirmWithdrawal}
-						walletBalance={walletBalance}
+						wallet={walletResult?.data}
+						refetch={refetchWallet}
 					/>
 				)}
 				{confirmWithdrawal && (
@@ -252,6 +262,8 @@ const Wallet = () => {
 						openModal={confirmWithdrawal}
 						setOpenModal={setConfirmWithdrawal}
 						setShowAlertModal={setShowAlertModal}
+						wallet={walletResult?.data}
+						refetch={refetchWallet}
 					/>
 				)}
 				{showAlertModal && (
@@ -279,6 +291,7 @@ const Wallet = () => {
 					<WalletDepositModal
 						openModal={showWalletDepositModal}
 						close={() => setShowWalletDepositModal(false)}
+						refetch={refetchWallet}
 					/>
 				)}
 			</div>
@@ -311,7 +324,7 @@ const BalanceSection = ({
 					) : (
 						"XLM"
 					)}{" "}
-					{balance || "0.00"}
+					{formatNum(balance) || "0.00"}
 				</h2>
 			)}
 		</div>

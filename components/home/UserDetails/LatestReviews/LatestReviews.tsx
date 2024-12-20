@@ -3,10 +3,14 @@ import styles from "./LatestReviews.module.scss";
 import { HeaderSubText } from "@/components/UserDashboard";
 import { Button, CustomImage, Ratings } from "@/shared";
 
-const LatestReviews = () => {
+interface Props {
+	reviews: any[];
+}
+
+const LatestReviews = ({ reviews }: Props) => {
 	const [activeReview, setActiveReview] = useState(1);
 	const [animationDirection, setAnimationDirection] = useState(""); // Track animation direction
-	const reviews = [1, 2, 3, 4, 5, 6, 7, 8];
+	// const reviews = [1, 2, 3, 4, 5, 6, 7, 8];
 
 	const nextReview = () => {
 		if (activeReview < reviews.length) {
@@ -22,6 +26,13 @@ const LatestReviews = () => {
 		}
 	};
 
+	const getReviewerName = (firstName: string, lastName: string, userName: string) => {
+		if (firstName || lastName) {
+			return `${firstName} ${lastName}`;
+		}
+		return userName;
+	};
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.header_container}>
@@ -32,49 +43,53 @@ const LatestReviews = () => {
 						disabled={activeReview === 1}
 						iconPrefix="/svgs/chevron-left.svg"
 					>
-					<p>	Previous</p>
+						<p> Previous</p>
 					</Button>
 					<Button
 						onClick={nextReview}
 						disabled={activeReview === reviews.length}
 						iconSuffix="/svgs/chevron-rightbtn.svg"
 					>
-					<p>	Next</p>
+						<p> Next</p>
 					</Button>
 				</div>
 			</div>
 			<div>
-				{reviews.map((item) => (
+				{reviews.map((item: any, index: number) => (
 					<div
-						className={`${styles.review_body} ${item === activeReview
-							? animationDirection === "next"
-								? styles.slide_in_right
-								: styles.slide_in_left
-							: animationDirection === "next"
-							? styles.slide_out_left
-							: styles.slide_out_right
+						className={`${styles.review_body} ${
+							index === activeReview
+								? animationDirection === "next"
+									? styles.slide_in_right
+									: styles.slide_in_left
+								: animationDirection === "next"
+								? styles.slide_out_left
+								: styles.slide_out_right
 						}`}
-						key={item}
-						data-active={item === activeReview}
+						key={item.id}
+						data-active={++index === activeReview}
 					>
 						<div className={styles.review_body__top}>
 							<div className={styles.avatar}>
 								<CustomImage
-									src="/images/admin-img.jpg"
+									src={item.reviewer.avatar || "/svgs/user.svg"}
 									height={40}
 									width={40}
 									alt="reviewer-img"
 								/>
 							</div>
 							<div>
-								<h3>Kelly Williams {item}</h3>
-								<Ratings rating={4} />
+								<h3>
+									{getReviewerName(
+										item.reviewer.firstname,
+										item.reviewer.lastname,
+										item.reviewer.userName
+									)}
+								</h3>
+								<Ratings rating={item.rating} />
 							</div>
 						</div>
-						<p>
-							Everything went as it should. You can therefore safely rent
-							out your equipment to Fantom Film.
-						</p>
+						<p>{item.comment}</p>
 					</div>
 				))}
 			</div>

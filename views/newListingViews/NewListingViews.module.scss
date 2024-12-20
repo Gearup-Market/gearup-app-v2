@@ -37,6 +37,8 @@
 		max-height: 75vh;
 		border-bottom: 0.1rem solid #dedfe0;
 		overflow: hidden;
+		max-width: 144rem;
+		margin-inline: auto;
 		.image_container {
 			background-color: #fff7e7;
 			height: 100%;
@@ -348,6 +350,8 @@
 		width: 100%;
 		padding: 2.4rem 8rem;
 		@include flex(space-between);
+		max-width: 144rem;
+		margin-inline: auto;
 		.button {
 			padding: 1.6rem 2.4rem;
 			min-width: 10rem;

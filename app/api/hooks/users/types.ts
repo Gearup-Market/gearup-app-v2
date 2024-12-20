@@ -215,7 +215,7 @@ export type iPostSubmitKycRes = {
 		documentPhoto: string[];
 		selfie: string;
 		isSubmitted: boolean;
-	}
+	};
 };
 
 export type iPostSubmitKycReq = {
@@ -327,4 +327,5 @@ export interface UserUpdateResp {
 	accountNumber: string;
 	rating: number;
 	bankName: string;
+	totalDeals: number;
 }

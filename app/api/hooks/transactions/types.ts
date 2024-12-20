@@ -107,6 +107,12 @@ export interface iPostTransactionStatusReq {
 export interface iGetTransactionRes {
 	data: Transaction[];
 	message: string;
+	pagination: {
+		currentPage: number;
+		totalPages: number;
+		totalCount: number;
+		limit: number;
+	};
 }
 
 export type SingleTransaction = Omit<

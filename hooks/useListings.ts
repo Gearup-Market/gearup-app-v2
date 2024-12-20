@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { setListings } from "@/store/slices/listingsSlice";
 import { useEffect, useState } from "react";
 
-export function useListings(shouldFetchAll: boolean = false) {
+export function useListings(shouldFetchAll: boolean = false, page: number = 1) {
 	const { userId } = useAppSelector(s => s.user);
 	const dispatch = useAppDispatch();
 
@@ -18,7 +18,15 @@ export function useListings(shouldFetchAll: boolean = false) {
 		data: listings,
 		isFetching,
 		refetch
-	} = useGetListings({ userId, shouldFetchAll });
+	} = useGetListings({
+		userId,
+		shouldFetchAll,
+		page,
+		options: {
+			queryKey: [shouldFetchAll ? "listings" : "listingsByUser"],
+			refetchInterval: 60000
+		}
+	});
 
 	useEffect(() => {
 		if (listings) {

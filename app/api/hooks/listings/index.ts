@@ -136,10 +136,12 @@ const useGetListingById = (
 const useGetListings = ({
 	userId,
 	shouldFetchAll,
-	options
+	options,
+	page = 1
 }: {
 	userId?: string;
 	shouldFetchAll?: boolean;
+	page?: number;
 	options?: UseQueryOptions<iGetListingsResp, IGetErr>;
 }) =>
 	useQuery<iGetListingsResp, IGetErr>({
@@ -149,7 +151,7 @@ const useGetListings = ({
 				await api.get(
 					shouldFetchAll
 						? API_URL.listings
-						: `${API_URL.listingsByUser}/${userId}`
+						: `${API_URL.listingsByUser}/${userId}?page=${page}`
 				)
 			).data,
 		...options,

@@ -76,9 +76,13 @@ const UserProfileSection = () => {
 						</p>
 						<p className={styles.location}>{data?.data.address ?? "N//A"}</p>
 						<div className={styles.ratings_container}>
-							<Ratings rating={0} showRatingNumber={true} readOnly />
+							<Ratings
+								rating={data?.data?.rating || 0}
+								showRatingNumber={true}
+								readOnly
+							/>
 						</div>
-						<p>0 deals</p>
+						<p>{data?.data?.totalDeals} deals</p>
 						<UserSocials user={data?.data as UserUpdateResp} />
 					</div>
 					{listing?.data && (

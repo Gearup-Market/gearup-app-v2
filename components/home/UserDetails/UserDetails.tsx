@@ -8,7 +8,7 @@ import NoListings from "@/components/UserDashboard/Listings/NoListings/NoListing
 import { useGetListings } from "@/app/api/hooks/listings";
 import { ListingCard } from "@/components/UserDashboard/Listings/components";
 import Image from "next/image";
-import { useGetUserDetails } from "@/app/api/hooks/users";
+import { useGetUserDetails, useGetUserReviews } from "@/app/api/hooks/users";
 import { Box, CircularProgress } from "@mui/material";
 import LatestReviews from "./LatestReviews/LatestReviews";
 import { useFetchUserDetailsById } from "@/hooks/useUsers";
@@ -20,6 +20,7 @@ interface Props {
 const UserDetails = ({ userId }: Props) => {
 	// get user details
 	const { fetchingUser, user } = useFetchUserDetailsById(userId);
+	const { data: userReviews, isLoading } = useGetUserReviews({ userId });
 
 	// get user listings using id
 	const { data, isFetching, refetch } = useGetListings({
@@ -154,7 +155,7 @@ const UserDetails = ({ userId }: Props) => {
 							</>
 						)}
 					</div>
-					<LatestReviews />
+					<LatestReviews reviews={userReviews?.data || []} />
 				</div>
 			</div>
 		</div>

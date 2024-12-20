@@ -79,6 +79,7 @@ const SummaryView = () => {
 			dispatch(clearNewListing());
 			router.push("/user/listings");
 		} catch (error) {
+			console.log(error);
 			toast.error(`Error ${listingId ? "updating" : "creating"} product`);
 		}
 	};

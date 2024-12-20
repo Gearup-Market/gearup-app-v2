@@ -439,7 +439,8 @@ const RentView = ({
 									}));
 								}}
 								label={`Price ( ${
-									forRentDetails.priceStructure ?? "per day"
+									forRentDetails.priceStructure ??
+									"select a price structure"
 								} )`}
 								className={`${styles.input}`}
 								value={forRentDetails?.pricing}

@@ -12,6 +12,7 @@ import { PaystackProps } from "react-paystack/dist/types";
 interface Props {
 	openModal: boolean;
 	close: () => void;
+	refetch: () => void;
 }
 
 const fundOptions: { gateway: "paystack" | "flutterwave"; label: string }[] = [
@@ -24,17 +25,19 @@ const paystackConfig = {
 	publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUB_KEY!
 };
 
-const WalletDepositModal = ({ openModal, close }: Props) => {
+const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 	const { wallet } = useAppSelector(s => s.wallet);
 	const user = useAppSelector(s => s.user);
 	const [amount, setAmount] = useState<string | number>("");
 
 	const onClose = () => {
 		close();
+		refetch();
 	};
 
 	const onPaystackSuccess = (reference: any) => {
 		onClose();
+		refetch();
 	};
 
 	const onClosePaymentModal = () => {

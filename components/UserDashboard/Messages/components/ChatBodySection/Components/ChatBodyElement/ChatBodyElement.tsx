@@ -5,7 +5,11 @@ import MessageSent from "../MessageSent/MessageSent";
 import { Button } from "@/shared";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useAddChatMessage, useCreateChatMessage, useFetchChatMessages } from "@/app/api/hooks/messages";
+import {
+	useAddChatMessage,
+	useCreateChatMessage,
+	useFetchChatMessages
+} from "@/app/api/hooks/messages";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
@@ -19,25 +23,30 @@ const ChatMessageSchema = Yup.object().shape({
 	message: Yup.string().required("Message is required")
 });
 
-interface Props{
+interface Props {
 	data?: any;
 	listing?: any;
 }
 
 const ChatBodyElement = () => {
-	const chatRef = useRef<HTMLDivElement>(null);  // To track the chat container
-	const lastMessageRef = useRef<HTMLDivElement>(null);  // To track the last message
+	const chatRef = useRef<HTMLDivElement>(null); // To track the chat container
+	const lastMessageRef = useRef<HTMLDivElement>(null); // To track the last message
 	const searchParams = useSearchParams();
 	const chatId = searchParams.get("activeChatId") ?? "";
-	useChatSocket(chatId); 
+	useChatSocket(chatId);
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
 	const router = useRouter();
 	const pathname = usePathname();
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
 	const { mutateAsync: addChatMessage } = useAddChatMessage();
-	const {data: chatMessages, isFetching: isPending, refetch, isLoading} = useFetchChatMessages(chatId);
-	const { userId } = useAppSelector((state) => state.user)
+	const {
+		data: chatMessages,
+		isFetching: isPending,
+		refetch,
+		isLoading
+	} = useFetchChatMessages(chatId);
+	const { userId } = useAppSelector(state => state.user);
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (userId && participantId && listingId) {
@@ -47,7 +56,7 @@ const ChatBodyElement = () => {
 				if (!chatId) {
 					const resp = await createChatMessage({
 						participants: [userId as string, participantId],
-						listingId,
+						listingId
 					});
 					const currentParams = new URLSearchParams(searchParams.toString());
 					currentParams.set("activeChatId", resp?.data?._id);
@@ -62,6 +71,7 @@ const ChatBodyElement = () => {
 					attachments: []
 				});
 				resetForm();
+				refetch();
 			} catch (error) {
 				toast.error("Failed to send message");
 			}
@@ -77,8 +87,7 @@ const ChatBodyElement = () => {
 
 	return (
 		<div className={styles.chat_body}>
-			{
-				isLoading ? 
+			{isLoading ? (
 				<Box
 					display="flex"
 					justifyContent="center"
@@ -87,14 +96,18 @@ const ChatBodyElement = () => {
 				>
 					<CircularProgressLoader color="#ffb30f" size={30} />
 				</Box>
-				:
+			) : (
 				<>
 					<div className={styles.chat_content} ref={chatRef}>
 						<div className={styles.chats}>
 							{chatMessages?.data?.messages?.map((message, index) => (
 								<div
 									key={index}
-									ref={index === chatMessages?.data?.messages.length - 1 ? lastMessageRef : null}
+									ref={
+										index === chatMessages?.data?.messages.length - 1
+											? lastMessageRef
+											: null
+									}
 								>
 									{message.sender._id === userId ? (
 										<MessageSent message={message.message} />
@@ -136,7 +149,7 @@ const ChatBodyElement = () => {
 						</Formik>
 					</div>
 				</>
-			}
+			)}
 		</div>
 	);
 };

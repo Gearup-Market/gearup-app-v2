@@ -11,7 +11,7 @@ interface Props {
 }
 
 const UserDetailsProfile = ({ user }: Props) => {
-	const { userId } = useAppSelector((state) => state.user);
+	const { userId } = useAppSelector(state => state.user);
 	return (
 		<div className={styles.container}>
 			<div className={styles.profile_details}>
@@ -27,26 +27,25 @@ const UserDetailsProfile = ({ user }: Props) => {
 				</div>
 				<p className={styles.name}>
 					{user?.userName}
-					{
-						user?.isVerified &&
+					{user?.isVerified && (
 						<span className={styles.verfiy_icon}>
 							<VerifyIcon />
 						</span>
-					}
+					)}
 				</p>
 				<p className={styles.location}>{user?.address ?? "N/A"}</p>
 				<div className={styles.ratings_container}>
-					<Ratings rating={0} showRatingNumber={true} readOnly />
+					<Ratings rating={user?.rating} showRatingNumber={true} readOnly />
 				</div>
-				<p>0 deals</p>
-				{
-					user?.userId !== userId &&
+				<p>{user?.totalDeals} deals</p>
+				{/* {user?.userId !== userId && (
 					<Link href={`/user/messages`}>
-						<Button buttonType="secondary" iconPrefix="/svgs/send.svg">Send a message</Button>
+						<Button buttonType="secondary" iconPrefix="/svgs/send.svg">
+							Send a message
+						</Button>
 					</Link>
-				}
+				)} */}
 			</div>
-
 		</div>
 	);
 };

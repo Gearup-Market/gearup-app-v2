@@ -14,35 +14,35 @@ const reviews = [
 	{
 		review: "I appreciate how GearUp genuinely listens to feedback and carefully curates the gear available on the platform. It perfectly meets my needs, and because of that, I’ll continue using GearUp.",
 		user: "Itojie Daniel",
-		avatar: "/svgs/user.svg",
+		avatar: "/images/daniel.png",
 		role: "portrait photographer",
 		rating: 5
 	},
 	{
 		review: "I love the flexibility of their rental process, it allows me work with my schedule and I get value for my money.",
 		user: "Mildred",
-		avatar: "/svgs/user.svg",
+		avatar: "/images/mildred.png",
 		role: "portrait photographer",
 		rating: 5
 	},
 	{
 		review: "I love renting from the platform because they’re accessible and it’s easy to communicate. They help you pick the right gear for your project if you’re unsure about what you need.",
 		user: "Barbra Felix",
-		avatar: "/svgs/user.svg",
+		avatar: "/images/barbara.png",
 		role: "portrait and wedding photographer",
 		rating: 5
 	},
 	{
 		review: "They’re very accessible and respond quickly. The rental process is straightforward. The condition of the gear I rent on the platform is always top notch.",
 		user: "Samuel",
-		avatar: "/svgs/user.svg",
+		avatar: "/images/samuel.png",
 		role: "filmmaker, CEO weirdman films",
 		rating: 5
 	},
 	{
 		review: "I love their customer support. They’ve always assisted with any challenge that I have encountered in the past while using the equipment I rent through them. I’ll recommend them to my colleagues any time any day.",
 		user: "Dominic visuals",
-		avatar: "/svgs/user.svg",
+		avatar: "/images/dominic.png",
 		role: "conceptual portrait photographer and cinematographer",
 		rating: 5
 	}

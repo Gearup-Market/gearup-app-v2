@@ -9,11 +9,13 @@ import { API_URL } from "../../url";
 import {
 	iPostUpdateBankResp,
 	iPostUpdateBankRsq,
+	iPostWithdrawRsq,
 	iStellarTransactionResp,
 	iStellarWalletResp,
 	iTransferXLMReq,
 	iTransferXLMResp,
 	iWalletResp,
+	iWithdraw,
 	iWTransactionResp
 } from "./types";
 import { AxiosError } from "axios";
@@ -131,11 +133,23 @@ const usePostTransferXLM = (
 		...options
 	});
 
+const usePostWithdraw = (
+	options?: Omit<
+		UseMutationOptions<iWithdraw, IPostErr, iPostWithdrawRsq>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iWithdraw, IPostErr, iPostWithdrawRsq>({
+		mutationFn: async props => (await api.post(API_URL.walletWithdraw, props)).data,
+		...options
+	});
+
 export {
 	useGetWallet,
 	useGetWalletTransactions,
 	useGetStellarWallet,
 	useGetStellarTransactions,
 	usePostTransferXLM,
-	useGetExportWallet
+	useGetExportWallet,
+	usePostWithdraw
 };
