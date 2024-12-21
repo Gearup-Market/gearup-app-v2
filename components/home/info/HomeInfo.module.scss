@@ -2,8 +2,12 @@
 
 .section {
 	// @include flex(space-between);
-	@include grid(repeat(4, 1fr), 2.4rem);
-	gap: 2.2rem;
+	.container {
+		gap: 2.2rem;
+		@include grid(repeat(4, 1fr), 2.4rem);
+		max-width: $max-width;
+		margin-inline: auto;
+	}
 	.box {
 		background-color: #fafafa;
 		padding: 2.4rem;
@@ -29,7 +33,9 @@
 		}
 	}
 	@include screenMax("mobile") {
-		grid-template-columns: 100%;
+		.container {
+			grid-template-columns: 100%;
+		}
 		.box {
 			width: 100%;
 		}

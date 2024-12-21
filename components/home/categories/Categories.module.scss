@@ -2,6 +2,10 @@
 
 .section {
 	background-color: #fbfbfb;
+	.container {
+		max-width: $max-width;
+		margin-inline: auto;
+	}
 	.title {
 		max-width: 73.7rem;
 		margin-bottom: 6.4rem;

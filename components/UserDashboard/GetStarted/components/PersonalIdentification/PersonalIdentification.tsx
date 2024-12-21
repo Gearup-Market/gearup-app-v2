@@ -124,7 +124,7 @@ const PersonalIdentification = forwardRef<
 			}
 			onSubmitSuccess();
 		} catch (error: any) {
-			toast.error(error.response.data.error);
+			toast.error(error.response.data.message);
 		} finally {
 			dispatch(
 				updateVerification({
@@ -434,6 +434,6 @@ const PersonalIdentification = forwardRef<
 	);
 });
 
-PersonalIdentification.displayName = 'PersonalIdentification'
+PersonalIdentification.displayName = "PersonalIdentification";
 
 export default PersonalIdentification;

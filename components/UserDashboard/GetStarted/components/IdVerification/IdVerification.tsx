@@ -116,18 +116,20 @@ const IdVerification = forwardRef<
 				if (documentPhoto.length > 0) {
 					// const res = await postSubmitDoc({ ...payload, documentPhoto });
 					// if (res?.data) {
-          // }
-          dispatch(updateVerification({
-            ...values,
-            documentPhoto
-          }));
+					// }
+					dispatch(
+						updateVerification({
+							...values,
+							documentPhoto
+						})
+					);
 					onSubmitSuccess();
 				}
 			} else {
 				toast.error("Please upload the document image");
 			}
 		} catch (error: any) {
-			toast.error(error.response.data.error);
+			toast.error(error.response.data.message);
 		} finally {
 			dispatch(
 				updateVerification({
@@ -245,6 +247,6 @@ const IdVerification = forwardRef<
 	);
 });
 
-IdVerification.displayName = 'IdVerification'
+IdVerification.displayName = "IdVerification";
 
 export default IdVerification;
