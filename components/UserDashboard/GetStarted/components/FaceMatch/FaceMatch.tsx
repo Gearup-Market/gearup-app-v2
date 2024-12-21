@@ -124,7 +124,7 @@ const FaceMatch = () => {
 				toast.error("Please re-capture image");
 			}
 		} catch (error: any) {
-			toast.error(error.response.data.error);
+			toast.error(error.response.data.message);
 		} finally {
 			dispatch(
 				updateVerification({

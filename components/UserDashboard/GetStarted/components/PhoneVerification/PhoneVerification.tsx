@@ -70,7 +70,7 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 					setIsTokenVerified(true);
 				}
 			} catch (error: any) {
-				toast.error(error.response.data.error);
+				toast.error(error.response.data.message);
 			} finally {
 				dispatch(
 					updateVerification({
@@ -98,10 +98,10 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 							resendCodeCountdown: 60
 						})
 					);
-					toast.success('An otp was sent to your phone number');
+					toast.success("An otp was sent to your phone number");
 				}
 			} catch (error: any) {
-				toast.error(error.response.data.error);
+				toast.error(error.response.data.message);
 			} finally {
 				dispatch(
 					updateVerification({
@@ -135,14 +135,14 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 						updateVerification({
 							_id: res.data._id,
 							isPhoneNumberVerified: res.data.isPhoneNumberVerified,
-              resendCodeCountdown: 60
+							resendCodeCountdown: 60
 						})
 					);
 					// toast.success('An otp was sent to your phone number');
 					onSubmitSuccess();
 				}
 			} catch (error: any) {
-				toast.error(error.response.data.error);
+				toast.error(error.response.data.message);
 			} finally {
 				dispatch(
 					updateVerification({
@@ -230,5 +230,5 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 	}
 );
 
-PhoneVerification.displayName = 'PhoneVerification';
+PhoneVerification.displayName = "PhoneVerification";
 export default PhoneVerification;

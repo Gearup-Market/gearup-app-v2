@@ -67,39 +67,110 @@ const Header = () => {
 			data-scroll={scroll}
 			data-background={isBackground}
 		>
-			<div className={styles.background}></div>
-			<Link href="/">
-				<div className={styles.header_logoContainer}>
-					<Logo type={handleLogoShown()} />
-				</div>
-			</Link>
-			<div
-				className={
-					styles[!collapsed ? "header_wrapper" : "header_wrapper__collapsed"]
-				}
-			>
-				<nav className={styles.header_nav}>
-					<ul className={styles.header_navList}>
-						{navLinks.map((link: NavLink, index: number) => {
-							return (
-								<LinkItem
-									setCollapsed={setCollapsed}
-									collapsed={collapsed}
-									setIsBackground={setIsBackground}
-									link={link}
-									router={router}
-									key={index}
+			<div className={styles.container}>
+				<div className={styles.background}></div>
+				<Link href="/">
+					<div className={styles.header_logoContainer}>
+						<Logo type={handleLogoShown()} />
+					</div>
+				</Link>
+				<div
+					className={
+						styles[
+							!collapsed ? "header_wrapper" : "header_wrapper__collapsed"
+						]
+					}
+				>
+					<nav className={styles.header_nav}>
+						<ul className={styles.header_navList}>
+							{navLinks.map((link: NavLink, index: number) => {
+								return (
+									<LinkItem
+										setCollapsed={setCollapsed}
+										collapsed={collapsed}
+										setIsBackground={setIsBackground}
+										link={link}
+										router={router}
+										key={index}
+									/>
+								);
+							})}
+						</ul>
+					</nav>
+					<div className={styles.button_container}>
+						<Button buttonType="transparent" className={styles.small_icon}>
+							<div>
+								<Image
+									src={
+										scroll === Scroll.FinalScroll
+											? "/svgs/icon-search-dark.svg"
+											: "/svgs/icon-search.svg"
+									}
+									fill
+									alt=""
+									sizes="100vw"
 								/>
-							);
-						})}
-					</ul>
-				</nav>
-				<div className={styles.button_container}>
+							</div>
+						</Button>
+						<Button
+							buttonType="transparent"
+							className={styles.cart_icon}
+							onClick={() => router.push("/cart")}
+							data-cart={!!cartItems?.items.length}
+						>
+							<div>
+								<Image
+									src={
+										scroll === Scroll.FinalScroll
+											? "/svgs/icon-cart-dark.svg"
+											: "/svgs/icon-cart.svg"
+									}
+									fill
+									alt=""
+									sizes="100vw"
+								/>
+							</div>
+							{cartItems?.items.length ? (
+								<div className={styles.cart}>
+									<p>{cartItems?.items.length}</p>
+								</div>
+							) : null}
+						</Button>
+						{user.isAuthenticated ? (
+							<Link
+								className={styles.user_account}
+								href={
+									user.isAdmin ? "/admin/dashboard" : "/user/dashboard"
+								}
+							>
+								<Button
+									onClick={() => setCollapsed(!collapsed)}
+									className={styles.my_account}
+								>
+									My account
+								</Button>
+							</Link>
+						) : (
+							<>
+								<Button
+									buttonType="transparent"
+									className={styles.trans_button}
+								>
+									<Link href={"/login"}>Login</Link>
+								</Button>
+								<Button className={styles.button}>
+									<Link href={"/signup"}>Sign Up</Link>
+								</Button>
+							</>
+						)}
+					</div>
+				</div>
+				<div className={styles.mob_buttons}>
 					<Button buttonType="transparent" className={styles.small_icon}>
 						<div>
 							<Image
 								src={
-									scroll === Scroll.FinalScroll
+									!collapsed || scroll === Scroll.FinalScroll
 										? "/svgs/icon-search-dark.svg"
 										: "/svgs/icon-search.svg"
 								}
@@ -109,16 +180,11 @@ const Header = () => {
 							/>
 						</div>
 					</Button>
-					<Button
-						buttonType="transparent"
-						className={styles.cart_icon}
-						onClick={() => router.push("/cart")}
-						data-cart={!!cartItems?.items.length}
-					>
-						<div>
+					<Button buttonType="transparent" className={styles.small_icon}>
+						<Link href="/cart">
 							<Image
 								src={
-									scroll === Scroll.FinalScroll
+									!collapsed || scroll === Scroll.FinalScroll
 										? "/svgs/icon-cart-dark.svg"
 										: "/svgs/icon-cart.svg"
 								}
@@ -126,77 +192,19 @@ const Header = () => {
 								alt=""
 								sizes="100vw"
 							/>
-						</div>
-						{cartItems?.items.length ? (
-							<div className={styles.cart}>
-								<p>{cartItems?.items.length}</p>
-							</div>
-						) : null}
-					</Button>
-					{user.isAuthenticated ? (
-						<Link
-							className={styles.user_account}
-							href={user.isAdmin ? "/admin/dashboard" : "/user/dashboard"}
-						>
-							<Button
-								onClick={() => setCollapsed(!collapsed)}
-								className={styles.my_account}
-							>
-								My account
-							</Button>
 						</Link>
-					) : (
-						<>
-							<Button
-								buttonType="transparent"
-								className={styles.trans_button}
-							>
-								<Link href={"/login"}>Login</Link>
-							</Button>
-							<Button className={styles.button}>
-								<Link href={"/signup"}>Sign Up</Link>
-							</Button>
-						</>
-					)}
-				</div>
-			</div>
-			<div className={styles.mob_buttons}>
-				<Button buttonType="transparent" className={styles.small_icon}>
-					<div>
-						<Image
-							src={
-								!collapsed || scroll === Scroll.FinalScroll
-									? "/svgs/icon-search-dark.svg"
-									: "/svgs/icon-search.svg"
-							}
-							fill
-							alt=""
-							sizes="100vw"
-						/>
+					</Button>
+					<div
+						onClick={() => setCollapsed(!collapsed)}
+						className={
+							styles[
+								collapsed ? "header_hamburger" : "header_hamburger__open"
+							]
+						}
+					>
+						<span className={styles.header_hamburgerBar}></span>
+						<span className={styles.header_hamburgerBar}></span>
 					</div>
-				</Button>
-				<Button buttonType="transparent" className={styles.small_icon}>
-					<Link href="/cart">
-						<Image
-							src={
-								!collapsed || scroll === Scroll.FinalScroll
-									? "/svgs/icon-cart-dark.svg"
-									: "/svgs/icon-cart.svg"
-							}
-							fill
-							alt=""
-							sizes="100vw"
-						/>
-					</Link>
-				</Button>
-				<div
-					onClick={() => setCollapsed(!collapsed)}
-					className={
-						styles[collapsed ? "header_hamburger" : "header_hamburger__open"]
-					}
-				>
-					<span className={styles.header_hamburgerBar}></span>
-					<span className={styles.header_hamburgerBar}></span>
 				</div>
 			</div>
 		</header>

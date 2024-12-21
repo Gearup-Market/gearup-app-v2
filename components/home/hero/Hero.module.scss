@@ -2,13 +2,19 @@
 
 .hero {
 	width: 100vw;
-	min-height: 100dvh;
-	position: relative;
+	// position: relative;
 	background-color: #060606;
 	left: 0;
-	padding: 14.4rem 8rem 6.8rem;
-	display: grid;
-	place-items: center;
+	.container {
+		min-height: 100dvh;
+		padding: 14.4rem 8rem 6.8rem;
+		display: grid;
+		place-items: center;
+		max-width: $max-width;
+		margin-inline: auto;
+		position: relative;
+		height: 100%;
+	}
 	.hero_image_container {
 		position: absolute;
 		right: 0;
@@ -78,9 +84,11 @@
 	}
 
 	@include screenMax("tablet") {
-		display: grid;
-		place-items: center;
-		padding: 1.6rem;
+		.container {
+			display: grid;
+			place-items: center;
+			padding: 1.6rem;
+		}
 		.search {
 			width: 100%;
 		}
@@ -95,7 +103,9 @@
 		}
 	}
 	@include screenMax("mobile") {
-		padding: 8rem 1.7rem 0;
+		.container {
+			padding: 8rem 1.6rem 0;
+		}
 		.search {
 			width: 100%;
 		}

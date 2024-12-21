@@ -38,9 +38,11 @@ const infoList: BoxProps[] = [
 const HomeInfo = () => {
 	return (
 		<section className={styles.section}>
-			{infoList.map((info: BoxProps, index: number) => (
-				<InfoBox props={info} key={index} />
-			))}
+			<div className={styles.container}>
+				{infoList.map((info: BoxProps, index: number) => (
+					<InfoBox props={info} key={index} />
+				))}
+			</div>
 		</section>
 	);
 };

@@ -63,7 +63,7 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 	return (
 		<Modal title="Deposit" openModal={openModal} setOpenModal={onClose}>
 			<div className={styles.container}>
-				<p className={styles.header}>
+				{/* <p className={styles.header}>
 					Transfer money to your <span className={styles.bold}>Gearup</span>{" "}
 					account
 				</p>
@@ -103,7 +103,7 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 							<hr className={styles.divider} />
 						</span>
 					</>
-				)}
+				)} */}
 				<InputField
 					placeholder="Enter amount"
 					label="Amount"

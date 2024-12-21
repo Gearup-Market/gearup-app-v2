@@ -45,7 +45,7 @@ const CustomRatingFeedback = ({
 			} else {
 				const res = await postReview({
 					reviewer: userId,
-					reviewed: isBuyer ? buyer.userId : seller.userId,
+					reviewed: !isBuyer ? buyer.userId : seller.userId,
 					rating,
 					comment,
 					transaction: id
@@ -56,7 +56,7 @@ const CustomRatingFeedback = ({
 				}
 			}
 		} catch (error: any) {
-			toast.error(error?.response?.data?.error || "An error occurred");
+			toast.error(error?.response?.data?.message || "An error occurred");
 		}
 	};
 

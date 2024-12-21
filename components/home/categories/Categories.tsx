@@ -11,11 +11,13 @@ const Categories = () => {
 	const [activeNumber, setActiveNumber] = useState<number>(1);
 	return (
 		<section className={styles.section}>
-			<Title title="Explore Our Categories" className={styles.title} />
-			<div className={styles.row}>
-				{categories.map((category: any, index: number) => (
-					<Box props={category} key={index} />
-				))}
+			<div className={styles.container}>
+				<Title title="Explore Our Categories" className={styles.title} />
+				<div className={styles.row}>
+					{categories.map((category: any, index: number) => (
+						<Box props={category} key={index} />
+					))}
+				</div>
 			</div>
 		</section>
 	);

@@ -72,6 +72,7 @@ const WalletWithrawalModal = ({
 	};
 	const onClose = () => {
 		refetch();
+		setOpenModal(false);
 	};
 
 	return (

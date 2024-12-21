@@ -13,6 +13,7 @@ import { updateUser } from "@/store/slices/userSlice";
 import { isEmpty } from "@/utils";
 import { useGetAccountName } from "@/app/api/hooks/settings";
 import { PageLoader } from "@/shared/loaders";
+import { useRouter } from "next/navigation";
 
 interface PayoutFormValues {
 	accountName: string;
@@ -23,6 +24,7 @@ interface PayoutFormValues {
 
 const Payments: React.FC = () => {
 	const user = useAppSelector(s => s.user);
+	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const initialValues: PayoutFormValues = {
 		accountName: user.accountName || "",
@@ -65,6 +67,10 @@ const Payments: React.FC = () => {
 	}, [formdata.accountNumber]);
 
 	const handleSubmit = async (values: PayoutFormValues) => {
+		// if (!user.kyc) {
+		// 	toast.error("please complete your kyc");
+		// 	return router.push("/verification");
+		// }
 		const validateFormData = async (data: PayoutFormValues) => {
 			try {
 				await validationSchema?.validate(data, { abortEarly: false });
@@ -103,7 +109,7 @@ const Payments: React.FC = () => {
 				toast.success("Account details updated");
 			}
 		} catch (error: any) {
-			toast.error(error.response.data.error);
+			toast.error(error.response.data.message);
 		}
 	};
 

@@ -50,48 +50,50 @@ const Hero = () => {
 	}, []);
 	return (
 		<div className={styles.hero} ref={heroRef}>
-			<div className={styles.center}>
-				<div className={styles.text}>
-					<h1>
-						The Marketplace For African Creators to Rent, Buy & Sell{" "}
-						<TextTransition
-							springConfig={presets.wobbly}
-							className={styles.cta_text}
-						>
-							{words[index % words.length]}
-						</TextTransition>
-					</h1>
-					<p>
-						Rent, buy, or sell gears with ease within your country. Our secure
-						escrow system ensures worry-free transactions
-					</p>
-				</div>
-				<div className={styles.search}>
-					<SearchBox />
-				</div>
-				<div className={styles.row}>
-					<div className={styles.textbox}>
-						<h2>100+</h2>
-						<p>Trusted members (Verified)</p>
+			<div className={styles.container}>
+				<div className={styles.center}>
+					<div className={styles.text}>
+						<h1>
+							The Marketplace For African Creators to Rent, Buy & Sell{" "}
+							<TextTransition
+								springConfig={presets.wobbly}
+								className={styles.cta_text}
+							>
+								{words[index % words.length]}
+							</TextTransition>
+						</h1>
+						<p>
+							Rent, buy, or sell gears with ease within your country. Our
+							secure escrow system ensures worry-free transactions
+						</p>
 					</div>
-					<div className={styles.textbox}>
-						<h2>500+</h2>
-						<p>Listings to choose from</p>
+					<div className={styles.search}>
+						<SearchBox />
 					</div>
-					<div className={styles.textbox}>
-						<h2>4.84/5</h2>
-						<p>Feedbacks</p>
+					<div className={styles.row}>
+						<div className={styles.textbox}>
+							<h2>100+</h2>
+							<p>Trusted members (Verified)</p>
+						</div>
+						<div className={styles.textbox}>
+							<h2>500+</h2>
+							<p>Listings to choose from</p>
+						</div>
+						<div className={styles.textbox}>
+							<h2>4.84/5</h2>
+							<p>Feedbacks</p>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className={styles.hero_image_container}>
-				<div className={styles.hero_image}>
-					<Image
-						src="/images/background-camera.png"
-						alt="hero"
-						fill
-						sizes="100vw"
-					/>
+				<div className={styles.hero_image_container}>
+					<div className={styles.hero_image}>
+						<Image
+							src="/images/background-camera.png"
+							alt="hero"
+							fill
+							sizes="100vw"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
