@@ -78,9 +78,9 @@ const SummaryView = () => {
 			toast.success(`Product ${listingId ? "updated" : "created"} successfully`);
 			dispatch(clearNewListing());
 			router.push("/user/listings");
-		} catch (error) {
+		} catch (error: any) {
 			console.log(error);
-			toast.error(`Error ${listingId ? "updating" : "creating"} product`);
+			toast.error(error?.response?.data?.message || `Error ${listingId ? "updating" : "creating"} product`);
 		}
 	};
 	const fieldValues = Object.entries(newListing?.fieldValues);
