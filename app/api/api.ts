@@ -7,8 +7,7 @@ const DEFAULT_API_CONFIG: CreateAxiosDefaults = {
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
     Accept: "application/json",
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json"
   },
 };
 
