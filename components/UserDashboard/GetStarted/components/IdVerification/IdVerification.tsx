@@ -110,21 +110,26 @@ const IdVerification = forwardRef<
 			if (isEmpty(values.documentNo) || isEmpty(values.documentType)) {
 				toast.error("Oops! All fields are required");
 			} else if (displayedImages && displayedImages.length > 0) {
-				const imgUploadRes = await postUploadFile(displayedImages);
-				const documentPhoto = imgUploadRes?.imageUrls;
-
-				if (documentPhoto.length > 0) {
-					// const res = await postSubmitDoc({ ...payload, documentPhoto });
-					// if (res?.data) {
-					// }
-					dispatch(
-						updateVerification({
-							...values,
-							documentPhoto
-						})
-					);
-					onSubmitSuccess();
-				}
+				await postUploadFile(displayedImages, {
+					onSuccess: (imgUploadRes: any) => {
+						const documentPhoto = imgUploadRes?.imageUrls;
+						if (documentPhoto.length > 0) {
+							dispatch(
+								updateVerification({
+									...values,
+									documentPhoto
+								})
+							);
+							onSubmitSuccess();
+						}
+					},
+					onError: error => {
+						toast.error(
+							error?.response?.data?.message ||
+								"An error occurred while uploading your documents"
+						);
+					}
+				});
 			} else {
 				toast.error("Please upload the document image");
 			}

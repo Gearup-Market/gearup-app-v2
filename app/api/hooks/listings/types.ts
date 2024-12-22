@@ -97,6 +97,7 @@ export interface iCategoryResp {
 
 export type iPostListingErr = AxiosError<{
 	error: string;
+	message: string;
 }>;
 
 export interface iUploadImagesResp {

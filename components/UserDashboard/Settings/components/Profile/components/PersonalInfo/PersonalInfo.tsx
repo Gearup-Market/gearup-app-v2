@@ -60,13 +60,16 @@ const PersonalInfoForm: React.FC = () => {
 
 	const handleSubmit = async (values: PayoutFormValues) => {
 		if (imageFile) {
-			const response = await postUploadImage([imageFile], {
+			await postUploadImage([imageFile], {
 				onSuccess: (value: any) => {
 					handleUpdate({ ...values, avatar: value?.imageUrls[0] });
 					setImageFile(null);
 				},
-				onError: () => {
-					toast.error("An error occurred while updating your profile	");
+				onError: error => {
+					toast.error(
+						error?.response?.data?.message ||
+							"An error occurred while updating your profile"
+					);
 				}
 			});
 		} else {

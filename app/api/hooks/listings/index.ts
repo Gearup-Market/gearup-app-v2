@@ -29,7 +29,7 @@ const usePostCreateListing = (
 	});
 
 const useUploadFiles = () =>
-	useMutation<iUploadImagesResp, void, File[]>({
+	useMutation<iUploadImagesResp, iPostListingErr, File[]>({
 		mutationFn: async props => {
 			const formData = new FormData();
 			props.forEach((file, index) => {
