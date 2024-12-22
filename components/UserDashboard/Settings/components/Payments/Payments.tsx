@@ -67,10 +67,10 @@ const Payments: React.FC = () => {
 	}, [formdata.accountNumber]);
 
 	const handleSubmit = async (values: PayoutFormValues) => {
-		// if (!user.kyc) {
-		// 	toast.error("please complete your kyc");
-		// 	return router.push("/verification");
-		// }
+		if (!user.kyc) {
+			toast.error("please complete your kyc");
+			return router.push("/verification");
+		}
 		const validateFormData = async (data: PayoutFormValues) => {
 			try {
 				await validationSchema?.validate(data, { abortEarly: false });

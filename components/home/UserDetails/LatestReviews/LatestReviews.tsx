@@ -58,7 +58,7 @@ const LatestReviews = ({ reviews }: Props) => {
 				{reviews.map((item: any, index: number) => (
 					<div
 						className={`${styles.review_body} ${
-							index === activeReview
+							++index === activeReview
 								? animationDirection === "next"
 									? styles.slide_in_right
 									: styles.slide_in_left

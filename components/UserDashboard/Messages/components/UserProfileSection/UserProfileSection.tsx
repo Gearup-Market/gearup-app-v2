@@ -3,7 +3,7 @@ import styles from "./UserProfileSection.module.scss";
 import Image from "next/image";
 import { CustomImage, Ratings } from "@/shared";
 import { VerifyIcon } from "@/shared/svgs/dashboard";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { useGetUserDetails } from "@/app/api/hooks/users";
@@ -17,6 +17,7 @@ const UserProfileSection = () => {
 	const searchParams = useSearchParams();
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
+	const router = useRouter();
 	const { isFetching: fetchingUser, data } = useGetUserDetails({
 		userId: participantId as string
 	});
@@ -100,7 +101,13 @@ const UserProfileSection = () => {
 									alt="avatar"
 								/>
 							</div>
-							<h2 className={styles.convo_name}>
+							<h2
+								className={styles.convo_name}
+								style={{ cursor: "pointer" }}
+								onClick={() =>
+									router.push(`/listings/${listing?.data.productSlug}`)
+								}
+							>
 								{listing?.data.productName}
 							</h2>
 							<p className={styles.text}>
