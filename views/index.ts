@@ -31,8 +31,10 @@ import InsuranceCoverage from "./footerLinksViews/insuranceCoverage/InsuranceCov
 import CancellationPolicy from "./footerLinksViews/cancellationPolicy/CancellationPolicy";
 import SellersProtectionView from "./footerLinksViews/sellersProtection/SellersProtectionView";
 import BuyerProtectionView from "./footerLinksViews/buyerProtection/BuyerProtectionView";
+import FaqView from "./footerLinksViews/faqView/FaqView";
 
 export {
+	FaqView,
 	BuyerProtectionView,
 	SellersProtectionView,
 	CancellationPolicy,

@@ -2,6 +2,11 @@
 
 .section {
 	@include flex(space-between);
+	max-width: $max-width;
+	margin-inline: auto;
+	&[data-page="true"] {
+		justify-content: center;
+	}
 	.title {
 		max-width: 44.8rem;
 	}

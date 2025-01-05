@@ -13,6 +13,7 @@ import {
 	Faq
 } from "@/components/home";
 import dynamic from "next/dynamic";
+import { faq } from "@/mock";
 const ScrollComponent = dynamic(
 	() => import("@/components/home/scrollComponent/ScrollComponent")
 );
@@ -30,7 +31,7 @@ const HomeView = () => {
 			{/* <Courses /> */}
 			<Reviews />
 			<ScrollComponent />
-			<Faq />
+			<Faq faq={faq.slice(0, 6)} />
 		</>
 	);
 };

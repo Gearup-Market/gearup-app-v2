@@ -1,9 +1,14 @@
+"use client";
+
 import { Logo } from "@/shared";
 import { scrollTo } from "@/utils";
 import Link from "next/link";
 import styles from "./Footer.module.scss";
 import Image from "next/image";
 import { footerNavLink, socialMediaLinks } from "@/mock";
+
+const date = new Date();
+const year = date.getFullYear();
 
 const Footer = () => {
 	const handleNavClick = (id: string) => {
@@ -51,12 +56,22 @@ const Footer = () => {
 				</div>
 			</div>
 			<div className={styles.footer_footer}>
-				<div className={styles.footer_copyWrite}>
-					<p>&copy; 2024 Gearup. All rights reserved</p>
+				<div className={styles.small_row}>
+					<div className={styles.footer_copyWrite}>
+						<p>&copy; {year} Gearup. All rights reserved</p>
+					</div>
+					<div className={styles.copywrite_links}>
+						<div className={styles.copywrite_link}>
+							<Link href="/faqs">FAQ</Link>
+						</div>
+						<div className={styles.copywrite_link}>
+							<Link href="/legal">Legal</Link>
+						</div>
+					</div>
 				</div>
 				<div className={styles.footer_socials}>
 					{socialMediaLinks.map((social: any, index: number) => (
-						<a
+						<Link
 							href={social.href}
 							target="_blank"
 							rel="noreferrer"
@@ -69,7 +84,7 @@ const Footer = () => {
 								fill
 								sizes="100vw"
 							/>
-						</a>
+						</Link>
 					))}
 				</div>
 			</div>
