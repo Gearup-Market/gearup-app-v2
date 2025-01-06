@@ -1,12 +1,10 @@
-import { BlogDetailsView } from '@/views'
-import React from 'react'
+import { BlogDetailsView } from "@/views";
+import React from "react";
 
 const Page = ({ params }: { params: { slug: string } }) => {
-    const { slug } = params
+	const { slug } = params;
 
-    return (
-        <BlogDetailsView slug={slug} />
-    )
-}
+	return <BlogDetailsView slug={slug} />;
+};
 
-export default Page
+export default Page;

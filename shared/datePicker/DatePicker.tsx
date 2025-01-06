@@ -23,7 +23,7 @@ const DatePicker = ({
 	setInputDate,
 	openModal,
 	inputDate,
-	setIsDateSelected,
+	setIsDateSelected
 }: Props) => {
 	const apply = () => {
 		setIsDateSelected(true);
@@ -41,8 +41,8 @@ const DatePicker = ({
 			{
 				startDate: new Date(),
 				endDate: addDays(new Date(), 0),
-				key: "selection",
-			},
+				key: "selection"
+			}
 		]);
 		setOpenModal(false);
 	};
@@ -81,7 +81,8 @@ const DatePicker = ({
 						className="calendarElement"
 						displayMode="dateRange"
 						rangeColors={["#FFB30F", "#FFF7E7", "#ffb30f"]}
-					// classNames={}
+						minDate={new Date()}
+						// classNames={}
 					/>
 					<div className={styles.row}>
 						<Button

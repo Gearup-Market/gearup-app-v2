@@ -9,7 +9,7 @@ import Image from "next/image";
 import { NavLink, NavLinkMenu, NavLinkSub } from "@/interfaces";
 import { usePathname, useRouter } from "next/navigation";
 import { useGlobalContext } from "@/contexts/AppContext";
-import { AppState, useAppDispatch, useAppSelector } from "@/store/configureStore";
+import { AppState, useAppSelector } from "@/store/configureStore";
 import { useAuth } from "@/contexts/AuthContext";
 import useCart from "@/hooks/useCart";
 
@@ -28,17 +28,28 @@ const Header = () => {
 	const user = useAppSelector((state: AppState) => state.user);
 	const router = useRouter();
 	const pathName = usePathname();
-	const dispatch = useAppDispatch();
 	const homePath = pathName === "/";
 	const { getCartItems } = useCart();
 	const cartItems = getCartItems();
+	const footerLinks = [
+		"/buyer-protection",
+		"/cancellation-policy",
+		"/escrow-payment",
+		"/how-it-works-buy",
+		"/how-it-works-rent",
+		"/how-it-works-rentout",
+		"/how-it-works-sell",
+		"/insurance-coverage",
+		"/seller-protection",
+		"/legal",
+		"/faqs"
+	];
 	useEffect(() => {
 		const headerHeight: any = headerRef.current?.offsetHeight;
-		// dispatch(clearNewListing());
 		const scrollCheck = () => {
 			const currentScrollY = window.scrollY;
 
-			if (homePath) {
+			if (homePath || footerLinks.includes(pathName)) {
 				if (currentScrollY > headerHeight) {
 					setScroll(Scroll.InitialScroll);
 				}
@@ -46,10 +57,10 @@ const Header = () => {
 				if (currentScrollY >= heroHeight) setScroll(Scroll.FinalScroll);
 			}
 		};
-		if (!homePath) {
-			setScroll(Scroll.FinalScroll);
-		} else {
+		if (homePath || footerLinks.includes(pathName)) {
 			setScroll(Scroll.Idle);
+		} else {
+			setScroll(Scroll.FinalScroll);
 		}
 		window.addEventListener("scroll", scrollCheck, { passive: true });
 

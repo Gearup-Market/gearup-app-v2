@@ -30,4 +30,7 @@
 			text-align: center;
 		}
 	}
+	@include screenMax("mobile") {
+		padding: 1.6rem;
+	}
 }

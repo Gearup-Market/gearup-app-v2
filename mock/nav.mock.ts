@@ -377,6 +377,36 @@ export const footerNavLink = [
 		label: "Courses",
 		links: [
 			{
+				label: "How it works",
+				href: "/how-it-works-courses",
+				external: false
+			},
+			{
+				label: "How to list a course",
+				href: "/how-to-list-a-course",
+				external: false
+			},
+			{
+				label: "Becoming a mentor",
+				href: "/becoming-a-mentor",
+				external: false
+			},
+			{
+				label: "Refund Policy",
+				href: "/refund-policy",
+				external: false
+			},
+			{
+				label: "Types of course and duration",
+				href: "/types-of-course-and-duration",
+				external: false
+			}
+		]
+	},
+	{
+		label: "Blog",
+		links: [
+			{
 				label: "Masterclass",
 				href: "/masterclass",
 				external: false

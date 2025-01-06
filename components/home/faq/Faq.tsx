@@ -3,18 +3,24 @@
 import React, { useState } from "react";
 import styles from "./Faq.module.scss";
 import { Title } from "@/shared";
-import { faq } from "@/mock";
 
-const Faq = () => {
+interface Props {
+	faq: { title: string; description: string }[];
+	isPage?: boolean;
+}
+
+const Faq = ({ faq, isPage = false }: Props) => {
 	return (
-		<section className={styles.section}>
-			<Title
-				title="Frequently Asked Questions"
-				className={styles.title}
-				titleClassName={styles.title_classname}
-			/>
+		<section className={styles.section} data-page={isPage}>
+			{!isPage && (
+				<Title
+					title="Frequently Asked Questions"
+					className={styles.title}
+					titleClassName={styles.title_classname}
+				/>
+			)}
 			<div className={styles.faq_section}>
-				{faq.slice(0, 6).map((item: any, index: number) => (
+				{faq.map((item: any, index: number) => (
 					<Accordion
 						title={item.title}
 						description={item.description}
