@@ -391,11 +391,11 @@ export const footerNavLink = [
 				href: "/becoming-a-mentor",
 				external: false
 			},
-			{
-				label: "Refund Policy",
-				href: "/refund-policy",
-				external: false
-			},
+			// {
+			// 	label: "Refund Policy",
+			// 	href: "/refund-policy",
+			// 	external: false
+			// },
 			{
 				label: "Types of course and duration",
 				href: "/types-of-course-and-duration",
@@ -424,6 +424,31 @@ export const footerNavLink = [
 			{
 				label: "Learn cinematography",
 				href: "/learn-cinematography",
+				external: false
+			}
+		]
+	},
+	{
+		label: "Legal",
+		links: [
+			{
+				label: "Privacy Policy",
+				href: "/privacy-policy",
+				external: false
+			},
+			{
+				label: "Cookies Policy",
+				href: "/cookies-policy",
+				external: false
+			},
+			{
+				label: "Return Policy",
+				href: "/return-policy",
+				external: false
+			},
+			{
+				label: "Terms & Conditions",
+				href: "/terms-&-conditions",
 				external: false
 			}
 		]
