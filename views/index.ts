@@ -32,8 +32,16 @@ import CancellationPolicy from "./footerLinksViews/cancellationPolicy/Cancellati
 import SellersProtectionView from "./footerLinksViews/sellersProtection/SellersProtectionView";
 import BuyerProtectionView from "./footerLinksViews/buyerProtection/BuyerProtectionView";
 import FaqView from "./footerLinksViews/faqView/FaqView";
+import PrivacyPolicyView from "./footerLinksViews/privacyPolicyView/PrivacyPolicyView";
+import CookiesPolicyView from "./footerLinksViews/cookiesPolicyView/CookiesPolicyView";
+import ReturnPolicyView from "./footerLinksViews/returnPolicyView/ReturnPolicyView";
+import TermsView from "./footerLinksViews/termsView/TermsView";
 
 export {
+	TermsView,
+	ReturnPolicyView,
+	CookiesPolicyView,
+	PrivacyPolicyView,
 	FaqView,
 	BuyerProtectionView,
 	SellersProtectionView,

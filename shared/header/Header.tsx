@@ -42,7 +42,11 @@ const Header = () => {
 		"/insurance-coverage",
 		"/seller-protection",
 		"/legal",
-		"/faqs"
+		"/faqs",
+		"/privacy-policy",
+		"/cookies-policy",
+		"/terms-&-conditions",
+		"return-policy"
 	];
 	useEffect(() => {
 		const headerHeight: any = headerRef.current?.offsetHeight;
