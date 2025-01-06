@@ -39,7 +39,7 @@ export const ReUseableChatHeader = ({ data, listing }: { data: any; listing: any
 				<div className={styles.user_alias}>
 					<Image
 						src={data?.data?.avatar || "/svgs/user.svg"}
-						alt={data?.data?.userName}
+						alt={data?.data?.userName || "Guest"}
 						fill
 					/>
 				</div>
