@@ -64,9 +64,6 @@ const Footer = () => {
 						<div className={styles.copywrite_link}>
 							<Link href="/faqs">FAQ</Link>
 						</div>
-						<div className={styles.copywrite_link}>
-							<Link href="/legal">Legal</Link>
-						</div>
 					</div>
 				</div>
 				<div className={styles.footer_socials}>
