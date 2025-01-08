@@ -67,10 +67,7 @@ const Blog = () => {
 							</p>
 						</div>
 
-						<Link
-							href={`/blog/${slugify(blog.title)}-${blog._id}`}
-							className={styles.learn_more}
-						>
+						<Link href={`/blog/${blog.slug}`} className={styles.learn_more}>
 							<p className={styles.text}>Learn more</p>{" "}
 							<span className={styles.icon}>
 								{" "}

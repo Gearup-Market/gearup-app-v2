@@ -3,18 +3,24 @@ import React from "react";
 import styles from "./blogDetails.module.scss";
 import { BackNavigation, CustomImage } from "@/shared";
 import Image from "next/image";
-import { useGetAllRecommendedArticles, useGetArticleById } from "@/app/api/hooks/blogs";
+import {
+	useGetAllRecommendedArticles,
+	useGetArticleById,
+	useGetArticleBySlug
+} from "@/app/api/hooks/blogs";
 import { Box } from "@mui/material";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { shortenTitle } from "@/utils";
+import { IGetArticle } from "@/app/api/hooks/blogs/types";
 
 interface Props {
-	slug: string;
+	data: IGetArticle;
+	isLoading: boolean;
 }
 
-const BlogDetails = ({ slug }: Props) => {
-	const blogId = slug[0].split("-").pop();
-	const { data, isLoading } = useGetArticleById(blogId as string);
+const BlogDetails = ({ data, isLoading }: Props) => {
+	// const blogId = slug[0].split("-").pop();
+	// const { data, isLoading } = useGetArticleBySlug(slug as string);
 	const { data: recommendedBlogsResp, isLoading: fetchingRecommended } =
 		useGetAllRecommendedArticles();
 	const recommendedBlogs = recommendedBlogsResp?.data || [];
