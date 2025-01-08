@@ -5,13 +5,12 @@ import { IGetArticle } from "@/app/api/hooks/blogs/types";
 
 interface Props {
 	blogData: IGetArticle;
-	isLoading: boolean;
 }
 
-const BlogDetailsView = ({ blogData, isLoading }: Props) => {
+const BlogDetailsView = ({ blogData }: Props) => {
 	return (
 		<div className={styles.container}>
-			<BlogDetailsComponent data={blogData} isLoading={isLoading} />
+			<BlogDetailsComponent data={blogData} />
 		</div>
 	);
 };

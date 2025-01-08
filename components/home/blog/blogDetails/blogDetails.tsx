@@ -15,30 +15,29 @@ import { IGetArticle } from "@/app/api/hooks/blogs/types";
 
 interface Props {
 	data: IGetArticle;
-	isLoading: boolean;
 }
 
-const BlogDetails = ({ data, isLoading }: Props) => {
+const BlogDetails = ({ data }: Props) => {
 	// const blogId = slug[0].split("-").pop();
 	// const { data, isLoading } = useGetArticleBySlug(slug as string);
 	const { data: recommendedBlogsResp, isLoading: fetchingRecommended } =
 		useGetAllRecommendedArticles();
 	const recommendedBlogs = recommendedBlogsResp?.data || [];
 
-	if (isLoading) {
-		return (
-			<Box
-				sx={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					height: "100vh"
-				}}
-			>
-				<CircularProgressLoader color="#FFB30F" />
-			</Box>
-		);
-	}
+	// if (isLoading) {
+	// 	return (
+	// 		<Box
+	// 			sx={{
+	// 				display: "flex",
+	// 				justifyContent: "center",
+	// 				alignItems: "center",
+	// 				height: "100vh"
+	// 			}}
+	// 		>
+	// 			<CircularProgressLoader color="#FFB30F" />
+	// 		</Box>
+	// 	);
+	// }
 
 	return (
 		<div className={styles.container_wrapper}>
