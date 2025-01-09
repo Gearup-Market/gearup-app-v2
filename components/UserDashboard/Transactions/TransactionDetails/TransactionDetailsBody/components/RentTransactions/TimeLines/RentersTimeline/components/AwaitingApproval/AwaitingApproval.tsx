@@ -68,7 +68,9 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 					<>
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								You have made payment but we are still confirming the transaction status. This view will be updated immediately your payment is received and verified
+								You have made payment but we are still confirming the
+								transaction status. This view will be updated immediately
+								your payment is received and verified
 							</p>
 						</div>
 					</>
@@ -89,7 +91,9 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 										<span className={styles.bold}>₦{amount}</span> for
 										the rental of{" "}
 										<span className={styles.bold}>
-											{listing.productName}
+											{listing
+												? listing.productName
+												: "Listing not available"}
 										</span>{" "}
 										from{" "}
 										<span className={styles.bold}>

@@ -10,14 +10,18 @@ import { formatNum, getDaysDifference } from "@/utils";
 const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 	const { isBuyer, amount, listing, transactionType, id, buyer, seller, rentalPeriod } =
 		item;
-	const { offer } = listing;
+	const offer = listing ? listing.offer : null;
 	const forSale = !!offer?.forSell;
 	const user = isBuyer ? seller : buyer;
 	const duration =
 		transactionType === TransactionType.Rental
 			? getDaysDifference(rentalPeriod?.start, rentalPeriod?.end)
 			: 0;
-	const unitPrice = forSale ? offer.forSell?.pricing : offer.forRent?.day1Offer;
+	const unitPrice = listing
+		? forSale
+			? offer.forSell?.pricing
+			: offer?.forRent?.day1Offer
+		: 0;
 
 	return (
 		<div className={styles.container}>
