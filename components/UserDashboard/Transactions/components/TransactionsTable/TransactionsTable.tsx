@@ -56,12 +56,12 @@ const TransactionTable = ({ transactionType }: Props) => {
 						: UserRole.Lender;
 				return {
 					id: _id,
-					gearName: item.productName,
+					gearName: item ? item.productName : "Listing not available",
 					amount,
 					transactionDate: createdAt,
 					transactionType,
 					transactionStatus: status,
-					gearImage: item.listingPhotos[0],
+					gearImage: item ? item.listingPhotos[0] : "",
 					userRole
 				};
 			}),

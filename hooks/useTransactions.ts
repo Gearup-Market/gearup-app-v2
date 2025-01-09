@@ -58,11 +58,11 @@ export function useTransaction(id?: string) {
 		return {
 			...data,
 			id: _id,
-			gearName: item.productName,
+			gearName: item ? item.productName : "Listing not available",
 			transactionDate: createdAt,
 			transactionType,
 			transactionStatus: status,
-			gearImage: item.listingPhotos[0],
+			gearImage: item ? item.listingPhotos[0] : "",
 			userRole,
 			listing: item,
 			isBuyer,

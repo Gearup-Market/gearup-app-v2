@@ -84,7 +84,8 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 								<span className={styles.bold}>
 									₦{formatNum(amount, true, 2)}
 								</span>{" "}
-								for the rental of {listing.productName}{" "}
+								for the rental of{" "}
+								{listing ? listing.productName : "Listing not available"}{" "}
 								{rentalPeriod?.start && (
 									<span className={styles.bold}>
 										from {formatDate(rentalPeriod?.start)} to{" "}

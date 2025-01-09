@@ -33,12 +33,12 @@ const RecentDeals = () => {
 			data.map(({ _id, item, amount, type, status, createdAt }) => {
 				return {
 					id: _id,
-					gearName: item.productName,
+					gearName: item ? item.productName : "Listing not available",
 					amount: `₦${formatNum(amount)}`,
 					transactionDate: createdAt.split("T")[0],
 					transactionType: type,
 					transactionStatus: status,
-					gearImage: item.listingPhotos[0]
+					gearImage: item ? item.listingPhotos[0] : ""
 				};
 			}),
 		[data]

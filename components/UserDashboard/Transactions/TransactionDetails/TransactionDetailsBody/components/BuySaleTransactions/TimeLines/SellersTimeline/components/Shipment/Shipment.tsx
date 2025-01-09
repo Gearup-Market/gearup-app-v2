@@ -81,14 +81,22 @@ const Shipment = ({ handleNext, item }: Props) => {
 					{metadata?.shippingType === ShippingType.LocalPickup && (
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								Buyer has opted for local pickup option. Please ensure the <strong>{listing.productName}</strong> is available for pickup at the agreed time.
+								Buyer has opted for local pickup option. Please ensure the{" "}
+								<strong>
+									{listing
+										? listing.productName
+										: "Listing not available"}
+								</strong>{" "}
+								is available for pickup at the agreed time.
 							</p>
 						</div>
 					)}
 				</div>
 			</div>
 			<div className={styles.btn_container}>
-				<Button onClick={() => handleNext(TransactionStage.SellerShipped)}>Confirm Shipment</Button>
+				<Button onClick={() => handleNext(TransactionStage.SellerShipped)}>
+					Confirm Shipment
+				</Button>
 			</div>
 		</div>
 	);

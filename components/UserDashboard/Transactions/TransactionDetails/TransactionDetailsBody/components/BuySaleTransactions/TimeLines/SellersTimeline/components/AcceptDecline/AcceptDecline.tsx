@@ -73,9 +73,10 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 								</span>{" "}
 								has successfully paid the sum of{" "}
 								<span className={styles.bold}>₦{formatNum(amount)}</span>{" "}
-								for the purchase of {listing.productName}, and the money
-								is in escrow protection, which will be released to you
-								once the transaction is completed{" "}
+								for the purchase of{" "}
+								{listing ? listing.productName : "Listing not available"},
+								and the money is in escrow protection, which will be
+								released to you once the transaction is completed{" "}
 							</p>
 						</div>
 						{thirdPartyVerification ? (

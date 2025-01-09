@@ -8,11 +8,12 @@ import { iTransactionDetails } from "@/interfaces";
 import { formatNumber } from "@/utils";
 import { useAppSelector } from "@/store/configureStore";
 import { DetailsView } from "@/views/UserDashboardViews/Dashboard/Transactions/TransactionDetails/TransactionDetails";
+import { toast } from "react-toastify";
 
 interface Props {
 	item?: iTransactionDetails;
 	activeView: string;
-	setActiveView: React.Dispatch<React.SetStateAction<DetailsView>>
+	setActiveView: React.Dispatch<React.SetStateAction<DetailsView>>;
 }
 
 const list = [
@@ -21,7 +22,7 @@ const list = [
 	{ id: 3, name: "Details" }
 ];
 
-const TransactionDetailsHeader = ({activeView,setActiveView}:Props) => {
+const TransactionDetailsHeader = ({ activeView, setActiveView }: Props) => {
 	const { transaction } = useAppSelector(s => s.transaction);
 	const router = useRouter();
 	const search = useSearchParams();
@@ -30,7 +31,7 @@ const TransactionDetailsHeader = ({activeView,setActiveView}:Props) => {
 		router.back();
 	};
 
-	if(!transaction) return null;
+	if (!transaction) return null;
 
 	return (
 		<div className={styles.container}>
@@ -53,7 +54,10 @@ const TransactionDetailsHeader = ({activeView,setActiveView}:Props) => {
 						<p>NGN{formatNumber(transaction.amount || 0)}</p>
 					</span>
 				</div>
-				<div className={styles.status} data-status={transaction.transactionStatus}>
+				<div
+					className={styles.status}
+					data-status={transaction.transactionStatus}
+				>
 					{transaction.transactionStatus}
 				</div>
 			</div>
@@ -61,10 +65,17 @@ const TransactionDetailsHeader = ({activeView,setActiveView}:Props) => {
 				<ul className={styles.container__children_container}>
 					{list.map(item => (
 						<li
-							onClick={() => setActiveView(item?.name?.toLowerCase() as DetailsView)}
+							onClick={() =>
+								transaction.listing
+									? setActiveView(
+											item?.name?.toLowerCase() as DetailsView
+									  )
+									: toast.error("Listing not available")
+							}
 							key={item.id}
 							className={styles.container__children_container__filter}
 							data-active={activeView === item.name.toLowerCase()}
+							data-disabled={!transaction.listing}
 						>
 							<p>{item.name}</p>
 						</li>
