@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		dispatch(clearUser());
 		dispatch(clearState());
 		queryClient.clear();
-		router.replace(`/login?returnUrl=${pathname}`);
+		router.replace("/login");
 	};
 
 	const authValues = useMemo(
@@ -123,12 +123,19 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	useEffect(() => {
 		if (!loading && !user.isAuthenticated) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
-				router.replace(`/login?returnUrl=${returnUrl}`);
+				router.replace(`/login`);
 			} else if (isAuthenticated && pathname === "/login") {
-				router.replace(returnUrl);
+				router.replace("/user/dashboard");
 			}
 		}
-	}, [isAuthenticated, loading, pathname, UNPROTECTED_ROUTES, router]);
+	}, [
+		isAuthenticated,
+		loading,
+		pathname,
+		UNPROTECTED_ROUTES,
+		router,
+		user.isAuthenticated
+	]);
 
 	if (loading) {
 		return (
