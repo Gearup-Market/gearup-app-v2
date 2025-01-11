@@ -110,26 +110,36 @@ const IdVerification = forwardRef<
 			if (isEmpty(values.documentNo) || isEmpty(values.documentType)) {
 				toast.error("Oops! All fields are required");
 			} else if (displayedImages && displayedImages.length > 0) {
-				await postUploadFile(displayedImages, {
-					onSuccess: (imgUploadRes: any) => {
-						const documentPhoto = imgUploadRes?.imageUrls;
-						if (documentPhoto.length > 0) {
-							dispatch(
-								updateVerification({
-									...values,
-									documentPhoto
-								})
-							);
-							onSubmitSuccess();
-						}
-					},
-					onError: error => {
-						toast.error(
-							error?.response?.data?.message ||
-								"An error occurred while uploading your documents"
-						);
-					}
-				});
+				console.log("displayed images: " + displayedImages);
+				// await postUploadFile(displayedImages, {
+				// 	onSuccess: (imgUploadRes: any) => {
+				// 		console.log("documents==>", imgUploadRes);
+				// 		const documentPhoto = imgUploadRes?.imageUrls;
+				// 		if (documentPhoto.length > 0) {
+				// 			dispatch(
+				// 				updateVerification({
+				// 					...values,
+				// 					documentPhoto
+				// 				})
+				// 			);
+				// 			onSubmitSuccess();
+				// 		}
+				// 	},
+				// 	onError: error => {
+				// 		toast.error(
+				// 			error?.response?.data?.message ||
+				// 				"An error occurred while uploading your documents"
+				// 		);
+				// 	}
+				// });
+				const images = await postUploadFile(displayedImages);
+				dispatch(
+					updateVerification({
+						...values,
+						documentPhoto: images.imageUrls
+					})
+				);
+				onSubmitSuccess();
 			} else {
 				toast.error("Please upload the document image");
 			}

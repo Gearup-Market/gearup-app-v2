@@ -139,7 +139,6 @@ const BankSearchBox = ({ placeholder = "Search", className, onOptionChange }: Pr
 		const debouncedChange = debounce(onOptionChange, 300);
 		debouncedChange(searchTerm);
 
-		// Cleanup the debounce function on component unmount
 		return () => {
 			debouncedChange.cancel();
 		};
