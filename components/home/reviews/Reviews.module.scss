@@ -4,6 +4,11 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-image: url("/images/pattern-background.png");
+	.container {
+		width: 100%;
+		max-width: $max-width;
+		margin-inline: auto;
+	}
 	.center {
 		@extend %center;
 		.title {

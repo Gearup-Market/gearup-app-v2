@@ -44,12 +44,7 @@ const LoginView = () => {
 				dispatch(updateUser(res?.data?.user));
 				dispatch(updateToken(res.data.token));
 				setAuthToken(res.data.token);
-				router.push(
-					returnUrl && !returnUrl.includes("login")
-						? returnUrl
-						: "/user/dashboard"
-				);
-				// window.location.reload();
+				router.push("/user/dashboard");
 			}
 		} catch (error: any) {
 			console.log(

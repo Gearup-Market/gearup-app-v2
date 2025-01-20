@@ -1,6 +1,8 @@
 @import "@/styles/imports";
 
 .section {
+	max-width: $max-width;
+	margin-inline: auto;
 	.title {
 		max-width: 73.8rem;
 		margin-bottom: 6.4rem;

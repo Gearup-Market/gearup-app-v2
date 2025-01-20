@@ -1,6 +1,8 @@
 @import "@/styles/imports";
 
 .section {
+	max-width: $max-width;
+	margin-inline: auto;
 	.row {
 		@include grid(repeat(3, 1fr));
 		margin-top: 6.4rem;
