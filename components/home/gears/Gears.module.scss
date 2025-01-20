@@ -2,6 +2,11 @@
 
 .section {
 	background-color: #fafafa;
+	.container {
+		width: 100%;
+		max-width: $max-width;
+		margin-inline: auto;
+	}
 	.center {
 		@extend %center;
 		.title {

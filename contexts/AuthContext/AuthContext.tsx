@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 
 		setIsTokenValid(!!tokenData);
-	}, [isFetched, tokenData]);
+	}, [isFetched, tokenData, dispatch]);
 
 	// Sync User Data
 	useEffect(() => {

@@ -1,160 +1,163 @@
 @import "@/styles/imports";
 
-.title_container{
-  display: none;
+.section {
+	&::-webkit-scrollbar {
+		display: initial;
+	}
+	& {
+		-ms-overflow-style: initial; /* IE and Edge */
+		scrollbar-width: initial; /* Firefox */
+	}
+}
+.title_container {
+	display: none;
 
-  @include screenMax("mobile"){
-    display: block;
-    margin: 2rem 0;
-  }
+	@include screenMax("mobile") {
+		display: block;
+		margin: 2rem 0;
+	}
 }
 .container {
-    padding: 4rem 3rem;
-    max-width: 80rem;
+	padding: 4rem 3rem;
+	max-width: 80rem;
 
-    .error_text{
-        color: #FF0000;
-        font-size: 1.2rem;
-        font-weight: 400;
-        margin-top: 0.8rem;
-    }
+	.error_text {
+		color: #ff0000;
+		font-size: 1.2rem;
+		font-weight: 400;
+		margin-top: 0.8rem;
+	}
 
-    .image_container{
-        display: flex;
-        justify-content: center;
-        margin: 2rem 0;
-        align-items: center;
-        border: 2px dashed $col-border;
-        height: 35rem;
-        width: 100%;
-        border-radius: 2rem;
+	.image_container {
+		display: flex;
+		justify-content: center;
+		margin: 2rem 0;
+		align-items: center;
+		border: 2px dashed $col-border;
+		height: 35rem;
+		width: 100%;
+		border-radius: 2rem;
 
-        .image_wrapper{
-            position: relative;
-            display: block;
-            width: 100%;
-            height: 100%;
+		.image_wrapper {
+			position: relative;
+			display: block;
+			width: 100%;
+			height: 100%;
 
-              .image {
-                border-radius: 2rem;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-        }
+			.image {
+				border-radius: 2rem;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
 
-        .image_placeholder{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            
-          
-            
-            img{
-                width: 2.4rem;
-                height: 2.4rem;
-                
-            }
+		.image_placeholder {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 
-            p{
-              font-size: 1.4rem;
-              color: #4B525A;
-              font-weight: 400;
-              text-align: center;
-              margin-top: 1rem;
+			img {
+				width: 2.4rem;
+				height: 2.4rem;
+			}
 
-                    .click_to_upload_text{
-                    color: #FFB30F;
-                    cursor: pointer;
-                    position: relative;
+			p {
+				font-size: 1.4rem;
+				color: #4b525a;
+				font-weight: 400;
+				text-align: center;
+				margin-top: 1rem;
 
-                    .upload_input{
-                        opacity: 0;
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        cursor: pointer;
-                    }
-                    
-                }
-            }
-        }
-    }
+				.click_to_upload_text {
+					color: #ffb30f;
+					cursor: pointer;
+					position: relative;
 
-    &__form_container {
+					.upload_input {
+						opacity: 0;
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						cursor: pointer;
+					}
+				}
+			}
+		}
+	}
 
-        .banner_title{
-            font-size: 1.4rem;
-            font-weight: 400;
-            margin-bottom: 1.6rem;
-            color: #1B1E21;
-        
-        }
-    
-        .uploader_container{
-            margin: 2rem 0;
-            display: flex;
-            align-items: center;
-            background: #FAFAFB;
-            gap: 2rem;
-            padding: 2rem;
-            border-radius: 0.8rem;
-        }
-    
-        &__form {
-          display: grid;
-          gap: 2rem;
-          margin-top: 2rem;
-    
-          .phone_field{
-            display: flex;
-          }
-    
-          .address_field ,.form_field{
-            grid-column: span 2;
+	&__form_container {
+		.banner_title {
+			font-size: 1.4rem;
+			font-weight: 400;
+			margin-bottom: 1.6rem;
+			color: #1b1e21;
+		}
 
-            .create_category_text{
-                @include flex;
-                gap: 0.2rem;
-                align-items: center;
-                font-size: 1.2rem;
-                color: #FFB30F;
-                cursor: pointer;
-                font-weight: 700;
-            }
-          }
-    
-          .text_area_container{
-            grid-column: span 2;
-          
-          }
-        }
+		.uploader_container {
+			margin: 2rem 0;
+			display: flex;
+			align-items: center;
+			background: #fafafb;
+			gap: 2rem;
+			padding: 2rem;
+			border-radius: 0.8rem;
+		}
 
-        .submit_btn_container {
-          column-span: 2;
-          display: flex;
-          gap: 2rem;
-          justify-content: flex-end;
-          margin-top: 4rem;
-          width: 100%;
+		&__form {
+			display: grid;
+			gap: 2rem;
+			margin-top: 2rem;
 
-          .upload_btn{
-            width: 13rem;
-          }
-        }
-      }
+			.phone_field {
+				display: flex;
+			}
 
-      @include screenMax("mobile"){
-        padding: 3rem 1.6rem;
-        padding-top: 0;
+			.address_field,
+			.form_field {
+				grid-column: span 2;
 
-        .submit_btn_container{
-          flex-direction: column-reverse;
-          
-          button{
-            width: 100%;
-          }
-        }
-      }
+				.create_category_text {
+					@include flex;
+					gap: 0.2rem;
+					align-items: center;
+					font-size: 1.2rem;
+					color: #ffb30f;
+					cursor: pointer;
+					font-weight: 700;
+				}
+			}
+
+			.text_area_container {
+				grid-column: span 2;
+			}
+		}
+
+		.submit_btn_container {
+			column-span: 2;
+			display: flex;
+			gap: 2rem;
+			justify-content: flex-end;
+			margin-top: 4rem;
+			width: 100%;
+
+			.upload_btn {
+				width: 13rem;
+			}
+		}
+	}
+
+	@include screenMax("mobile") {
+		padding: 3rem 1.6rem;
+		padding-top: 0;
+
+		.submit_btn_container {
+			flex-direction: column-reverse;
+
+			button {
+				width: 100%;
+			}
+		}
+	}
 }

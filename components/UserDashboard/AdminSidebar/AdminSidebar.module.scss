@@ -132,4 +132,10 @@
 	.btn_container {
 		padding: 0;
 	}
+	@include screenMax("mobile") {
+		.navlinks_wrapper {
+			max-height: 70%;
+			overflow-y: scroll;
+		}
+	}
 }

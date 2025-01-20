@@ -25,7 +25,7 @@ const Listings = () => {
 					</Button>
 				</Link>
 			</div>
-			{isFetching ? (
+			{!listings.length ? (
 				<PageLoader />
 			) : (
 				<div className={styles.row}>
