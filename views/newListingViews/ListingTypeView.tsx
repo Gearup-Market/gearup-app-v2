@@ -113,13 +113,15 @@ const ListingTypeView = () => {
 							checked={checked.rent}
 							type="listingView"
 						/>
-						<ListingType
-							src="/svgs/for-sell.svg"
-							title="sell"
-							toggle={handleToggle}
-							checked={checked.sell}
-							type="listingView"
-						/>
+						{newListing.category?.name !== "Studios" && (
+							<ListingType
+								src="/svgs/for-sell.svg"
+								title="sell"
+								toggle={handleToggle}
+								checked={checked.sell}
+								type="listingView"
+							/>
+						)}
 						{!disabledButton && type.includes("sell") && (
 							<Select
 								label="Gear condition"

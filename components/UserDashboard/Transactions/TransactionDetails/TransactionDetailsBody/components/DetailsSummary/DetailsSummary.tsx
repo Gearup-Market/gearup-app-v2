@@ -20,7 +20,9 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 	const unitPrice = listing
 		? forSale
 			? offer.forSell?.pricing
-			: offer?.forRent?.day1Offer
+			: offer?.forRent?.rates.length
+			? offer?.forRent?.rates[0].price
+			: 0
 		: 0;
 
 	return (

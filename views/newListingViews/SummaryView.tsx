@@ -80,7 +80,10 @@ const SummaryView = () => {
 			router.push("/user/listings");
 		} catch (error: any) {
 			console.log(error);
-			toast.error(error?.response?.data?.message || `Error ${listingId ? "updating" : "creating"} product`);
+			toast.error(
+				error?.response?.data?.message ||
+					`Error ${listingId ? "updating" : "creating"} product`
+			);
 		}
 	};
 	const fieldValues = Object.entries(newListing?.fieldValues);
@@ -287,40 +290,20 @@ const SummaryView = () => {
 											{" "}
 											Rental Pricing
 										</h6>
-										<DetailContainer
-											title="Daily price(including VAT)"
-											value={formatNum(
-												+newListing.offer?.forRent?.day1Offer
-											)}
-											prefix="₦"
-										/>
-										{newListing.offer?.forRent?.day3Offer ? (
+										{newListing.offer.forRent.rates.map(rate => (
 											<DetailContainer
-												title="3 days offer(including VAT)"
-												value={formatNum(
-													+newListing.offer?.forRent.day3Offer
-												)}
+												title={`${rate.quantity} ${
+													rate.duration === "hourly"
+														? "hour"
+														: "day"
+												}${
+													rate.quantity > 1 ? "s" : ""
+												} price(including VAT)`}
+												value={formatNum(+rate.price)}
 												prefix="₦"
+												key={rate.quantity}
 											/>
-										) : null}
-										{newListing.offer?.forRent?.day7Offer ? (
-											<DetailContainer
-												title="7 days offer(including VAT)"
-												value={formatNum(
-													+newListing.offer?.forRent.day7Offer
-												)}
-												prefix="₦"
-											/>
-										) : null}
-										{newListing.offer?.forRent?.day30Offer ? (
-											<DetailContainer
-												title="30 days offer(including VAT)"
-												value={formatNum(
-													+newListing.offer?.forRent.day30Offer
-												)}
-												prefix="₦"
-											/>
-										) : null}
+										))}
 									</div>
 									<DetailContainer
 										title="Total replacement amount (Including VAT):"

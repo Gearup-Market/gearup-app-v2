@@ -136,6 +136,9 @@
 		.navlinks_wrapper {
 			max-height: 70%;
 			overflow-y: scroll;
+			.btn_container {
+				padding-bottom: 5rem;
+			}
 		}
 	}
 }

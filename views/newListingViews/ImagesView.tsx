@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import toast from "react-hot-toast";
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
 const ImagesView = () => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
@@ -23,6 +25,13 @@ const ImagesView = () => {
 		const files = e.target.files;
 		if (files && files.length > 0) {
 			const validFiles = Array.from(files).filter(file => file instanceof File);
+			if (validFiles[0] && validFiles[0].size > MAX_FILE_SIZE) {
+				return toast.error(
+					`${validFiles[0].name} exceeds max size of ${
+						MAX_FILE_SIZE / 1048576
+					}mb`
+				);
+			}
 			if (validFiles.length > 0) {
 				const localArr = [...displayedImages, ...validFiles];
 				setDisplayedImages(localArr);
@@ -51,16 +60,17 @@ const ImagesView = () => {
 
 	const nextPage = useCallback(async () => {
 		const newListingData = {
-			listingPhotos: [...newListing.listingPhotos,
-				...displayedImages.map(c => URL.createObjectURL(c))],
-			
+			listingPhotos: [
+				...newListing.listingPhotos,
+				...displayedImages.map(c => URL.createObjectURL(c))
+			],
+
 			tempPhotos: displayedImages
 		};
-		
 
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/type");
-	}, [newListing.listingPhotos, displayedImages]);
+	}, [newListing.listingPhotos, displayedImages, dispatch, router]);
 
 	const disabledButton =
 		displayedImages.length === 0 && newListing.listingPhotos.length === 0;
@@ -105,7 +115,7 @@ const ImagesView = () => {
 								type="file"
 								className={styles.file_input}
 								onChange={handleIconChange}
-								accept="image/*"
+								accept=".jpeg, .jpg, .png, .gif"
 								multiple
 								// required
 							/>

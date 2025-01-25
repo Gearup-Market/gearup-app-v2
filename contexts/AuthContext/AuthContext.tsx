@@ -13,6 +13,7 @@ import { CircularProgressLoader } from "@/shared/loaders";
 import { queryClient } from "@/app/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { clearState, updateVerification } from "@/store/slices/verificationSlice";
+import { clearNewListing } from "@/store/slices/addListingSlice";
 
 const AuthContext = createContext<DefaultProviderType>({
 	isAuthenticated: false,
@@ -79,6 +80,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		removeAuthToken();
 		dispatch(clearUser());
 		dispatch(clearState());
+		dispatch(clearNewListing());
 		queryClient.clear();
 		router.replace("/login");
 	};
