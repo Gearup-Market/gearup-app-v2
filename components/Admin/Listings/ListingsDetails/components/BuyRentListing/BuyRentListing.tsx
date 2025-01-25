@@ -194,36 +194,18 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 											{" "}
 											Rental Pricing
 										</h6>
-										<DetailContainer
-											title="Daily price(including VAT)"
-											value={formatNum(offer?.forRent?.day1Offer)}
-											prefix="₦"
-										/>
-										{offer?.forRent?.day3Offer ? (
+										{offer?.forRent?.rates.map(rate => (
 											<DetailContainer
-												title="3 days offer(including VAT)"
-												value={formatNum(offer.forRent.day3Offer)}
+												title={`${rate.quantity} ${
+													rate.duration
+												}${
+													rate.quantity > 1 ? "s" : ""
+												} price(including VAT)`}
+												value={formatNum(+rate.price)}
 												prefix="₦"
+												key={rate.quantity}
 											/>
-										) : null}
-										{offer?.forRent?.day7Offer ? (
-											<DetailContainer
-												title="7 days offer(including VAT)"
-												value={formatNum(
-													offer?.forRent.day7Offer
-												)}
-												prefix="₦"
-											/>
-										) : null}
-										{offer?.forRent?.day30Offer && (
-											<DetailContainer
-												title="30 days offer(including VAT)"
-												value={formatNum(
-													offer?.forRent.day30Offer
-												)}
-												prefix="₦"
-											/>
-										)}
+										))}
 									</div>
 									<DetailContainer
 										title="Total replacement amount (Including VAT):"
@@ -246,7 +228,13 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 									<p className={styles.view_explorer_title}>
 										Transaction ID
 									</p>
-									<Link href={getExplorerUrl(`txns/${listing.transactionId}`)} target="_blank" className={styles.view_explorer}>
+									<Link
+										href={getExplorerUrl(
+											`txns/${listing.transactionId}`
+										)}
+										target="_blank"
+										className={styles.view_explorer}
+									>
 										View explorer
 									</Link>
 								</div>
@@ -260,7 +248,9 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 											alt="copy-icon"
 											width={10}
 											height={10}
-											onClick={()=>copyText(listing?.transactionId ?? "")}
+											onClick={() =>
+												copyText(listing?.transactionId ?? "")
+											}
 										/>
 									</p>
 								</div>

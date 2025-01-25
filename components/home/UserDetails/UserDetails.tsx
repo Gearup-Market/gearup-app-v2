@@ -43,7 +43,11 @@ const UserDetails = ({ userId }: Props) => {
 			}) => {
 				const type = listingType === "both" ? "rent | sell" : listingType;
 				const price =
-					type === "rent" ? offer?.forRent?.day1Offer : offer?.forSell?.pricing;
+					type === "rent"
+						? offer?.forRent?.rates.length
+							? offer?.forRent?.rates[0].price
+							: 0
+						: offer?.forSell?.pricing;
 				const image = listingPhotos?.[0] || null;
 				return {
 					id: _id,

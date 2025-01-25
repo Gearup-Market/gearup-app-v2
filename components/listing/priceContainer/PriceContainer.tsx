@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button, DatePicker, Logo } from "@/shared";
 import format from "date-fns/format";
 import { Listing } from "@/store/slices/listingsSlice";
-import { AppRoutes, formatNumber, getDaysDifference } from "@/utils";
+import { AppRoutes, calculateItemPrice, formatNumber, getDaysDifference } from "@/utils";
 import useCart from "@/hooks/useCart";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -33,9 +33,14 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 	const { productName, offer, listingType } = listing;
 	const forSale = !!offer?.forSell;
 	const forRent = !!offer?.forRent;
+	// const price = calculateItemPrice(listing);
 
 	const currency = forSale ? offer.forSell?.currency : offer.forRent?.currency;
-	const pricing = forRent ? offer.forRent?.day1Offer : offer.forSell?.pricing;
+	const pricing = forRent
+		? offer?.forRent?.rates.length
+			? offer?.forRent?.rates[0].price
+			: 0
+		: offer.forSell?.pricing;
 	const transactionType =
 		["sell", "buy"].includes(actionType!) || listingType !== "rent"
 			? TransactionType.Sale
@@ -97,7 +102,10 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 							{formatNumber(pricing || 0)}
 							{forRent && (
 								<span style={{ color: "#4B525A", fontWeight: 400 }}>
-									/Day
+									/
+									{offer?.forRent?.rates.length
+										? offer?.forRent?.rates[0].duration
+										: "day"}
 								</span>
 							)}
 						</h1>
@@ -143,7 +151,11 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 				)}
 				<div className={styles.price_details_container}>
 					<PriceItem
-						item="Rental price (1 day)"
+						item={`Rental price (1 ${
+							offer?.forRent?.rates.length
+								? offer?.forRent?.rates[0].duration
+								: "day"
+						})`}
 						value={`${currency}${formatNumber(pricing ?? 0)}`}
 					/>
 					<PriceItem

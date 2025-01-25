@@ -171,40 +171,16 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 									{" "}
 									Rental Pricing
 								</h6>
-								<DetailContainer
-									title="Daily price(including VAT)"
-									value={formatNum(
-										listingData?.offer?.forRent?.day1Offer
-									)}
-									prefix="₦"
-								/>
-								{listingData?.offer?.forRent?.day3Offer && (
+								{listingData?.offer?.forRent?.rates.map(rate => (
 									<DetailContainer
-										title="3 days offer(including VAT)"
-										value={formatNum(
-											+listingData?.offer?.forRent.day3Offer
-										)}
+										title={`${rate.quantity} ${rate.duration}${
+											rate.quantity > 1 ? "s" : ""
+										} price(including VAT)`}
+										value={formatNum(+rate.price)}
 										prefix="₦"
+										key={rate.quantity}
 									/>
-								)}
-								{listingData?.offer?.forRent?.day7Offer && (
-									<DetailContainer
-										title="7 days offer(including VAT)"
-										value={formatNum(
-											+listingData?.offer?.forRent.day7Offer
-										)}
-										prefix="₦"
-									/>
-								)}
-								{listingData?.offer?.forRent?.day30Offer && (
-									<DetailContainer
-										title="30 days offer(including VAT)"
-										value={formatNum(
-											+listingData?.offer?.forRent.day30Offer
-										)}
-										prefix="₦"
-									/>
-								)}
+								))}
 							</div>
 							<DetailContainer
 								title="Total replacement amount (Including VAT):"
@@ -236,11 +212,25 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Rental price(per day)</h4>
-							<p>₦{formatNum(listingData?.offer.forRent?.day1Offer)}</p>
+							<p>
+								₦
+								{formatNum(
+									listingData?.offer.forRent?.rates.length
+										? listingData?.offer.forRent?.rates[0].price
+										: 0
+								)}
+							</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Multiple days discount</h4>
-							<p>₦{formatNum(listingData?.offer.forRent?.day3Offer)}</p>
+							<p>
+								₦
+								{formatNum(
+									listingData?.offer.forRent?.rates.length
+										? listingData?.offer.forRent?.rates[0].price
+										: 0
+								)}
+							</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Rental price( 10 days)</h4>

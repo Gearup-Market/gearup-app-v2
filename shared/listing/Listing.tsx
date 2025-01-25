@@ -118,7 +118,11 @@ const Listing = ({ props, className, actionType }: Props) => {
 					<div className={styles.pricing}>
 						<p>
 							{offer.forRent?.currency}
-							{formatNumber(offer.forRent?.day1Offer || 0)}
+							{formatNumber(
+								offer?.forRent?.rates.length
+									? offer?.forRent?.rates[0].price
+									: 0
+							)}
 							<span>/Day</span>
 						</p>
 					</div>
