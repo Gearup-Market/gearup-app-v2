@@ -367,7 +367,7 @@ const RentView = ({
 	setErrorFields: React.Dispatch<React.SetStateAction<ErrorFieldsProp>>;
 }) => {
 	const [priceStructure, setPriceStructure] = useState<string>(
-		forRentDetails.rates[0].duration || ""
+		forRentDetails.rates.length ? forRentDetails.rates[0].duration : ""
 	);
 	const [rates, setRates] = useState<RentingOfferRates[]>([
 		{ duration: priceStructure, quantity: 1, price: forRentDetails.pricing || 0 }
@@ -450,6 +450,7 @@ const RentView = ({
 	}, [priceStructure, forRentDetails.rates, setForRentDetails]);
 
 	useEffect(() => {
+		if (!forRentDetails.rates.length) return;
 		if (forRentDetails.rates[0].price) return;
 		setForRentDetails(prevForRentDetails => {
 			return {
@@ -461,9 +462,10 @@ const RentView = ({
 
 	const priceStructures = ["daily", "hourly"];
 
-	const defaultOptionIndex = forRentDetails.rates[0].duration
-		? priceStructures.findIndex(item => item === forRentDetails.rates[0].duration)
-		: -1;
+	const defaultOptionIndex =
+		forRentDetails.rates.length && forRentDetails.rates[0].duration
+			? priceStructures.findIndex(item => item === forRentDetails.rates[0].duration)
+			: -1;
 
 	return (
 		<div>
