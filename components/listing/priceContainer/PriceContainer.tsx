@@ -7,15 +7,29 @@ import Image from "next/image";
 import { Button, DatePicker, Logo } from "@/shared";
 import format from "date-fns/format";
 import { Listing } from "@/store/slices/listingsSlice";
-import { AppRoutes, calculateItemPrice, formatNumber, getDaysDifference } from "@/utils";
+import {
+	AppRoutes,
+	calculateItemPrice,
+	formatNumber,
+	getApplicableRate,
+	getDaysDifference
+} from "@/utils";
 import useCart from "@/hooks/useCart";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAppSelector } from "@/store/configureStore";
 import Link from "next/link";
+import { PricingData } from "@/app/api/hooks/Admin/pricing/types";
+import { RentingOfferRates } from "@/interfaces/Listing";
 
-const PriceContainer = ({ listing }: { listing: Listing }) => {
+const PriceContainer = ({
+	listing,
+	allPricings
+}: {
+	listing: Listing;
+	allPricings?: PricingData;
+}) => {
 	const { addItemToCart, refetchcartItems } = useCart();
 	const search = useSearchParams();
 	const pathname = usePathname();
@@ -26,14 +40,13 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 	const [inputDate, setInputDate] = useState([
 		{
 			startDate: new Date(),
-			endDate: addDays(new Date(), 1),
+			endDate: new Date(),
 			key: "selection"
 		}
 	]);
 	const { productName, offer, listingType } = listing;
 	const forSale = !!offer?.forSell;
 	const forRent = !!offer?.forRent;
-	// const price = calculateItemPrice(listing);
 
 	const currency = forSale ? offer.forSell?.currency : offer.forRent?.currency;
 	const pricing = forRent
@@ -45,6 +58,35 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 		["sell", "buy"].includes(actionType!) || listingType !== "rent"
 			? TransactionType.Sale
 			: TransactionType.Rental;
+
+	const item = {
+		listing,
+		type: TransactionType.Rental,
+		rentalPeriod: {
+			start: inputDate[0].startDate,
+			end: inputDate[0].endDate
+		}
+	};
+
+	const price = calculateItemPrice(item);
+
+	const startDate = new Date(inputDate[0].startDate);
+	const endDate = new Date(inputDate[0].endDate);
+	const timeDiff = endDate.getTime() - startDate.getTime();
+
+	const durationInDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+	const durationInHours = Math.ceil(timeDiff / (1000 * 3600));
+
+	const { appliedRate } = getApplicableRate(
+		offer,
+		offer.forRent?.rates[0].duration === "hours" ? durationInHours : durationInDays,
+		offer.forRent?.rates[0].duration as string
+	);
+
+	const vat = (allPricings?.valueAddedTax! / 100) * price;
+	const serviceFee = (allPricings?.gearLeaseFee! / 100) * price;
+
+	const total = price + serviceFee + vat;
 
 	const handleAddToCart = () => {
 		if (!user.kyc) {
@@ -64,15 +106,8 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 		}
 		try {
 			addItemToCart({
-				listing,
-				type: transactionType,
-				rentalPeriod:
-					transactionType === TransactionType.Rental
-						? {
-								start: inputDate[0].startDate,
-								end: inputDate[0].endDate
-						  }
-						: undefined
+				...item,
+				customPrice: price
 			});
 			refetchcartItems();
 		} catch (error) {
@@ -88,7 +123,11 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 		);
 	};
 
+	const isAddToCartDisabled =
+		inputDate[0].startDate.getDate() === inputDate[0].endDate.getDate();
+
 	const [openModal, setOpenModal] = useState<boolean>(false);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.price_card}>
@@ -149,30 +188,30 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 						</div>
 					</div>
 				)}
-				<div className={styles.price_details_container}>
-					<PriceItem
-						item={`Rental price (1 ${
-							offer?.forRent?.rates.length
-								? offer?.forRent?.rates[0].duration
-								: "day"
-						})`}
-						value={`${currency}${formatNumber(pricing ?? 0)}`}
-					/>
-					<PriceItem
-						item="Gearup service fee"
-						value={`${currency}${formatNumber(0)}`}
-					/>
-					<PriceItem item="VAT" value={`${currency}${formatNumber(0)}`} />
-					<div className={styles.divider} />
-					<PriceItem
-						item="Total"
-						value={
-							<span
-								className={styles.total_styles}
-							>{`${currency}${formatNumber(0)}`}</span>
-						}
-					/>
-				</div>
+				{!isAddToCartDisabled && (
+					<div className={styles.price_details_container}>
+						<PriceItem
+							item={`Rental price (${appliedRate?.quantity} ${
+								appliedRate?.duration
+							}${(appliedRate?.quantity as number) > 1 ? "s offer" : ""})`}
+							value={`${currency}${formatNumber(appliedRate?.price ?? 0)}`}
+						/>
+						<PriceItem
+							item="Gearup service fee"
+							value={`${currency}${formatNumber(serviceFee)}`}
+						/>
+						<PriceItem item="VAT" value={`${currency}${formatNumber(vat)}`} />
+						<div className={styles.divider} />
+						<PriceItem
+							item="Total"
+							value={
+								<span
+									className={styles.total_styles}
+								>{`${currency}${formatNumber(total)}`}</span>
+							}
+						/>
+					</div>
+				)}
 				<div className={styles.buttons}>
 					<Button
 						buttonType="secondary"
@@ -181,7 +220,11 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 					>
 						Ask for availability
 					</Button>
-					<Button className={styles.button} onClick={handleAddToCart}>
+					<Button
+						className={styles.button}
+						onClick={handleAddToCart}
+						disabled={isAddToCartDisabled}
+					>
 						Add to cart
 					</Button>
 				</div>

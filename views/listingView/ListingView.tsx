@@ -17,6 +17,7 @@ import { getIdFromSlug } from "@/utils";
 import { BackNavigation, Listing } from "@/shared";
 import BuyPriceContainer from "@/components/listing/BuyPriceContainer/BuyPriceContainer";
 import { Box, CircularProgress } from "@mui/material";
+import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
 
 const typeView = ["rent", "buy"];
 
@@ -25,13 +26,17 @@ const ListingView = () => {
 	const { productSlug } = useParams();
 	const productId = getIdFromSlug(productSlug.toString());
 	const { isFetching } = useSingleListing(productId);
-	
+	const { data: allPricings } = useGetAllPricings();
+
 	const [activeType, setActiveType] = useState("");
 
 	useEffect(() => {
 		if (currentListing) {
 			// If the listingType is "rent" or "buy", set it as the active type
-			if (currentListing.listingType === "rent" || currentListing.listingType === "buy") {
+			if (
+				currentListing.listingType === "rent" ||
+				currentListing.listingType === "buy"
+			) {
 				setActiveType(currentListing?.listingType);
 			}
 			// If listingType is "both", set the initial activeType to "rent" or any default
@@ -43,7 +48,7 @@ const ListingView = () => {
 
 	if (isFetching) {
 		return (
-            <Box
+			<Box
 				sx={{
 					display: "flex",
 					justifyContent: "center",
@@ -53,10 +58,10 @@ const ListingView = () => {
 			>
 				<CircularProgress style={{ color: "#FFB30F" }} />
 			</Box>
-        )
+		);
 	}
 	if (!currentListing) return null;
-	
+
 	const { offer, listingPhotos, ownerOtherListings, listingType } = currentListing;
 	const forSale = !!offer?.forSell;
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -86,7 +91,10 @@ const ListingView = () => {
 					<ImageSlider images={listingPhotos} type={activeType} />
 					<div className={styles.block_mob}>
 						{activeType === "rent" ? (
-							<PriceContainer listing={currentListing} />
+							<PriceContainer
+								allPricings={allPricings}
+								listing={currentListing}
+							/>
 						) : (
 							<BuyPriceContainer listing={currentListing} />
 						)}
@@ -100,7 +108,10 @@ const ListingView = () => {
 				</div>
 				<div className={styles.block_desk}>
 					{activeType === "rent" ? (
-						<PriceContainer listing={currentListing} />
+						<PriceContainer
+							allPricings={allPricings}
+							listing={currentListing}
+						/>
 					) : (
 						<BuyPriceContainer listing={currentListing} />
 					)}

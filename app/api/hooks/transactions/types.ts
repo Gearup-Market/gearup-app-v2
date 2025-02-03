@@ -3,6 +3,7 @@ import { Listing } from "@/store/slices/listingsSlice";
 import { AxiosError } from "axios";
 import { iWTransaction } from "../wallets/types";
 import { MetadataSchema, Stage, TransactionStage, TransactionStatus } from "@/interfaces";
+import { RentingOfferRates } from "@/interfaces/Listing";
 
 export enum TransactionType {
 	Rental = "Rental",
@@ -28,6 +29,9 @@ export interface CartItem {
 	type: TransactionType;
 	rentalPeriod?: RentalPeriod;
 	price?: number;
+	vat?: number;
+	serviceFee?: number;
+	appliedRate?: RentingOfferRates;
 }
 
 export type iPostAddCartReq = CartReq;

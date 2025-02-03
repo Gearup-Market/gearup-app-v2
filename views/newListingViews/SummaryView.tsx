@@ -17,6 +17,7 @@ import {
 } from "@/app/api/hooks/listings";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
 
 const SummaryView = () => {
 	const { mutateAsync: postUploadFile, isPending: uploadingImgs } = useUploadFiles();
@@ -92,7 +93,9 @@ const SummaryView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 6 of 6 : Summary</p>
@@ -293,9 +296,7 @@ const SummaryView = () => {
 										{newListing.offer.forRent.rates.map(rate => (
 											<DetailContainer
 												title={`${rate.quantity} ${
-													rate.duration === "hourly"
-														? "hour"
-														: "day"
+													rate.duration
 												}${
 													rate.quantity > 1 ? "s" : ""
 												} price(including VAT)`}

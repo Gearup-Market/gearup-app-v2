@@ -14,8 +14,15 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useAppSelector } from "@/store/configureStore";
+import { PricingData } from "@/app/api/hooks/Admin/pricing/types";
 
-const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
+const BuyPriceContainer = ({
+	listing,
+	allPricings
+}: {
+	listing: Listing;
+	allPricings?: PricingData;
+}) => {
 	const { addItemToCart } = useCart();
 	const search = useSearchParams();
 	const actionType = search.get("type");
@@ -33,7 +40,12 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 	const { productName, offer, listingType } = listing;
 
 	const currency = offer.forSell?.currency;
-	const pricing = offer.forSell?.pricing;
+	const pricing = offer.forSell?.pricing || 0;
+
+	const vat = (allPricings?.valueAddedTax! / 100) * pricing || 0;
+	const serviceFee = (allPricings?.gearBuyerFee! / 100) * pricing || 0;
+
+	const total = pricing + serviceFee + vat;
 	const transactionType =
 		["sell", "buy"].includes(actionType!) || listingType !== "rent"
 			? TransactionType.Sale
@@ -58,14 +70,7 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 		try {
 			addItemToCart({
 				listing,
-				type: transactionType,
-				rentalPeriod:
-					transactionType === TransactionType.Rental
-						? {
-								start: inputDate[0].startDate,
-								end: inputDate[0].endDate
-						  }
-						: undefined
+				type: transactionType
 			});
 		} catch (error) {
 			console.log(error);
@@ -90,7 +95,7 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 					<div className={styles.text}>
 						<h1>
 							{currency}
-							{formatNumber(pricing || 0)}
+							{formatNumber(total)}
 						</h1>
 					</div>
 					<div className={styles.third_party_container}>
@@ -106,7 +111,7 @@ const BuyPriceContainer = ({ listing }: { listing: Listing }) => {
 						<span className={styles.flex_items}>
 							<h3 className={styles.amount}>
 								{currency}
-								{formatNumber(pricing || 0)}
+								{formatNumber(allPricings?.talentServiceFee || 0)}
 							</h3>
 							<ToggleSwitch />
 						</span>

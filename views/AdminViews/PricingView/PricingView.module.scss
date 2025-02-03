@@ -1,0 +1,96 @@
+/* components/PayoutForm.module.scss */
+@import "@/styles/imports";
+
+.container {
+	margin: 5rem;
+	.title {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		color: $col-grey-1;
+	}
+
+	.description {
+		font-size: 1.4rem;
+		font-weight: 400;
+		margin-bottom: 1rem;
+		color: #4b525a;
+	}
+
+	&__form_container {
+		border: 1px solid $col-border;
+		padding: 2.5rem;
+		border-radius: 2rem;
+		background-color: #fff;
+
+		.uploader_container {
+			margin: 2rem 0;
+			display: flex;
+			align-items: center;
+			background: #fafafb;
+			gap: 2rem;
+			padding: 2rem;
+			border-radius: 0.8rem;
+
+			.name {
+				font-size: 2rem;
+				font-weight: 700;
+
+				color: $col-grey-1;
+			}
+			.email {
+				font-size: 1.4rem;
+				font-weight: 400;
+				margin-bottom: 1rem;
+				color: #a3a7ab;
+			}
+		}
+
+		&__form {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 2rem;
+			margin-top: 2rem;
+
+			.address_field {
+				grid-column: span 2;
+			}
+		}
+
+		.submit_btn_container {
+			column-span: 2;
+			display: flex;
+			justify-content: flex-start;
+			margin-top: 2rem;
+			width: 100%;
+		}
+	}
+
+	@include screenMax("mobile") {
+		margin: 0;
+		&__form_container {
+			background-color: #fafafb;
+			border: none;
+			padding: 1.6rem;
+			// grid-template-columns: repeat(1, minmax(0, 1fr));
+
+			.uploader_container {
+				background-color: #fff;
+			}
+			&__form {
+				display: flex;
+				flex-direction: column;
+			}
+
+			.header_title {
+				display: none;
+			}
+		}
+
+		.submit_btn_container {
+			button {
+				width: 100%;
+			}
+		}
+	}
+}

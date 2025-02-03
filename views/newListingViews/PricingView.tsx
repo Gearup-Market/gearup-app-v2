@@ -16,6 +16,7 @@ import {
 	RentingOfferRates,
 	SellingOffer
 } from "@/interfaces/Listing";
+import Link from "next/link";
 
 const enum View {
 	Idle = "idle",
@@ -99,12 +100,31 @@ const PricingView = () => {
 		checkAvailability(newListing.listingType);
 	}, []);
 
-	const disabledButton = !newListing.listingType.length;
+	const disabledButton = useMemo(() => {
+		if (!newListing.listingType.length) return true;
+
+		if (view === View.Sell) {
+			return !forSellDetails.pricing;
+		}
+
+		if (view === View.Rent) {
+			const baseRate = forRentDetails.rates.find(rate => rate.quantity === 1);
+			if (!baseRate?.duration) return true;
+
+			const hasInvalidPrices = forRentDetails.rates.some(rate => rate.price < 1);
+			return hasInvalidPrices;
+		}
+
+		return true;
+	}, [newListing.listingType, view, forSellDetails.pricing, forRentDetails.rates]);
+
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 5 of 6 : Pricing</p>
@@ -369,9 +389,19 @@ const RentView = ({
 	const [priceStructure, setPriceStructure] = useState<string>(
 		forRentDetails.rates.length ? forRentDetails.rates[0].duration : ""
 	);
-	const [rates, setRates] = useState<RentingOfferRates[]>([
-		{ duration: priceStructure, quantity: 1, price: forRentDetails.pricing || 0 }
-	]);
+
+	const [rates, setRates] = useState<RentingOfferRates[]>(() => {
+		if (forRentDetails.rates.length) {
+			return forRentDetails.rates;
+		}
+		return [
+			{
+				duration: priceStructure,
+				quantity: 1,
+				price: 0
+			}
+		];
+	});
 
 	const updateOffer = (rateQuantity: number) => {
 		if (!priceStructure) {
@@ -389,20 +419,9 @@ const RentView = ({
 		});
 	};
 
-	const ratesMap = useMemo(() => {
-		return forRentDetails.rates.reduce((acc, rate) => {
-			acc[rate.quantity] = rate;
-			return acc;
-		}, {} as Record<number, RentingOfferRates>);
-	}, [forRentDetails.rates]);
-
-	// const offerValue = (rateQuantity: number, value: "price" | "quantity") => {
-	// 	const findRate = rates.find(rate => rate.quantity === rateQuantity);
-	// 	return findRate ? findRate[value] : undefined;
-	// };
-
-	const offerValue = (quantity: number, key: "price" | "quantity") => {
-		return ratesMap[quantity]?.[key];
+	const offerValue = (rateQuantity: number, value: "price" | "quantity") => {
+		const findRate = rates.find(rate => rate.quantity === rateQuantity);
+		return findRate ? findRate[value] : undefined;
 	};
 
 	const updateRate = (rateQuantity: number, price: number) => {
@@ -417,48 +436,33 @@ const RentView = ({
 		});
 	};
 
-	// const updateRates = (quantity: number, updates: Partial<RentingOfferRates>) => {
-	// 	setRates(prevRates => {
-	// 		const index = prevRates.findIndex(rate => rate.quantity === quantity);
-	// 		if (index >= 0) {
-	// 			const updatedRates = [...prevRates];
-	// 			updatedRates[index] = { ...updatedRates[index], ...updates };
-	// 			return updatedRates;
-	// 		}
-	// 		return [...prevRates, { quantity, duration: priceStructure, ...updates }];
-	// 	});
-	// };
+	useEffect(() => {
+		if (!priceStructure) return;
 
-	// useEffect(() => {
-	// 	setRates(prevRates => {
-	// 		const updatedRates = [...prevRates];
-	// 		updatedRates[0].duration = priceStructure;
-	// 		return updatedRates;
-	// 	});
-	// }, [priceStructure]);
+		setRates(prevRates =>
+			prevRates.map(rate => ({
+				...rate,
+				duration: priceStructure
+			}))
+		);
+
+		setForRentDetails(prevDetails => ({
+			...prevDetails,
+			rates: prevDetails.rates.map(rate => ({
+				...rate,
+				duration: priceStructure
+			}))
+		}));
+	}, [priceStructure, setForRentDetails]);
 
 	useEffect(() => {
-		if (forRentDetails.rates.some(rate => rate.duration !== priceStructure)) {
-			setForRentDetails(prevDetails => ({
-				...prevDetails,
-				rates: prevDetails.rates.map(rate => ({
-					...rate,
-					duration: priceStructure === "hourly" ? "hour" : "day"
-				}))
-			}));
-		}
-	}, [priceStructure, forRentDetails.rates, setForRentDetails]);
+		if (!rates.length) return;
 
-	useEffect(() => {
-		if (!forRentDetails.rates.length) return;
-		if (forRentDetails.rates[0].price) return;
-		setForRentDetails(prevForRentDetails => {
-			return {
-				...prevForRentDetails,
-				rates
-			};
-		});
-	}, [rates, setForRentDetails, forRentDetails]);
+		setForRentDetails(prev => ({
+			...prev,
+			rates
+		}));
+	}, [rates, setForRentDetails, forRentDetails.rates]);
 
 	const priceStructures = ["daily", "hourly"];
 
@@ -495,6 +499,7 @@ const RentView = ({
 								label={`Price`}
 								className={`${styles.input}`}
 								value={offerValue(1, "price")}
+								type="number"
 							/>
 						</div>
 						<div>
@@ -503,7 +508,9 @@ const RentView = ({
 								options={priceStructures}
 								defaultOption="Select a price structure"
 								onOptionChange={value => {
-									setPriceStructure(value);
+									setPriceStructure(
+										value === "hourly" ? "hour" : "day"
+									);
 									setErrorFields(prev => ({
 										...prev,
 										isRentPriceStructure: false

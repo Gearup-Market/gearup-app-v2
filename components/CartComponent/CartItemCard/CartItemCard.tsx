@@ -16,7 +16,8 @@ interface CartItemCardContainerProps {
 	handleDeleteItem: (id: string) => void;
 	id: string;
 	type: TransactionType;
-	item: CartItem
+	item: CartItem;
+	amount: number;
 }
 
 const CartItemCardContainer = ({
@@ -26,12 +27,13 @@ const CartItemCardContainer = ({
 	handleDeleteItem,
 	children,
 	type,
-	item
+	item,
+	amount
 }: CartItemCardContainerProps) => {
 	const [showDetails, setShowDetails] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const amount = calculateItemPrice(item)
+	// const amount = calculateItemPrice(item)
 	const placeOrder = () => {
 		dispatch(
 			updateCheckout({

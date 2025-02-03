@@ -10,6 +10,7 @@ import { AppState } from "@/store/configureStore";
 import { clearNewListing, updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { Item } from "@/interfaces/Listing";
+import Link from "next/link";
 
 const NewListingView = () => {
 	const newListing = useSelector((state: AppState) => state.newListing);
@@ -38,7 +39,9 @@ const NewListingView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 1 of 6 : Products</p>

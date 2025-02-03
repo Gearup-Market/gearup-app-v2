@@ -10,6 +10,7 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { ListingType } from "@/components/newListing";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const gearConditions = [
 	"new",
@@ -81,7 +82,9 @@ const ListingTypeView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 4 of 5 : Type</p>

@@ -408,22 +408,22 @@ export const footerNavLink = [
 		links: [
 			{
 				label: "Masterclass",
-				href: "/masterclass",
+				href: "/blog/filmmaking-for-beginners-everything-you-need-to-know-to-get-started",
 				external: false
 			},
 			{
 				label: "Learn film-making",
-				href: "/learn-film-making",
+				href: "/blog/learning-from-legends-how-masterclasses-help-creatives-reach-new-heights",
 				external: false
 			},
 			{
 				label: "Learn photography",
-				href: "/learn-photography",
+				href: "/blog/behind-the-lens-a-simple-approach-to-learning-photography",
 				external: false
 			},
 			{
 				label: "Learn cinematography",
-				href: "/learn-cinematography",
+				href: "/blog/10-essential-cinematography-techniques-every-aspiring-filmmaker-should-learn",
 				external: false
 			}
 		]
