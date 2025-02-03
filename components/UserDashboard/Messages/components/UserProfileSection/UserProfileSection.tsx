@@ -32,9 +32,9 @@ const UserProfileSection = () => {
 	const isBuy = !!listing?.data?.offer?.forSell;
 	const price =
 		listing?.data?.offer?.forSell?.pricing ||
-		listing?.data?.offer?.forRent?.rates.length
+		(listing?.data?.offer?.forRent?.rates.length
 			? listing?.data?.offer?.forRent?.rates[0].price
-			: 0;
+			: 0);
 	const isBoth = isRent && isBuy;
 	const currency =
 		listing?.data?.offer?.forSell?.currency ||

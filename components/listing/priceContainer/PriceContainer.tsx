@@ -79,8 +79,14 @@ const PriceContainer = ({
 
 	const { appliedRate } = getApplicableRate(
 		offer,
-		offer.forRent?.rates[0].duration === "hours" ? durationInHours : durationInDays,
-		offer.forRent?.rates[0].duration as string
+		offer.forRent?.rates.length
+			? offer.forRent?.rates[0].duration === "hours"
+				? durationInHours
+				: durationInDays
+			: durationInHours,
+		offer.forRent?.rates.length
+			? (offer.forRent?.rates[0].duration as string)
+			: "hours"
 	);
 
 	const vat = (allPricings?.valueAddedTax! / 100) * price;
