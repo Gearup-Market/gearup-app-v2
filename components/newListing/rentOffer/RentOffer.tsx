@@ -65,6 +65,7 @@ const RentOffer = ({
 						onChange={onChange}
 						label="Price"
 						disabled={!checked}
+						type="number"
 					/>
 				</div>
 			)}

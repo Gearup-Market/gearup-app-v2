@@ -8,6 +8,7 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -79,7 +80,9 @@ const ImagesView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 3 of 6 : Pictures</p>

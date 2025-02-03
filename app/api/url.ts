@@ -81,5 +81,7 @@ export const API_URL = {
 	verifyAdminToken: "/admin/auth/authenticate",
 	courses: "/courses",
 	wishlists: "/wishlist",
-	confirmTransactionPin: "/users/check-pin"
+	confirmTransactionPin: "/users/check-pin",
+	getAllPricings: "admin/pricing/retrieve",
+	updatePricing: "admin/pricing/update"
 };

@@ -58,6 +58,11 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 			link: "/admin/transactions"
 		},
 		{
+			name: "Pricings",
+			icon: <TransactionNavIcon />,
+			link: "/admin/pricing"
+		},
+		{
 			name: "Listings",
 			icon: <ListingsNavIcon />,
 			link: "/admin/listings"
@@ -74,7 +79,7 @@ const AdminSidebar = ({ isMobile, onClose }: Props) => {
 		}
 	];
 	const [active, setActive] = useState("/admin/dashboard");
-  
+
 	useEffect(() => {
 		const absPath = pathname.split("?")[0].split("/").slice(0, 3).join("/");
 		setActive(absPath);

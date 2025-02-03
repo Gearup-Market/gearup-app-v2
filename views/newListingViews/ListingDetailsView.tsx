@@ -18,6 +18,7 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { useGetCategories } from "@/app/api/hooks/listings";
 import { iCategory } from "@/app/api/hooks/listings/types";
+import Link from "next/link";
 
 const ListingDetailsView = () => {
 	const router = useRouter();
@@ -116,7 +117,9 @@ const ListingDetailsView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 2 of 6 : Description</p>

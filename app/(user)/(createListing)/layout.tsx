@@ -16,7 +16,7 @@ export default function ListingLayout({ children }: { children: React.ReactNode 
 			toast.error("Please complete your KYC");
 			router.replace("/verification");
 		}
-	}, [verification.isApproved]);
+	}, [verification.isApproved, user.isAuthenticated, router]);
 	return (
 		<ProtectRoute>
 			<main className={styles.main}>{children}</main>

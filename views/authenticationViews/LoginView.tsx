@@ -39,7 +39,7 @@ const LoginView = () => {
 				password: values.password
 			});
 			if (res?.data?.token) {
-				toast.success("Login successful");
+				// toast.success("Login successful");
 
 				dispatch(updateUser(res?.data?.user));
 				dispatch(updateToken(res.data.token));
