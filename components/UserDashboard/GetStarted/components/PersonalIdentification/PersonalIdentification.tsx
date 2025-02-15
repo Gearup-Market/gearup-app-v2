@@ -91,7 +91,10 @@ const PersonalIdentification = forwardRef<
 		// Handle form submission
 		const { birthDate, birthMonth, birthYear, ...rest } = values;
 		const monthIndex = monthsOptions.findIndex(m => m === birthMonth);
-		const birthday = `${birthYear}-${monthIndex + 1}-${birthDate}`;
+		const birthday = `${birthYear}-${String(monthIndex + 1).padStart(
+			2,
+			"0"
+		)}-${String(birthDate).padStart(2, "0")}`;
 		rest.birthday = birthday;
 		dispatch(updateVerification(rest));
 
@@ -149,10 +152,16 @@ const PersonalIdentification = forwardRef<
 		"December"
 	];
 
-	const yearsOptions = Array.from(new Array(100), (val, index) => `${2022 - index}`);
+	const yearsOptions = Array.from(new Array(100), (val, index) => `${2007 - index}`);
 	const daysOptions = Array.from(new Array(31), (val, index) => `${index + 1}`);
 
 	const countries = countryList().getData();
+	const preferredCountry = "Nigeria";
+
+	const sortedCountries = [
+		...countries.filter(country => country.label === preferredCountry),
+		...countries.filter(country => country.label !== preferredCountry)
+	];
 
 	return (
 		<div className={styles.container}>
@@ -335,7 +344,7 @@ const PersonalIdentification = forwardRef<
 										{({ field }: FieldProps) => (
 											<Select
 												label="Country"
-												options={countries.map(
+												options={sortedCountries.map(
 													item => item.label
 												)}
 												defaultOption={field.value}
