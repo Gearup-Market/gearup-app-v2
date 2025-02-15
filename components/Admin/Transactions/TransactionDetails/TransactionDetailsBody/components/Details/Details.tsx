@@ -77,20 +77,7 @@ const DetailsComponent = ({ item }: Props) => {
 						</div> */}
 						</>
 					) : (
-						<>
-							<div className={styles.summary_item}>
-								<h4>Gearup fee</h4>
-								<p>₦300</p>
-							</div>
-							<div className={styles.summary_item}>
-								<h4>VAT</h4>
-								<p>₦300</p>
-							</div>
-							<div className={styles.summary_item}>
-								<h4>Total amount</h4>
-								<p className={styles.total}>₦300</p>
-							</div>
-						</>
+						<></>
 					)}
 					<div className={styles.summary_item}>
 						<h4>Gearup fee</h4>
