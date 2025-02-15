@@ -1,3 +1,5 @@
+"use client";
+
 import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState } from "react";
 import styles from "./IdVerification.module.scss";
 import HeaderSubText from "@/components/Admin/HeaderSubText/HeaderSubText";
