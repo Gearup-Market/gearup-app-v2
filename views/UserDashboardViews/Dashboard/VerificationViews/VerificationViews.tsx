@@ -100,7 +100,11 @@ const VerificationViews = () => {
 					{currentStep === 2 && (
 						<PhoneVerification
 							ref={phoneNumberFormRef}
-							onSubmitSuccess={() => setIsTokenVerification(true)}
+							onSubmitSuccess={() => {
+								if (!isTokenVerification) {
+									setIsTokenVerification(true);
+								}
+							}}
 							isTokenVerification={isTokenVerification}
 							setIsTokenVerified={setIsTokenVerified}
 						/>
