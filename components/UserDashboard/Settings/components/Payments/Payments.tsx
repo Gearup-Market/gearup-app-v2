@@ -96,6 +96,7 @@ const Payments: React.FC = () => {
 			const payload = {
 				accountName: accountName?.data.accountName as string,
 				bankName: formdata.bankName,
+				bankCode: formdata.bankCode,
 				accountNumber: values.accountNumber,
 				userId: user.userId
 			};

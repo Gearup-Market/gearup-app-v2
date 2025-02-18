@@ -31,4 +31,8 @@ export interface User {
 	stellarWallet?: any;
 	hasPin: boolean;
 	kyc?: VerificationState | null;
+	dedicatedAccountBank?: string;
+	dedicatedAccountBankSlug?: string;
+	dedicatedAccountName?: string;
+	dedicatedAccountNumber?: string;
 }
