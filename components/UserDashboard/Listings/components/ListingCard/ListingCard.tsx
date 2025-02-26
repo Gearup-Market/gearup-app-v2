@@ -63,7 +63,7 @@ const ListingCard = ({
 		<div className={`${styles.container} ${className}`}>
 			<div
 				className={styles.image}
-				data-disabled={props.status.toLowerCase() !== "unavailable"}
+				data-disabled={props.status.toLowerCase() === "unavailable"}
 			>
 				<CustomImage
 					src={props?.image ? props.image : ""}

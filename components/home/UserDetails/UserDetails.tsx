@@ -5,13 +5,13 @@ import { BackNavigation, InputField } from "@/shared";
 import UserDetailsProfile from "./UserProfile/UserProfile";
 import { HeaderSubText } from "@/components/UserDashboard";
 import NoListings from "@/components/UserDashboard/Listings/NoListings/NoListings";
-import { useGetListings } from "@/app/api/hooks/listings";
 import { ListingCard } from "@/components/UserDashboard/Listings/components";
 import Image from "next/image";
 import { useGetUserDetails, useGetUserReviews } from "@/app/api/hooks/users";
 import { Box, CircularProgress } from "@mui/material";
 import LatestReviews from "./LatestReviews/LatestReviews";
 import { useFetchUserDetailsById } from "@/hooks/useUsers";
+import { useGetListingsByUser } from "@/app/api/hooks/listings";
 
 interface Props {
 	userId: string;
@@ -23,9 +23,8 @@ const UserDetails = ({ userId }: Props) => {
 	const { data: userReviews, isLoading } = useGetUserReviews({ userId });
 
 	// get user listings using id
-	const { data, isFetching, refetch } = useGetListings({
-		userId: user?.userId,
-		shouldFetchAll: false
+	const { data, isFetching, refetch } = useGetListingsByUser({
+		userId: user?.userId
 	});
 
 	const mappedListings = useMemo(() => {

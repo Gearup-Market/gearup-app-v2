@@ -9,7 +9,10 @@ import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { usePostChangeListingStatus, usePostRemoveListing } from "@/app/api/hooks/listings";
+import {
+	usePostChangeListingStatus,
+	usePostRemoveListing
+} from "@/app/api/hooks/listings";
 
 const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 	const router = useRouter();
@@ -25,13 +28,13 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 	const onToggleHideListing = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		try {
 			const res = await postChangeListingStatus({
-				status: status === 'available' ? "unavailable" : "available",
+				status: status === "available" ? "unavailable" : "available",
 				userId,
 				listingId: listing._id
 			});
 			if (res.data) {
 				toast.success("Status updated");
-				window.location.reload()
+				window.location.reload();
 			}
 		} catch (error) {}
 	};
@@ -55,8 +58,8 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 			userId
 		};
 
-		dispatch(updateNewListing(payload));
-		router.push(`/new-listing?id=${listing._id}`)
+		// dispatch(updateNewListing(payload));
+		router.push(`/new-listing?id=${listing._id}`);
 	};
 
 	return (
@@ -89,7 +92,9 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 					>
 						Delete
 					</Button>
-					<Button iconPrefix="/svgs/edit.svg" onClick={onClickEdit}>Edit</Button>
+					<Button iconPrefix="/svgs/edit.svg" onClick={onClickEdit}>
+						Edit
+					</Button>
 				</div>
 			</div>
 		</div>

@@ -21,7 +21,6 @@ import NoTransactions from "@/components/UserDashboard/Transactions/components/N
 import { formatDate, formatNum } from "@/utils";
 import { Filter } from "@/interfaces/Listing";
 import { useAppSelector } from "@/store/configureStore";
-import { useGetListings } from "@/app/api/hooks/listings";
 import { useGetAllTransactions } from "@/app/api/hooks/Admin/transactions";
 
 interface Props {

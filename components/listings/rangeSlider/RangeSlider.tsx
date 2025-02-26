@@ -12,10 +12,10 @@ interface RangeSliderProps {
 }
 
 const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, onChange }) => {
-	const [minVal, setMinVal] = useState<number>(min);
-	const [maxVal, setMaxVal] = useState<number>(max);
-	const minValRef = useRef<any>(min);
-	const maxValRef = useRef<any>(max);
+	const [minVal, setMinVal] = useState<number>(Math.max(0, min));
+	const [maxVal, setMaxVal] = useState<number>(Math.max(0, max));
+	const minValRef = useRef<any>(Math.max(0, min));
+	const maxValRef = useRef<any>(Math.max(0, max));
 	const range = useRef<any>(null);
 
 	// Convert to percentage
@@ -47,19 +47,25 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, onChange }) => {
 
 	// Get min and max values when their state changes
 	useEffect(() => {
-		const values = { min: minVal, max: maxVal };
-		onChange!(values);
+		// Only trigger onChange if both values are greater than 0
+		if (minVal > 0 || maxVal > 0) {
+			onChange?.({ min: minVal, max: maxVal });
+		}
 	}, [minVal, maxVal, onChange]);
+
 	return (
 		<Accordion title="Price" className={styles.accordion}>
 			<div className={styles.container}>
 				<input
 					type="range"
-					min={min}
+					min={0}
 					max={max}
 					value={minVal}
 					onChange={event => {
-						const value = Math.min(Number(event.target.value), maxVal - 1);
+						const value = Math.max(
+							0,
+							Math.min(Number(event.target.value), maxVal - 1)
+						);
 						setMinVal(value);
 						minValRef.current = value;
 					}}
@@ -68,11 +74,11 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, onChange }) => {
 				/>
 				<input
 					type="range"
-					min={min}
+					min={0}
 					max={max}
 					value={maxVal}
 					onChange={event => {
-						const value = Math.max(Number(event.target.value), minVal + 1);
+						const value = Math.max(minVal + 1, Number(event.target.value));
 						setMaxVal(value);
 						maxValRef.current = value;
 					}}
@@ -93,7 +99,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, onChange }) => {
 					</div>
 					<input
 						type="number"
-						min={min}
+						min={0}
 						max={max}
 						value={minVal}
 						onChange={event => {
@@ -116,7 +122,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, onChange }) => {
 						min={min}
 						max={max}
 						value={maxVal}
-						prefix="N"
+						prefix="₦"
 						onChange={event => {
 							const value = Math.max(
 								Number(event.target.value),

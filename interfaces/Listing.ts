@@ -173,14 +173,14 @@ export interface ListingState {
 		forSell?: SellingOffer;
 		forRent?: RentingOffer;
 	};
-	location?: {
-		city?: string;
-		country?: string;
-		state?: string;
-		address?: string;
-		coords?: {
-			latitude?: number;
-			longitude?: number;
+	location: {
+		city: string;
+		country: string;
+		state: string;
+		address: string;
+		coords: {
+			latitude: number;
+			longitude: number;
 		};
 	};
 	perks?: {

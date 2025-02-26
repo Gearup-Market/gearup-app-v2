@@ -14,7 +14,6 @@ import { iCategory } from "@/app/api/hooks/listings/types";
 import { useGetCategories } from "@/app/api/hooks/listings";
 
 const ListingsView = () => {
-	useListings(true);
 	const { data: categories } = useGetCategories();
 
 	const { listings } = useAppSelector((state: AppState) => state.listings);

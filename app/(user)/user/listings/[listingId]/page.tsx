@@ -1,11 +1,8 @@
+import { UserLisitngsDetailsView } from "@/views/UserDashboardViews";
+import React from "react";
 
-import { UserLisitngsDetailsView } from '@/views/UserDashboardViews'
-import React from 'react'
+const ListingDetailsPage = () => {
+	return <UserLisitngsDetailsView />;
+};
 
-const Page = () => {
-  return (
-    <UserLisitngsDetailsView/>
-  )
-}
-
-export default Page
+export default ListingDetailsPage;

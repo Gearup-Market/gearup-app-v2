@@ -133,70 +133,50 @@ const useGetListingById = (
 		refetchOnMount: true
 	});
 
-const useGetListings = ({
+const useGetListingsByUser = ({
 	userId,
-	shouldFetchAll,
 	options,
-	page = 1,
-	subCategory,
-	category,
-	minPrice,
-	maxPrice,
-	fields,
-	type
+	page = 1
 }: {
 	userId?: string;
-	shouldFetchAll?: boolean;
 	page?: number;
-	subCategory?: string;
-	category?: string;
-	minPrice?: string;
-	maxPrice?: string;
-	fields?: Record<string, string[]>;
-	type?: string;
 	options?: UseQueryOptions<iGetListingsResp, IGetErr>;
 }) => {
+	return useQuery<iGetListingsResp, IGetErr>({
+		queryKey: ["listingsByUser"],
+		queryFn: async () =>
+			(await api.get(`${API_URL.listingsByUser}/${userId}?limit=12&page=${page}`))
+				.data,
+		...options,
+		enabled: !!userId,
+		refetchOnMount: true
+	});
+};
+
+const getListings = async ({ queryKey }: { queryKey: any }) => {
+	const [_, queryParams] = queryKey;
 	const buildQueryParams = () => {
 		const params = new URLSearchParams();
 		params.append("limit", "12");
-		params.append("page", page.toString());
+		params.append("page", queryParams.page.toString());
 
-		if (subCategory) params.append("subCategory", subCategory);
-		if (category) params.append("category", category);
-		if (minPrice) params.append("minPrice", minPrice);
-		if (maxPrice) params.append("maxPrice", maxPrice);
-		if (type) params.append("type", type);
-		// Append fields parameters without encoding
-		if (fields) {
-			Object.entries(fields).forEach(([key, values]) => {
-				params.append(`fields[${key}]`, values.join(","));
-			});
+		if (queryParams.subCategory)
+			params.append("subCategory", queryParams.subCategory);
+		if (queryParams.category) params.append("category", queryParams.category);
+		if (queryParams.minPrice) params.append("minPrice", queryParams.minPrice);
+		if (queryParams.maxPrice) params.append("maxPrice", queryParams.maxPrice);
+		if (queryParams.type) params.append("type", queryParams.type);
+		if (queryParams.fields && typeof queryParams.fields === "object") {
+			Object.entries(queryParams.fields as Record<string, string[]>).forEach(
+				([key, values]) => {
+					params.append(`fields[${key}]`, values.join(","));
+				}
+			);
 		}
 
 		return params.toString().replace(/%20/g, " ");
 	};
-
-	return useQuery<iGetListingsResp, IGetErr>({
-		queryKey: [
-			shouldFetchAll ? "listings" : "listingsByUser",
-			category,
-			subCategory,
-			minPrice,
-			maxPrice,
-			fields
-		],
-		queryFn: async () =>
-			(
-				await api.get(
-					shouldFetchAll
-						? `${API_URL.listings}?${buildQueryParams()}`
-						: `${API_URL.listingsByUser}/${userId}?limit=12&page=${page}`
-				)
-			).data,
-		...options,
-		enabled: shouldFetchAll || !!userId,
-		refetchOnMount: true
-	});
+	return (await api.get(`${API_URL.listings}?${buildQueryParams()}`)).data;
 };
 
 const useGetCategories = (options?: UseQueryOptions<iCategoryResp, IGetErr>) =>
@@ -225,8 +205,9 @@ export {
 	usePostChangeListingStatus,
 	usePostSearchListing,
 	useGetListingById,
-	useGetListings,
+	useGetListingsByUser,
 	useGetCategories,
 	useGetCategoriesDetailed,
-	usePostChangeUserListingStatus
+	usePostChangeUserListingStatus,
+	getListings
 };

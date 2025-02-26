@@ -37,6 +37,7 @@ const SearchBox = ({ className, onClick }: Props) => {
 			const payload = {
 				productName: searchTerm,
 				description: searchTerm,
+				category: searchTerm,
 				listingType: activeButton === ActiveButton.BUY ? "sell" : "rent"
 			};
 

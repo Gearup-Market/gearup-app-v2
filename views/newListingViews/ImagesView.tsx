@@ -60,12 +60,22 @@ const ImagesView = () => {
 	};
 
 	const nextPage = useCallback(async () => {
-		const newListingData = {
-			listingPhotos: [
-				...newListing.listingPhotos,
-				...displayedImages.map(c => URL.createObjectURL(c))
-			],
+		// Create URLs for new images only if they haven't been processed yet
+		const newImageUrls = displayedImages.map(file => {
+			// Check if this file has already been converted to URL
+			const existingUrl = newListing.listingPhotos.find(
+				photo => photo === URL.createObjectURL(file)
+			);
+			return existingUrl || URL.createObjectURL(file);
+		});
 
+		// Combine existing and new photos without duplicates
+		const combinedPhotos = Array.from(
+			new Set([...newListing.listingPhotos, ...newImageUrls])
+		);
+
+		const newListingData = {
+			listingPhotos: combinedPhotos,
 			tempPhotos: displayedImages
 		};
 
@@ -138,39 +148,50 @@ const ImagesView = () => {
 							</div>
 						</div>
 						<div className={styles.image_row}>
-							{newListing.listingPhotos.map((photo: string, index) => (
-								<div key={index} className={styles.image}>
-									<CustomImage src={photo} alt="" fill sizes="100vw" />
-									<div
-										className={styles.closeModal_container}
-										onClick={() => removeExistingImage(photo)}
-									>
-										<div className={styles.closeModal}>
-											<span></span>
-											<span></span>
+							{newListing.listingPhotos.length
+								? newListing.listingPhotos.map((photo: string, index) => (
+										<div key={index} className={styles.image}>
+											<CustomImage
+												src={photo}
+												alt=""
+												fill
+												sizes="100vw"
+											/>
+											<div
+												className={styles.closeModal_container}
+												onClick={() => removeExistingImage(photo)}
+											>
+												<div className={styles.closeModal}>
+													<span></span>
+													<span></span>
+												</div>
+											</div>
 										</div>
-									</div>
-								</div>
-							))}
-							{displayedImages.map((displayedImage: File) => (
-								<div key={displayedImage.name} className={styles.image}>
-									<CustomImage
-										src={URL.createObjectURL(displayedImage)}
-										alt=""
-										fill
-										sizes="100vw"
-									/>
-									<div
-										className={styles.closeModal_container}
-										onClick={() => deleteImage(displayedImage)}
-									>
-										<div className={styles.closeModal}>
-											<span></span>
-											<span></span>
+								  ))
+								: displayedImages.map((displayedImage: File) => (
+										<div
+											key={displayedImage.name}
+											className={styles.image}
+										>
+											<CustomImage
+												src={URL.createObjectURL(displayedImage)}
+												alt=""
+												fill
+												sizes="100vw"
+											/>
+											<div
+												className={styles.closeModal_container}
+												onClick={() =>
+													deleteImage(displayedImage)
+												}
+											>
+												<div className={styles.closeModal}>
+													<span></span>
+													<span></span>
+												</div>
+											</div>
 										</div>
-									</div>
-								</div>
-							))}
+								  ))}
 						</div>
 					</div>
 				</div>

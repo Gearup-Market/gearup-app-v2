@@ -37,16 +37,18 @@ const ListingDetailsView = () => {
 			longitude: number;
 		};
 		address: string;
-	}>({
-		city: "",
-		country: "",
-		state: "",
-		address: "",
-		coords: {
-			latitude: 0,
-			longitude: 0
+	}>(
+		newListing.location || {
+			city: "",
+			country: "",
+			state: "",
+			address: "",
+			coords: {
+				latitude: 0,
+				longitude: 0
+			}
 		}
-	});
+	);
 	const [inputValues, setInputValues] = useState<{
 		title: string;
 		description: string;
@@ -186,6 +188,13 @@ const ListingDetailsView = () => {
 											options={field.values}
 											onOptionChange={handleSelectedFields}
 											valueType="name"
+											defaultOption={
+												Object.keys(newListing.fieldValues).length
+													? (newListing.fieldValues as any)[
+															field.name
+													  ]
+													: `Select ${field.name}`
+											}
 											key={index}
 											objectOption={field.name}
 										/>
@@ -202,6 +211,10 @@ const ListingDetailsView = () => {
 										onOptionChange={handleSelectedFields}
 										key={index}
 										objectOption={field.name}
+										defaultValues={
+											(newListing.fieldValues as any)[field.name] ||
+											[]
+										}
 									/>
 								) : null;
 							})}
@@ -220,7 +233,7 @@ const ListingDetailsView = () => {
 						<LocationAutoComplete
 							className={styles.location}
 							label="Listing Location"
-							placeholder="Enter location"
+							placeholder={newListing.location?.address || "Enter location"}
 							onAddressSelect={setLocation}
 						/>
 					</div>
