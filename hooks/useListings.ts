@@ -10,7 +10,18 @@ import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { setListings } from "@/store/slices/listingsSlice";
 import { useEffect, useState } from "react";
 
-export function useListings(shouldFetchAll: boolean = false, page: number = 1) {
+export function useListings(
+	shouldFetchAll: boolean = false,
+	page: number = 1,
+	params?: {
+		category?: string;
+		subCategory?: string;
+		minPrice?: string;
+		maxPrice?: string;
+		fields?: Record<string, string[]>;
+		type?: string;
+	}
+) {
 	const { userId } = useAppSelector(s => s.user);
 	const dispatch = useAppDispatch();
 
@@ -22,6 +33,12 @@ export function useListings(shouldFetchAll: boolean = false, page: number = 1) {
 		userId,
 		shouldFetchAll,
 		page,
+		category: params?.category,
+		subCategory: params?.subCategory,
+		minPrice: params?.minPrice,
+		maxPrice: params?.maxPrice,
+		fields: params?.fields,
+		type: params?.type,
 		options: {
 			queryKey: [shouldFetchAll ? "listings" : "listingsByUser"],
 			refetchInterval: 60000
@@ -37,7 +54,7 @@ export function useListings(shouldFetchAll: boolean = false, page: number = 1) {
 		}
 	}, [isFetching, listings, shouldFetchAll]);
 
-	return { listings, isFetching, refetch };
+	return { listings, isFetching, refetch, meta: listings?.meta };
 }
 
 export function useSingleListing(listingId: string) {

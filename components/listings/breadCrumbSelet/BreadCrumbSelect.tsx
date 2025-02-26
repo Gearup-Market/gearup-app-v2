@@ -12,8 +12,8 @@ interface Props {
 	categories?: iCategory[];
 	selectedCategory: iCategory | null;
 	selectedSubCategory: iCategory | null;
-	setSelectedSubCategory: React.Dispatch<React.SetStateAction<iCategory | null>>;
 	setSelectedCategory: (option: iCategory) => void;
+	setSelectedSubCategory: (option: iCategory) => void;
 }
 
 const BreadCrumbSelect = ({
@@ -35,7 +35,7 @@ const BreadCrumbSelect = ({
 					</div>
 					<div className={styles.row}>
 						<Select
-							options={["Lagos", "Abuja", "Benin"]}
+							options={["All Nigeria", "Lagos", "Abuja", "Benin"]}
 							defaultOptionIndex={0}
 							titleClassName={styles.titleClassName_light}
 							bodyClassName={styles.select_body}
@@ -74,10 +74,10 @@ const BreadCrumbSelect = ({
 						options={
 							selectedCategory?.subCategories
 								? selectedCategory.subCategories
-								: []
+								: [""]
 						}
-						// defaultOptionIndex={0}
-						defaultOption={selectedSubCategory?.name}
+						defaultOptionIndex={0}
+						defaultOption={selectedSubCategory?.name || "Select a Category"}
 						titleClassName={styles.titleClassName}
 						bodyClassName={styles.select_body}
 						optionClassName={styles.option_text}

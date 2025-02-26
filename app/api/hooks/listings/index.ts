@@ -137,27 +137,67 @@ const useGetListings = ({
 	userId,
 	shouldFetchAll,
 	options,
-	page = 1
+	page = 1,
+	subCategory,
+	category,
+	minPrice,
+	maxPrice,
+	fields,
+	type
 }: {
 	userId?: string;
 	shouldFetchAll?: boolean;
 	page?: number;
+	subCategory?: string;
+	category?: string;
+	minPrice?: string;
+	maxPrice?: string;
+	fields?: Record<string, string[]>;
+	type?: string;
 	options?: UseQueryOptions<iGetListingsResp, IGetErr>;
-}) =>
-	useQuery<iGetListingsResp, IGetErr>({
-		queryKey: [shouldFetchAll ? "listings" : "listingsByUser"],
+}) => {
+	const buildQueryParams = () => {
+		const params = new URLSearchParams();
+		params.append("limit", "12");
+		params.append("page", page.toString());
+
+		if (subCategory) params.append("subCategory", subCategory);
+		if (category) params.append("category", category);
+		if (minPrice) params.append("minPrice", minPrice);
+		if (maxPrice) params.append("maxPrice", maxPrice);
+		if (type) params.append("type", type);
+		// Append fields parameters without encoding
+		if (fields) {
+			Object.entries(fields).forEach(([key, values]) => {
+				params.append(`fields[${key}]`, values.join(","));
+			});
+		}
+
+		return params.toString().replace(/%20/g, " ");
+	};
+
+	return useQuery<iGetListingsResp, IGetErr>({
+		queryKey: [
+			shouldFetchAll ? "listings" : "listingsByUser",
+			category,
+			subCategory,
+			minPrice,
+			maxPrice,
+			fields
+		],
 		queryFn: async () =>
 			(
 				await api.get(
 					shouldFetchAll
-						? API_URL.listings
-						: `${API_URL.listingsByUser}/${userId}?page=${page}`
+						? `${API_URL.listings}?${buildQueryParams()}`
+						: `${API_URL.listingsByUser}/${userId}?limit=12&page=${page}`
 				)
 			).data,
 		...options,
 		enabled: shouldFetchAll || !!userId,
 		refetchOnMount: true
 	});
+};
 
 const useGetCategories = (options?: UseQueryOptions<iCategoryResp, IGetErr>) =>
 	useQuery<iCategoryResp, IGetErr>({

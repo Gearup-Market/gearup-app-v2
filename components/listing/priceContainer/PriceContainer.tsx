@@ -22,6 +22,7 @@ import { useAppSelector } from "@/store/configureStore";
 import Link from "next/link";
 import { PricingData } from "@/app/api/hooks/Admin/pricing/types";
 import { RentingOfferRates } from "@/interfaces/Listing";
+import HourDatePicker from "../hourDatePicker/HourDatePicker";
 
 const PriceContainer = ({
 	listing,
@@ -125,7 +126,7 @@ const PriceContainer = ({
 		router.push(
 			user.isAuthenticated
 				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}`
-				: `/login?returnUrl=${pathname}`
+				: `/signup`
 		);
 	};
 
@@ -133,6 +134,34 @@ const PriceContainer = ({
 		inputDate[0].startDate.getDate() === inputDate[0].endDate.getDate();
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
+	const modalToOpen = () => {
+		if (listing.offer.forRent?.rates[0].duration !== "hour") {
+			return (
+				<DatePicker
+					openModal={openModal}
+					setInputDate={setInputDate}
+					setOpenModal={setOpenModal}
+					inputDate={inputDate}
+					setIsDateSelected={setIsDateSelected}
+				/>
+			);
+		}
+		return (
+			<HourDatePicker
+				openModal={openModal}
+				setInputDate={setInputDate}
+				setOpenModal={setOpenModal}
+				inputDate={inputDate}
+			/>
+		);
+	};
+
+	const handleOpenModal = () => {
+		if (!user.isAuthenticated) {
+			return router.push("/signup");
+		}
+		setOpenModal(true);
+	};
 
 	return (
 		<div className={styles.container}>
@@ -175,10 +204,7 @@ const PriceContainer = ({
 					</div>
 				</div>
 				{(listingType !== "sell" || actionType === "rent") && (
-					<div
-						className={styles.input_field}
-						onClick={() => setOpenModal(true)}
-					>
+					<div className={styles.input_field} onClick={handleOpenModal}>
 						<div className={styles.icon}>
 							<Image src="/svgs/calendar.svg" fill alt="" sizes="100vw" />
 						</div>
@@ -189,7 +215,12 @@ const PriceContainer = ({
 											inputDate[0].startDate,
 											"MM/dd/yyyy"
 									  )} to ${format(inputDate[0].endDate, "MM/dd/yyyy")}`
-									: "Choose pickup / return dates"}
+									: `${
+											listing.offer.forRent?.rates[0].duration !==
+											"hour"
+												? "Choose pickup / return dates"
+												: "Choose date(s) and rental hours"
+									  }`}
 							</p>
 						</div>
 					</div>
@@ -234,15 +265,15 @@ const PriceContainer = ({
 						Add to cart
 					</Button>
 				</div>
-				{openModal && (
-					<DatePicker
-						openModal={openModal}
-						setInputDate={setInputDate}
-						setOpenModal={setOpenModal}
-						inputDate={inputDate}
-						setIsDateSelected={setIsDateSelected}
-					/>
-				)}
+				{openModal &&
+					// <DatePicker
+					// 	openModal={openModal}
+					// 	setInputDate={setInputDate}
+					// 	setOpenModal={setOpenModal}
+					// 	inputDate={inputDate}
+					// 	setIsDateSelected={setIsDateSelected}
+					// />
+					modalToOpen()}
 			</div>
 			<div className={styles.ad_card}>
 				<Logo />

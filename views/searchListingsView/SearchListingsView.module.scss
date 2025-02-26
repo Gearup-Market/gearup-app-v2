@@ -36,10 +36,10 @@
 	.row {
 		@include flex(space-between, center);
 		.nav_button {
-			@include grid(repeat(2, 1fr), 0.8rem);
+			@include grid(repeat(3, 1fr), 0.8rem);
 			border: 0.2rem solid #dedfe0;
 			border-radius: 10rem;
-			width: 25.7rem;
+			width: 38.55rem;
 			padding: 0.4rem;
 			.button_container {
 				padding: 0;
@@ -168,6 +168,9 @@
 		.section_grid {
 			.block {
 				width: 100%;
+				.grid {
+					margin-top: 8rem;
+				}
 			}
 		}
 	}

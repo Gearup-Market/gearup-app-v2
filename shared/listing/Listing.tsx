@@ -140,14 +140,14 @@ const Listing = ({ props, className, actionType }: Props) => {
 				<div className={styles.small_row}>
 					<div className={styles.avatar}>
 						<Image
-							src={user.avatar || "/svgs/user.svg"}
-							alt={user.userName || ""}
+							src={(user && user.avatar) || "/svgs/user.svg"}
+							alt={(user && user.userName) || ""}
 							fill
 							sizes="100vw"
 						/>
 					</div>
 					<div className={styles.text} style={{ marginBottom: 0 }}>
-						<p>{user?.name || user?.userName}</p>
+						<p>{(user && user?.name) || (user && user?.userName)}</p>
 					</div>
 				</div>
 				<div className={styles.small_row}>

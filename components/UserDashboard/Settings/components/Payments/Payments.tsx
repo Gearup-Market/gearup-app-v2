@@ -14,6 +14,8 @@ import { isEmpty } from "@/utils";
 import { useGetAccountName } from "@/app/api/hooks/settings";
 import { PageLoader } from "@/shared/loaders";
 import { useRouter } from "next/navigation";
+import { useGetWallet } from "@/app/api/hooks/wallets";
+import ConfirmPin from "../confirmPin/ConfirmPin";
 
 interface PayoutFormValues {
 	accountName: string;
@@ -32,9 +34,20 @@ const Payments: React.FC = () => {
 		bankName: user.bankName || "",
 		bankCode: ""
 	};
+
+	const {
+		data: walletResult,
+		isFetching: isWalletFetching,
+		refetch: refetchWallet
+	} = useGetWallet({ userId: user.userId, isRefetch: false });
+
 	const [formdata, setFormdata] = useState(initialValues);
 	const [shouldFetch, setShouldFetch] = useState(false);
 	const [errors, setErrors] = useState<any>({});
+	const [openPinModal, setOpenPinModal] = useState<boolean>(false);
+	const [pendingFormValues, setPendingFormValues] = useState<PayoutFormValues | null>(
+		null
+	);
 
 	const { data: accountName, isFetching } = useGetAccountName(
 		shouldFetch ? formdata.accountNumber : undefined,
@@ -114,6 +127,11 @@ const Payments: React.FC = () => {
 		}
 	};
 
+	const openModal = (values: PayoutFormValues) => {
+		setPendingFormValues(values);
+		setOpenPinModal(true);
+	};
+
 	return (
 		<div className={styles.container}>
 			<HeaderSubText
@@ -124,7 +142,7 @@ const Payments: React.FC = () => {
 				<Formik
 					initialValues={initialValues}
 					// validationSchema={validationSchema}
-					onSubmit={handleSubmit}
+					onSubmit={openModal}
 				>
 					{({ touched, isSubmitting }) => {
 						return (
@@ -145,13 +163,23 @@ const Payments: React.FC = () => {
 														field.onChange(e);
 													}}
 													error={errors.accountNumber}
+													placeholder={
+														walletResult?.data.accountNumber
+															? walletResult?.data
+																	.accountNumber
+															: "No Account Connected yet"
+													}
 												/>
 											)}
 										</Field>
-										{isFetching ? (
+										{isFetching || isWalletFetching ? (
 											<PageLoader />
-										) : (
+										) : accountName?.data.accountName ? (
 											accountName?.data.accountName
+										) : walletResult?.data.accountName ? (
+											walletResult?.data.accountName
+										) : (
+											"No Account Connected yet"
 										)}
 									</div>
 									<div className={styles.form_field}>
@@ -178,6 +206,13 @@ const Payments: React.FC = () => {
 												/>
 											)}
 										</Field>
+										{isWalletFetching ? (
+											<PageLoader />
+										) : walletResult?.data.bankName ? (
+											walletResult?.data.bankName
+										) : (
+											"No Account Connected yet"
+										)}
 									</div>
 								</div>
 								<div className={styles.submit_btn_container}>
@@ -199,6 +234,20 @@ const Payments: React.FC = () => {
 					}}
 				</Formik>
 			</div>
+			{openPinModal && (
+				<ConfirmPin
+					openModal={openPinModal}
+					setOpenModal={setOpenPinModal}
+					onSuccess={() => {
+						if (pendingFormValues) {
+							handleSubmit(pendingFormValues);
+						}
+					}}
+					disabled={
+						isPending || !isEmpty(errors) || !accountName?.data.accountName
+					}
+				/>
+			)}
 		</div>
 	);
 };
