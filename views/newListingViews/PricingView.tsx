@@ -253,7 +253,7 @@ const BuyView = ({
 					</div>
 					<div className={styles.input}>
 						<InputField
-							prefix="N"
+							prefix="₦"
 							placeholder="0"
 							label="Amount"
 							min={1}
@@ -602,7 +602,7 @@ const RentView = ({
 					</div>
 
 					<InputField
-						prefix="N"
+						prefix="₦"
 						placeholder="0"
 						type="number"
 						value={forRentDetails?.totalReplacementValue}

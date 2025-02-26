@@ -54,6 +54,7 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 	const onClickEdit = () => {
 		const payload = {
 			...listing,
+			items: [{ name: listing.productName, quantity: 1, id: 0 }],
 			fieldValues: [],
 			tempPhotos: [],
 			userId

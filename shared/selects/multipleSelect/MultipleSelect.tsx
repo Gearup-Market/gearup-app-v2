@@ -10,6 +10,7 @@ interface Props {
 	label?: string;
 	title?: string;
 	objectOption?: string;
+	defaultValues?: string[];
 }
 
 const MultipleSelect = ({
@@ -17,10 +18,16 @@ const MultipleSelect = ({
 	onOptionChange,
 	label,
 	title,
-	objectOption
+	objectOption,
+	defaultValues = []
 }: Props) => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
-	const [localArr, setLocalArr] = useState<any[]>([]);
+	const [localArr, setLocalArr] = useState<any[]>(() => {
+		if (defaultValues.length > 0) {
+			return options.filter(item => defaultValues.includes(item.name));
+		}
+		return [];
+	});
 
 	const closeModal = useCallback(() => {
 		setOpenModal(false);

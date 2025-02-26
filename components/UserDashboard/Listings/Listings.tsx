@@ -7,7 +7,7 @@ import { GridAddIcon } from "@mui/x-data-grid";
 import HeaderSubText from "../HeaderSubText/HeaderSubText";
 import ReuseableFilters from "../ReuseableFilter/ReuseableFilter";
 import { useRouter } from "next/navigation";
-import { useListingFilters, useListings } from "@/hooks/useListings";
+import { useListingFilters } from "@/hooks/useListings";
 import { useAppSelector } from "@/store/configureStore";
 
 enum Type {
@@ -17,7 +17,6 @@ enum Type {
 }
 
 const Listings = () => {
-	useListings();
 	const [activeFilterId, setActiveFilterId] = useState<number | string>(1);
 	const [activeSubFilterId, setActiveSubFilterId] = useState<number | string>(1);
 	const [activeFilter, setActiveFilter] = useState<Type>(Type.Rent);
@@ -73,6 +72,9 @@ const Listings = () => {
 					</span>
 				</div>
 			</div>
+			<Button onClick={handleButtonClick} className={styles.button}>
+				<GridAddIcon className={styles.button_icon} />
+			</Button>
 			<ListingTable
 				activeFilter={activeFilter?.toLowerCase()}
 				activeSubFilterId={activeSubFilterId}

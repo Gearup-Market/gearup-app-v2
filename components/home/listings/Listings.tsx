@@ -10,7 +10,7 @@ import { useListings } from "@/hooks/useListings";
 import { PageLoader } from "@/shared/loaders";
 
 const Listings = () => {
-	const { isFetching } = useListings(true);
+	const { isFetching } = useListings();
 	const { listings } = useAppSelector((state: AppState) => state.listings);
 	return (
 		<section className={styles.section}>

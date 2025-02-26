@@ -36,12 +36,7 @@ const RentOffer = ({
 			<div className={styles.header}>
 				<div className={styles.text}>
 					<h3>
-						{title}{" "}
-						{!priceStructure
-							? ""
-							: priceStructure === "hourly"
-							? "hour"
-							: "day"}
+						{title} {!priceStructure ? "" : priceStructure}
 						{!priceStructure ? "" : title !== 1 ? "s" : ""} offer
 					</h3>
 				</div>
@@ -59,7 +54,7 @@ const RentOffer = ({
 			{checked && (
 				<div className={styles.input_container}>
 					<InputField
-						prefix="N"
+						prefix="₦"
 						placeholder="0"
 						value={value}
 						onChange={onChange}

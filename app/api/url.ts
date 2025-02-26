@@ -26,6 +26,7 @@ export const API_URL = {
 	listingById: "/listings",
 	listingsByUser: "/listings/byUser",
 	searchListings: "/listings/search",
+	listingsStatus: "/listings/hide-all",
 	uploadFiles: "/listings/upload",
 	categories: "/listings/categories",
 	categoriesDetailed: "/listings/categories/detailed",

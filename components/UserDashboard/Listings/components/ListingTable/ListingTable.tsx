@@ -11,7 +11,6 @@ import MoreModal from "../MoreModal/MoreModal";
 import { customisedTableClasses } from "@/utils/classes";
 import Pagination from "../../../../../shared/pagination/Pagination";
 import { Popper } from "@mui/material";
-import { userListingsData } from "@/mock";
 import Fade from "@mui/material/Fade";
 import ListingCardMob from "./ListingCardMob/ListingCardMob";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
@@ -26,7 +25,7 @@ import toast from "react-hot-toast";
 import { formatNum } from "@/utils";
 import NoListings from "../../NoListings/NoListings";
 import { useGetAllCourses } from "@/app/api/hooks/courses";
-import { useListings } from "@/hooks/useListings";
+import { useListingsByUser } from "@/hooks/useListings";
 
 interface Props {
 	activeFilter: string;
@@ -55,7 +54,7 @@ const ListingTable = ({
 		refetch,
 		isFetching,
 		listings: userListings
-	} = useListings(false, currentPage);
+	} = useListingsByUser(currentPage);
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
@@ -85,7 +84,7 @@ const ListingTable = ({
 					status,
 					listingPhotos,
 					category
-				}) => {
+				}: any) => {
 					const type = listingType === "both" ? "rent | sell" : listingType;
 					const price =
 						type === "rent"
@@ -103,14 +102,14 @@ const ListingTable = ({
 						status,
 						image,
 						availability: status === "available" ? "active" : "inactive",
-						date: createdAt,
+						date: createdAt.split("T")[0],
 						sold_count: 0,
 						revenue: 0,
 						category: category?.name?.toLowerCase() || null
 					};
 				}
 			)
-			.filter(l => {
+			.filter((l: any) => {
 				if (!l.type.includes(activeFilter)) return false;
 				if (
 					activeSubFilter &&
@@ -137,7 +136,7 @@ const ListingTable = ({
 	};
 
 	const onClickEdit = (listingId: string) => {
-		const listing = listings?.find(l => l._id === listingId);
+		const listing = listings?.find((l: any) => l._id === listingId);
 		const {
 			productName,
 			description,
@@ -502,7 +501,7 @@ const ListingTable = ({
 							</div>
 
 							<MobileCardContainer>
-								{mappedListings?.map((item, ind) => (
+								{mappedListings?.map((item: any, ind: number) => (
 									<ListingCardMob
 										activeFilter={activeFilter}
 										key={ind}
@@ -526,7 +525,7 @@ const ListingTable = ({
 					) : (
 						<>
 							<div className={styles.container__grid}>
-								{mappedListings?.map(item => (
+								{mappedListings?.map((item: any) => (
 									<ListingCard
 										key={item.id}
 										props={item}

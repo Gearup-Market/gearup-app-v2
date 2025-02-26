@@ -2,11 +2,9 @@
 
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import styles from "./SearchListingsView.module.scss";
-import { ListingType } from "@/interfaces";
 import { Button, Listing, NoSearchResult, Pagination } from "@/shared";
 import { usePathname, useRouter } from "next/navigation";
 import { BreadCrumbSelect, Filter } from "@/components/listings";
-import { PageLoader } from "@/shared/loaders";
 import { useSearchParams } from "next/navigation";
 import { AppState, useAppSelector } from "@/store/configureStore";
 import { useListings } from "@/hooks/useListings";
@@ -15,16 +13,13 @@ import { useGetCategories } from "@/app/api/hooks/listings";
 
 const pageSize: number = 12;
 const SearchListingsView = () => {
-	const { data: categories, isFetching: isFetchingCategories } = useGetCategories();
-
+	const { data: categories } = useGetCategories();
 	const { searchedListings, listings } = useAppSelector(
 		(state: AppState) => state.listings
 	);
 	const router = useRouter();
 	const search = useSearchParams();
 	const typePathName = search.get("type");
-	const category = search.get("category");
-	const subCategory = search.get("subCategory");
 	const [hideFilters, setHideFilters] = useState<boolean>(false);
 	const [selectedCategory, setSelectedCategory] = useState<iCategory | null>(null);
 	const [selectedSubCategory, setSelectedSubCategory] = useState<iCategory | null>(
@@ -36,7 +31,7 @@ const SearchListingsView = () => {
 	const pathName = usePathname();
 	const listingsData = searchedListings.length > 0 ? searchedListings : listings;
 
-	const searchParams = new URLSearchParams(window.location.search);
+	const searchParams = new URLSearchParams(search.toString());
 	const fieldsParams: Record<string, string[]> = {};
 
 	Array.from(searchParams.entries()).forEach(([key, value]) => {
@@ -45,14 +40,17 @@ const SearchListingsView = () => {
 			fieldsParams[fieldName] = value.split(",");
 		}
 	});
-	const { refetch, meta } = useListings(true, currentPage, {
+
+	const queryParams = {
 		category: searchParams.get("category") || undefined,
 		subCategory: searchParams.get("subCategory") || undefined,
 		minPrice: searchParams.get("minPrice") || undefined,
 		maxPrice: searchParams.get("maxPrice") || undefined,
-		type: typePathName || undefined,
+		type: searchParams.get("type") || undefined,
 		fields: Object.keys(fieldsParams).length > 0 ? fieldsParams : undefined
-	});
+	};
+
+	const { meta, isFetching } = useListings(currentPage, queryParams);
 
 	const checkActive = (url: string) => {
 		return url === typePathName;
@@ -82,32 +80,24 @@ const SearchListingsView = () => {
 			setSelectedCategory(option);
 			setSelectedSubCategory(null);
 
-			const currentParams = new URLSearchParams(search.toString());
-			const type = currentParams.get("type");
-
-			// Clear all parameters except type
-			Array.from(currentParams.entries()).forEach(([key]) => {
+			Array.from(searchParams.entries()).forEach(([key]) => {
 				if (key !== "type") {
-					currentParams.delete(key);
+					searchParams.delete(key);
 				}
 			});
 
-			// Set new category
-			currentParams.set("category", option.name);
+			searchParams.set("category", option.name);
 
-			router.push(`${pathName}?${currentParams.toString()}`);
+			router.push(`${pathName}?${searchParams.toString()}`);
 		},
-		[search, router, pathName]
+		[router, pathName, searchParams]
 	);
 
 	const onChangeSelectedSubCategory = useCallback(
 		(option: iCategory | null) => {
 			setSelectedSubCategory(option);
 
-			const currentParams = new URLSearchParams(search.toString());
-
-			// Clear all filter-related parameters except category and type
-			Array.from(currentParams.entries()).forEach(([key]) => {
+			Array.from(searchParams.entries()).forEach(([key]) => {
 				if (
 					key !== "type" &&
 					key !== "category" &&
@@ -116,36 +106,22 @@ const SearchListingsView = () => {
 						key === "maxPrice" ||
 						key === "subCategory")
 				) {
-					currentParams.delete(key);
+					searchParams.delete(key);
 				}
 			});
 
 			if (option) {
-				currentParams.set("subCategory", option.name);
+				searchParams.set("subCategory", option.name);
 			}
 
-			router.push(`${pathName}?${currentParams.toString()}`);
+			router.push(`${pathName}?${searchParams.toString()}`);
 		},
-		[search, router, pathName]
+		[searchParams, router, pathName]
 	);
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
 	};
-	useEffect(() => {
-		const params = new URLSearchParams(search.toString());
-		const queryParams = {
-			category: params.get("category") || undefined,
-			subCategory: params.get("subCategory") || undefined,
-			minPrice: params.get("minPrice") || undefined,
-			maxPrice: params.get("maxPrice") || undefined,
-			type: params.get("type") || undefined,
-			fields: fieldsParams
-		};
-
-		const queryString = JSON.stringify(queryParams);
-		refetch();
-	}, [search, refetch]);
 
 	useEffect(() => {
 		if (!categories?.data) return;
@@ -265,19 +241,6 @@ const SearchListingsView = () => {
 								</div>
 							</Button>
 						</div>
-						{/* <div className={styles.show_button}>
-							<div className={styles.text}>
-								<h3>Show on map</h3>
-							</div>
-							<label className={styles.switch}>
-								<input
-									type="checkbox"
-									onChange={() => setShowOnMaps(!showOnMaps)}
-									checked={showOnMaps}
-								/>
-								<span className={styles.slider}></span>
-							</label>
-						</div> */}
 					</div>
 
 					{listingsData.length ? (

@@ -47,7 +47,7 @@ const Filter = ({
 
 	const debouncedUpdateURL = useCallback((range: { min: number; max: number }) => {
 		const currentUrl = new URL(window.location.href);
-		if (range) {
+		if (range && (range.min > 0 || range.max > 0)) {
 			currentUrl.searchParams.set("minPrice", range.min.toString());
 			currentUrl.searchParams.set("maxPrice", range.max.toString());
 		} else {

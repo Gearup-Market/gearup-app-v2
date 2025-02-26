@@ -10,8 +10,8 @@ export interface Item {
 }
 
 export interface ListingLocation {
-	address?: string;
-	city?: string;
+	address: string;
+	city: string;
 	state: string;
 	country: string;
 	coords: {
