@@ -98,17 +98,16 @@ const Map = ({
 
 				// Update location in parent component
 				if (setLocation) {
-				setLocation({
-					coords: {
-						latitude: lat,
-						longitude: lng
-					},
-					address: formattedAddress,
-					city,
-					state,
-					country
-				});
-
+					setLocation({
+						coords: {
+							latitude: lat,
+							longitude: lng
+						},
+						address: removePlusCode(formattedAddress),
+						city,
+						state,
+						country
+					});
 				}
 			} else {
 				console.log("No address found for this location.");
@@ -171,3 +170,7 @@ const Map = ({
 };
 
 export default Map;
+
+function removePlusCode(address: string): string {
+	return address?.replace(/\s*[A-Z0-9]+\+[A-Z0-9]+\s*,?\s*/, " ")?.trim();
+}

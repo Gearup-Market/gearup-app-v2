@@ -1,37 +1,125 @@
 @import "@/styles/imports";
 
-.container {
-	.picker_container {
-		position: fixed;
-		z-index: 12;
-		inset: 0;
-		width: 100%;
-		height: 100vh;
-		overflow-y: hidden;
-		background-color: rgba(27, 30, 33, 0.5);
-		cursor: default;
-		@include flex(center, center, column);
-		.close_background {
-			position: absolute;
+.modal {
+	width: 62.8rem;
+	overflow-y: visible !important;
+	@include noScrollBar;
+	.container {
+		background-color: #fafafa;
+		padding: 2.4rem;
+		border-radius: 2.4rem;
+		.picker_container {
+			position: fixed;
+			z-index: 12;
 			inset: 0;
-		}
-		.picker_modal {
-			position: relative;
-			background-color: $col-white;
-			border-radius: 1.6rem;
-			padding: 4rem;
-			z-index: 1;
-			.row {
-				@include grid(repeat(2, 1fr), 1.6rem);
-				width: 100%;
-				padding: 2.4rem;
-				border-top: 0.1rem solid #e4e7ec;
-				.button {
-					border: 0.1rem solid #dedfe0;
-					border-radius: 10rem;
+			width: 100%;
+			height: 100vh;
+			overflow-y: hidden;
+			background-color: rgba(27, 30, 33, 0.5);
+			cursor: default;
+			@include flex(center, center, column);
+			.close_background {
+				position: absolute;
+				inset: 0;
+			}
+			.picker_modal {
+				position: relative;
+				background-color: $col-white;
+				border-radius: 1.6rem;
+				padding: 4rem;
+				z-index: 1;
+				.row {
+					@include grid(repeat(2, 1fr), 1.6rem);
+					width: 100%;
+					padding: 2.4rem;
+					border-top: 0.1rem solid #e4e7ec;
+					.button {
+						border: 0.1rem solid #dedfe0;
+						border-radius: 10rem;
+					}
 				}
 			}
 		}
+		.block {
+			@include flex(flex-start, flex-start, column);
+			gap: 1.6rem;
+			.row {
+				@include flex(space-between, center);
+				h3 {
+					color: #1b1e21;
+					font-weight: 700;
+					@extend %text-14;
+				}
+				.icon {
+					position: relative;
+				}
+			}
+			.input_field {
+				width: 100%;
+				border-radius: 0.8rem;
+				padding: 1.6rem;
+				border: 0.1rem solid #dedfe0;
+				@include flex(flex-start, center);
+				gap: 0.8rem;
+				cursor: pointer;
+				position: relative;
+				.icon {
+					position: relative;
+					width: 2rem;
+					height: 2rem;
+					cursor: pointer;
+					.date_input {
+						width: 100%;
+						height: 100%;
+						position: absolute;
+						inset: 0;
+						opacity: 0;
+						cursor: pointer;
+						&::-webkit-calendar-picker-indicator {
+							cursor: pointer;
+						}
+					}
+				}
+				.text {
+					p {
+						@extend %text-14;
+						color: #7b8086;
+					}
+				}
+				.calendar_container {
+					position: absolute;
+					top: 120%;
+					width: 100%;
+					z-index: 1;
+					.calendar {
+						border-radius: 1.6rem;
+					}
+				}
+			}
+		}
+		.button {
+			padding-inline: 0;
+			gap: 0.8rem;
+			.icon {
+				position: relative;
+				width: 2rem;
+				height: 2rem;
+			}
+			p {
+				font-weight: 700;
+				color: #ffb30f;
+			}
+		}
+	}
+	.divider {
+		background-color: #e4e7ec;
+		width: 100%;
+		height: 0.1rem;
+		margin-block: 1.6rem 2.4rem;
+	}
+	.grid {
+		width: 100%;
+		@include grid(repeat(2, 1fr), 1.6rem);
 	}
 	@include screenMax("mobile") {
 		.picker_container {

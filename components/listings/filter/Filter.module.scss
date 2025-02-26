@@ -9,10 +9,12 @@
 		border-radius: 0.8rem 0.8rem 0 0;
 		@include flex(space-between, center);
 		padding: 2.4rem 1.6rem;
+		position: relative;
 		.small_row {
 			@include flex();
 		}
 		.text {
+			margin-left: 3rem;
 			h3 {
 				font-weight: 700;
 				@extend %text-16;
@@ -28,6 +30,9 @@
 				box-shadow: none;
 			}
 			@include flex(center, center);
+			position: absolute;
+			left: 1.6rem;
+			top: calc(50% - 1.2rem);
 			transition: all 0.3s ease-in-out;
 			cursor: pointer;
 			&[data-active="true"] {
@@ -91,6 +96,15 @@
 				}
 			}
 		}
+		.clear_all {
+			cursor: pointer;
+			h3 {
+				font-weight: 700;
+				@extend %text-14;
+				color: #4b525a;
+				text-decoration: underline;
+			}
+		}
 		.icon {
 			position: relative;
 			width: 2.4rem;
@@ -106,24 +120,24 @@
 		}
 	}
 	&[data-hidden="true"] {
-		// animation: 5s closeFilter;
 		width: 10.9rem;
 		max-height: 5.6rem;
 		overflow: hidden;
 		border: 0.1rem solid #dedfe0;
 		border-radius: 1.6rem;
 		position: absolute;
-		// transition: all 3s linear;
-		// transition: height 0.5s ease-out, position 0.5s ease-out,
-		// 	border-radius 0.5s ease-out;
 		cursor: pointer;
 		.header {
 			padding: 1.6rem;
 			height: 100%;
 			width: 100%;
 			border: none;
-			.button_container {
+			.button_container,
+			.clear_all {
 				display: none;
+			}
+			.text {
+				margin: 0;
 			}
 			.icon {
 				display: block;
@@ -133,7 +147,6 @@
 	@include screenMax("mobile") {
 		max-height: unset;
 		overflow: hidden;
-		// border: 0.1rem solid #dedfe0;
 		border-radius: 1.6rem;
 		background-color: white;
 		position: fixed;

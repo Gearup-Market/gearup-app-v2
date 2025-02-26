@@ -81,7 +81,7 @@ const BuyPriceContainer = ({
 		router.push(
 			user.isAuthenticated
 				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}`
-				: `/login?returnUrl=${pathname}`
+				: `/signup`
 		);
 	};
 

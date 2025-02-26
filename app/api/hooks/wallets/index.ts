@@ -27,9 +27,13 @@ export type IPostErr = AxiosError<{ status: string; message: string }>;
 
 const useGetWallet = ({
 	userId,
+	isRefetch = true,
+	refetchInterval = 20000,
 	options
 }: {
 	userId?: string;
+	isRefetch?: boolean;
+	refetchInterval?: number;
 	options?: UseQueryOptions<iWalletResp, IGetErr>;
 }) =>
 	useQuery<iWalletResp, IGetErr>({
@@ -38,7 +42,7 @@ const useGetWallet = ({
 		...options,
 		enabled: !!userId,
 		refetchOnMount: false,
-		refetchInterval: 20000
+		refetchInterval: isRefetch ? refetchInterval : false
 	});
 
 const useGetStellarWallet = ({

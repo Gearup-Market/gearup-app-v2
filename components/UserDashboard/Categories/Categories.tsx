@@ -21,7 +21,11 @@ const Categories = () => {
 					<div key={index} className={styles.category}>
 						<div className={styles.category__image}>
 							<CustomImage
-								src={category.image}
+								src={
+									category.name === "Studios"
+										? "/images/studio-spaces.jpg"
+										: category.image
+								}
 								alt={category.name}
 								height={150}
 								width={150}

@@ -20,6 +20,8 @@ import toast from "react-hot-toast";
 import { updateUser } from "@/store/slices/userSlice";
 import { Location } from "@/app/api/hooks/users/types";
 import { useUploadFiles } from "@/app/api/hooks/listings";
+import VerifyPhoneNumber from "../verifyPhoneNumber/VerifyPhoneNumber";
+import ConfirmPin from "../../../confirmPin/ConfirmPin";
 
 interface PayoutFormValues {
 	firstName: string;
@@ -38,6 +40,15 @@ const PersonalInfoForm: React.FC = () => {
 	const { mutateAsync: postUploadImage, isPending: uploadingImage } = useUploadFiles();
 	const [location, setLocation] = React.useState<Location>();
 	const [imageFile, setImageFile] = useState<File | null>(null);
+	const [phoneNumber, setPhoneNumber] = useState<string>(
+		user.phoneNumber || user.kyc?.phoneNumber || ""
+	);
+	const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
+	const [openPhoneNumberModal, setOpenPhoneNumberModal] = useState<boolean>(false);
+	const [openPinModal, setOpenPinModal] = useState<boolean>(false);
+	const [pendingFormValues, setPendingFormValues] = useState<PayoutFormValues | null>(
+		null
+	);
 
 	const initialValues: PayoutFormValues = {
 		firstName: user.firstName || "",
@@ -50,9 +61,9 @@ const PersonalInfoForm: React.FC = () => {
 	};
 
 	const validationSchema = Yup.object().shape({
-		firstName: Yup.string().required("First name is required"),
-		lastName: Yup.string().required("Last name is required"),
-		userName: Yup.string().required("Display name is required"),
+		firstName: Yup.string().optional(),
+		lastName: Yup.string().optional(),
+		userName: Yup.string().optional(),
 		phoneNumber: Yup.string().optional(),
 		address: Yup.string().optional(),
 		about: Yup.string().optional()
@@ -83,6 +94,7 @@ const PersonalInfoForm: React.FC = () => {
 			{
 				onSuccess: value => {
 					dispatch(updateUser({ ...user, ...value }));
+					setOpenPinModal(false);
 					toast.success("Profile updated successfully");
 				},
 				onError: () => {
@@ -90,6 +102,11 @@ const PersonalInfoForm: React.FC = () => {
 				}
 			}
 		);
+	};
+
+	const openModal = (values: PayoutFormValues) => {
+		setPendingFormValues(values);
+		setOpenPinModal(true);
 	};
 
 	return (
@@ -102,156 +119,222 @@ const PersonalInfoForm: React.FC = () => {
 				<Formik
 					initialValues={initialValues}
 					validationSchema={validationSchema}
-					onSubmit={handleSubmit}
+					onSubmit={openModal}
 					enableReinitialize
 				>
-					{({ errors, touched, isSubmitting }) => (
-						<Form>
-							<div className={styles.uploader_container}>
-								<ImageUploader
-									onChange={file => setImageFile(file)}
-									imageUrl={user.avatar}
-								/>
-								<h3 className={styles.name}>{user.userName}</h3>
-								<p className={styles.email}>{user.email}</p>
-							</div>
-							<div className={styles.container__form_container__form}>
-								<div className={styles.form_field}>
-									<Field name="firstName">
-										{({ field }: FieldProps) => (
-											<InputField
-												{...field}
-												label="First name"
-												error={
-													(touched.firstName &&
-														errors.firstName) ||
-													""
-												}
-											/>
-										)}
-									</Field>
-								</div>
-								<div className={styles.form_field}>
-									<Field name="lastName">
-										{({ field }: FieldProps) => (
-											<InputField
-												{...field}
-												label="Last name"
-												error={
-													(touched.lastName &&
-														errors.lastName) ||
-													""
-												}
-											/>
-										)}
-									</Field>
-								</div>
-								<div className={styles.form_field}>
-									<Field name="userName">
-										{({ field }: FieldProps) => (
-											<InputField
-												{...field}
-												label="Display name"
-												readOnly={true}
-												error={
-													(touched.userName &&
-														errors.userName) ||
-													""
-												}
-											/>
-										)}
-									</Field>
-								</div>
-								<div className={styles.phone_field}>
-									<Field name="phoneNumber">
-										{({ field }: FieldProps) => (
-											<InputField
-												{...field}
-												label="Phone number"
-												customPrefix={
-													<p
-														className={
-															styles.prefix_container
-														}
-													>
-														+234{" "}
-														<span
-															className={
-																styles.prefix_divider
-															}
-														></span>
-													</p>
-												}
-												type="number"
-												error={
-													(touched.phoneNumber &&
-														errors.phoneNumber) ||
-													""
-												}
-											/>
-										)}
-									</Field>
-								</div>
-								<div className={styles.address_field}>
-									<Field name="address">
-										{({ field }: FieldProps) => (
-											<InputField
-												{...field}
-												label="Enter address"
-												error={
-													(touched.address && errors.address) ||
-													""
-												}
-												value={location?.address}
-												onChange={e => {
-													field.onChange(e);
-													setLocation({
-														...location,
-														address: e.target.value
-													});
-												}}
-											/>
-										)}
-									</Field>
-								</div>
-								{/* <LocationAutoComplete /> */}
-								<div className={styles.map_container}>
-									<Map
-										showTitle={false}
-										location={location}
-										setLocation={setLocation}
+					{({ errors, touched, values, isSubmitting }) => {
+						const disabled = !values.about || !values.userName;
+						return (
+							<Form>
+								<div className={styles.uploader_container}>
+									<ImageUploader
+										onChange={file => setImageFile(file)}
+										imageUrl={user.avatar}
 									/>
+									<h3 className={styles.name}>{user.userName}</h3>
+									<p className={styles.email}>{user.email}</p>
 								</div>
-								<div className={styles.text_area_container}>
-									<Field name="about">
-										{({ field }: FieldProps) => (
-											<TextArea
-												{...field}
-												rows={6}
-												className={styles.text_area}
-												label="About"
-												placeholder="Tell us about yourself..."
-												error={
-													(touched.about && errors.about) || ""
-												}
-											/>
-										)}
-									</Field>
+								<div className={styles.container__form_container__form}>
+									<div className={styles.form_field}>
+										<Field name="firstName">
+											{({ field }: FieldProps) => (
+												<InputField
+													{...field}
+													label="First name"
+													error={
+														(touched.firstName &&
+															errors.firstName) ||
+														""
+													}
+													readOnly
+													placeholder={
+														user.kyc
+															? user.kyc.firstName
+															: "Please complete your KYC"
+													}
+												/>
+											)}
+										</Field>
+									</div>
+									<div className={styles.form_field}>
+										<Field name="lastName">
+											{({ field }: FieldProps) => (
+												<InputField
+													{...field}
+													label="Last name"
+													error={
+														(touched.lastName &&
+															errors.lastName) ||
+														""
+													}
+													readOnly
+													placeholder={
+														user.kyc
+															? user.kyc.lastName
+															: "Please complete your KYC"
+													}
+												/>
+											)}
+										</Field>
+									</div>
+									<div className={styles.form_field}>
+										<Field name="userName">
+											{({ field }: FieldProps) => (
+												<InputField
+													{...field}
+													label="Display name"
+													error={
+														(touched.userName &&
+															errors.userName) ||
+														""
+													}
+												/>
+											)}
+										</Field>
+									</div>
+									<div className={styles.phone_field}>
+										<Field name="phoneNumber">
+											{({ field }: FieldProps) => (
+												<InputField
+													{...field}
+													label="Phone number"
+													customPrefix={
+														<p
+															className={
+																styles.prefix_container
+															}
+														>
+															+234{" "}
+															<span
+																className={
+																	styles.prefix_divider
+																}
+															></span>
+														</p>
+													}
+													type="number"
+													value={phoneNumber}
+													placeholder={
+														user.phoneNumber ||
+														user.kyc?.phoneNumber
+													}
+													error={
+														(touched.phoneNumber &&
+															errors.phoneNumber) ||
+														""
+													}
+													suffix={
+														<p
+															className={
+																styles.suffix_container
+															}
+															onClick={() =>
+																setOpenPhoneNumberModal(
+																	true
+																)
+															}
+														>
+															Edit
+														</p>
+													}
+													readOnly={!editPhoneNumber}
+												/>
+											)}
+										</Field>
+									</div>
+									<div className={styles.address_field}>
+										<Field name="address">
+											{({ field }: FieldProps) => (
+												<InputField
+													{...field}
+													label="Enter address"
+													error={
+														(touched.address &&
+															errors.address) ||
+														""
+													}
+													value={removePlusCode(
+														location?.address as string
+													)}
+													onChange={e => {
+														field.onChange(e);
+														setLocation({
+															...location,
+															address: e.target.value
+														});
+													}}
+												/>
+											)}
+										</Field>
+									</div>
+									{/* <LocationAutoComplete /> */}
+									<div className={styles.map_container}>
+										<Map
+											showTitle={false}
+											location={location}
+											setLocation={setLocation}
+										/>
+									</div>
+									<div className={styles.text_area_container}>
+										<Field name="about">
+											{({ field }: FieldProps) => (
+												<TextArea
+													{...field}
+													rows={6}
+													className={styles.text_area}
+													label="About"
+													placeholder="Tell us about yourself..."
+													error={
+														(touched.about && errors.about) ||
+														""
+													}
+												/>
+											)}
+										</Field>
+									</div>
 								</div>
-							</div>
-							<div className={styles.submit_btn_container}>
-								<Button buttonType="primary" type="submit">
-									{isPending || uploadingImage
-										? "Updating..."
-										: "Save changes"}
-								</Button>
-							</div>
-						</Form>
-					)}
+								<div className={styles.submit_btn_container}>
+									<Button
+										buttonType="primary"
+										type="submit"
+										disabled={disabled}
+									>
+										{isPending || uploadingImage
+											? "Updating..."
+											: "Save changes"}
+									</Button>
+								</div>
+							</Form>
+						);
+					}}
 				</Formik>
 			</div>
+			{openPhoneNumberModal && (
+				<VerifyPhoneNumber
+					setOpenModal={setOpenPhoneNumberModal}
+					setPhoneNumber={setPhoneNumber}
+					phoneNumber={phoneNumber}
+					openModal={openPhoneNumberModal}
+				/>
+			)}
+			{openPinModal && (
+				<ConfirmPin
+					openModal={openPinModal}
+					setOpenModal={setOpenPinModal}
+					onSuccess={() => {
+						if (pendingFormValues) {
+							handleSubmit(pendingFormValues);
+						}
+					}}
+					disabled={isPending}
+				/>
+			)}
 		</div>
 	);
 };
 
 export default PersonalInfoForm;
+
+function removePlusCode(address: string): string {
+	return address?.replace(/\s*[A-Z0-9]+\+[A-Z0-9]+\s*,?\s*/, " ")?.trim();
+}

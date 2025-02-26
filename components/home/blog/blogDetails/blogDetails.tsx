@@ -66,6 +66,9 @@ const BlogDetails = ({ data }: Props) => {
 						</span>
 					</div>
 					<div className={styles.blog_content}>
+						<div className={styles.title}>
+							<h1>{data?.title}</h1>
+						</div>
 						<div
 							dangerouslySetInnerHTML={{
 								__html: data?.content?.text ?? ""

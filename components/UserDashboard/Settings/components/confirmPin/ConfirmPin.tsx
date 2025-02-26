@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./EnterTransactionPin.module.scss";
 import Modal from "@/shared/modals/modal/Modal";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Button, InputField } from "@/shared";
@@ -8,6 +7,7 @@ import { useAppSelector } from "@/store/configureStore";
 import * as Yup from "yup";
 import { useConfirmTransactionPin } from "@/app/api/hooks/settings";
 import { useRouter } from "next/navigation";
+import styles from "./ConfirmPin.module.scss";
 
 interface PinFormValues {
 	accountPin: string;
@@ -16,13 +16,10 @@ interface PinFormValues {
 interface Props {
 	openModal: boolean;
 	setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-	setShowXlmExportModal: React.Dispatch<React.SetStateAction<boolean>>;
+	onSuccess: (e?: any) => void;
+	disabled?: boolean;
 }
-const EnterTransactionPin = ({
-	openModal,
-	setOpenModal,
-	setShowXlmExportModal
-}: Props) => {
+const ConfirmPin = ({ openModal, setOpenModal, onSuccess, disabled }: Props) => {
 	const user = useAppSelector(state => state.user);
 	const { mutateAsync: confirmPin, isPending } = useConfirmTransactionPin();
 	const router = useRouter();
@@ -41,22 +38,19 @@ const EnterTransactionPin = ({
 		values: PinFormValues,
 		{ resetForm }: { resetForm: () => void }
 	) => {
-		await confirmPin(
-			{ userId: user._id as string, pin: parseInt(values.accountPin) },
-			{
-				onSuccess: value => {
-					setOpenModal(false);
-					setShowXlmExportModal(true);
-					resetForm();
-				},
-				onError: (error: any) => {
-					toast.error(
-						error?.response?.data?.message ??
-							"Could not confirm transaction pin, try again later!!!"
-					);
-				}
-			}
-		);
+		try {
+			await confirmPin({
+				userId: user._id as string,
+				pin: parseInt(values.accountPin)
+			});
+			await onSuccess();
+			resetForm();
+		} catch (error: any) {
+			toast.error(
+				error?.response?.data?.message ??
+					"Could not confirm transaction pin, try again later!!!"
+			);
+		}
 	};
 
 	const onClose = () => {
@@ -93,7 +87,7 @@ const EnterTransactionPin = ({
 									<Button
 										buttonType="primary"
 										type="submit"
-										disabled={isSubmitting}
+										disabled={isSubmitting || disabled}
 									>
 										{isPending ? "Processing..." : "Proceed"}
 									</Button>
@@ -108,7 +102,7 @@ const EnterTransactionPin = ({
 												router.push("/user/settings?q=account")
 											}
 										>
-											Contact support
+											Reset Pin
 										</span>
 									</p>
 								</div>
@@ -121,4 +115,4 @@ const EnterTransactionPin = ({
 	);
 };
 
-export default EnterTransactionPin;
+export default ConfirmPin;
