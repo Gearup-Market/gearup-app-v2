@@ -12,12 +12,12 @@ const isSlug = (idOrSlug: string) => {
 
 async function getArticleBySlug(slug: string): Promise<Props | null> {
 	console.log(
-		`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/blog/${
+		`${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/${
 			isSlug(slug) ? "slug/" : null
 		}${slug}`
 	);
 	const res = await fetch(
-		`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/blog/${
+		`${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/${
 			isSlug(slug) ? "slug/" : ""
 		}${slug}`,
 		{
