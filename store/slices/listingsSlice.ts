@@ -4,7 +4,7 @@ import { User } from "@/interfaces/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Item {
-	id: number;
+	id: number | string;
 	quantity: number;
 	name: string;
 }

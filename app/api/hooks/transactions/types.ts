@@ -14,20 +14,22 @@ export interface CartReq {
 	userId: string;
 	listingId: string;
 	type: TransactionType;
-	rentalPeriod?: RentalPeriod;
+	rentalBreakdown: RentalBreakdown[];
 	customPrice?: number;
 }
 
-export type RentalPeriod = {
-	start: Date | string;
-	end: Date | string;
+export type RentalBreakdown = {
+	date: Date;
+	duration: string;
+	quantity: number;
+	price: number;
 };
 
 export interface CartItem {
 	id?: string;
 	listing: Listing;
 	type: TransactionType;
-	rentalPeriod?: RentalPeriod;
+	rentalBreakdown: RentalBreakdown[];
 	price?: number;
 	vat?: number;
 	serviceFee?: number;
@@ -72,7 +74,7 @@ export interface Transaction {
 	type: TransactionType;
 	status: TransactionStatus;
 	amount: number;
-	rentalPeriod?: RentalPeriod;
+	rentalBreakdown: RentalBreakdown[];
 	payment: string;
 	metadata: MetadataSchema;
 	stages: Stage[];

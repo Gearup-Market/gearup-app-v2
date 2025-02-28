@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./MoreModal.module.scss";
 import { ToggleSwitch } from "@/shared";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import {
 	usePostRemoveListing
 } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
+import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 
 interface MoreModalProps {
 	row?: any;
@@ -89,15 +90,12 @@ const MoreModal = ({
 					</span>
 				</div>
 			)}
-			<div
+			{/* <div
 				className={`${styles.container__delete} ${styles.item}`}
-				onClick={() => {
-					if (isPendingRemoval) return;
-					onDeleteListing();
-				}}
+				onClick={() => handleDelete(row.id)}
 			>
 				Delete
-			</div>
+			</div> */}
 		</div>
 	);
 };

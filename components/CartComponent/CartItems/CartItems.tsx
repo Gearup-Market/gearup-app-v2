@@ -10,7 +10,8 @@ import {
 	calculateItemPrice,
 	formatNum,
 	getApplicableRate,
-	getDaysDifference
+	getDaysDifference,
+	getLastRentalDate
 } from "@/utils";
 import toast from "react-hot-toast";
 import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
@@ -116,8 +117,8 @@ const RentalComp = ({
 }) => {
 	const price = calculateItemPrice(item);
 	const { offer } = item.listing;
-	const startDate = new Date(item.rentalPeriod!.start);
-	const endDate = new Date(item.rentalPeriod!.end);
+	const startDate: Date = new Date(item.rentalBreakdown[0].date);
+	const endDate = new Date(getLastRentalDate(item.rentalBreakdown));
 	const timeDiff = endDate.getTime() - startDate.getTime();
 
 	const durationInDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
@@ -159,8 +160,11 @@ const RentalComp = ({
 			<div className={styles.summary_item}>
 				<h4>Duration</h4>
 				<p>
-					{getDaysDifference(item.rentalPeriod?.start, item.rentalPeriod?.end)}{" "}
-					days
+					{getDaysDifference(
+						item.rentalBreakdown[0].date,
+						getLastRentalDate(item.rentalBreakdown)
+					)}{" "}
+					{item.rentalBreakdown[0].duration}s
 				</p>
 			</div>
 			<div className={styles.summary_item}>

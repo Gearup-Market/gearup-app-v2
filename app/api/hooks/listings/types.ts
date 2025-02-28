@@ -36,6 +36,9 @@ export interface iPostListingResp {
 		description: string;
 		listingPhotos: string[];
 		listingType: "rent" | "sell";
+		fieldValues: {
+			[key: string]: string | string[];
+		};
 		condition: string;
 		user: {
 			_id: string;

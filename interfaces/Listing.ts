@@ -68,7 +68,7 @@ interface Price {
 }
 
 export interface Item {
-	id: number;
+	id: number | string;
 	quantity: number;
 	name: string;
 }
@@ -80,10 +80,8 @@ export interface AddListing {
 	category?: Category;
 	subCategory?: Category;
 	fieldValues?: {
-		name: string;
-		fieldType: "single" | "multiple";
-		selectedValues: Category[];
-	}[];
+		[key: string]: string | string[];
+	};
 	description?: string;
 	images?: string[];
 	// images?: { id: string | null; url: string; fileName: string; type: string }[];
@@ -150,7 +148,7 @@ interface Price {
 }
 
 export interface Item {
-	id: number;
+	id: number | string;
 	quantity: number;
 	name: string;
 }
@@ -168,7 +166,9 @@ export interface ListingState {
 	listingType: string;
 	condition: string;
 	userId: string;
-	fieldValues: Field[];
+	fieldValues: {
+		[key: string]: string | string[];
+	};
 	offer: {
 		forSell?: SellingOffer;
 		forRent?: RentingOffer;

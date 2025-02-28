@@ -81,7 +81,7 @@ const CheckoutView = () => {
 						item={checkout.item}
 						amount={checkout.amount}
 						type={checkout.type}
-						rentalPeriod={checkout.rentalPeriod}
+						rentalBreakdown={checkout.rentalBreakdown}
 					/>
 				)}
 				<div>

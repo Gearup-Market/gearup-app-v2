@@ -45,6 +45,7 @@ const ConfirmPin = ({ openModal, setOpenModal, onSuccess, disabled }: Props) => 
 			});
 			await onSuccess();
 			resetForm();
+			onClose();
 		} catch (error: any) {
 			toast.error(
 				error?.response?.data?.message ??

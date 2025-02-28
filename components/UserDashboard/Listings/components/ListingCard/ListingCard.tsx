@@ -21,6 +21,7 @@ interface Props {
 	onClickEdit?: (listingId: string) => void;
 	refetch?: () => void;
 	closePopOver?: () => void;
+	handleDelete?: (id: string) => void;
 }
 
 const ListingCard = ({
@@ -33,7 +34,8 @@ const ListingCard = ({
 	showStatusIcon = true,
 	onClickEdit,
 	refetch,
-	closePopOver
+	closePopOver,
+	handleDelete
 }: Props) => {
 	const [showMoreModal, setShowMoreModal] = useState(false);
 

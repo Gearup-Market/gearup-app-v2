@@ -10,8 +10,10 @@ import {
 import { useListingFilters } from "./useListings";
 import { useResponsive } from "./useResponsive";
 import { useChatSocket } from "./useChatSocket";
+import usePercentageToPixels from "./usePercentageToPixels";
 
 export {
+	usePercentageToPixels,
 	useCopy,
 	usePagination,
 	useFetch,

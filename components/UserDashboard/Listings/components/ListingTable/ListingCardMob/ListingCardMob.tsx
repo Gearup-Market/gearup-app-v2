@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./ListingCardMob.module.scss";
 import Image from "next/image";
 import { Button, MobileCard, ToggleSwitch } from "@/shared";
-import { formatDate } from "@/utils";
+import { formatDate, formatNum } from "@/utils";
 import Link from "next/link";
 import { useAppSelector } from "@/store/configureStore";
 import { usePostRemoveListing } from "@/app/api/hooks/listings";
@@ -54,7 +54,7 @@ const ListingCardMob = ({
 				<>
 					<div className={styles.container__details__detail_container}>
 						<p className={styles.key}>Price</p>
-						<p className={styles.value}>{item.price}</p>
+						<p className={styles.value}>{formatNum(item.price)}</p>
 					</div>
 					<div className={styles.container__details__detail_container}>
 						<p className={styles.key}>Sold</p>

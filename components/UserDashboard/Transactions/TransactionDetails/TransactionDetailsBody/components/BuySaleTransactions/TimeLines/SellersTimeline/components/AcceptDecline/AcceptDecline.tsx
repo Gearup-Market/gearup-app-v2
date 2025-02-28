@@ -17,8 +17,7 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
 	const { userId } = useAppSelector(s => s.user);
 
-	const { metadata, isBuyer, id, amount, transactionStatus, listing, rentalPeriod } =
-		item;
+	const { metadata, isBuyer, id, amount, transactionStatus, listing } = item;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
 
 	const isCancelled = useMemo(

@@ -1,4 +1,8 @@
-import { CartItem, TransactionType } from "@/app/api/hooks/transactions/types";
+import {
+	CartItem,
+	RentalBreakdown,
+	TransactionType
+} from "@/app/api/hooks/transactions/types";
 import { Listing } from "@/store/slices/listingsSlice";
 
 // function getApplicableRate(offer: Listing["offer"], durationInDays: number) {
@@ -89,18 +93,21 @@ export function getApplicableRate(
 }
 
 export function calculateItemPrice(item: CartItem): number {
-	const { type, rentalPeriod, listing } = item;
+	const { type, rentalBreakdown, listing } = item;
 
-	if (rentalPeriod && type === TransactionType.Rental) {
+	if (rentalBreakdown?.length && type === TransactionType.Rental) {
 		const rateType = listing.offer.forRent?.rates[0]?.duration;
 		if (!rateType) return 0;
 
-		const startDate = new Date(rentalPeriod.start);
-		const endDate = new Date(rentalPeriod.end);
+		const startDate = new Date(rentalBreakdown[0].date);
+		const endDate = new Date(getLastRentalDate(rentalBreakdown));
 		const timeDiff = endDate.getTime() - startDate.getTime();
 
 		if (rateType === "hour") {
-			const durationInHours = Math.ceil(timeDiff / (1000 * 3600));
+			const durationInHours = rentalBreakdown.reduce(
+				(total, period) => total + period.quantity,
+				0
+			);
 			const { price } = getApplicableRate(listing.offer, durationInHours, "hour");
 			return price * durationInHours;
 		} else {
@@ -116,3 +123,6 @@ export function calculateItemPrice(item: CartItem): number {
 
 	return 0;
 }
+
+export const getLastRentalDate = (rentalBreakdown: RentalBreakdown[]): Date =>
+	rentalBreakdown[rentalBreakdown.length - 1].date;

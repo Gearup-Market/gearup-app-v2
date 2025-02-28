@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./MobileCard.module.scss";
 import Image from "next/image";
 import CustomImage from "../customImage/CustomImage";
+import { formatNum } from "@/utils";
 
 interface Props {
 	mainHeaderText?: string;
@@ -46,7 +47,7 @@ const MobileCard = ({
 					>
 						<p className={styles.name}>{mainHeaderText}</p>
 						{!!subHeaderText && (
-							<p className={styles.amount}>{subHeaderText}</p>
+							<p className={styles.amount}>{formatNum(subHeaderText)}</p>
 						)}
 					</div>
 				</div>

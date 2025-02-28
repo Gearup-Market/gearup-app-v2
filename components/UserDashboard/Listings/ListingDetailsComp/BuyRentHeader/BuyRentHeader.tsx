@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BuyRentHeader.module.scss";
 import { Button, ToggleSwitch } from "@/shared";
 import HeaderSubText from "@/components/UserDashboard/HeaderSubText/HeaderSubText";
@@ -13,12 +13,14 @@ import {
 	usePostChangeListingStatus,
 	usePostRemoveListing
 } from "@/app/api/hooks/listings";
+import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 
 const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { userId } = useAppSelector(s => s.user);
 	const { status } = listing;
+	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
 		usePostRemoveListing();
@@ -54,8 +56,13 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 	const onClickEdit = () => {
 		const payload = {
 			...listing,
-			items: [{ name: listing.productName, quantity: 1, id: 0 }],
-			fieldValues: [],
+			items: [
+				{
+					name: listing.productName || "Default Product Name",
+					quantity: 1,
+					id: listing._id || 0
+				}
+			],
 			tempPhotos: [],
 			userId
 		};
@@ -89,7 +96,7 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 						iconPrefix="/svgs/trash.svg"
 						buttonType="transparent"
 						className={styles.delete_btn}
-						onClick={onHandleDeleteListing}
+						onClick={() => setOpenModal(true)}
 						disabled={isPendingRemoval}
 					>
 						Delete
@@ -99,6 +106,13 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 					</Button>
 				</div>
 			</div>
+			{openModal && (
+				<ConfirmPin
+					openModal={openModal}
+					setOpenModal={setOpenModal}
+					onSuccess={onHandleDeleteListing}
+				/>
+			)}
 		</div>
 	);
 };
