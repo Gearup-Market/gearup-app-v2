@@ -5,17 +5,28 @@ import { CopyIcon } from "@/shared/svgs/dashboard";
 import { PersonalDetails, ReceiptDetails, WarningContainer } from "./components";
 import { iTransactionDetails } from "@/interfaces";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
-import { formatNum, getDaysDifference } from "@/utils";
+import { formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
 
 const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
-	const { isBuyer, amount, listing, transactionType, id, buyer, seller, rentalPeriod } =
-		item;
+	const {
+		isBuyer,
+		amount,
+		listing,
+		transactionType,
+		id,
+		buyer,
+		seller,
+		rentalBreakdown
+	} = item;
 	const offer = listing ? listing.offer : null;
 	const forSale = !!offer?.forSell;
 	const user = isBuyer ? seller : buyer;
 	const duration =
 		transactionType === TransactionType.Rental
-			? getDaysDifference(rentalPeriod?.start, rentalPeriod?.end)
+			? getDaysDifference(
+					rentalBreakdown[0].date,
+					getLastRentalDate(rentalBreakdown)
+			  )
 			: 0;
 	const unitPrice = listing
 		? forSale

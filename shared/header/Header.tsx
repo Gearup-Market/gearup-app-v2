@@ -265,9 +265,9 @@ const LinkItem = ({
 			onMouseEnter={showBackground}
 			onMouseLeave={() => setIsBackground(false)}
 		>
-			{link.label === "blog" ? (
+			{link.label === "blog" || link.label === "courses" ? (
 				<Link
-					href={link.href}
+					href={link.label === "courses" ? "/user/dashboard" : link.href}
 					className={styles.link_row}
 					onClick={() => setCollapsed(!collapsed)}
 				>

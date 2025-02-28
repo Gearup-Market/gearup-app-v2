@@ -123,7 +123,12 @@ const Listing = ({ props, className, actionType }: Props) => {
 									? offer?.forRent?.rates[0].price
 									: 0
 							)}
-							<span>/Day</span>
+							<span>
+								/
+								{offer?.forRent?.rates.length
+									? offer?.forRent?.rates[0].duration
+									: "Day"}
+							</span>
 						</p>
 					</div>
 				)}

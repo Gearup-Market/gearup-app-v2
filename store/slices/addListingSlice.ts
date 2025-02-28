@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: ListingState = {
 	productName: "",
 	items: [],
-	fieldValues: [],
+	fieldValues: {},
 	productionType: "",
 	description: "",
 	listingPhotos: [],

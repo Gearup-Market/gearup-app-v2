@@ -92,6 +92,7 @@
 			/* Headings */
 			h1 {
 				font-size: 4rem; /* 40px */
+				line-height: 5rem;
 				font-weight: bold;
 				margin: 1.5rem 0; /* Spacing above and below */
 				color: #2c3e50; /* Dark color for main title */
@@ -99,6 +100,7 @@
 
 			h2 {
 				font-size: 3.2rem; /* 32px */
+				line-height: 4rem;
 				font-weight: bold;
 				margin: 1.2rem 0; /* Spacing above and below */
 				color: #34495e; /* Slightly lighter color */
@@ -106,6 +108,7 @@
 
 			h3 {
 				font-size: 2.8rem; /* 28px */
+				line-height: 3.2rem;
 				font-weight: bold;
 				margin: 1rem 0; /* Spacing above and below */
 				color: #4e5b77; /* Even lighter color */
@@ -240,6 +243,35 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
+		}
+	}
+	.learn_more {
+		width: 100%;
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #ffb30f;
+		display: flex;
+		justify-content: flex-start;
+		gap: 0.5rem;
+		align-items: center;
+
+		span {
+			display: flex;
+
+			align-items: center;
+		}
+
+		.text {
+			font-size: 1.6rem;
+			font-weight: 700;
+			color: #ffb30f;
+			width: 100%;
+			max-width: 8.1rem;
+		}
+
+		.image_arrow {
+			width: 2rem;
+			height: 2rem;
 		}
 	}
 

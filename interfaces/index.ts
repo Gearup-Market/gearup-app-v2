@@ -2,7 +2,7 @@
 
 import { iWTransaction } from "@/app/api/hooks/wallets/types";
 import { User } from "./User";
-import { RentalPeriod, UserRole } from "@/app/api/hooks/transactions/types";
+import { RentalBreakdown, UserRole } from "@/app/api/hooks/transactions/types";
 import { Listing } from "@/store/slices/listingsSlice";
 
 export interface NavLinkMenu {
@@ -79,7 +79,6 @@ export enum ListingType {
 	Both = "both"
 }
 
-
 export enum ThirdPartyCheckupStage {
 	AwaitingThirdPartyDelivery = "awaiting_third_party_delivery",
 	ThirdPartyReceived = "third_party_received",
@@ -87,7 +86,7 @@ export enum ThirdPartyCheckupStage {
 	ThirdPartyReportProvided = "third_party_report_provided",
 	BuyerReviewingReport = "buyer_reviewing_report",
 	BuyerRequestedRefund = "buyer_requested_refund",
-	SellerConfirmingReturn = "seller_confirming_return",
+	SellerConfirmingReturn = "seller_confirming_return"
 }
 
 export enum TransactionStage {
@@ -111,14 +110,19 @@ export enum TransactionStage {
 	ThirdPartyReportProvided = "third_party_report_provided",
 	BuyerReviewingReport = "buyer_reviewing_report",
 	BuyerRequestedRefund = "buyer_requested_refund",
-	SellerConfirmingReturn = "seller_confirming_return",
+	SellerConfirmingReturn = "seller_confirming_return"
 }
 
 export enum ShippingType {
-	Shipping = 'shipping',
-	LocalPickup = 'localpickup'
+	Shipping = "shipping",
+	LocalPickup = "localpickup"
 }
-export type Stage = { updatedAt: Date; stage: TransactionStage, transactionHash: string; isCurrent: boolean  };
+export type Stage = {
+	updatedAt: Date;
+	stage: TransactionStage;
+	transactionHash: string;
+	isCurrent: boolean;
+};
 export type MetadataSchema = {
 	thirdPartyCheckup?: boolean;
 	shippingType?: ShippingType;
@@ -129,7 +133,7 @@ export type MetadataSchema = {
 	city?: string;
 	postalCode?: string;
 	phoneNumber?: string;
-} 
+};
 
 export interface iTransactionDetails {
 	id: string;
@@ -149,9 +153,9 @@ export interface iTransactionDetails {
 	reviews: {
 		buyerReviewed: boolean;
 		sellerReviewed: boolean;
-	}
-	metadata?: MetadataSchema
-	rentalPeriod?: RentalPeriod;
+	};
+	metadata?: MetadataSchema;
+	rentalBreakdown: RentalBreakdown[];
 }
 
 export enum TransactionStatus {
@@ -159,5 +163,5 @@ export enum TransactionStatus {
 	Ongoing = "ongoing",
 	Completed = "completed",
 	Cancelled = "cancelled",
-	Declined = "declined",
+	Declined = "declined"
 }

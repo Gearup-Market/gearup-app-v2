@@ -19,13 +19,16 @@ import { useRouter } from "next/navigation";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import {
 	usePostChangeListingStatus,
-	usePostChangeUserListingStatus
+	usePostChangeUserListingStatus,
+	usePostRemoveListing
 } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
 import { formatNum } from "@/utils";
 import NoListings from "../../NoListings/NoListings";
 import { useGetAllCourses } from "@/app/api/hooks/courses";
 import { useListingsByUser } from "@/hooks/useListings";
+import { usePercentageToPixels } from "@/hooks";
+import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 
 interface Props {
 	activeFilter: string;
@@ -44,7 +47,18 @@ const ListingTable = ({
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
+	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [listingIdToDelete, setListingIdToDelete] = useState<string>("");
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const titleWidth = usePercentageToPixels(containerRef, 25);
+	const categoryWidth = usePercentageToPixels(containerRef, 10);
+	const dateWidth = usePercentageToPixels(containerRef, 10);
+	const statusWidth = usePercentageToPixels(containerRef, 10);
+	const priceWidth = usePercentageToPixels(containerRef, 15);
+	const availabilityWidth = usePercentageToPixels(containerRef, 10);
+	const actionsWidth = usePercentageToPixels(containerRef, 10);
 	const { userId } = useAppSelector(s => s.user);
 	// const { data: courseListings, isLoading } = useGetAllCourses();
 	// const listings = useAppSelector(s => s.listings.owned);
@@ -55,6 +69,9 @@ const ListingTable = ({
 		isFetching,
 		listings: userListings
 	} = useListingsByUser(currentPage);
+
+	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
+		usePostRemoveListing();
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
@@ -145,7 +162,8 @@ const ListingTable = ({
 			condition,
 			offer,
 			listingPhotos,
-			_id
+			_id,
+			location
 		} = listing!;
 		const payload = {
 			_id,
@@ -156,9 +174,11 @@ const ListingTable = ({
 			condition,
 			offer,
 			listingPhotos,
-			fieldValues: [],
+			fieldValues: listing?.fieldValues,
 			tempPhotos: [],
-			userId
+			items: [{ name: productName, quantity: 1, id: 0 }],
+			userId,
+			location
 		};
 
 		dispatch(updateNewListing(payload));
@@ -191,7 +211,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Product Name",
-			minWidth: 300,
+			minWidth: titleWidth,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
 					{row.image && (
@@ -210,7 +230,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Category",
-			minWidth: 200
+			minWidth: categoryWidth
 		},
 		{
 			...sharedColDef,
@@ -219,7 +239,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Date",
-			minWidth: 150
+			minWidth: dateWidth
 		},
 		{
 			...sharedColDef,
@@ -227,7 +247,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Status",
-			minWidth: 150,
+			minWidth: statusWidth,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__status_container}>
 					<ToggleSwitch
@@ -250,7 +270,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Price",
-			minWidth: 150,
+			minWidth: priceWidth,
 			renderCell: ({ value }) => "₦" + formatNum(value)
 		},
 		{
@@ -260,7 +280,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Availability",
-			minWidth: 150,
+			minWidth: availabilityWidth,
 			renderCell: ({ value }) => (
 				<div className={styles.container__availability_container}>
 					<span
@@ -280,7 +300,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Actions",
-			minWidth: 150,
+			minWidth: actionsWidth,
 			renderCell: ({ row, value }) => (
 				<span className={`${styles.container__action_btn} options_icon`}>
 					<Popper
@@ -298,6 +318,7 @@ const ListingTable = ({
 										onClickEdit={onClickEdit}
 										refetch={refetch}
 										closePopOver={closePopOver}
+										// handleDelete={handleOpenDeleteModal}
 									/>
 								</div>
 							</Fade>
@@ -403,6 +424,7 @@ const ListingTable = ({
 										activeFilter={activeFilter}
 										refetch={refetch}
 										closePopOver={closePopOver}
+										// handleDelete={handleOpenDeleteModal}
 									/>
 								</div>
 							</Fade>
@@ -454,8 +476,26 @@ const ListingTable = ({
 		}
 	];
 
+	const handleOpenDeleteModal = (id: string) => {
+		setListingIdToDelete(id);
+		setOpenModal(true);
+	};
+
+	const onDeleteListing = async () => {
+		if (!listingIdToDelete) return;
+		try {
+			const payload = { userId, listingId: listingIdToDelete };
+			const res = await postRemoveListing(payload);
+			if (res.data) {
+				toast.success("Listing deleted");
+				refetch!();
+				closePopOver!();
+			}
+		} catch (error) {}
+	};
+
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} ref={containerRef}>
 			<div className={styles.container__input_filter_container}>
 				<InputField
 					placeholder="Search"
@@ -535,6 +575,7 @@ const ListingTable = ({
 										onClickEdit={onClickEdit}
 										refetch={refetch}
 										closePopOver={closePopOver}
+										handleDelete={handleOpenDeleteModal}
 									/>
 								))}
 							</div>
@@ -550,6 +591,13 @@ const ListingTable = ({
 				pageSize={10}
 				onPageChange={(page: any) => updatePage(page)}
 			/>
+			{openModal && (
+				<ConfirmPin
+					openModal={openModal}
+					setOpenModal={setOpenModal}
+					onSuccess={onDeleteListing}
+				/>
+			)}
 		</div>
 	);
 };

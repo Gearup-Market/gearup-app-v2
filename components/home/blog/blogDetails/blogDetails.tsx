@@ -12,6 +12,7 @@ import { Box } from "@mui/material";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { shortenTitle } from "@/utils";
 import { IGetArticle } from "@/app/api/hooks/blogs/types";
+import Link from "next/link";
 
 interface Props {
 	data: IGetArticle;
@@ -124,6 +125,22 @@ const BlogDetails = ({ data }: Props) => {
 										/>
 									</p>
 								</div>
+								<Link
+									href={`/blog/${blog.slug}`}
+									className={styles.learn_more}
+								>
+									<p className={styles.text}>Learn more</p>{" "}
+									<span className={styles.icon}>
+										{" "}
+										<Image
+											height={20}
+											width={20}
+											src="/svgs/learn-more-arrow.svg"
+											alt="arrow-right"
+											className={styles.image_arrow}
+										/>
+									</span>
+								</Link>
 							</div>
 						</li>
 					))}

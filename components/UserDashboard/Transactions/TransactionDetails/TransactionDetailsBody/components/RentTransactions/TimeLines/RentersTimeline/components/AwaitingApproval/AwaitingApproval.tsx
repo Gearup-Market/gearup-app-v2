@@ -8,7 +8,7 @@ import { iTransactionDetails, TransactionStage, TransactionStatus } from "@/inte
 import { useAppSelector } from "@/store/configureStore";
 import { usePostTransactionStatus } from "@/app/api/hooks/transactions";
 import toast from "react-hot-toast";
-import { formatDate, getDaysDifference } from "@/utils";
+import { formatDate, getDaysDifference, getLastRentalDate } from "@/utils";
 
 interface Props {
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
@@ -18,7 +18,8 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 	const { userId } = useAppSelector(s => s.user);
 	const { currentStage } = useAppSelector(s => s.transaction);
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
-	const { isBuyer, id, amount, transactionStatus, listing, rentalPeriod, buyer } = item;
+	const { isBuyer, id, amount, transactionStatus, listing, rentalBreakdown, buyer } =
+		item;
 
 	const isCancelled = useMemo(
 		() => transactionStatus === TransactionStatus.Cancelled,
@@ -97,11 +98,14 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 										</span>{" "}
 										from{" "}
 										<span className={styles.bold}>
-											{formatDate(rentalPeriod?.start)} to{" "}
-											{formatDate(rentalPeriod?.end)} (
+											{formatDate(rentalBreakdown[0].date)} to{" "}
+											{formatDate(
+												getLastRentalDate(rentalBreakdown)
+											)}{" "}
+											(
 											{getDaysDifference(
-												rentalPeriod?.start,
-												rentalPeriod?.end
+												rentalBreakdown[0].date,
+												getLastRentalDate(rentalBreakdown)
 											)}
 											days)
 										</span>{" "}

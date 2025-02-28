@@ -15,7 +15,6 @@ interface Props {
 
 const DetailsComponent = ({ item }: Props) => {
 	const { data: allPricings, isLoading } = useGetAllPricings();
-	console.log(item, allPricings);
 	const formatDate = (isoString: string): string => {
 		const date = new Date(isoString);
 		const options: Intl.DateTimeFormatOptions = {
@@ -29,13 +28,10 @@ const DetailsComponent = ({ item }: Props) => {
 	const itemObject = {
 		listing: item.item,
 		type: TransactionType.Rental,
-		rentalPeriod: {
-			start: item.type !== "Sale" ? item?.rentalPeriod.start : new Date(),
-			end: item.type !== "Sale" ? item?.rentalPeriod.end : new Date()
-		}
+		rentalPeriod: item.rental
 	};
 
-	const price = item.type === "Sale" ? item.amount : calculateItemPrice(itemObject);
+	const price = item.amount;
 
 	const vat = price * (allPricings?.valueAddedTax! / 100);
 	const fee = price * (allPricings?.valueAddedTax! / 100);

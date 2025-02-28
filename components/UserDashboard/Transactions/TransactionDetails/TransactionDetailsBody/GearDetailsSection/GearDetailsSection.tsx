@@ -4,7 +4,7 @@ import { Button, DetailContainer } from "@/shared";
 import { mockListing } from "@/store/slices/addListingSlice";
 import { ImageSlider } from "@/components/listing";
 import Image from "next/image";
-import { formatNum, getDaysDifference } from "@/utils";
+import { formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
 import { useGetSingleTransactions } from "@/app/api/hooks/transactions";
 import { PageLoader } from "@/shared/loaders";
 import { useAppSelector } from "@/store/configureStore";
@@ -19,9 +19,9 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 	const listingData = transaction?.listing;
 	const fieldValues = Object.entries(listingData!.fieldValues);
 
-	const endDate = transaction?.rentalPeriod?.end as string;
+	const endDate = new Date(transaction?.rentalBreakdown[0].date as Date);
 
-	const startDate = transaction?.rentalPeriod?.start as string;
+	const startDate = new Date(getLastRentalDate(transaction!.rentalBreakdown));
 
 	const rentalPeriod = getDaysDifference(startDate, endDate);
 
@@ -207,7 +207,7 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 								{rentalPeriod > 1 ? "s" : ""})
 							</h4>
 							<p>
-								{startDate.split("T")[0]} - {endDate.split("T")[0]}
+								{startDate.getDate()} - {endDate.getDate()}
 							</p>
 						</div>
 						<div className={styles.summary_item}>

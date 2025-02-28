@@ -45,6 +45,7 @@
 			gap: 1.6rem;
 			.row {
 				@include flex(space-between, center);
+				width: 100%;
 				h3 {
 					color: #1b1e21;
 					font-weight: 700;
@@ -52,6 +53,12 @@
 				}
 				.icon {
 					position: relative;
+				}
+				.delete {
+					position: relative;
+					width: 2.4rem;
+					height: 2.4rem;
+					cursor: pointer;
 				}
 			}
 			.input_field {
@@ -95,6 +102,9 @@
 						border-radius: 1.6rem;
 					}
 				}
+			}
+			&:not(:first-child) {
+				margin-top: 1.6rem;
 			}
 		}
 		.button {

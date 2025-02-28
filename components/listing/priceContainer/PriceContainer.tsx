@@ -14,8 +14,12 @@ import {
 	getApplicableRate,
 	getDaysDifference
 } from "@/utils";
-import useCart from "@/hooks/useCart";
-import { TransactionType } from "@/app/api/hooks/transactions/types";
+import useCart, { CartPayload } from "@/hooks/useCart";
+import {
+	CartItem,
+	RentalBreakdown,
+	TransactionType
+} from "@/app/api/hooks/transactions/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAppSelector } from "@/store/configureStore";
@@ -38,6 +42,7 @@ const PriceContainer = ({
 	const actionType = search.get("type");
 	const user = useAppSelector(state => state.user);
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
+	const [hourRentalBreakdown, setHourRentalBreakdown] = useState<RentalBreakdown[]>([]);
 	const [inputDate, setInputDate] = useState([
 		{
 			startDate: new Date(),
@@ -60,19 +65,9 @@ const PriceContainer = ({
 			? TransactionType.Sale
 			: TransactionType.Rental;
 
-	const item = {
-		listing,
-		type: TransactionType.Rental,
-		rentalPeriod: {
-			start: inputDate[0].startDate,
-			end: inputDate[0].endDate
-		}
-	};
-
-	const price = calculateItemPrice(item);
-
 	const startDate = new Date(inputDate[0].startDate);
 	const endDate = new Date(inputDate[0].endDate);
+	const totalDays = getDaysDifference(startDate, endDate) + 1;
 	const timeDiff = endDate.getTime() - startDate.getTime();
 
 	const durationInDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
@@ -81,19 +76,49 @@ const PriceContainer = ({
 	const { appliedRate } = getApplicableRate(
 		offer,
 		offer.forRent?.rates.length
-			? offer.forRent?.rates[0].duration === "hours"
+			? offer.forRent?.rates[0].duration === "hour"
 				? durationInHours
 				: durationInDays
 			: durationInHours,
 		offer.forRent?.rates.length
 			? (offer.forRent?.rates[0].duration as string)
-			: "hours"
+			: "hour"
 	);
+
+	const formattedHourRentalBreakdown = hourRentalBreakdown.map(period => ({
+		date: period.date,
+		duration: "hour",
+		quantity: period.quantity,
+		price: appliedRate?.price || 0
+	}));
+
+	const dayRentalBreakdown = Array.from({ length: totalDays }, (_, i) => {
+		const currentDate = new Date(startDate);
+		currentDate.setDate(startDate.getDate() + i);
+		return {
+			date: currentDate,
+			duration: "day",
+			quantity: 1,
+			price: appliedRate?.price || 0
+		};
+	});
+	const item: CartItem = {
+		listing,
+		type: TransactionType.Rental,
+		rentalBreakdown:
+			offer.forRent?.rates[0].duration === "hour"
+				? formattedHourRentalBreakdown
+				: dayRentalBreakdown
+	};
+
+	const price = calculateItemPrice(item);
 
 	const vat = (allPricings?.valueAddedTax! / 100) * price;
 	const serviceFee = (allPricings?.gearLeaseFee! / 100) * price;
 
 	const total = price + serviceFee + vat;
+
+	console.log(item);
 
 	const handleAddToCart = () => {
 		if (!user.kyc) {
@@ -152,6 +177,7 @@ const PriceContainer = ({
 				setInputDate={setInputDate}
 				setOpenModal={setOpenModal}
 				inputDate={inputDate}
+				setHourRentalBreakdown={setHourRentalBreakdown}
 			/>
 		);
 	};

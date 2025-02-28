@@ -18,34 +18,41 @@ interface Props {
 	setInputDate: (e?: any) => void;
 	openModal: boolean;
 	inputDate: any;
+	setHourRentalBreakdown: (e?: any) => void;
 }
 
 interface Period {
 	date: Date;
-	time: number;
+	quantity: number;
 	id: number;
 }
 
 const emptyPeriod: Period = {
 	date: new Date(),
-	time: 0,
+	quantity: 0,
 	id: 1
 };
 
-const HourDatePicker = ({ setOpenModal, setInputDate, openModal, inputDate }: Props) => {
+const HourDatePicker = ({
+	setOpenModal,
+	setInputDate,
+	openModal,
+	inputDate,
+	setHourRentalBreakdown
+}: Props) => {
 	const [period, setPeriod] = useState<Period[]>([emptyPeriod]);
 
 	const addOption = () => {
 		if (!checkEmptyState(period)) return;
 		setPeriod(prev => [...prev, { ...emptyPeriod, id: prev.length + 1 }]);
 	};
-	// const apply = () => {
-	// 	setIsDateSelected(true);
-	// 	setOpenModal(false);
-	// };
 
 	const updatePeriod = (index: number, field: keyof Period, value: any) => {
 		setPeriod(prev => prev.map(p => (p.id === index ? { ...p, [field]: value } : p)));
+	};
+
+	const deletePeriod = (index: number) => {
+		setPeriod(prev => prev.filter(p => p.id !== index));
 	};
 
 	useEffect(() => {
@@ -55,7 +62,19 @@ const HourDatePicker = ({ setOpenModal, setInputDate, openModal, inputDate }: Pr
 		};
 	}, [openModal]);
 
-	console.log(period);
+	const applyDateAndTime = () => {
+		if (!checkEmptyState(period)) return toast.error("Please select a date and time");
+		setInputDate([
+			{
+				startDate: period[0].date,
+				endDate: period[period.length - 1].date,
+				key: "selection"
+			}
+		]);
+		setHourRentalBreakdown(period);
+		setOpenModal(false);
+	};
+
 	return (
 		<Modal
 			openModal={openModal}
@@ -69,8 +88,9 @@ const HourDatePicker = ({ setOpenModal, setInputDate, openModal, inputDate }: Pr
 						index={_period.id}
 						key={_period.id}
 						date={_period.date}
-						time={_period.time}
+						quantity={_period.quantity}
 						updatePeriod={updatePeriod}
+						deletePeriod={deletePeriod}
 					/>
 				))}
 
@@ -87,8 +107,10 @@ const HourDatePicker = ({ setOpenModal, setInputDate, openModal, inputDate }: Pr
 			</div>
 			<div className={styles.divider}></div>
 			<div className={styles.grid}>
-				<Button buttonType="secondary">Cancel</Button>
-				<Button>Apply</Button>
+				<Button buttonType="secondary" onClick={() => setOpenModal(false)}>
+					Cancel
+				</Button>
+				<Button onClick={applyDateAndTime}>Apply</Button>
 			</div>
 		</Modal>
 	);
@@ -99,11 +121,12 @@ export default HourDatePicker;
 interface BlockProps {
 	index: number;
 	date: Date;
-	time: number;
+	quantity: number;
 	updatePeriod: (index: number, field: keyof Period, value: any) => void;
+	deletePeriod: (index: number) => void;
 }
 
-const Block = ({ index, date, time, updatePeriod }: BlockProps) => {
+const Block = ({ index, date, quantity, updatePeriod, deletePeriod }: BlockProps) => {
 	const [showCalendar, setShowCalendar] = useState<boolean>(false);
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
 
@@ -114,19 +137,20 @@ const Block = ({ index, date, time, updatePeriod }: BlockProps) => {
 	};
 
 	const onTimeChange = (newTime: number) => {
-		updatePeriod(index, "time", newTime);
+		updatePeriod(index, "quantity", newTime);
 	};
 
 	return (
 		<div className={styles.block}>
 			<div className={styles.row}>
 				<h3>Date {index}</h3>
-				{/* <FontAwesomeIcon /> */}
+				{index !== 1 && (
+					<div className={styles.delete} onClick={() => deletePeriod(index)}>
+						<Image src="/svgs/trash.svg" fill alt="" sizes="100vw" />
+					</div>
+				)}
 			</div>
-			<div
-				className={styles.input_field}
-				onClick={() => setShowCalendar(!showCalendar)}
-			>
+			<div className={styles.input_field} onClick={() => setShowCalendar(true)}>
 				<div className={styles.icon}>
 					<Image src="/svgs/calendar.svg" fill alt="" sizes="100vw" />
 				</div>
@@ -138,7 +162,10 @@ const Block = ({ index, date, time, updatePeriod }: BlockProps) => {
 				{showCalendar && (
 					<div
 						className={styles.calendar_container}
-						onClick={e => e.nativeEvent.stopImmediatePropagation()}
+						onClick={e => {
+							e.nativeEvent.stopImmediatePropagation();
+							e.stopPropagation();
+						}}
 					>
 						<Calendar
 							onChange={onDateChange}
@@ -151,7 +178,11 @@ const Block = ({ index, date, time, updatePeriod }: BlockProps) => {
 					</div>
 				)}
 			</div>
-			<HourSelect identifier="value" value={time} onOptionChange={onTimeChange} />
+			<HourSelect
+				identifier="value"
+				value={quantity}
+				onOptionChange={onTimeChange}
+			/>
 		</div>
 	);
 };
@@ -159,7 +190,7 @@ const Block = ({ index, date, time, updatePeriod }: BlockProps) => {
 const checkEmptyState = (period: Period[]) => {
 	if (period.length) {
 		const lastIndex = period.length - 1;
-		if (!period[lastIndex].date || !period[lastIndex].time) {
+		if (!period[lastIndex].date || !period[lastIndex].quantity) {
 			toast.error("Please fill in all the details of last option");
 			return false;
 		}

@@ -39,7 +39,7 @@ export function useTransaction(id?: string) {
 	const dispatch = useAppDispatch();
 
 	const formatTransaction = (data: SingleTransaction) => {
-		const { _id, item, buyer, type, status, createdAt, rentalPeriod } = data;
+		const { _id, item, buyer, type, status, createdAt, rentalBreakdown } = data;
 		const isBuyer = userId === buyer.userId;
 		const transactionType =
 			type === TransactionType.Sale && isBuyer
@@ -66,7 +66,7 @@ export function useTransaction(id?: string) {
 			userRole,
 			listing: item,
 			isBuyer,
-			rentalPeriod
+			rentalBreakdown
 		};
 	};
 

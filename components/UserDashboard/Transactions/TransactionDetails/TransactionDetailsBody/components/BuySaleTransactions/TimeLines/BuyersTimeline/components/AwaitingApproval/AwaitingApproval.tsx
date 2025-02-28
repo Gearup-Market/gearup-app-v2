@@ -13,7 +13,7 @@ interface Props {
 	thirdPartyVerification?: boolean;
 }
 const AwaitingApproval = ({ handleNext, item, thirdPartyVerification }: Props) => {
-	const { isBuyer, id, amount, transactionStatus, listing, rentalPeriod } = item;
+	const { isBuyer, id, amount, transactionStatus, listing } = item;
 
 	const isCancelled = useMemo(
 		() => transactionStatus === TransactionStatus.Cancelled,
