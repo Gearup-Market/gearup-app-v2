@@ -163,7 +163,8 @@ const ListingTable = ({
 			offer,
 			listingPhotos,
 			_id,
-			location
+			location,
+			listingType
 		} = listing!;
 		const payload = {
 			_id,
@@ -171,15 +172,18 @@ const ListingTable = ({
 			description,
 			category,
 			subCategory,
-			condition,
+			...(condition ? { condition } : {}),
 			offer,
 			listingPhotos,
 			fieldValues: listing?.fieldValues,
 			tempPhotos: [],
 			items: [{ name: productName, quantity: 1, id: 0 }],
 			userId,
-			location
+			location,
+			listingType
 		};
+
+		console.log(payload);
 
 		dispatch(updateNewListing(payload));
 		router.push(`/new-listing/listing-details`);

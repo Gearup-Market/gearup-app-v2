@@ -40,7 +40,9 @@ const ListingView = () => {
 				setActiveType(currentListing?.listingType);
 			}
 			// If listingType is "both", set the initial activeType to "rent" or any default
-			else if (currentListing.listingType === "both") {
+			else if (currentListing.listingType === "sell") {
+				setActiveType("buy");
+			} else if (currentListing.listingType === "both") {
 				setActiveType("rent");
 			}
 		}

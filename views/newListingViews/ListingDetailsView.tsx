@@ -27,7 +27,9 @@ const ListingDetailsView = () => {
 	const dispatch = useDispatch();
 	const [category, setCategory] = useState<iCategory>();
 	const [subCategory, setSubCategory] = useState<iCategory>();
-	const [selectedFields, setSelectedFields] = useState<any[]>([]);
+	const [selectedFields, setSelectedFields] = useState<any[]>(
+		convertObjToArr(newListing.fieldValues) || []
+	);
 	const [location, setLocation] = useState<{
 		city: string;
 		country: string;
@@ -265,3 +267,14 @@ const ListingDetailsView = () => {
 };
 
 export default ListingDetailsView;
+
+const convertObjToArr = (obj: Record<string, string | string[]>): any[] => {
+	return Object.entries(obj).map(([key, value]) => {
+		return {
+			name: key,
+			selectedValues: Array.isArray(value)
+				? value.map(val => ({ name: val }))
+				: [{ name: value }]
+		};
+	});
+};

@@ -10,6 +10,7 @@ import { useAppSelector } from "@/store/configureStore";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { useAuth } from "@/contexts/AuthContext";
 import dynamic from "next/dynamic";
+import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
 
 const PaymentComp = dynamic(
 	() => import("@/components/CartComponent/CheckoutComp").then(mod => mod.PaymentComp),
@@ -48,6 +49,7 @@ const buyTimeline = [
 
 const CheckoutView = () => {
 	const router = useRouter();
+	const { data: allPricings } = useGetAllPricings();
 	const { isAuthenticated } = useAuth();
 	const pathname = usePathname();
 	const { userId } = useAppSelector(s => s.user);
@@ -109,7 +111,14 @@ const CheckoutView = () => {
 								))}
 							</ul>
 							<>
-								{step === 1 && <ThirdPartyCheck handleNext={nextStep} />}
+								{step === 1 && (
+									<ThirdPartyCheck
+										thirdPartyPricing={
+											allPricings?.thirdPartyPricing || 0
+										}
+										handleNext={nextStep}
+									/>
+								)}
 								{step === 2 && (
 									<ShippingType
 										handleNext={nextStep}

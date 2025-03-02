@@ -57,16 +57,6 @@ const BuyPriceContainer = ({
 			router.push("/verification");
 			return;
 		}
-		if (transactionType === TransactionType.Rental) {
-			const daysDifference = getDaysDifference(
-				inputDate[0].startDate,
-				inputDate[0].endDate
-			);
-			if (daysDifference < 1) {
-				toast.error("Minimum rent duration is 0");
-				return;
-			}
-		}
 		try {
 			addItemToCart({
 				listing,

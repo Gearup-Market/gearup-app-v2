@@ -118,8 +118,6 @@ const PriceContainer = ({
 
 	const total = price + serviceFee + vat;
 
-	console.log(item);
-
 	const handleAddToCart = () => {
 		if (!user.kyc) {
 			toast.error("Please complete kyc");

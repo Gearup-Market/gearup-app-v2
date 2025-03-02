@@ -27,6 +27,14 @@ const TransactionDetailsHeader = ({ activeView, setActiveView }: Props) => {
 	const router = useRouter();
 	const search = useSearchParams();
 
+	const amount =
+		transaction?.listing.listingType === "rent"
+			? transaction?.rentalBreakdown.reduce(
+					(total, period) => total + period.price * period.quantity,
+					0
+			  )
+			: transaction?.listing.offer?.forSell?.pricing;
+
 	const handleBack = () => {
 		router.back();
 	};
@@ -51,7 +59,7 @@ const TransactionDetailsHeader = ({ activeView, setActiveView }: Props) => {
 					/>
 					<span className={styles.right}>
 						<h2>{transaction.gearName}</h2>
-						<p>NGN{formatNumber(transaction.amount || 0)}</p>
+						<p>₦{formatNumber(amount || 0)}</p>
 					</span>
 				</div>
 				<div

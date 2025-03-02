@@ -53,7 +53,7 @@ export default function useCart() {
 					listingId: listing._id,
 					type,
 					userId,
-					customPrice,
+					customPrice: customPrice || 0,
 					rentalBreakdown: rentalBreakdown ? rentalBreakdown : []
 				});
 

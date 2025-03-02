@@ -19,8 +19,6 @@ const sharedColDef: GridColDef = {
 	flex: 1
 };
 const RecentDeals = () => {
-	const [page, setPage] = useState(1);
-	const [limit, setLimit] = useState(5);
 	const [searchInput, setSearchInput] = useState<string>("");
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const pageSize: number = 12;

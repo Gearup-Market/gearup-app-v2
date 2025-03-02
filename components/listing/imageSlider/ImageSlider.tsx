@@ -66,7 +66,12 @@ const ImageSlider = ({ images, type }: ImageProps) => {
 							<div className={styles.button_container}>
 								{/* {props.forSale && <Button className={styles.button}>Buy</Button>}
 					{props.forRent && <Button className={styles.button}>Rent</Button>} */}
-								<Button className={styles.button} data-type={type?.toLowerCase()}>{type}</Button>
+								<Button
+									className={styles.button}
+									data-type={type?.toLowerCase()}
+								>
+									{type}
+								</Button>
 							</div>
 						</div>
 					</SwiperSlide>

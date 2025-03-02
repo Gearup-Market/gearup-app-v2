@@ -32,7 +32,7 @@ interface RentOffer {
 }
 
 const initialForSellDetails: SellingOffer = {
-	currency: "NGN",
+	currency: "₦",
 	pricing: undefined,
 	acceptOffers: false,
 	shipping: {
@@ -43,7 +43,7 @@ const initialForSellDetails: SellingOffer = {
 };
 
 const initialForRentDetails: RentingOffer = {
-	currency: "NGN",
+	currency: "₦",
 	rates: [],
 	overtimePercentage: 0,
 	totalReplacementValue: 0
@@ -238,7 +238,7 @@ const BuyView = ({
 			<div className={styles.container}>
 				<Select
 					label="Currency"
-					options={["NGN"]}
+					options={["₦"]}
 					defaultOptionIndex={0}
 					onOptionChange={value =>
 						setForSellDetails(prev => ({ ...prev, currency: value }))
@@ -483,7 +483,7 @@ const RentView = ({
 			<div className={styles.container}>
 				<Select
 					label="Currency"
-					options={["NGN"]}
+					options={["₦"]}
 					defaultOptionIndex={0}
 					onOptionChange={value =>
 						setForRentDetails(prev => ({ ...prev, currency: value }))
@@ -500,6 +500,7 @@ const RentView = ({
 								className={`${styles.input}`}
 								value={offerValue(1, "price")}
 								type="number"
+								min={0}
 							/>
 						</div>
 						<div>

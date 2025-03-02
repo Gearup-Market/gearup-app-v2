@@ -15,5 +15,6 @@ export interface PricingData {
 	disputeResolutionFee?: number;
 	currencyConversionFee?: number;
 	lateCancellationFee?: number;
+	thirdPartyPricing?: number;
 	userId?: string;
 }

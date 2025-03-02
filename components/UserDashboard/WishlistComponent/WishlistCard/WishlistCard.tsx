@@ -59,7 +59,7 @@ const WishlistCard = ({
 			subHeaderText={
 				activeFilter === "courses"
 					? item.price
-					: `NGN${formatNumber(rentOrBuyPrice)}${
+					: `₦${formatNumber(rentOrBuyPrice)}${
 							item.listingType === "rent" ? "/day" : ""
 					  }`
 			}
