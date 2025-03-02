@@ -85,8 +85,20 @@ const NewListingView = () => {
 								onClick={addProduct}
 							>
 								<div className={styles.plus}>
-									<span></span>
-									<span></span>
+									<span
+										style={{
+											backgroundColor: items.length
+												? "#1B1E21"
+												: "#F76039"
+										}}
+									></span>
+									<span
+										style={{
+											backgroundColor: items.length
+												? "#1B1E21"
+												: "#F76039"
+										}}
+									></span>
 								</div>
 								{!!items.length ? "Add more to set" : "Add a product"}
 							</Button>

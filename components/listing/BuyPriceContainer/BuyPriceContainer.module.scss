@@ -11,32 +11,32 @@
 		.card_header {
 			margin-bottom: 2.4rem;
 
-            .third_party_container{
-                display: flex;
-                justify-content: space-between;
-                background-color: #fff;
-                padding: 2.4rem;
-                border-radius: 1.6rem;
-                margin-top: 2rem;
-                flex-wrap: wrap;
+			.third_party_container {
+				display: flex;
+				justify-content: space-between;
+				background-color: #fff;
+				padding: 2.4rem;
+				border-radius: 1.6rem;
+				margin-top: 2rem;
+				flex-wrap: wrap;
 
-                .flex_items{
-                    @include flex;
-                    gap: 0.2rem;
-                    align-items: center;
+				.flex_items {
+					@include flex;
+					gap: 0.2rem;
+					align-items: center;
 
-                    img{
-                        height: 4rem;
-                        width: 4rem;
-                    }
+					img {
+						height: 4rem;
+						width: 4rem;
+					}
 
-                    .amount{
-                        font-weight: 700;
-                        font-size: 1.8rem;
-                        color: #1B1E21;
-                    }
-                }
-            }
+					.amount {
+						font-weight: 700;
+						font-size: 1.8rem;
+						color: #1b1e21;
+					}
+				}
+			}
 		}
 		.insurance_container {
 			padding: 2.4rem 1.6rem;
@@ -58,7 +58,7 @@
 						margin-bottom: 1.6rem;
 					}
 					a {
-						color: #ffb30f;
+						color: #f76039;
 						text-decoration: underline;
 					}
 				}
@@ -105,9 +105,9 @@
 				width: 100%;
 			}
 
-            .ask_question{
-                color: #4B525A;
-            }
+			.ask_question {
+				color: #4b525a;
+			}
 		}
 	}
 	.text,
@@ -129,50 +129,49 @@
 	.title {
 		color: $col-white;
 		h1 {
-			font-family: $font-good;
+			font-family: $font-outfit;
 			margin-top: 1.6rem;
 			margin-bottom: 0.8rem;
 		}
 	}
 
-    .additional_offers_container{
-        background-color: #FAFAFA;
-        border-radius: 0.8rem;
-        padding: 2.4rem;
+	.additional_offers_container {
+		background-color: #fafafa;
+		border-radius: 0.8rem;
+		padding: 2.4rem;
 
-        .title{
-            font-weight: 700;
-            font-size: 1.4rem;
-            color: #1B1E21;
-            text-transform: uppercase;
-            margin-bottom: 1.4rem;
-        }
+		.title {
+			font-weight: 700;
+			font-size: 1.4rem;
+			color: #1b1e21;
+			text-transform: uppercase;
+			margin-bottom: 1.4rem;
+		}
 
-        .offers_container{
-            display: flex;
-            flex-direction: column;
-            gap: 1.6rem;
+		.offers_container {
+			display: flex;
+			flex-direction: column;
+			gap: 1.6rem;
 
-            .offer{
-                @include flex;
-                gap: 0.8rem;
+			.offer {
+				@include flex;
+				gap: 0.8rem;
 
-                h3{
-                    font-size: 1.4rem;
-                    
-                }
-                a{
-                    font-size: 1.4rem;
-                    font-weight: 700;
-                    text-decoration: underline;
-                    color: #ffb30f;
-                }
+				h3 {
+					font-size: 1.4rem;
+				}
+				a {
+					font-size: 1.4rem;
+					font-weight: 700;
+					text-decoration: underline;
+					color: #f76039;
+				}
 
-                img{
-                    height: 3.2rem;
-                    width: 3.2rem;
-                }
-            }
-        }
-    }
+				img {
+					height: 3.2rem;
+					width: 3.2rem;
+				}
+			}
+		}
+	}
 }

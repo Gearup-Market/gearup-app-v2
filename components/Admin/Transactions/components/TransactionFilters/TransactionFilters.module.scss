@@ -1,73 +1,67 @@
 @import "@/styles/imports";
 
+.container {
+	display: flex;
+	align-items: flex-start;
+	gap: 2rem;
 
-.container{
-    display: flex;
-    align-items: flex-start;
-    gap: 2rem;
-    
-    padding: 3rem 2rem;
-    margin-top: 2rem;
-    
+	padding: 3rem 2rem;
+	margin-top: 2rem;
 
+	&__filters {
+		display: flex;
+		gap: 2rem;
+		flex-direction: column;
 
-    &__filters{
-        display: flex;
-        gap: 2rem;
-    flex-direction: column;
+		&__parent_container {
+			display: flex;
+			gap: 2rem;
+			padding: 1rem 0.5rem;
+			border-radius: 10rem;
+			background-color: $col-white;
 
-    &__parent_container{
-        display: flex;
-        gap: 2rem;
-        padding: 1rem 0.5rem;
-        border-radius: 10rem;
-        background-color: $col-white;
+			&__filter {
+				display: flex;
+				gap: 2rem;
+				align-items: center;
+				padding: 0.6rem 3rem;
+				background-color: $col-white;
+				font-size: 1.4rem;
+				border-radius: 10rem;
+				cursor: pointer;
 
-        &__filter{
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            padding: 0.6rem 3rem;
-            background-color: $col-white;
-            font-size: 1.4rem;
-            border-radius: 10rem;
-            cursor: pointer;
+				&[data-active="true"] {
+					background-color: #f76039;
+					font-weight: 700;
+				}
+			}
+		}
 
-            &[data-active='true']{
-                background-color: #ffb30f;
-                font-weight: 700;
-            }
-        
-        }
-    }
+		&__children_container {
+			display: flex;
+			gap: 2rem;
+			padding: 1rem;
+			border-radius: 10rem;
 
-    &__children_container{
-        display: flex;
-        gap: 2rem;
-        padding: 1rem ;
-        border-radius: 10rem;
+			&__filter {
+				display: flex;
+				gap: 2rem;
+				align-items: center;
+				padding: 0.6rem 1.5rem;
+				background-color: $col-white;
+				font-size: 1.4rem;
+				border-radius: 10rem;
+				cursor: pointer;
+				border: 1px solid $col-border;
+				box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+				transition: box-shadow 0.2s ease-in-out;
 
-        &__filter{
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            padding: 0.6rem 1.5rem;
-            background-color: $col-white;
-            font-size: 1.4rem;
-            border-radius: 10rem;
-            cursor: pointer;
-            border: 1px solid $col-border;
-            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.2s ease-in-out;
-
-            &[data-active='true']{
-                background-color: #FFF7E7;
-                font-weight: 700;
-                border: 1px solid #ffb30f;
-            }
-        
-        }
-    }
-
-    }
+				&[data-active="true"] {
+					background-color: #feefeb;
+					font-weight: 700;
+					border: 1px solid #f76039;
+				}
+			}
+		}
+	}
 }

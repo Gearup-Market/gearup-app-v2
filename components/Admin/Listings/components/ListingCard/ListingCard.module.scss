@@ -14,12 +14,12 @@
 			z-index: 10;
 			right: 0.8rem;
 			top: 0.8rem;
-            background-color: $col-white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0.5rem;
-            border-radius: .5rem;
+			background-color: $col-white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0.5rem;
+			border-radius: 0.5rem;
 		}
 	}
 	.text {
@@ -58,7 +58,7 @@
 			}
 			&:nth-child(2) {
 				background: unset;
-				background-color: #072ac8;
+				background-color: #1b1e21;
 				color: #ffffff;
 			}
 		}

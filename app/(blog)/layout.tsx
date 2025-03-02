@@ -19,7 +19,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
 							height: "100vh"
 						}}
 					>
-						<CircularProgressLoader color="#FFB30F" />
+						<CircularProgressLoader color="#F76039" />
 					</Box>
 				}
 			>

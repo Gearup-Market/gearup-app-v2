@@ -31,7 +31,7 @@
 						margin-bottom: 1.6rem;
 					}
 					a {
-						color: #ffb30f;
+						color: #f76039;
 						text-decoration: underline;
 					}
 				}
@@ -77,10 +77,13 @@
 			margin-top: 4rem;
 			.button {
 				width: 100%;
+				&:first-child {
+					color: #f76039;
+				}
 			}
 		}
 
-		.price_details_container{
+		.price_details_container {
 			background: #fff;
 			border-radius: 0.8rem;
 			padding: 2.4rem;
@@ -89,37 +92,34 @@
 			flex-direction: column;
 			gap: 1.6rem;
 
-			.divider{
+			.divider {
 				border-top: 1px solid $col-border;
 				width: 100%;
 				margin-bottom: 0.4rem;
 			}
 
-			.total_styles{
+			.total_styles {
 				font-weight: 900;
 				font-size: 2.4rem;
-				color: #1B1E21;
+				color: #1b1e21;
 			}
 
-			.content{
+			.content {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 
-				.price_item{
+				.price_item {
 					font-size: 1.6rem;
-					color: #7B8086;
+					color: #7b8086;
 					font-weight: 400;
 				}
 
-				.price_value{
-					color: #1B1E21;
+				.price_value {
+					color: #1b1e21;
 					font-weight: 700;
 					font-size: 1.6rem;
 				}
-
-			
-			
 			}
 		}
 	}
@@ -162,7 +162,7 @@
 	.title {
 		color: $col-white;
 		h1 {
-			font-family: $font-good;
+			font-family: $font-outfit;
 			margin-top: 1.6rem;
 			margin-bottom: 0.8rem;
 		}

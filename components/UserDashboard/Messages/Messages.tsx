@@ -12,11 +12,12 @@ import { useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/store/configureStore";
 
 const Messages = () => {
-	const { userId } = useAppSelector((state) => state.user)
-	const { data: allUserMessages, isFetching: isFetchingAllUserMessages } = useGetUserMessages(userId);
-	const searchParams = useSearchParams()
-	const participantId = searchParams.get("participantId")
-	const listingId = searchParams.get("listingId")
+	const { userId } = useAppSelector(state => state.user);
+	const { data: allUserMessages, isFetching: isFetchingAllUserMessages } =
+		useGetUserMessages(userId);
+	const searchParams = useSearchParams();
+	const participantId = searchParams.get("participantId");
+	const listingId = searchParams.get("listingId");
 
 	if (isFetchingAllUserMessages) {
 		return (
@@ -26,7 +27,7 @@ const Messages = () => {
 				alignItems="center"
 				height="40rem"
 			>
-				<CircularProgressLoader color="#ffb30f" size={30} />
+				<CircularProgressLoader color="#F76039" size={30} />
 			</Box>
 		);
 	}

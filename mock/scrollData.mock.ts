@@ -19,7 +19,7 @@ export const scrollData = [
 		icon: "/svgs/scroll-icon-2.svg",
 		button: "Explore courses",
 		url: "#",
-		backgroundColor: "#FFB30F"
+		backgroundColor: "#F76039"
 	},
 	{
 		image: "/images/scroll-3.png",

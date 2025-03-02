@@ -12,6 +12,7 @@ import { useGlobalContext } from "@/contexts/AppContext";
 import { AppState, useAppSelector } from "@/store/configureStore";
 import { useAuth } from "@/contexts/AuthContext";
 import useCart from "@/hooks/useCart";
+import { GridAddIcon } from "@mui/x-data-grid";
 
 enum Scroll {
 	Idle = "idle",
@@ -130,7 +131,10 @@ const Header = () => {
 						<Button
 							buttonType="transparent"
 							className={styles.cart_icon}
-							onClick={() => router.push("/cart")}
+							onClick={() => {
+								router.push("/cart");
+								setCollapsed(!collapsed);
+							}}
 							data-cart={!!cartItems?.items.length}
 						>
 							<div>
@@ -181,7 +185,15 @@ const Header = () => {
 					</div>
 				</div>
 				<div className={styles.mob_buttons}>
-					<Button buttonType="transparent" className={styles.small_icon}>
+					<Button
+						buttonType="transparent"
+						className={styles.small_icon}
+						onClick={() => {
+							router.push("/cart");
+							setCollapsed(!collapsed);
+						}}
+						data-cart={!!cartItems?.items.length}
+					>
 						<div>
 							<Image
 								src={
@@ -194,8 +206,17 @@ const Header = () => {
 								sizes="100vw"
 							/>
 						</div>
+						{cartItems?.items.length ? (
+							<div className={styles.cart}>
+								<p>{cartItems?.items.length}</p>
+							</div>
+						) : null}
 					</Button>
-					<Button buttonType="transparent" className={styles.small_icon}>
+					<Button
+						buttonType="transparent"
+						className={styles.small_icon}
+						onClick={() => setCollapsed(!collapsed)}
+					>
 						<Link href="/cart">
 							<Image
 								src={
@@ -315,14 +336,7 @@ const LinkItem = ({
 											className={styles.link_button}
 											onClick={() => router.push(link.href)}
 										>
-											<div className={styles.icon_plus}>
-												<Image
-													src="/svgs/icon-plus.svg"
-													alt=""
-													fill
-													sizes="100vw"
-												/>
-											</div>
+											<GridAddIcon className={styles.add_icon} />
 											<p>{link.button}</p>
 										</Button>
 									)}

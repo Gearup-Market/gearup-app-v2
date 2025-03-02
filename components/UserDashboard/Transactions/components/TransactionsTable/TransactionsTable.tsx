@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./TransactionTable.module.scss";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -12,6 +12,8 @@ import { TransactionType, UserRole } from "@/app/api/hooks/transactions/types";
 import { useAppSelector } from "@/store/configureStore";
 import NoTransactions from "../NoTransactions/NoTransactions";
 import { debounce } from "lodash";
+import { usePercentageToPixels } from "@/hooks";
+import { formatNum } from "@/utils";
 
 interface Props {
 	transactionType: string;
@@ -26,6 +28,14 @@ const TransactionTable = ({ transactionType }: Props) => {
 		currentPage
 	);
 	const [isNoSearchResult, setIsNoSearchResult] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const titleWidth = usePercentageToPixels(containerRef, 25);
+	const priceWidth = usePercentageToPixels(containerRef, 15);
+	const dateWidth = usePercentageToPixels(containerRef, 15);
+	const typeWidth = usePercentageToPixels(containerRef, 10);
+	const statusWidth = usePercentageToPixels(containerRef, 10);
+	const actionsWidth = usePercentageToPixels(containerRef, 10);
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
@@ -57,7 +67,9 @@ const TransactionTable = ({ transactionType }: Props) => {
 				return {
 					id: _id,
 					gearName: item ? item.productName : "Listing not available",
-					amount,
+					amount: `₦${formatNum(
+						type === "Rental" ? amount : item.offer.forSell?.pricing
+					)}`,
 					transactionDate: createdAt,
 					transactionType,
 					transactionStatus: status,
@@ -103,7 +115,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Name",
-			minWidth: 250,
+			minWidth: titleWidth,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
 					<Image
@@ -124,7 +136,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Amount",
-			minWidth: 200
+			minWidth: priceWidth
 		},
 		{
 			...sharedColDef,
@@ -132,7 +144,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Transaction Date",
-			minWidth: 150
+			minWidth: dateWidth
 		},
 		{
 			...sharedColDef,
@@ -140,7 +152,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Type",
-			minWidth: 150
+			minWidth: typeWidth
 		},
 		{
 			...sharedColDef,
@@ -148,7 +160,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Status",
-			minWidth: 150,
+			minWidth: statusWidth,
 			renderCell: ({ value }) => (
 				<div className={styles.container__status_container}>
 					<p
@@ -169,7 +181,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 			headerName: "Actions",
 			headerAlign: "center",
 			align: "center",
-			minWidth: 150,
+			minWidth: actionsWidth,
 			renderCell: ({ row, value }) => (
 				<Link
 					href={`/user/transactions/${row.id}`}

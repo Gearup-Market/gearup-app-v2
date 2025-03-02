@@ -50,7 +50,7 @@
 				border: 0.1rem solid #dedfe0;
 				padding: 1rem 1.2rem;
 				&:focus {
-					border-color: #ffb30f;
+					border-color: #f76039;
 				}
 			}
 		}
@@ -92,7 +92,7 @@
 .text {
 	h1 {
 		@extend %title-34;
-		font-family: $font-good;
+		font-family: $font-outfit;
 		font-weight: 700;
 		color: #fff;
 		margin-bottom: 0.8rem;
@@ -111,7 +111,7 @@
 		margin-bottom: 1.6rem;
 	}
 	a {
-		color: #ffb30f;
+		color: #f76039;
 		text-decoration: underline;
 		font-weight: 700;
 	}

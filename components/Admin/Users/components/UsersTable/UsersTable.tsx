@@ -166,7 +166,7 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 			{!filteredUsers?.length ? (
 				<div className={styles.empty_rows}>
 					<span className={styles.transaction_icon}>
-						<UserIcon color="#FFB30F" />
+						<UserIcon color="#F76039" />
 					</span>
 					No data available
 				</div>

@@ -34,7 +34,7 @@
 		"qrcode.react": "^4.0.1",
 		"react": "^18",
 		"react-calendar": "^5.1.0",
-		"react-date-range": "^2.0.0-alpha.4",
+		"react-date-range": "^2.0.1",
 		"react-datepicker": "^8.1.0",
 		"react-dom": "^18",
 		"react-hot-toast": "^2.4.1",

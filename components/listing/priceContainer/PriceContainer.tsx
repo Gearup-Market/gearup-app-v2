@@ -12,7 +12,8 @@ import {
 	calculateItemPrice,
 	formatNumber,
 	getApplicableRate,
-	getDaysDifference
+	getDaysDifference,
+	getLastRentalDate
 } from "@/utils";
 import useCart, { CartPayload } from "@/hooks/useCart";
 import {
@@ -125,15 +126,12 @@ const PriceContainer = ({
 			return;
 		}
 		if (transactionType === TransactionType.Rental) {
-			const daysDifference = getDaysDifference(
-				inputDate[0].startDate,
-				inputDate[0].endDate
-			);
-			if (daysDifference < 1) {
+			if (!hourRentalBreakdown.length || !dayRentalBreakdown.length) {
 				toast.error("Minimum rent duration is 0");
 				return;
 			}
 		}
+		if (user._id === listing.user._id) return toast.error("Can not rent own listing");
 		try {
 			addItemToCart({
 				...item,
@@ -146,15 +144,13 @@ const PriceContainer = ({
 	};
 
 	const askToAvailability = () => {
+		if (user._id === listing.user._id) return toast.error("Can not rent own listing");
 		router.push(
 			user.isAuthenticated
 				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}`
 				: `/signup`
 		);
 	};
-
-	const isAddToCartDisabled =
-		inputDate[0].startDate.getDate() === inputDate[0].endDate.getDate();
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const modalToOpen = () => {
@@ -176,6 +172,7 @@ const PriceContainer = ({
 				setOpenModal={setOpenModal}
 				inputDate={inputDate}
 				setHourRentalBreakdown={setHourRentalBreakdown}
+				setIsDateSelected={setIsDateSelected}
 			/>
 		);
 	};
@@ -236,9 +233,15 @@ const PriceContainer = ({
 							<p>
 								{isDateSelected
 									? `${format(
-											inputDate[0].startDate,
+											offer.forRent?.rates[0].duration === "hour"
+												? hourRentalBreakdown[0]?.date
+												: dayRentalBreakdown[0]?.date,
 											"MM/dd/yyyy"
-									  )} to ${format(inputDate[0].endDate, "MM/dd/yyyy")}`
+									  )} to ${format(
+											getLastRentalDate(hourRentalBreakdown) ||
+												getLastRentalDate(dayRentalBreakdown),
+											"MM/dd/yyyy"
+									  )}`
 									: `${
 											listing.offer.forRent?.rates[0].duration !==
 											"hour"
@@ -249,7 +252,7 @@ const PriceContainer = ({
 						</div>
 					</div>
 				)}
-				{!isAddToCartDisabled && (
+				{isDateSelected && (
 					<div className={styles.price_details_container}>
 						<PriceItem
 							item={`Rental price (${appliedRate?.quantity} ${
@@ -284,7 +287,7 @@ const PriceContainer = ({
 					<Button
 						className={styles.button}
 						onClick={handleAddToCart}
-						disabled={isAddToCartDisabled}
+						disabled={!isDateSelected}
 					>
 						Add to cart
 					</Button>

@@ -5,34 +5,43 @@ import { scrollData } from "@/mock";
 import Image from "next/image";
 import { Button } from "@/shared";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const ScrollComponent = () => {
 	const sectionRef = useRef(null);
 	const containerRef = useRef(null);
+	const isInView = useRef(false);
 
 	// useEffect(() => {
-	// 	const container: any = containerRef.current;
+	// 	const observer = new IntersectionObserver(
+	// 		([entry]) => {
+	// 			isInView.current = entry.isIntersecting;
+	// 		},
+	// 		{ threshold: 0.1 }
+	// 	);
 
-	// 	gsap.to(container, {
-	// 		x: () => -(container?.scrollWidth - window.innerWidth),
-	// 		ease: "none",
-	// 		scrollTrigger: {
-	// 			trigger: sectionRef.current,
-	// 			start: "top top",
-	// 			// end: () => `+=${container?.scrollWidth}`,
-	// 			end: "bottom bottom",
-	// 			scrub: true,
-	// 			pin: true
-	// 			// anticipatePin: 1,
-	// 			// markers: true
+	// 	if (sectionRef.current) {
+	// 		observer.observe(sectionRef.current);
+	// 	}
+
+	// 	const listener = () => {
+	// 		if (!isInView.current) return;
+	// 		const container: any = containerRef.current;
+	// 		const width = container ? container.offsetWidth : 0;
+	// 		const yPos = -(window?.scrollY || 0) / 5 + width;
+	// 		if (container) {
+	// 			container.style.transform = `translateX(${yPos}px)`;
 	// 		}
-	// 	});
+	// 	};
+
+	// 	window.addEventListener("scroll", listener);
+
+	// 	return () => {
+	// 		window.removeEventListener("scroll", listener);
+	// 		observer.disconnect();
+	// 	};
 	// }, []);
+
 	return (
 		<section
 			className={styles.section}

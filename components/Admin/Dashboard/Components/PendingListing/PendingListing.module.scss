@@ -1,77 +1,70 @@
 @import "@/styles/imports";
 
 .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    background-color: #FFF7E7;
-    padding: 2rem;
-    border-radius: 1.6rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	background-color: #feefeb;
+	padding: 2rem;
+	border-radius: 1.6rem;
 
-   
+	&__left {
+		display: flex;
+		gap: 1rem;
 
-    &__left {
-        display: flex;
-        gap: 1rem;
+		.icon_container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #fff;
+			border-radius: 50%;
+			height: 5rem;
+			width: 5rem;
+		}
 
-        .icon_container{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #fff;
-            border-radius: 50%;
-            height: 5rem;
-            width: 5rem;
-        }
+		.image_icon {
+			height: 4rem;
+			width: 4rem;
+		}
 
+		&__welcome {
+			font-weight: 700;
+			font-size: 2rem;
+			color: $col-grey-1;
+		}
 
-        .image_icon{
-            height: 4rem;
-            width: 4rem;
-        }
+		&__question {
+			color: #4b525a;
+			font-size: 1.6rem;
+		}
+	}
 
-        &__welcome {
-            font-weight: 700;
-            font-size: 2rem;
-            color: $col-grey-1;
-        }
+	.btn {
+		gap: 0.5rem;
+	}
 
-        &__question {
-            color: #4B525A;
-            font-size: 1.6rem;
-        }
-    }
+	@include screenMax("mobile") {
+		flex-direction: column;
+		gap: 2rem;
+		align-items: center;
 
-    .btn{
-        gap: 0.5rem;
+		&__left {
+			display: flex;
+			width: 100%;
+			gap: 1rem;
 
-    }
+			&__question {
+				font-size: 1.2rem;
+			}
+		}
 
-    @include screenMax("mobile") {
-        flex-direction: column;
-        gap: 2rem;
-        align-items: center;
+		.create_listing {
+			width: 100%;
 
-        &__left {
-            display: flex;
-            width: 100%;
-            gap: 1rem;
-    
-    
-            &__question {
-                font-size: 1.2rem;
-            }
-        }
-
-        .create_listing{
-            width: 100%;
-
-            button{
-                width: 100%;
-            }
-        }
-
-    }
-
+			button {
+				width: 100%;
+			}
+		}
+	}
 }

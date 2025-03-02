@@ -19,6 +19,7 @@ interface Props {
 	openModal: boolean;
 	inputDate: any;
 	setHourRentalBreakdown: (e?: any) => void;
+	setIsDateSelected: (e?: any) => void;
 }
 
 interface Period {
@@ -38,7 +39,8 @@ const HourDatePicker = ({
 	setInputDate,
 	openModal,
 	inputDate,
-	setHourRentalBreakdown
+	setHourRentalBreakdown,
+	setIsDateSelected
 }: Props) => {
 	const [period, setPeriod] = useState<Period[]>([emptyPeriod]);
 
@@ -72,6 +74,7 @@ const HourDatePicker = ({
 			}
 		]);
 		setHourRentalBreakdown(period);
+		setIsDateSelected(true);
 		setOpenModal(false);
 	};
 
@@ -107,7 +110,11 @@ const HourDatePicker = ({
 			</div>
 			<div className={styles.divider}></div>
 			<div className={styles.grid}>
-				<Button buttonType="secondary" onClick={() => setOpenModal(false)}>
+				<Button
+					buttonType="secondary"
+					onClick={() => setOpenModal(false)}
+					className={styles.back_button}
+				>
 					Cancel
 				</Button>
 				<Button onClick={applyDateAndTime}>Apply</Button>

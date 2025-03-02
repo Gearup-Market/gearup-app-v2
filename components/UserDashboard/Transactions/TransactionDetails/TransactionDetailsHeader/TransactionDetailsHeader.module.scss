@@ -109,9 +109,12 @@
 			transition: all 0.3s ease-in-out;
 
 			&[data-active="true"] {
-				background-color: #fff7e7;
+				background-color: #feefeb;
 				font-weight: 700;
-				border: 1px solid #ffb30f;
+				border: 1px solid #f76039;
+				p {
+					color: #f76039;
+				}
 			}
 			&[data-disabled="true"] {
 				opacity: 0.5;

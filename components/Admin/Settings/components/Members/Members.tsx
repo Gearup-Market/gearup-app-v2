@@ -106,7 +106,7 @@ const Members = () => {
 						<div className={styles.no_members}>
 							<span className={styles.icon}>
 								{" "}
-								<UserIcon color="#FFB30F" />
+								<UserIcon color="#F76039" />
 							</span>
 							<div>
 								<h3>No members found</h3>

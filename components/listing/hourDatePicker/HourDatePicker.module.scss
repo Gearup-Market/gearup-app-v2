@@ -117,7 +117,7 @@
 			}
 			p {
 				font-weight: 700;
-				color: #ffb30f;
+				color: #f76039;
 			}
 		}
 	}
@@ -130,6 +130,9 @@
 	.grid {
 		width: 100%;
 		@include grid(repeat(2, 1fr), 1.6rem);
+	}
+	.back_button {
+		color: #f76039;
 	}
 	@include screenMax("mobile") {
 		.picker_container {

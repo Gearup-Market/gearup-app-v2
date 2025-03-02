@@ -149,7 +149,7 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 					height: "400px"
 				}}
 			>
-				<CircularProgressLoader color="#ffb30f" size={40} />
+				<CircularProgressLoader color="#F76039" size={40} />
 			</Box>
 		);
 	}

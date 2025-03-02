@@ -19,8 +19,11 @@
 			position: relative;
 			background-color: $col-white;
 			border-radius: 1.6rem;
-			padding: 4rem;
+			// padding: 4rem;
+			overflow: hidden;
+			width: 37.5rem;
 			z-index: 1;
+			max-width: 95%;
 			.row {
 				@include grid(repeat(2, 1fr), 1.6rem);
 				width: 100%;

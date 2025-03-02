@@ -20,7 +20,12 @@ const Listings = () => {
 					<Button buttonType="secondary" className={styles.button}>
 						<p>See All Listings</p>
 						<div className={styles.icon}>
-							<Image src="/svgs/arrow.svg" fill alt="" sizes="100vw" />
+							<Image
+								src="/svgs/arrow-color.svg"
+								fill
+								alt=""
+								sizes="100vw"
+							/>
 						</div>
 					</Button>
 				</Link>
@@ -38,7 +43,7 @@ const Listings = () => {
 				<Button buttonType="secondary" className={styles.button}>
 					<p>See All Listings</p>
 					<div className={styles.icon}>
-						<Image src="/svgs/arrow.svg" fill alt="" sizes="100vw" />
+						<Image src="/svgs/arrow-color.svg" fill alt="" sizes="100vw" />
 					</div>
 				</Button>
 			</Link>

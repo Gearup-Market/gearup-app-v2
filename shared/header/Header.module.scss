@@ -117,7 +117,7 @@
 							p {
 								@extend %text-14;
 								font-weight: 700;
-								color: #1b1e21;
+								color: #fff;
 							}
 							// &:hover {
 							// 	p {
@@ -247,11 +247,11 @@
 		}
 		.trans_button {
 			transition: all 0.3s linear;
-			border-color: #ffb30f;
+			border-color: #f76039;
 			border-radius: 10rem;
 			color: $col-white;
 			&:hover {
-				background-color: #fff7e7;
+				background-color: #feefeb;
 				transition: all 0.3s linear;
 				color: #1b1e21;
 			}
@@ -444,7 +444,7 @@
 			}
 			.trans_button {
 				transition: all 0.3s linear;
-				background-color: #fff7e7;
+				background-color: #feefeb;
 				color: #1b1e21;
 			}
 		}

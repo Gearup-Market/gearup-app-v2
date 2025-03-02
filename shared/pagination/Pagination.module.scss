@@ -44,12 +44,12 @@
 	cursor: default;
 }
 .pagination_item:not(:has(.arrow)):hover {
-	background: linear-gradient(76.89deg, #ffb30f 11.85%, #edcb00 100.03%);
+	background: linear-gradient(76.89deg, #f76039 11.85%, #f76039 100.03%);
 	cursor: pointer;
 }
 
 .pagination_item.selected {
-	background: linear-gradient(76.89deg, #ffb30f 11.85%, #edcb00 100.03%);
+	background: linear-gradient(76.89deg, #f76039 11.85%, #f76039 100.03%);
 }
 
 .arrow {

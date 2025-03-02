@@ -124,5 +124,5 @@ export function calculateItemPrice(item: CartItem): number {
 	return 0;
 }
 
-export const getLastRentalDate = (rentalBreakdown: RentalBreakdown[]): Date =>
-	rentalBreakdown[rentalBreakdown.length - 1].date;
+export const getLastRentalDate = (rentalBreakdown?: RentalBreakdown[]): Date =>
+	rentalBreakdown![rentalBreakdown!.length - 1]?.date;

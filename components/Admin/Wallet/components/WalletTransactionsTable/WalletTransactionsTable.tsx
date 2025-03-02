@@ -185,7 +185,7 @@ const WalletTransactionsTable = () => {
 			) : withdrawalHistory!.data.length < 1 ? (
 				<div className={styles.empty_rows}>
 					<span className={styles.transaction_icon}>
-						<TransactionNavIcon color="#FFB30F" />
+						<TransactionNavIcon color="#F76039" />
 					</span>
 					No data available
 				</div>

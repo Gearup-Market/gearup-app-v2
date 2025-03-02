@@ -76,7 +76,7 @@ const UserDetails = ({ userId }: Props) => {
 					height: "100vh"
 				}}
 			>
-				<CircularProgress style={{ color: "#FFB30F" }} />
+				<CircularProgress style={{ color: "#F76039" }} />
 			</Box>
 		);
 	}
@@ -110,7 +110,7 @@ const UserDetails = ({ userId }: Props) => {
 									height: "400px"
 								}}
 							>
-								<CircularProgress style={{ color: "#FFB30F" }} />
+								<CircularProgress style={{ color: "#F76039" }} />
 							</Box>
 						) : (
 							<>

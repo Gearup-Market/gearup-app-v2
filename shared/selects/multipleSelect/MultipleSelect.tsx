@@ -134,6 +134,7 @@ const MultipleSelect = ({
 									key={index}
 									className={styles.button}
 									onClick={() => onOptionClicked(option)}
+									data-active={localArr.includes(option)}
 								>
 									{option.name}
 								</Button>

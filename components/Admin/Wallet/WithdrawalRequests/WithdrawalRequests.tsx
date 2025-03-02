@@ -81,7 +81,7 @@ const WithdrawalRequests = () => {
 				{/* <p>
 					{" "}
 					<span className={styles.icon}>
-						<CheckmarkIcon />{" "}
+						<CheckmarkIcon color="#fff" />{" "}
 					</span>
 					Accept All
 				</p> */}
@@ -129,7 +129,7 @@ const WithdrawalRequests = () => {
 								>
 									{" "}
 									<span className={styles.icon}>
-										<CheckmarkIcon color="#40B773" />{" "}
+										<CheckmarkIcon color="#fff" />{" "}
 									</span>{" "}
 									<p>Accept</p>
 								</Button>

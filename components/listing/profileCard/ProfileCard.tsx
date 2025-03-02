@@ -11,7 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAppSelector } from "@/store/configureStore";
 
 const ProfileCard = ({ listing }: { listing: Listing }) => {
-	const {userId} = useAppSelector(state => state.user);
+	const { userId } = useAppSelector(state => state.user);
 	const { location, user, reviews, averageRating, ownerTotalListings } = listing;
 	return (
 		<div className={styles.card}>

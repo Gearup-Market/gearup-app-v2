@@ -7,7 +7,10 @@ import Image from "next/image";
 import { BackNavigation, Button, Pagination } from "@/shared";
 import Link from "next/link";
 import WishlistCard from "./WishlistCard/WishlistCard";
-import { useGetUserWishlists, useRemoveItemFromWishlist } from "@/app/api/hooks/wishlists";
+import {
+	useGetUserWishlists,
+	useRemoveItemFromWishlist
+} from "@/app/api/hooks/wishlists";
 import { useAuth } from "@/contexts/AuthContext";
 import { Box } from "@mui/material";
 import { CircularProgressLoader } from "@/shared/loaders";
@@ -28,8 +31,7 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 		enabled: !!showWishList && !!userId
 	});
 
-	const { mutateAsync: removeWishlist, isPending } = useRemoveItemFromWishlist()
-
+	const { mutateAsync: removeWishlist, isPending } = useRemoveItemFromWishlist();
 
 	const listings = data?.data?.listings || [];
 
@@ -61,21 +63,21 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 	}, []);
 
 	const onDeleteItem = async (wishlistId: string) => {
-		if (!wishlistId) return
+		if (!wishlistId) return;
 		const data = {
 			userId: userId,
 			listingId: wishlistId
-		}
+		};
 		await removeWishlist(data, {
 			onSuccess: () => {
-				toast.success("Item removed from wishlist")
-				refetch()
+				toast.success("Item removed from wishlist");
+				refetch();
 			},
-			onError: (error) => {
-				toast.error("Could not remove item, try again!!!")
+			onError: error => {
+				toast.error("Could not remove item, try again!!!");
 			}
-		})
-	}
+		});
+	};
 
 	return (
 		<div className={styles.container} data-show={showWishList}>
@@ -93,47 +95,48 @@ const WishlistComponent = ({ showWishList, setShowWishList }: Props) => {
 					<HeaderSubText variant="medium" title="Wishlist" />
 				</div>
 
-				{
-					isLoading ?
-						<Box
-							display="flex"
-							justifyContent="center"
-							alignItems="center"
-							height="30rem"
-						>
-							<CircularProgressLoader color="#ffb30f" size={30} />
-						</Box>
-						:
-
-						<>
-
-							{listings.length === 0 ? (
-								<EmptyWishlist />
-							) : (
-								<div className={styles.cards_wrapper}>
-									<div className={styles.cards_container}>
-										{listings.map((item: any, ind: number) => (
-											<WishlistCard
-												key={ind}
-												item={item}
-												ind={ind}
-												lastEle={ind + 1 === wishlists.length ? true : false}
-												setShowWishList={setShowWishList}
-												onDeleteItem={onDeleteItem}
-												deletingItem={isPending}
-											/>
-										))}
-									</div>
-									<Pagination
-										currentPage={page}
-										onPageChange={onPageChange}
-										totalCount={wishlists.length}
-										pageSize={10}
-									/>
+				{isLoading ? (
+					<Box
+						display="flex"
+						justifyContent="center"
+						alignItems="center"
+						height="30rem"
+					>
+						<CircularProgressLoader color="#F76039" size={30} />
+					</Box>
+				) : (
+					<>
+						{listings.length === 0 ? (
+							<EmptyWishlist />
+						) : (
+							<div className={styles.cards_wrapper}>
+								<div className={styles.cards_container}>
+									{listings.map((item: any, ind: number) => (
+										<WishlistCard
+											key={ind}
+											item={item}
+											ind={ind}
+											lastEle={
+												ind + 1 === wishlists.length
+													? true
+													: false
+											}
+											setShowWishList={setShowWishList}
+											onDeleteItem={onDeleteItem}
+											deletingItem={isPending}
+										/>
+									))}
 								</div>
-							)}
-						</>
-				}
+								<Pagination
+									currentPage={page}
+									onPageChange={onPageChange}
+									totalCount={wishlists.length}
+									pageSize={10}
+								/>
+							</div>
+						)}
+					</>
+				)}
 			</div>
 		</div>
 	);

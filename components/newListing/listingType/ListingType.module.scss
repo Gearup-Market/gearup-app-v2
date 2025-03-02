@@ -49,7 +49,7 @@
 		right: 0;
 		bottom: 0;
 		background-color: #fff;
-		border: 0.1rem solid #f0f0f1;
+		border: 0.1rem solid #f76039;
 		-webkit-transition: 0.4s;
 		border-radius: 1.6rem;
 		transition: 0.4s;
@@ -70,7 +70,7 @@
 	}
 
 	input:checked + .slider {
-		background-color: #ffeaba;
+		background-color: #feefeb;
 	}
 
 	input:checked + .slider:before {
@@ -87,7 +87,7 @@
 		p {
 			color: #1b1e21;
 		}
-		img{
+		img {
 			width: 1.4rem;
 			height: 1.4rem;
 		}

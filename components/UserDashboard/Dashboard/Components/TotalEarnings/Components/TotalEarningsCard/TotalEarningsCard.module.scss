@@ -1,42 +1,39 @@
-@import '@/styles/imports.scss';
+@import "@/styles/imports.scss";
 
+.container {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
 
-.container{
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+	&__type {
+		font-size: 1.4rem;
+		font-weight: 400;
+		color: #4b525a;
 
-  
+		&__value {
+			font-size: 1.4rem;
+			font-weight: 700;
+			color: $col-grey-1;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
 
-    &__type{
-        font-size: 1.4rem;
-        font-weight: 400;
-        color: #4B525A;
-    
-        &__value{
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: $col-grey-1;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+			.circle {
+				border-radius: 50%;
+				height: 2rem;
+				width: 2rem;
+				display: flex;
 
-            .circle{
-                border-radius: 50%;
-                height: 2rem;
-                width: 2rem;
-                display: flex;
-        
-                &[data-type='gear rental']{
-                    background: #FFB30F;
-                }
-                &[data-type='gear sales']{
-                    background: #B57F0B;
-                }
-                &[data-type='course sales']{
-                    background: #FFE7B5;
-                }
-            }
-        }
-    }
+				&[data-type="gear rental"] {
+					background: #f76039;
+				}
+				&[data-type="gear sales"] {
+					background: #b57f0b;
+				}
+				&[data-type="course sales"] {
+					background: #ffe7b5;
+				}
+			}
+		}
+	}
 }

@@ -34,13 +34,13 @@
 				display: flex;
 				gap: 1.6rem;
 				align-items: center;
-				
+
 				.btn {
 					display: flex;
 					align-items: center;
 					gap: 0.5rem;
 					padding: 1rem 2rem;
-					
+
 					.icon {
 						height: 2rem;
 						width: 2rem;
@@ -52,7 +52,7 @@
 					width: 100%;
 					gap: 1.6rem;
 
-					.btn{
+					.btn {
 						width: 100%;
 					}
 				}
@@ -60,7 +60,7 @@
 		}
 
 		.pending_requests {
-			background-color: #ffb30f;
+			background-color: #f76039;
 
 			.title {
 				color: #121212;
@@ -83,14 +83,10 @@
 			}
 
 			@include screenMax("mobile") {
-				
-
 				button {
 					width: 100%;
-					
 				}
 			}
-		
 		}
 
 		.no_requests {
@@ -171,5 +167,4 @@
 	@include screenMax("mobile") {
 		padding: 2rem 1rem;
 	}
-
 }
