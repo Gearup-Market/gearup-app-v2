@@ -164,7 +164,7 @@ export interface ListingState {
 	listingPhotos: string[];
 	tempPhotos?: File[];
 	listingType: string;
-	condition: string;
+	condition?: string;
 	userId: string;
 	fieldValues: {
 		[key: string]: string | string[];

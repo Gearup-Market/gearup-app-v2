@@ -8,25 +8,21 @@ import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
 
 const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
-	const {
-		isBuyer,
-		amount,
-		listing,
-		transactionType,
-		id,
-		buyer,
-		seller,
-		rentalBreakdown
-	} = item;
+	const { isBuyer, listing, transactionType, id, buyer, seller, rentalBreakdown } =
+		item;
 	const offer = listing ? listing.offer : null;
 	const forSale = !!offer?.forSell;
+	const amount =
+		item.listing.listingType === "rent"
+			? item.rentalBreakdown.reduce(
+					(total, period) => total + period.price * period.quantity,
+					0
+			  )
+			: offer?.forSell?.pricing;
 	const user = isBuyer ? seller : buyer;
 	const duration =
 		transactionType === TransactionType.Rental
-			? getDaysDifference(
-					rentalBreakdown[0].date,
-					getLastRentalDate(rentalBreakdown)
-			  )
+			? item.rentalBreakdown.reduce((total, period) => total + period.quantity, 0)
 			: 0;
 	const unitPrice = listing
 		? forSale
@@ -50,8 +46,14 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 				</div> */}
 				{duration > 0 ? (
 					<div className={styles.summary_item}>
-						<h4>Durations(Days)</h4>
-						<p>{duration} days</p>
+						<h4>
+							Durations({offer?.forRent?.rates[0].duration}
+							{item.rentalBreakdown.length > 1 ? "s" : ""})
+						</h4>
+						<p>
+							{duration} {offer?.forRent?.rates[0].duration}
+							{item.rentalBreakdown.length > 1 ? "s" : ""}
+						</p>
 					</div>
 				) : null}
 				<div className={styles.summary_item}>
@@ -71,7 +73,10 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 			<PersonalDetails
 				name={user.name || user.userName}
 				subText="Lagos, Nigeria"
-				profileLink="/user/settings/profile"
+				profilePhoto={user.avatar || "/svgs/user.svg"}
+				profileLink={`/users/${user._id}`}
+				forSale={forSale}
+				isBuyer={isBuyer}
 			/>
 			<ReceiptDetails />
 			<WarningContainer />

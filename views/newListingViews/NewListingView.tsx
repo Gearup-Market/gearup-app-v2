@@ -6,14 +6,14 @@ import { Button, Logo } from "@/shared";
 import Image from "next/image";
 import { AddSearchbox, AddedItem } from "@/components/newListing";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "@/store/configureStore";
+import { AppState, useAppSelector } from "@/store/configureStore";
 import { clearNewListing, updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { Item } from "@/interfaces/Listing";
 import Link from "next/link";
 
 const NewListingView = () => {
-	const newListing = useSelector((state: AppState) => state.newListing);
+	const newListing = useAppSelector(s => s.newListing);
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const { items } = newListing;

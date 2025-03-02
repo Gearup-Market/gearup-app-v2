@@ -9,10 +9,11 @@ import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateCheckout } from "@/store/slices/checkoutSlice";
 
 interface Props {
-	handleNext: (e: any, skip?:boolean) => void;
+	handleNext: (e: any, skip?: boolean) => void;
+	thirdPartyPricing: number;
 }
 
-const ThirdPartyCheck = ({ handleNext }: Props) => {
+const ThirdPartyCheck = ({ handleNext, thirdPartyPricing }: Props) => {
 	const saleProps = useAppSelector(s => s.checkout.saleProps);
 	const dispatch = useAppDispatch();
 
@@ -49,8 +50,11 @@ const ThirdPartyCheck = ({ handleNext }: Props) => {
 						/>
 					</div>
 					<div className={styles.right}>
-						<p className={styles.amount}>NGN 10,000</p>
-						<ToggleSwitch checked={saleProps.thirdPartyCheckup} onChange={onChange} />
+						<p className={styles.amount}>₦ {thirdPartyPricing}</p>
+						<ToggleSwitch
+							checked={saleProps.thirdPartyCheckup}
+							onChange={onChange}
+						/>
 					</div>
 				</div>
 

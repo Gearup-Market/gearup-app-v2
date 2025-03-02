@@ -67,11 +67,11 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 					<>
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								<span className={styles.bold}>
-									{listing.user?.name || listing.user?.userName}
-								</span>{" "}
+								<span className={styles.bold}>{item.buyer.userName}</span>{" "}
 								has successfully paid the sum of{" "}
-								<span className={styles.bold}>₦{formatNum(amount)}</span>{" "}
+								<span className={styles.bold}>
+									₦{formatNum(item.listing.offer.forSell?.pricing || 0)}
+								</span>{" "}
 								for the purchase of{" "}
 								{listing ? listing.productName : "Listing not available"},
 								and the money is in escrow protection, which will be

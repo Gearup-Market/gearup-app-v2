@@ -101,7 +101,7 @@ const PaymentComp = ({
 	const paystackComponentProps: PaystackProps = useMemo(
 		() => ({
 			...paystackConfig,
-			currency: "NGN",
+			currency: "₦",
 			email: user.email,
 			amount: +amount * 100,
 			metadata: {

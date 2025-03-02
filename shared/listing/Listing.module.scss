@@ -86,7 +86,7 @@
 			span {
 				font-weight: 400;
 			}
-			&:nth-child(2) {
+			&[data-sell="true"] {
 				background: unset;
 				background-color: #072ac8;
 				color: #ffffff;

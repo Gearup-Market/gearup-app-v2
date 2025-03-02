@@ -89,12 +89,17 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 								{rentalBreakdown?.length && (
 									<span className={styles.bold}>
 										from {formatDate(rentalBreakdown[0].date)} to{" "}
-										{formatDate(getLastRentalDate(rentalBreakdown))} (
-										{getDaysDifference(
-											rentalBreakdown[0].date,
-											getLastRentalDate(rentalBreakdown)
-										)}{" "}
-										days)
+										{formatDate(getLastRentalDate(rentalBreakdown))}(
+										{rentalBreakdown.length}
+										days{" "}
+										{rentalBreakdown[0].duration === "hour"
+											? `for ${rentalBreakdown.reduce(
+													(total, period) =>
+														total + period.quantity,
+													0
+											  )} hours`
+											: null}
+										)
 									</span>
 								)}{" "}
 								and the money is in escrow protection which will be

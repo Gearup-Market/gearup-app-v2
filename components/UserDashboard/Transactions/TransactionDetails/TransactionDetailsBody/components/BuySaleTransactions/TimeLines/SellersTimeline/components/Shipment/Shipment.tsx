@@ -15,7 +15,7 @@ interface Props {
 	item: iTransactionDetails;
 }
 const Shipment = ({ handleNext, item }: Props) => {
-	const { metadata, listing } = item;
+	const { metadata, listing, buyer } = item;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
 
 	return (
@@ -44,12 +44,10 @@ const Shipment = ({ handleNext, item }: Props) => {
 					<h3 className={styles.title}>Shipment details</h3>
 					<div className={styles.summary_item}>
 						<h4>Full-name</h4>
-						<p>
+						<p style={{ textTransform: "capitalize" }}>
 							{thirdPartyVerification
 								? "Gearup service center"
-								: metadata?.name ||
-								  listing.user?.name ||
-								  listing.user?.userName}
+								: metadata?.name || buyer?.name || buyer?.userName}
 						</p>
 					</div>
 					{metadata?.shippingType === ShippingType.Shipping && (

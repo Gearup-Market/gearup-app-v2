@@ -40,11 +40,15 @@ const ListingTypeView = () => {
 			return;
 		}
 		const newListingData = {
-			condition,
+			...(condition && condition.trim() !== "" && { condition }),
 			listingType: type.length === 2 ? "both" : type[0]
 		};
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/pricing");
+	};
+
+	const handleClose = () => {
+		router.replace("/user/dashboard");
 	};
 
 	const handleToggle = (title: string) => {
@@ -57,6 +61,11 @@ const ListingTypeView = () => {
 		setChecked(prev => ({ ...prev, [title]: !isIncluded }));
 	};
 
+	const newListingData = {
+		...(condition && condition.trim() !== "" && { condition }),
+		listingType: type.length === 2 ? "both" : type[0]
+	};
+
 	useEffect(() => {
 		if (newListing.listingType && !type.length) {
 			setType(
@@ -64,7 +73,7 @@ const ListingTypeView = () => {
 					? ["rent", "sell"]
 					: [newListing.listingType]
 			);
-			setCondition(newListing.condition);
+			setCondition(newListing.condition || "");
 			const defaultOptionIndex = gearConditions.findIndex(
 				item => item === newListing.condition
 			);
@@ -91,7 +100,10 @@ const ListingTypeView = () => {
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+				<div
+					style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}
+					onClick={handleClose}
+				>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>

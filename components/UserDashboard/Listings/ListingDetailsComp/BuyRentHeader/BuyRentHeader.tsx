@@ -56,6 +56,7 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 	const onClickEdit = () => {
 		const payload = {
 			...listing,
+			...(listing.condition ? { condition: listing.condition } : {}),
 			items: [
 				{
 					name: listing.productName || "Default Product Name",

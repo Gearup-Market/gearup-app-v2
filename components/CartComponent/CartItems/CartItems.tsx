@@ -122,11 +122,13 @@ const RentalComp = ({
 	const timeDiff = endDate.getTime() - startDate.getTime();
 
 	const durationInDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
-	const durationInHours = Math.ceil(timeDiff / (1000 * 3600));
-
+	const durationInHours = item.rentalBreakdown.reduce(
+		(total, period) => total + period.quantity,
+		0
+	);
 	const { appliedRate } = getApplicableRate(
 		offer,
-		offer.forRent?.rates[0].duration === "hours" ? durationInHours : durationInDays,
+		offer.forRent?.rates[0].duration === "hour" ? durationInHours : durationInDays,
 		offer.forRent?.rates[0].duration as string
 	);
 
@@ -160,34 +162,49 @@ const RentalComp = ({
 			<div className={styles.summary_item}>
 				<h4>Duration</h4>
 				<p>
-					{getDaysDifference(
+					{/* {getDaysDifference(
 						item.rentalBreakdown[0].date,
 						getLastRentalDate(item.rentalBreakdown)
-					)}{" "}
-					{item.rentalBreakdown[0].duration}s
+					)}{" "} */}
+					{offer.forRent?.rates[0].duration === "hour"
+						? durationInHours
+						: durationInDays}{" "}
+					{item.rentalBreakdown[0].duration}(s)
 				</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>
-					Rental price days{" "}
-					{` (${appliedRate?.quantity} ${appliedRate?.duration}${
+					Rental price {item.rentalBreakdown[0].duration}s{" "}
+					{` (${
+						offer.forRent?.rates[0].duration === "hour"
+							? durationInHours
+							: durationInDays
+					} ${appliedRate?.duration}${
 						(appliedRate?.quantity as number) > 1 ? "s offer" : ""
 					})`}
 				</h4>
-				<p>NGN {formatNum(appliedRate?.price)}</p>
+				<p>
+					₦{" "}
+					{formatNum(
+						appliedRate?.price! *
+							(offer.forRent?.rates[0].duration === "hour"
+								? durationInHours
+								: durationInDays)
+					)}
+				</p>
 			</div>
 
 			<div className={styles.summary_item}>
 				<h4>Gearup service fee:</h4>
-				<p>NGN {formatNum(serviceFee)}</p>
+				<p>₦ {formatNum(serviceFee)}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>VAT:</h4>
-				<p>NGN {formatNum(vat)}</p>
+				<p>₦ {formatNum(vat)}</p>
 			</div>
 			<div className={`${styles.summary_item} ${styles.total_amount}`}>
 				<h4>Total:</h4>
-				<p>NGN {formatNum(total)}</p>
+				<p>₦ {formatNum(total)}</p>
 			</div>
 		</div>
 	);
@@ -231,19 +248,19 @@ const GearSaleComp = ({
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Price:</h4>
-				<p>NGN {formatNum(price)}</p>
+				<p>₦ {formatNum(price)}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Gearup service fee:</h4>
-				<p>NGN {formatNum(serviceFee)}</p>
+				<p>₦ {formatNum(serviceFee)}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>VAT:</h4>
-				<p>NGN {formatNum(vat)}</p>
+				<p>₦ {formatNum(vat)}</p>
 			</div>
 			<div className={`${styles.summary_item} ${styles.total_amount}`}>
 				<h4>Total</h4>
-				<p>NGN {formatNum(total)}</p>
+				<p>₦ {formatNum(total)}</p>
 			</div>
 		</div>
 	);

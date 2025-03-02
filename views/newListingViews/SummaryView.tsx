@@ -62,6 +62,7 @@ const SummaryView = () => {
 			);
 			const data = {
 				...newListing,
+				condition: newListing.condition ? newListing.condition : undefined,
 				_id: undefined,
 				tempPhotos: undefined,
 				category: newListing.category?.id || "",

@@ -133,7 +133,12 @@ const Listing = ({ props, className, actionType }: Props) => {
 					</div>
 				)}
 				{forSale && (
-					<div className={styles.pricing}>
+					<div
+						className={styles.pricing}
+						data-sell={
+							props.listingType === "sell" || props.listingType === "both"
+						}
+					>
 						<p>
 							{offer.forSell?.currency}
 							{formatNumber(offer.forSell?.pricing || 0)}
