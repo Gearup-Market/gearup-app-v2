@@ -19,7 +19,7 @@ const TotalEarnings = () => {
 		flex: 1
 	};
 
-	const COLORS = ["#FFB30F", "#B57F0B", "#FFE7B5"];
+	const COLORS = ["#F76039", "#AF4428", "#FBB6A4"];
 
 	const columns: GridColDef[] = [
 		{
@@ -34,10 +34,10 @@ const TotalEarnings = () => {
 					<EllipseIcon
 						color={
 							value === "gearRentals"
-								? "#FFB30F"
+								? "#F76039"
 								: value === "gearSales"
-									? "#B57F0B"
-									: "#FFE7B5"
+								? "#AF4428"
+								: "#FBB6A4"
 						}
 					/>
 					<p style={{ fontSize: "1.2rem" }}>

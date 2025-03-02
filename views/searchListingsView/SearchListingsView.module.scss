@@ -41,17 +41,18 @@
 			border-radius: 10rem;
 			width: 38.55rem;
 			padding: 0.4rem;
+			background-color: #070707;
 			.button_container {
 				padding: 0;
 				.button {
 					padding: 1.2rem 4rem;
-					color: #4b525a;
+					color: #a3a7ab;
 					border-radius: 10rem;
 					width: 100%;
 					font-weight: 400;
 					&[data-active="true"] {
 						background: $orange-grad;
-						color: #1b1e21;
+						color: #fff;
 						font-weight: 700;
 					}
 				}

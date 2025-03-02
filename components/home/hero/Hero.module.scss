@@ -44,7 +44,7 @@
 		h1,
 		span {
 			@extend %title-56;
-			font-family: $font-good;
+			font-family: $font-outfit;
 			color: $col-white;
 			margin-bottom: 0.8rem;
 		}
@@ -56,7 +56,7 @@
 	.cta_text {
 		div {
 			@extend %title-56;
-			font-family: $font-good;
+			font-family: $font-outfit;
 			background: $orange-grad;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;

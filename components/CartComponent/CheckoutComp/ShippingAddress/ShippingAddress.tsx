@@ -48,9 +48,12 @@ const ShippingAddress = ({ handleNext, handlePrev }: Props) => {
 		country: Yup.string().required("Country is required")
 	});
 
-	const handleSubmit = (values: CheckoutFormValues, helpers: FormikHelpers<CheckoutFormValues>) => {
-		helpers.setSubmitting(false)
-		handleNext()
+	const handleSubmit = (
+		values: CheckoutFormValues,
+		helpers: FormikHelpers<CheckoutFormValues>
+	) => {
+		helpers.setSubmitting(false);
+		handleNext();
 	};
 
 	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -252,15 +255,11 @@ const ShippingAddress = ({ handleNext, handlePrev }: Props) => {
 									<Button
 										disabled={isSubmitting}
 										onClick={submitForm}
-										iconSuffix="/svgs/arrow.svg"
+										iconSuffix="/svgs/arrow-white.svg"
 									>
 										Continue
 									</Button>
-									<Button
-										buttonType="secondary"
-										onClick={handlePrev}
-										iconSuffix="/svgs/arrow.svg"
-									>
+									<Button buttonType="secondary" onClick={handlePrev}>
 										Back
 									</Button>
 								</div>

@@ -83,7 +83,7 @@ const CartItemCardContainer = ({
 						<div className={styles.buttons_container}>
 							<Button
 								className={styles.place_btn}
-								iconSuffix="/svgs/arrow-right2.svg"
+								iconSuffix="/svgs/arrow-white.svg"
 								onClick={placeOrder}
 							>
 								Place order

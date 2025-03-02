@@ -27,7 +27,7 @@
 		span {
 			position: absolute;
 			bottom: -0.4rem;
-			background-color: #ffb30f;
+			background-color: #f76039;
 			height: 0.4rem;
 			left: 0;
 		}
@@ -40,7 +40,7 @@
 		max-width: 144rem;
 		margin-inline: auto;
 		.image_container {
-			background-color: #fff7e7;
+			background-color: #feefeb;
 			height: 100%;
 			width: 100%;
 			display: grid;
@@ -79,7 +79,7 @@
 
 					&[data-active="true"] {
 						background-color: white;
-						color: #ffb30f;
+						color: #f76039;
 					}
 				}
 			}
@@ -234,7 +234,7 @@
 					.text {
 						text-align: center;
 						span {
-							color: #ffb30f;
+							color: #f76039;
 							cursor: pointer;
 						}
 						h5 {
@@ -307,7 +307,7 @@
 						margin-bottom: 1rem;
 
 						button {
-							color: #ffb30f;
+							color: #f76039;
 							font-size: 1.2rem;
 						}
 
@@ -356,8 +356,9 @@
 			padding: 1.6rem 2.4rem;
 			min-width: 10rem;
 			&:first-child {
-				border: 0.1rem solid #ffb30f;
+				border: 0.1rem solid #f76039;
 				border-radius: 10rem;
+				color: #f76039;
 			}
 		}
 	}
@@ -398,7 +399,7 @@
 			height: 1.4rem;
 			width: 0.1rem;
 			border-radius: 25%;
-			background-color: black;
+			background-color: #fff;
 			display: block;
 			padding: 0;
 			margin-left: 0.4rem;
@@ -429,7 +430,7 @@
 			color: #4b525a;
 		}
 		a {
-			color: #ffb30f;
+			color: #f76039;
 			font-weight: 700;
 		}
 	}

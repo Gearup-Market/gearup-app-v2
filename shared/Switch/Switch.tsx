@@ -15,14 +15,14 @@ const ToggleSwitch = ({ onChange, checked, disabled }: Props) => {
 			checked={checked}
 			sx={{
 				"& .MuiSwitch-switchBase.Mui-checked": {
-					color: "#FFB514",
+					color: "#F76039",
 					"&:hover": {
 						backgroundColor: "rgba(255, 64, 129, 0.08)"
 					}
 				},
 				"& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
 					backgroundColor: "transparent",
-					border: "1px solid #FFB514"
+					border: "1px solid #F76039"
 				}
 			}}
 			disabled={disabled}

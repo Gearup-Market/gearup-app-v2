@@ -102,17 +102,19 @@ $col-profile-container-bg: #fbfbfd;
 $col-high-emphasis-text: #1b1e21;
 $col-mid-emphasis-text: #4b525a;
 $col-low-emphasis-text: #a3a7ab;
-$col-active-nav-bg: #fff7e7;
+$col-active-nav-bg: #feefeb;
 $col-error: #ff3729;
 $col-warning: #ffc107;
-$col-orange: #ffb30f;
+$col-orange: #f76039;
 $col-percentage-bg: #f2f4f7;
 $col-bg: #fbfbfd;
 
 // fonts
-$font: "Source Sans 3", sans-serif;
-$font-good: "Good";
+$font: "Inter", sans-serif;
+$font-outfit: "Good";
 $font-cera: "Cera";
+$font-outfit: "Outfit";
+$font-inter: "Inter";
 
 $z-indexes: ("level-four", "level-three", "level-two", "level-one");
 
@@ -122,7 +124,7 @@ $all-transition: all 0.3s ease-out;
 $max-width: 160rem;
 
 //gradient
-$orange-grad: linear-gradient(76.89deg, #ffb30f 11.85%, #edcb00 100.03%);
+$orange-grad: #f76039;
 
 $elastic-out: linear(
 	0,

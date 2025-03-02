@@ -47,7 +47,7 @@ const MobileCard = ({
 					>
 						<p className={styles.name}>{mainHeaderText}</p>
 						{!!subHeaderText && (
-							<p className={styles.amount}>{formatNum(subHeaderText)}</p>
+							<p className={styles.amount}>{subHeaderText}</p>
 						)}
 					</div>
 				</div>

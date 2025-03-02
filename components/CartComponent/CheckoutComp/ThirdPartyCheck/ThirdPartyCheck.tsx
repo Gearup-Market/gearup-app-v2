@@ -35,7 +35,7 @@ const ThirdPartyCheck = ({ handleNext, thirdPartyPricing }: Props) => {
 					<div className={styles.left}>
 						<Image
 							className={styles.shield_icon}
-							src="/svgs/third-party-checkout-shield.svg"
+							src="/svgs/icon-check.svg"
 							alt="icon"
 							height={40}
 							width={40}
@@ -58,7 +58,7 @@ const ThirdPartyCheck = ({ handleNext, thirdPartyPricing }: Props) => {
 					</div>
 				</div>
 
-				<Button onClick={handleNext} iconSuffix="/svgs/arrow.svg">
+				<Button onClick={handleNext} iconSuffix="/svgs/arrow-white.svg">
 					Continue
 				</Button>
 			</div>

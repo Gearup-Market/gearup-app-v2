@@ -85,7 +85,7 @@
 			cursor: pointer !important;
 		}
 		.swiper-slide-thumb-active {
-			border: 0.3rem solid #ffb30f !important;
+			border: 0.3rem solid #f76039 !important;
 		}
 	}
 	@include screenMax("mobile") {
@@ -105,6 +105,12 @@
 	.rdrMonth {
 		width: 100%;
 	}
+}
+.rdrDefinedRangesWrapper {
+	display: none !important;
+}
+.rdrDateRangePickerWrapper {
+	width: 100%;
 }
 
 img {

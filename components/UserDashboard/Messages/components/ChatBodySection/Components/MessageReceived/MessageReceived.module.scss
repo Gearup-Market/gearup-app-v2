@@ -1,28 +1,33 @@
 @import "@/styles/imports";
 
 .container {
-    animation: 0.5s fadeIn ease-in-out;
-  
-    width: 100%;
-    display: flex;
+	animation: 0.5s fadeIn ease-in-out;
 
-    
+	width: 100%;
+	display: flex;
+
 	@keyframes fadeIn {
-        0% {
-            opacity: 0;
+		0% {
+			opacity: 0;
 		}
 		100% {
-            opacity: 1;
+			opacity: 1;
 		}
 	}
-    
-    .text{
-        max-width: 43rem;
-        background: #fff;
-        border-radius: 0.8rem;
-        padding: 1.6rem;
-        min-width: 10rem;
-        font-size: 1.4rem;
-    }
 
+	.text {
+		max-width: 43rem;
+		background: #fff;
+		border-radius: 0.8rem;
+		min-width: 10rem;
+		padding: 0.8rem 1.2rem;
+		h3 {
+			padding-bottom: 0.6rem;
+			font-size: 1.4rem;
+		}
+		p {
+			font-size: 1.2rem;
+			text-align: left;
+		}
+	}
 }

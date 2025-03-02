@@ -57,6 +57,7 @@ const BuyPriceContainer = ({
 			router.push("/verification");
 			return;
 		}
+		if (user._id === listing.user._id) return toast.error("Can not buy own listing");
 		try {
 			addItemToCart({
 				listing,
@@ -68,6 +69,7 @@ const BuyPriceContainer = ({
 	};
 
 	const goToChat = () => {
+		if (user._id === listing.user._id) return toast.error("Can not buy own listing");
 		router.push(
 			user.isAuthenticated
 				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}`

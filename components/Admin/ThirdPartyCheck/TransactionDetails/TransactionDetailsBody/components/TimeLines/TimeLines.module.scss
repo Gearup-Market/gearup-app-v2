@@ -1,121 +1,108 @@
 @import "@/styles/imports";
 
-.container{
-    flex: 1;
-    min-width: 60rem;
-    border: 1px solid $col-border;
-    display: flex;
-    border-radius: 1.6rem;
-    height: fit-content;
-    margin-top: 2rem;
+.container {
+	flex: 1;
+	min-width: 60rem;
+	border: 1px solid $col-border;
+	display: flex;
+	border-radius: 1.6rem;
+	height: fit-content;
+	margin-top: 2rem;
 
-    .left{
-        padding:3.2rem 1.6rem;
-        width: 100%;
-        border-top-left-radius:1.6rem ;
-        border-bottom-left-radius:1.6rem ;
+	.left {
+		padding: 3.2rem 1.6rem;
+		width: 100%;
+		border-top-left-radius: 1.6rem;
+		border-bottom-left-radius: 1.6rem;
 
-        .timelines_container{
-            display: flex;
-            flex-direction: column;
-            // gap: 3rem;
-            margin-top: 1rem;
+		.timelines_container {
+			display: flex;
+			flex-direction: column;
+			// gap: 3rem;
+			margin-top: 1rem;
 
-            .timeline_container{
-                display: flex;
-                gap: 1rem;
-                align-items: flex-start;
-                justify-content: space-between;
-                width: 100%;
+			.timeline_container {
+				display: flex;
+				gap: 1rem;
+				align-items: flex-start;
+				justify-content: space-between;
+				width: 100%;
 
-                .date_text{
-                    color: #7B8086;
-                    font-size: 1.4rem;
-                }
+				.date_text {
+					color: #7b8086;
+					font-size: 1.4rem;
+				}
 
-            
+				.timeline {
+					display: flex;
+					gap: 1rem;
+					align-items: flex-start;
 
-            .timeline{
-                display: flex;
-                gap: 1rem;
-                align-items: flex-start;
+					.span_container {
+						display: flex;
+						flex-direction: column;
+						align-items: center;
 
-                .span_container{
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
+						span {
+							font-size: 1.4rem;
+							color: #1b1e21;
+							font-weight: 700;
+							background-color: #dedfe0;
+							height: 3.2rem;
+							width: 3.2rem;
+							border-radius: 50%;
+							display: flex;
+							justify-content: center;
+							align-items: center;
 
-                    span{
-                   font-size: 1.4rem;
-                color: #1B1E21;
-                   font-weight: 700;
-                background-color: #DEDFE0;
-            height: 3.2rem;
-        width: 3.2rem;
-    border-radius: 50%;
-display: flex;
-justify-content: center;
-align-items: center;
+							&[data-active="true"] {
+								background-color: #f76039;
+							}
+						}
+					}
 
-&[data-active="true"]{
-    background-color: #FFC107;
+					.line_icon {
+						width: 0.3rem;
+						height: 4rem;
+						background-color: #dedfe0;
+						&[data-active="true"] {
+							background-color: #f76039;
+						}
+					}
 
-}
-}
+					.check_icon {
+						width: 2.4rem;
+						height: 2.4rem;
+						background-color: #dedfe0;
+						border-radius: 50%;
+						display: flex;
+						padding: 0.5rem;
+						justify-content: center;
+						align-items: center;
+						&[data-active="true"] {
+							background-color: #f76039;
+						}
+					}
+				}
 
-}
+				p {
+					font-size: 1.4rem;
+					color: #1b1e21;
+					font-weight: 500;
+					margin-top: 0.5rem;
+				}
+			}
+		}
+	}
 
-.line_icon{
-    width: .3rem;
-    height: 4rem;
-    background-color: #DEDFE0;
-    &[data-active="true"]{
-        background-color: #FFC107;
+	.right {
+		width: 100%;
+		border-top-right-radius: 1.6rem;
+		border-bottom-right-radius: 1.6rem;
+		border-left: 1px solid $col-border;
+	}
 
-    }
-}
-
-.check_icon{
-    width: 2.4rem;
-    height: 2.4rem;
-    background-color: #DEDFE0;
-    border-radius: 50%;
-    display: flex;
-    padding: .5rem;
-    justify-content: center;
-    align-items: center;
-    &[data-active="true"]{
-        background-color: #FFC107;
-
-    }
-
-}
-
-               }
-
-               p{
-                     font-size: 1.4rem;
-                     color: #1B1E21;
-                     font-weight: 500;
-                     margin-top: .5rem;
-
-               }
-
-            }
-        }
-
-
-    }
-
-    .right{
-        width: 100%;
-        border-top-right-radius:1.6rem ;
-        border-bottom-right-radius:1.6rem ;
-        border-left: 1px solid $col-border;
-    }
-
-    @include screenMax("mobile"){
-        min-width: 100%;
-    }
-
+	@include screenMax("mobile") {
+		min-width: 100%;
+	}
 }

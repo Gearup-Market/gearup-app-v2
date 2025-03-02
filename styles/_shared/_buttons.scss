@@ -33,17 +33,16 @@
 	&:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
-		background: none;
-		background-color: #e1e1e1;
+		// background-color: #e1e1e1;
 	}
-	color: #1b1e21;
+	color: #fff;
 }
 
 %btn-secondary {
 	@extend %btn;
 	border-radius: 10rem;
-	background-color: #fff7e7;
-	border-color: #ffb30f;
+	background-color: #fff;
+	border-color: #f76039;
 }
 %btn-transparent {
 	@extend %btn;

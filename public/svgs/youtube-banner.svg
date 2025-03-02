@@ -47,12 +47,12 @@
 <use xlink:href="#image2_164_3828" transform="scale(0.000416667)"/>
 </pattern>
 <linearGradient id="paint0_linear_164_3828" x1="83.5652" y1="47.0659" x2="97.3404" y2="43.1493" gradientUnits="userSpaceOnUse">
-<stop offset="0.102194" stop-color="#FFB30F"/>
-<stop offset="1" stop-color="#EDCB00"/>
+<stop offset="0.102194" stop-color="#F76039"/>
+<stop offset="1" stop-color="#F76039"/>
 </linearGradient>
 <linearGradient id="paint1_linear_164_3828" x1="97.5732" y1="50.2394" x2="112.068" y2="47.1276" gradientUnits="userSpaceOnUse">
-<stop offset="0.102194" stop-color="#FFB30F"/>
-<stop offset="1" stop-color="#EDCB00"/>
+<stop offset="0.102194" stop-color="#F76039"/>
+<stop offset="1" stop-color="#F76039"/>
 </linearGradient>
 <clipPath id="clip0_164_3828">
 <rect x="352" y="420" width="24" height="24" rx="12" fill="white"/>

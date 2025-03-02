@@ -42,7 +42,7 @@
 				.button {
 					&:first-child {
 						background: unset;
-						background-color: #072ac8;
+						background-color: #1b1e21;
 						color: #ffffff;
 					}
 				}
@@ -79,7 +79,7 @@
 			padding: 0.2rem 0.8rem;
 			border-radius: 10rem;
 			background: $orange-grad;
-			color: #1b1e21;
+			color: #fff;
 			p {
 				font-weight: 700;
 			}
@@ -88,7 +88,7 @@
 			}
 			&[data-sell="true"] {
 				background: unset;
-				background-color: #072ac8;
+				background-color: #1b1e21;
 				color: #ffffff;
 			}
 		}

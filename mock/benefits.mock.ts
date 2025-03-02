@@ -17,8 +17,8 @@ export const rentBenefits: Benefit[] = [
 		title: "Save Up to 40% On Rentals",
 		description:
 			"helping you stretch your budget further and get the gear you need at a fraction of the cost",
-		backgroundColor: "#FFF7E7",
-		lineColor: "#FFB30F",
+		backgroundColor: "#FEEFEB",
+		lineColor: "#F76039",
 		image: "/images/rent-money.png"
 	},
 	{
@@ -27,8 +27,8 @@ export const rentBenefits: Benefit[] = [
 		title: "Gearup insurance coverage",
 		description:
 			"We provide up to $20,000 per rental insurance coverage on gears in the advent of fire damage, electrical damage, theft etc",
-		backgroundColor: "#FFF7E7",
-		lineColor: "#FFB30F"
+		backgroundColor: "#FEEFEB",
+		lineColor: "#F76039"
 	},
 	{
 		icon: "/svgs/icon-video.svg",
@@ -68,8 +68,8 @@ export const buyBenefits: Benefit[] = [
 		title: "Buyer’s protection",
 		description:
 			"We carefully make sure that our Seller are 100% ID verified before they can sell or list their gears on our platform",
-		backgroundColor: "#FFF7E7",
-		lineColor: "#FFB30F"
+		backgroundColor: "#FEEFEB",
+		lineColor: "#F76039"
 	},
 	{
 		icon: "/svgs/buy-certified.svg",
@@ -89,8 +89,8 @@ export const courseBenefits: Benefit[] = [
 		title: "high-quality content",
 		description:
 			"Dive into engaging courses curated by industry experts, designed to deliver valuable insights and practical skills.",
-		backgroundColor: "#FFF7E7",
-		lineColor: "#FFB30F",
+		backgroundColor: "#FEEFEB",
+		lineColor: "#F76039",
 		image: "/images/course-good.png"
 	},
 	{
@@ -109,8 +109,8 @@ export const courseBenefits: Benefit[] = [
 		title: "Practical Skills",
 		description:
 			"Acquire practical skills and knowledge relevant to your interests and career.",
-		backgroundColor: "#FFF7E7",
-		lineColor: "#FFB30F"
+		backgroundColor: "#FEEFEB",
+		lineColor: "#F76039"
 	},
 	{
 		icon: "/svgs/icon-video.svg",

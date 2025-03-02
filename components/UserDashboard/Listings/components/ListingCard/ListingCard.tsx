@@ -106,7 +106,7 @@ const ListingCard = ({
 				</div>
 				{showStatusIcon && (
 					<div className={styles.chevron}>
-						<EllipseIcon color="#FFB30F" />
+						<EllipseIcon color="#F76039" />
 					</div>
 				)}
 			</div>

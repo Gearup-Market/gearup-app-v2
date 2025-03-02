@@ -35,7 +35,7 @@ const BlogDetails = ({ data }: Props) => {
 	// 				height: "100vh"
 	// 			}}
 	// 		>
-	// 			<CircularProgressLoader color="#FFB30F" />
+	// 			<CircularProgressLoader color="#F76039" />
 	// 		</Box>
 	// 	);
 	// }

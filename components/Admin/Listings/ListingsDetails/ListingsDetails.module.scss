@@ -1,134 +1,126 @@
-@import '@/styles/imports';
+@import "@/styles/imports";
 
 .container {
-    padding: 4rem 3rem;
+	padding: 4rem 3rem;
 
-    .header_container{
-        @include flex;
-        justify-content: space-between;
-        margin: 2.5rem 0;
-        align-items: center;
-        margin-bottom: 1rem;
+	.header_container {
+		@include flex;
+		justify-content: space-between;
+		margin: 2.5rem 0;
+		align-items: center;
+		margin-bottom: 1rem;
 
-    .btn_container{
-        @include flex;
-        gap: 1rem;
-        margin-bottom: 1.6rem;
+		.btn_container {
+			@include flex;
+			gap: 1rem;
+			margin-bottom: 1.6rem;
 
-        .decline_btn{
-            background: transparent;
-            border: 1px solid $col-border;
-            color: #FF3729;
-        }
-    }
-}
+			.decline_btn {
+				background: transparent;
+				border: 1px solid $col-border;
+				color: #ff3729;
+			}
+		}
+	}
 
-&__filters_container{
-    display: flex;
-    gap: 2rem;
-    padding: 0.5rem 0.5rem;
-    border-radius: 10rem;
-    background-color: white;
-    border: 1px solid $col-border;
-    width:fit-content;
-    margin-bottom: 2rem;
+	&__filters_container {
+		display: flex;
+		gap: 2rem;
+		padding: 0.5rem 0.5rem;
+		border-radius: 10rem;
+		background-color: white;
+		border: 1px solid $col-border;
+		width: fit-content;
+		margin-bottom: 2rem;
 
-    &__filter{
-        display: flex;
-        gap: 2rem;
-        align-items: center;
-        padding: 0.6rem 3rem;
-        background-color: $col-white;
-        font-size: 1.4rem;
-        border-radius: 10rem;
-        cursor: pointer;
-        transition: all 0.3s;
+		&__filter {
+			display: flex;
+			gap: 2rem;
+			align-items: center;
+			padding: 0.6rem 3rem;
+			background-color: $col-white;
+			font-size: 1.4rem;
+			border-radius: 10rem;
+			cursor: pointer;
+			transition: all 0.3s;
 
-        &[data-active='true']{
-            background-color: #ffb30f;
-            font-weight: 700;
-        }
-    
-    }
-}
+			&[data-active="true"] {
+				background-color: #f76039;
+				font-weight: 700;
+			}
+		}
+	}
 
+	.main_container {
+		display: grid;
+		grid-template-columns: 65% 1fr;
+		gap: 2rem;
+		width: 100%;
+		margin-top: rem;
 
-.main_container{
-    display: grid;
-    grid-template-columns: 65% 1fr;
-    gap: 2rem;
-    width: 100%;
-    margin-top: rem;
+		.left_container {
+			width: 100%;
+		}
 
-    .left_container{
-        width: 100%;
-    }
+		.right_container {
+			width: 100%;
+		}
+	}
 
+	.btn_container_mob {
+		display: none;
+	}
 
-    .right_container{
-        width: 100%;
-    }
-}
+	@include screenMax("mobile") {
+		padding: 3rem 1.6rem;
+		padding-bottom: 6rem;
 
-.btn_container_mob{
-    display: none;
-}
+		&__filters_container {
+			width: 100%;
 
+			&__filter {
+				padding: 1rem 2rem;
+				font-size: 1.4rem;
+				flex: 1;
+			}
+		}
+		.container {
+			padding: 2rem 1rem;
+		}
 
-@include screenMax("mobile") {
-    padding: 3rem 1.6rem;
-    padding-bottom: 6rem;
+		.main_container {
+			display: block;
+		}
 
-    &__filters_container{
-        width: 100%;
+		.header_container {
+			flex-direction: column;
+			align-items: flex-start;
+			.btn_container {
+				display: none;
+			}
+		}
 
-        &__filter{
-            padding: 1rem 2rem;
-            font-size: 1.4rem;
-            flex: 1;
-        }
-    
-    }
-    .container{
-        padding: 2rem 1rem;
-    }
+		.right_container {
+			margin-top: 1.6rem;
+		}
 
-    .main_container{
-        display: block;
-    }
+		.btn_container_mob {
+			@include flex;
+			flex-direction: column;
+			gap: 1rem;
+			margin-top: 3rem;
+			width: 100%;
 
-    .header_container{
-        flex-direction: column;
-        align-items: flex-start;
-        .btn_container{
-            display: none;
-        }
-    }
+			button {
+				width: 100%;
+			}
 
-
-    .right_container{
-        margin-top: 1.6rem;
-    }
-
-    .btn_container_mob{
-        @include flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin-top: 3rem;
-        width: 100%;
-
-        button{
-            width: 100%;
-        
-        }
-
-        .decline_btn{
-            background: transparent;
-            border: 1px solid $col-border;
-            color: #FF3729;
-            width: 100%;
-        }
-    }
-}
-
+			.decline_btn {
+				background: transparent;
+				border: 1px solid $col-border;
+				color: #ff3729;
+				width: 100%;
+			}
+		}
+	}
 }

@@ -1,45 +1,42 @@
 @import "@/styles/imports";
 
+.container {
+	display: flex;
+	flex-direction: column;
+	// max-width: 70rem;
+	min-width: 40rem;
+	width: 100%;
 
-.container{
-    display: flex;
-    flex-direction: column;
-    // max-width: 70rem;
-    min-width: 40rem;
-    width: 100%;
+	.error_message {
+		color: #ff0000;
+		font-size: 1.4rem;
+		font-weight: 500;
+	}
+	&__form_container {
+		.submit_btn_container {
+			display: flex;
+			justify-content: center;
+			margin-top: 2rem;
+			width: 100%;
+			button {
+				width: 100%;
+			}
+		}
 
-    .error_message{
-      color: #FF0000;
-      font-size: 1.4rem;
-      font-weight: 500;
-    }
-    &__form_container {
+		.forgot_pin_container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			color: #7b8086;
+			margin-top: 1rem;
 
-    
-        .submit_btn_container {
-          display: flex;
-          justify-content: center;
-          margin-top: 2rem;
-          width: 100%;
-            button{
-              width: 100%;
-          }
-        }
-
-        .forgot_pin_container{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            color: #7B8086;
-            margin-top: 1rem;
-
-            .contact_support{
-                font-size: 1.6rem;
-                font-weight: 700;
-                color: #FFB30F;
-                cursor: pointer;
-            }
-        }
-      }
+			.contact_support {
+				font-size: 1.6rem;
+				font-weight: 700;
+				color: #f76039;
+				cursor: pointer;
+			}
+		}
+	}
 }

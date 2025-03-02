@@ -16,7 +16,7 @@
 		cursor: pointer;
 
 		&:checked ~ .radioCustom {
-			border-color: #ffb30f;
+			border-color: #f76039;
 		}
 
 		&:checked ~ .radioCustom:after {
@@ -44,7 +44,7 @@
 			width: 12px;
 			height: 12px;
 			border-radius: 50%;
-			background: #ffb30f;
+			background: #f76039;
 			transform: translate(-50%, -50%);
 		}
 	}

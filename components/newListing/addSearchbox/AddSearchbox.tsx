@@ -70,7 +70,7 @@ const AddSearchbox = ({ addItem }: Props) => {
 				onClick={() => addItem(item)}
 			>
 				<div className={styles.check}>
-					<Image src="/svgs/check.svg" alt="" fill sizes="100vw" />
+					<Image src="/svgs/check-white.svg" alt="" fill sizes="100vw" />
 				</div>
 			</Button>
 			{/* {isTyping && (
