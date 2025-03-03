@@ -7,10 +7,11 @@ import Script from "next/script";
 const sourceSans = Source_Sans_3({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: {
-		template: "GearUp | %s",
-		default: "The Peer-2-Peer Marketplace for African Creators"
-	},
+	// title: {
+	// 	template: "GearUp | %s",
+	// 	default: "The Peer-2-Peer Marketplace for African Creators"
+	// },
+	title: "GearUp | The Peer-2-Peer Marketplace for African Creators",
 	description:
 		"GearUp connects African creators with opportunities to rent, buy, and sell creative gear, book studio spaces, access professional courses, and land gigs."
 };
