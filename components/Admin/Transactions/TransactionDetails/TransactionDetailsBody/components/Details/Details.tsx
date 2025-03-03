@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Details.module.scss";
 import { CopyIcon } from "@/shared/svgs/dashboard";
 import DetailsTimeline from "../TimeLines/TimeLines";
 import StatusUpdate from "../StatusUpdate/StatusUpdate";
 import PersonalDetails from "../PersonalDetails/PersonalDetails";
-import { AppRoutes, calculateItemPrice, formatNum } from "@/utils";
+import { AppRoutes, copyText, formatNum } from "@/utils";
 import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { useGetUser } from "@/app/api/hooks/users";
@@ -42,10 +42,6 @@ const DetailsComponent = ({ item }: Props) => {
 	const total = price + vat + fee;
 
 
-	console.log(item,"item transaction")
-	console.log(merchant, "merchant")
-	console.log(customer, "cutomer")
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__left}>
@@ -61,7 +57,7 @@ const DetailsComponent = ({ item }: Props) => {
 							style={{ display: "flex", alignItems: "center", gap: "10px" }}
 						>
 							<p>{item._id}</p>
-							<span className={styles.icon}>
+							<span className={styles.icon} onClick={() => copyText(item._id)}>
 								<CopyIcon />
 							</span>
 						</span>
@@ -98,7 +94,7 @@ const DetailsComponent = ({ item }: Props) => {
 					</div>
 				</div>
 				<div>
-					<DetailsTimeline />
+					<DetailsTimeline timelines={item?.stages ?? []} status={item?.status} />
 				</div>
 			</div>
 			<div className={styles.container__right}>
@@ -114,7 +110,7 @@ const DetailsComponent = ({ item }: Props) => {
 					subText={!!merchant?.data?.address ? merchant?.data?.address : "Nigeria"}
 					profileLink={AppRoutes.userDetails(merchant?.data?.userId)}
 				/>
-				<StatusUpdate />
+				<StatusUpdate activeStatus={item?.status} />
 			</div>
 		</div>
 	);
