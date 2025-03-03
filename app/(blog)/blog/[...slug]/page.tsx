@@ -8,7 +8,7 @@ export interface Props {
 }
 
 const isSlug = (idOrSlug: string) => {
-	return idOrSlug.includes("-");
+	return idOrSlug[0].includes("-");
 };
 
 async function getArticleBySlug(slug: string): Promise<Props | null> {
@@ -52,7 +52,7 @@ export async function generateMetadata({
 		description:
 			formattedArticle.excerpt ||
 			formattedArticle.description ||
-			`Read ${formattedArticle.title} on GearUp Market`,
+			`Read ${formattedArticle.title} on GearUp`,
 		openGraph: {
 			type: "article",
 			url: `https://gearup.market/blog/${formattedArticle.slug}`,
@@ -66,7 +66,7 @@ export async function generateMetadata({
 					alt: formattedArticle.title
 				}
 			],
-			siteName: "GearUp Market"
+			siteName: "GearUp"
 		},
 		twitter: {
 			card: "summary_large_image",
