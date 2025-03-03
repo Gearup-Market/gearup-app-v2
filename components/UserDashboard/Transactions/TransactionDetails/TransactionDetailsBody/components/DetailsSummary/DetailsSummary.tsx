@@ -5,19 +5,32 @@ import { CopyIcon } from "@/shared/svgs/dashboard";
 import { PersonalDetails, ReceiptDetails, WarningContainer } from "./components";
 import { iTransactionDetails } from "@/interfaces";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
-import { formatNum, getDaysDifference } from "@/utils";
+import { formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
 
 const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
-	const { isBuyer, amount, listing, transactionType, id, buyer, seller, rentalPeriod } =
+	const { isBuyer, listing, transactionType, id, buyer, seller, rentalBreakdown } =
 		item;
-	const { offer } = listing;
+	const offer = listing ? listing.offer : null;
 	const forSale = !!offer?.forSell;
+	const amount =
+		item.listing.listingType === "rent"
+			? item.rentalBreakdown.reduce(
+					(total, period) => total + period.price * period.quantity,
+					0
+			  )
+			: offer?.forSell?.pricing;
 	const user = isBuyer ? seller : buyer;
 	const duration =
 		transactionType === TransactionType.Rental
-			? getDaysDifference(rentalPeriod?.start, rentalPeriod?.end)
+			? item.rentalBreakdown.reduce((total, period) => total + period.quantity, 0)
 			: 0;
-	const unitPrice = forSale ? offer.forSell?.pricing : offer.forRent?.day1Offer;
+	const unitPrice = listing
+		? forSale
+			? offer.forSell?.pricing
+			: offer?.forRent?.rates.length
+			? offer?.forRent?.rates[0].price
+			: 0
+		: 0;
 
 	return (
 		<div className={styles.container}>
@@ -33,8 +46,14 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 				</div> */}
 				{duration > 0 ? (
 					<div className={styles.summary_item}>
-						<h4>Durations(Days)</h4>
-						<p>{duration} days</p>
+						<h4>
+							Durations({offer?.forRent?.rates[0].duration}
+							{item.rentalBreakdown.length > 1 ? "s" : ""})
+						</h4>
+						<p>
+							{duration} {offer?.forRent?.rates[0].duration}
+							{item.rentalBreakdown.length > 1 ? "s" : ""}
+						</p>
 					</div>
 				) : null}
 				<div className={styles.summary_item}>
@@ -54,7 +73,10 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 			<PersonalDetails
 				name={user.name || user.userName}
 				subText="Lagos, Nigeria"
-				profileLink="/user/settings/profile"
+				profilePhoto={user.avatar || "/svgs/user.svg"}
+				profileLink={`/users/${user._id}`}
+				forSale={forSale}
+				isBuyer={isBuyer}
 			/>
 			<ReceiptDetails />
 			<WarningContainer />

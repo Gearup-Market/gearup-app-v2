@@ -6,16 +6,17 @@ import { Button, Logo } from "@/shared";
 import Image from "next/image";
 import { AddSearchbox, AddedItem } from "@/components/newListing";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "@/store/configureStore";
+import { AppState, useAppSelector } from "@/store/configureStore";
 import { clearNewListing, updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { Item } from "@/interfaces/Listing";
+import Link from "next/link";
 
 const NewListingView = () => {
-	const newListing = useSelector((state: AppState) => state.newListing);
+	const newListing = useAppSelector(s => s.newListing);
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const { items = [] } = newListing;
+	const { items } = newListing;
 	const [isProduct, setIsProduct] = useState<boolean>(false);
 
 	const addProduct = () => {
@@ -34,11 +35,14 @@ const NewListingView = () => {
 	};
 
 	const disabledButton = !items?.length;
+
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 1 of 6 : Products</p>
@@ -81,8 +85,20 @@ const NewListingView = () => {
 								onClick={addProduct}
 							>
 								<div className={styles.plus}>
-									<span></span>
-									<span></span>
+									<span
+										style={{
+											backgroundColor: items.length
+												? "#1B1E21"
+												: "#F76039"
+										}}
+									></span>
+									<span
+										style={{
+											backgroundColor: items.length
+												? "#1B1E21"
+												: "#F76039"
+										}}
+									></span>
 								</div>
 								{!!items.length ? "Add more to set" : "Add a product"}
 							</Button>

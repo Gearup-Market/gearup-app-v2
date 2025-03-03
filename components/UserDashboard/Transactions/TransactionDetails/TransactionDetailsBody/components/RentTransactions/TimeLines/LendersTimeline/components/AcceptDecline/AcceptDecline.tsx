@@ -8,7 +8,7 @@ import { iTransactionDetails, TransactionStage, TransactionStatus } from "@/inte
 import { usePostTransactionStatus } from "@/app/api/hooks/transactions";
 import { useAppSelector } from "@/store/configureStore";
 import toast from "react-hot-toast";
-import { getDaysDifference, formatDate, formatNum } from "@/utils";
+import { getDaysDifference, formatDate, formatNum, getLastRentalDate } from "@/utils";
 
 interface Props {
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
@@ -17,7 +17,7 @@ interface Props {
 const AcceptDecline = ({ handleNext, item }: Props) => {
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
 	const { userId } = useAppSelector(s => s.user);
-	const { isBuyer, id, amount, transactionStatus, listing, rentalPeriod } = item;
+	const { isBuyer, id, amount, transactionStatus, listing, rentalBreakdown } = item;
 
 	const isCancelled = useMemo(
 		() => transactionStatus === TransactionStatus.Cancelled,
@@ -84,16 +84,22 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 								<span className={styles.bold}>
 									₦{formatNum(amount, true, 2)}
 								</span>{" "}
-								for the rental of {listing.productName}{" "}
-								{rentalPeriod?.start && (
+								for the rental of{" "}
+								{listing ? listing.productName : "Listing not available"}{" "}
+								{rentalBreakdown?.length && (
 									<span className={styles.bold}>
-										from {formatDate(rentalPeriod?.start)} to{" "}
-										{formatDate(rentalPeriod?.end)} (
-										{getDaysDifference(
-											rentalPeriod?.start,
-											rentalPeriod?.end
-										)}{" "}
-										days)
+										from {formatDate(rentalBreakdown[0].date)} to{" "}
+										{formatDate(getLastRentalDate(rentalBreakdown))}(
+										{rentalBreakdown.length}
+										days{" "}
+										{rentalBreakdown[0].duration === "hour"
+											? `for ${rentalBreakdown.reduce(
+													(total, period) =>
+														total + period.quantity,
+													0
+											  )} hours`
+											: null}
+										)
 									</span>
 								)}{" "}
 								and the money is in escrow protection which will be

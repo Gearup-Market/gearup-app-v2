@@ -1,61 +1,55 @@
 @import "@/styles/imports";
 
+.container {
+	display: flex;
+	flex-direction: column;
+	// max-width: 70rem;
+	min-width: 40rem;
+	width: 100%;
 
-.container{
-    display: flex;
-    flex-direction: column;
-    // max-width: 70rem;
-    min-width: 40rem;
-    width: 100%;
+	hr {
+		width: 100%;
+		height: 1px;
+		border-color: #dedfe0;
+		margin-bottom: 2.4rem;
+	}
 
-hr{
-    width: 100%;
-    height: 1px;
-    border-color: #DEDFE0;
-    margin-bottom: 2.4rem;
-    
-}
+	.text_area_container {
+		position: relative;
 
-.text_area_container{
-    position: relative;
+		.paste_text {
+			position: absolute;
+			right: 1.6rem;
+			bottom: 1.6rem;
+			font-size: 1.4rem;
+			font-weight: 700;
+			color: #f76039;
+			cursor: pointer;
+		}
+	}
 
-    .paste_text{
-        position: absolute;
-        right: 1.6rem;
-        bottom: 1.6rem;
-        font-size: 1.4rem;
-        font-weight: 700;
-        color:#FFB30F;
-        cursor: pointer;
+	.text_area_suffix {
+		font-size: 1.4rem;
+		font-weight: 400;
+		color: #7b8086;
+		margin: 1rem 0;
+	}
 
-    }
-}
+	.link_text {
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #4b525a;
+		cursor: pointer;
+		text-decoration: underline;
+		text-align: center;
+		margin-top: 1.6rem;
+	}
 
-.text_area_suffix{
-    font-size: 1.4rem;
-    font-weight: 400;
-    color: #7B8086;
-    margin: 1rem 0;
-}
+	button {
+		margin-top: 2rem;
+	}
 
-.link_text{
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #4B525A;
-    cursor: pointer;
-    text-decoration: underline;
-    text-align: center;
-    margin-top: 1.6rem;
-}
-
-
-button{
-    margin-top: 2rem;
-}
-
-@include screenMax("mobile"){
-    min-width: 100%;
-}
-
-        
+	@include screenMax("mobile") {
+		min-width: 100%;
+	}
 }

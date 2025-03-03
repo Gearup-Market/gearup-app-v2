@@ -7,15 +7,35 @@ import Image from "next/image";
 import { Button, DatePicker, Logo } from "@/shared";
 import format from "date-fns/format";
 import { Listing } from "@/store/slices/listingsSlice";
-import { AppRoutes, formatNumber, getDaysDifference } from "@/utils";
-import useCart from "@/hooks/useCart";
-import { TransactionType } from "@/app/api/hooks/transactions/types";
+import {
+	AppRoutes,
+	calculateItemPrice,
+	formatNumber,
+	getApplicableRate,
+	getDaysDifference,
+	getLastRentalDate
+} from "@/utils";
+import useCart, { CartPayload } from "@/hooks/useCart";
+import {
+	CartItem,
+	RentalBreakdown,
+	TransactionType
+} from "@/app/api/hooks/transactions/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAppSelector } from "@/store/configureStore";
 import Link from "next/link";
+import { PricingData } from "@/app/api/hooks/Admin/pricing/types";
+import { RentingOfferRates } from "@/interfaces/Listing";
+import HourDatePicker from "../hourDatePicker/HourDatePicker";
 
-const PriceContainer = ({ listing }: { listing: Listing }) => {
+const PriceContainer = ({
+	listing,
+	allPricings
+}: {
+	listing: Listing;
+	allPricings?: PricingData;
+}) => {
 	const { addItemToCart, refetchcartItems } = useCart();
 	const search = useSearchParams();
 	const pathname = usePathname();
@@ -23,10 +43,11 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 	const actionType = search.get("type");
 	const user = useAppSelector(state => state.user);
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
+	const [hourRentalBreakdown, setHourRentalBreakdown] = useState<RentalBreakdown[]>([]);
 	const [inputDate, setInputDate] = useState([
 		{
 			startDate: new Date(),
-			endDate: addDays(new Date(), 1),
+			endDate: new Date(),
 			key: "selection"
 		}
 	]);
@@ -35,11 +56,68 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 	const forRent = !!offer?.forRent;
 
 	const currency = forSale ? offer.forSell?.currency : offer.forRent?.currency;
-	const pricing = forRent ? offer.forRent?.day1Offer : offer.forSell?.pricing;
+	const pricing = forRent
+		? offer?.forRent?.rates.length
+			? offer?.forRent?.rates[0].price
+			: 0
+		: offer.forSell?.pricing;
 	const transactionType =
 		["sell", "buy"].includes(actionType!) || listingType !== "rent"
 			? TransactionType.Sale
 			: TransactionType.Rental;
+
+	const startDate = new Date(inputDate[0].startDate);
+	const endDate = new Date(inputDate[0].endDate);
+	const totalDays = getDaysDifference(startDate, endDate) + 1;
+	const timeDiff = endDate.getTime() - startDate.getTime();
+
+	const durationInDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+	const durationInHours = Math.ceil(timeDiff / (1000 * 3600));
+
+	const { appliedRate } = getApplicableRate(
+		offer,
+		offer.forRent?.rates.length
+			? offer.forRent?.rates[0].duration === "hour"
+				? durationInHours
+				: durationInDays
+			: durationInHours,
+		offer.forRent?.rates.length
+			? (offer.forRent?.rates[0].duration as string)
+			: "hour"
+	);
+
+	const formattedHourRentalBreakdown = hourRentalBreakdown.map(period => ({
+		date: period.date,
+		duration: "hour",
+		quantity: period.quantity,
+		price: appliedRate?.price || 0
+	}));
+
+	const dayRentalBreakdown = Array.from({ length: totalDays }, (_, i) => {
+		const currentDate = new Date(startDate);
+		currentDate.setDate(startDate.getDate() + i);
+		return {
+			date: currentDate,
+			duration: "day",
+			quantity: 1,
+			price: appliedRate?.price || 0
+		};
+	});
+	const item: CartItem = {
+		listing,
+		type: TransactionType.Rental,
+		rentalBreakdown:
+			offer.forRent?.rates[0].duration === "hour"
+				? formattedHourRentalBreakdown
+				: dayRentalBreakdown
+	};
+
+	const price = calculateItemPrice(item);
+
+	const vat = (allPricings?.valueAddedTax! / 100) * price;
+	const serviceFee = (allPricings?.gearLeaseFee! / 100) * price;
+
+	const total = price + serviceFee + vat;
 
 	const handleAddToCart = () => {
 		if (!user.kyc) {
@@ -48,26 +126,16 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 			return;
 		}
 		if (transactionType === TransactionType.Rental) {
-			const daysDifference = getDaysDifference(
-				inputDate[0].startDate,
-				inputDate[0].endDate
-			);
-			if (daysDifference < 1) {
+			if (!hourRentalBreakdown.length || !dayRentalBreakdown.length) {
 				toast.error("Minimum rent duration is 0");
 				return;
 			}
 		}
+		if (user._id === listing.user._id) return toast.error("Can not rent own listing");
 		try {
 			addItemToCart({
-				listing,
-				type: transactionType,
-				rentalPeriod:
-					transactionType === TransactionType.Rental
-						? {
-								start: inputDate[0].startDate,
-								end: inputDate[0].endDate
-						  }
-						: undefined
+				...item,
+				customPrice: price
 			});
 			refetchcartItems();
 		} catch (error) {
@@ -76,14 +144,46 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 	};
 
 	const askToAvailability = () => {
+		if (user._id === listing.user._id) return toast.error("Can not rent own listing");
 		router.push(
 			user.isAuthenticated
 				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}`
-				: `/login?returnUrl=${pathname}`
+				: `/signup`
 		);
 	};
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
+	const modalToOpen = () => {
+		if (listing.offer.forRent?.rates[0].duration !== "hour") {
+			return (
+				<DatePicker
+					openModal={openModal}
+					setInputDate={setInputDate}
+					setOpenModal={setOpenModal}
+					inputDate={inputDate}
+					setIsDateSelected={setIsDateSelected}
+				/>
+			);
+		}
+		return (
+			<HourDatePicker
+				openModal={openModal}
+				setInputDate={setInputDate}
+				setOpenModal={setOpenModal}
+				inputDate={inputDate}
+				setHourRentalBreakdown={setHourRentalBreakdown}
+				setIsDateSelected={setIsDateSelected}
+			/>
+		);
+	};
+
+	const handleOpenModal = () => {
+		if (!user.isAuthenticated) {
+			return router.push("/signup");
+		}
+		setOpenModal(true);
+	};
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.price_card}>
@@ -97,7 +197,10 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 							{formatNumber(pricing || 0)}
 							{forRent && (
 								<span style={{ color: "#4B525A", fontWeight: 400 }}>
-									/Day
+									/
+									{offer?.forRent?.rates.length
+										? offer?.forRent?.rates[0].duration
+										: "day"}
 								</span>
 							)}
 						</h1>
@@ -122,10 +225,7 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 					</div>
 				</div>
 				{(listingType !== "sell" || actionType === "rent") && (
-					<div
-						className={styles.input_field}
-						onClick={() => setOpenModal(true)}
-					>
+					<div className={styles.input_field} onClick={handleOpenModal}>
 						<div className={styles.icon}>
 							<Image src="/svgs/calendar.svg" fill alt="" sizes="100vw" />
 						</div>
@@ -133,34 +233,49 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 							<p>
 								{isDateSelected
 									? `${format(
-											inputDate[0].startDate,
+											offer.forRent?.rates[0].duration === "hour"
+												? hourRentalBreakdown[0]?.date
+												: dayRentalBreakdown[0]?.date,
 											"MM/dd/yyyy"
-									  )} to ${format(inputDate[0].endDate, "MM/dd/yyyy")}`
-									: "Choose pickup / return dates"}
+									  )} to ${format(
+											getLastRentalDate(hourRentalBreakdown) ||
+												getLastRentalDate(dayRentalBreakdown),
+											"MM/dd/yyyy"
+									  )}`
+									: `${
+											listing.offer.forRent?.rates[0].duration !==
+											"hour"
+												? "Choose pickup / return dates"
+												: "Choose date(s) and rental hours"
+									  }`}
 							</p>
 						</div>
 					</div>
 				)}
-				<div className={styles.price_details_container}>
-					<PriceItem
-						item="Rental price (1 day)"
-						value={`${currency}${formatNumber(pricing ?? 0)}`}
-					/>
-					<PriceItem
-						item="Gearup service fee"
-						value={`${currency}${formatNumber(0)}`}
-					/>
-					<PriceItem item="VAT" value={`${currency}${formatNumber(0)}`} />
-					<div className={styles.divider} />
-					<PriceItem
-						item="Total"
-						value={
-							<span
-								className={styles.total_styles}
-							>{`${currency}${formatNumber(0)}`}</span>
-						}
-					/>
-				</div>
+				{isDateSelected && (
+					<div className={styles.price_details_container}>
+						<PriceItem
+							item={`Rental price (${appliedRate?.quantity} ${
+								appliedRate?.duration
+							}${(appliedRate?.quantity as number) > 1 ? "s offer" : ""})`}
+							value={`${currency}${formatNumber(appliedRate?.price ?? 0)}`}
+						/>
+						<PriceItem
+							item="Gearup service fee"
+							value={`${currency}${formatNumber(serviceFee)}`}
+						/>
+						<PriceItem item="VAT" value={`${currency}${formatNumber(vat)}`} />
+						<div className={styles.divider} />
+						<PriceItem
+							item="Total"
+							value={
+								<span
+									className={styles.total_styles}
+								>{`${currency}${formatNumber(total)}`}</span>
+							}
+						/>
+					</div>
+				)}
 				<div className={styles.buttons}>
 					<Button
 						buttonType="secondary"
@@ -169,19 +284,23 @@ const PriceContainer = ({ listing }: { listing: Listing }) => {
 					>
 						Ask for availability
 					</Button>
-					<Button className={styles.button} onClick={handleAddToCart}>
+					<Button
+						className={styles.button}
+						onClick={handleAddToCart}
+						disabled={!isDateSelected}
+					>
 						Add to cart
 					</Button>
 				</div>
-				{openModal && (
-					<DatePicker
-						openModal={openModal}
-						setInputDate={setInputDate}
-						setOpenModal={setOpenModal}
-						inputDate={inputDate}
-						setIsDateSelected={setIsDateSelected}
-					/>
-				)}
+				{openModal &&
+					// <DatePicker
+					// 	openModal={openModal}
+					// 	setInputDate={setInputDate}
+					// 	setOpenModal={setOpenModal}
+					// 	inputDate={inputDate}
+					// 	setIsDateSelected={setIsDateSelected}
+					// />
+					modalToOpen()}
 			</div>
 			<div className={styles.ad_card}>
 				<Logo />

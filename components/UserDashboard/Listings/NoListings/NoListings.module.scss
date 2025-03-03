@@ -1,48 +1,47 @@
 @import "@/styles/imports";
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid $col-border;
-    flex-direction: column;
-    gap: 1.6rem;
-    height: 40.6rem;
-    border-radius: 1.6rem;
-    padding: 0 4rem;
-    width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid $col-border;
+	flex-direction: column;
+	gap: 1.6rem;
+	height: 40.6rem;
+	border-radius: 1.6rem;
+	padding: 0 4rem;
+	width: 100%;
 
-    .image_container{
-        width: 6rem;
-        height: 6rem;
-    }
+	.image_container {
+		width: 6rem;
+		height: 6rem;
+	}
 
-    .no_transaction_text{
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #A4A6A7;
-        width: 100%;
-        box-sizing: border-box;
-        flex-wrap: wrap;    
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
+	.no_transaction_text {
+		font-size: 1.8rem;
+		font-weight: 700;
+		color: #a4a6a7;
+		width: 100%;
+		box-sizing: border-box;
+		flex-wrap: wrap;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+	}
 
-    button{
-        gap: 0.5rem;
-    }
+	button {
+		gap: 0.5rem;
+	}
 
-    .create_listing_container{
-        display: none;
-        flex-direction: column;
-        gap: 1re;
-    }
-    
-    @include screenMax("mobile"){
-        height: 30rem;
-        .create_listing_container{
-            display: flex;
-        }
-    }
+	.create_listing_container {
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	@include screenMax("mobile") {
+		height: 30rem;
+		.create_listing_container {
+			display: flex;
+		}
+	}
 }

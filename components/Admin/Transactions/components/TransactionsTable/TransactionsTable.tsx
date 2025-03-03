@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./TransactionTable.module.scss";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -21,7 +21,7 @@ import NoTransactions from "@/components/UserDashboard/Transactions/components/N
 import { formatDate, formatNum } from "@/utils";
 import { Filter } from "@/interfaces/Listing";
 import { useAppSelector } from "@/store/configureStore";
-import { useGetListings } from "@/app/api/hooks/listings";
+import { useGetAllTransactions } from "@/app/api/hooks/Admin/transactions";
 
 interface Props {
 	transactionType: string;
@@ -40,17 +40,24 @@ const TransactionTable = ({
 	const pathname = usePathname();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(7);
+	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [isNoSearchResult, setIsNoSearchResult] = useState(false);
 	// const userId = useMemo(
 	// 	() => pathname.split("/")[pathname.split("/").length - 1],
 	// 	[pathname]
 	// );
 	const { userId } = useAppSelector(s => s.user);
-	const { data, isFetching, refetch, isLoading } = useGetListings({
-		userId: userId,
-		shouldFetchAll: true
-	});
+	const { data, isFetching, refetch, isLoading } = useGetAllTransactions(currentPage);
 	const listings = data?.data || [];
+
+	const updatePage = (page: number) => {
+		setCurrentPage(page);
+		// refetch();
+	};
+
+	useEffect(() => {
+		refetch();
+	}, [currentPage, refetch]);
 
 	// const transactions = useMemo(
 	// 	() =>
@@ -101,50 +108,66 @@ const TransactionTable = ({
 		// 	?.find(filter => filter.name.toLowerCase() === activeFilter)
 		// 	?.name.toLowerCase();
 
-		return listings
-			.map(
-				({
-					_id,
-					productName,
-					offer,
-					createdAt,
-					listingType,
-					status,
-					listingPhotos,
-					category
-				}) => {
-					const type = listingType === "both" ? "rent | sell" : listingType;
-					const price =
-						type === "rent"
-							? offer?.forRent?.day1Offer
-							: offer?.forSell?.pricing;
-					const image = listingPhotos?.[0] || null;
-					return {
-						id: _id,
-						title: productName,
-						price,
-						transaction_date: createdAt,
-						type,
-						status,
-						image,
-						availability: status === "available" ? "active" : "inactive",
-						date: createdAt,
-						sold_count: 0,
-						revenue: 0,
-						category: category?.name?.toLowerCase() || null
-					};
-				}
-			)
-			.filter(l => {
-				if (!l.type.includes(activeFilter)) return false;
-				/* if (
-					activeSubFilter &&
-					activeSubFilter !== l.category &&
-					activeSubFilterId !== 1
-				)
-					return false; */
-				return true;
-			});
+		return listings.map((listing: any) => {
+			const { _id } = listing;
+			if (!listing.item) {
+				return {
+					id: _id,
+					title: "Unavailable",
+					price: 0,
+					transaction_date: "Unavailable",
+					type: "both",
+					status: "Unavailable",
+					image: null,
+					availability: "unavailable",
+					date: "Unavailable",
+					sold_count: 0,
+					revenue: 0,
+					category: "Unavailable"
+				};
+			}
+			const {
+				productName,
+				offer,
+				createdAt,
+				listingType,
+				status,
+				listingPhotos,
+				category
+			} = listing.item;
+			const type = listingType === "both" ? "rent | sell" : listingType;
+			const price =
+				type === "rent"
+					? offer?.forRent?.rates.length
+						? offer?.forRent?.rates[0].price
+						: 0
+					: offer?.forSell?.pricing;
+			const image = listingPhotos?.[0] || null;
+			return {
+				id: _id,
+				title: productName,
+				price,
+				transaction_date: createdAt,
+				type,
+				status,
+				image,
+				availability: status === "available" ? "active" : "inactive",
+				date: createdAt,
+				sold_count: 0,
+				revenue: 0,
+				category: category?.name?.toLowerCase() || null
+			};
+		});
+		// .filter((l: any) => {
+		// 	if (!l.type.includes(activeFilter)) return false;
+		// 	/* if (
+		// 		activeSubFilter &&
+		// 		activeSubFilter !== l.category &&
+		// 		activeSubFilterId !== 1
+		// 	)
+		// 		return false; */
+		// 	return true;
+		// });
 	}, [listings, activeFilter, activeSubFilterId, filters]);
 
 	const sharedColDef: GridColDef = {
@@ -287,7 +310,11 @@ const TransactionTable = ({
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status}
 					>
-						{value?.toLowerCase() === "available" ? "Live" : "Paused"}
+						{value?.toLowerCase() !== "unavailable"
+							? value?.toLowerCase() === "available"
+								? "Live"
+								: "Paused"
+							: "Unavailable"}
 					</p>
 				</div>
 			)
@@ -303,7 +330,7 @@ const TransactionTable = ({
 			minWidth: 150,
 			renderCell: ({ row, value }) => (
 				<Link
-					href={`/admin/transactions/${row.id}?transaction_type=${transactionType}&user_role=${row.user_role}&third_party=${row.third_party_verification}&timeElapsed=${row.timeElapsed}`}
+					href={`/admin/transactions/${row.id}`}
 					className={styles.action_btn}
 				>
 					<Button buttonType="transparent" className={styles.view_btn}>
@@ -357,7 +384,7 @@ const TransactionTable = ({
 					<MobileCardContainer>
 						{!!mappedListings.length ? (
 							<>
-								{mappedListings.map((item, ind) => (
+								{mappedListings.map((item: any, ind: number) => (
 									<TransactionCardMob
 										key={item.id}
 										item={item}
@@ -376,10 +403,10 @@ const TransactionTable = ({
 						)}
 					</MobileCardContainer>
 					<Pagination
-						currentPage={page}
-						onPageChange={handlePagination}
-						totalCount={transactions.length}
-						pageSize={limit}
+						currentPage={currentPage}
+						totalCount={data?.pagination?.totalCount || 0}
+						pageSize={10}
+						onPageChange={(page: any) => updatePage(page)}
 					/>
 				</>
 			)}

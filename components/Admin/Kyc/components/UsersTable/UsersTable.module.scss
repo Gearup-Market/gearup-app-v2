@@ -62,7 +62,7 @@
 			padding: 0.2rem 1rem;
 			border-radius: 1.6rem;
 			font-weight: 600;
-			background-color: #fff7e7;
+			background-color: #feefeb;
 			color: #1b1e21;
 			// &[data-status="awaiting approval"]{
 			//     background-color: #FFFAEB;
@@ -76,9 +76,9 @@
 			//     background-color:#F0F9FF;
 			//     color:#026AA2;
 			// }
-			&[data-status="declined"]{
-			    background-color: #FEF3F2;
-			    color: #B42318;
+			&[data-status="declined"] {
+				background-color: #fef3f2;
+				color: #b42318;
 			}
 		}
 	}

@@ -119,7 +119,11 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 			phoneNumber: Yup.string().required("Phone number is required").min(10).max(14)
 		});
 
+		const isSubmittingRef = useRef(false);
+
 		const handleSubmit = async (values: PhoneNumberForm) => {
+			if (isSubmittingRef.current) return;
+			isSubmittingRef.current = true;
 			try {
 				dispatch(
 					updateVerification({
@@ -166,7 +170,7 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 							initialValues={initialValues}
 							validationSchema={validationSchema}
 							onSubmit={handleSubmit}
-							enableReinitialize
+							// enableReinitialize
 						>
 							{({ errors, touched, isSubmitting }) => (
 								<>

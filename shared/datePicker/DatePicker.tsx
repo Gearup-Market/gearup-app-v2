@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { DateRange } from "react-date-range";
-
+// import { DateRangePicker } from "react-date-range";
+import { DateRangePicker as OriginalDateRangePicker } from "react-date-range";
 import format from "date-fns/format";
 import { addDays } from "date-fns";
 import styles from "./DatePicker.module.scss";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { Button } from "..";
+
+const DateRangePicker = OriginalDateRangePicker as any;
 
 interface Props {
 	setOpenModal: (e?: any) => void;
@@ -44,21 +46,12 @@ const DatePicker = ({
 				key: "selection"
 			}
 		]);
+		// setIsDateSelected(false);
 		setOpenModal(false);
 	};
 
 	return (
 		<div className={styles.container}>
-			{/* <input
-				value={`${format(inputDate[0].startDate, "MM/dd/yyyy")} to ${format(
-					inputDate[0].endDate,
-					"MM/dd/yyyy"
-				)}`}
-				readOnly
-				className="inputBox"
-				onClick={() => setOpenModal((open: any) => !open)}
-			/> */}
-
 			<div className={styles.picker_container}>
 				<div
 					className={styles.close_background}
@@ -70,8 +63,8 @@ const DatePicker = ({
 						e.nativeEvent.stopImmediatePropagation()
 					}
 				>
-					<DateRange
-						onChange={item => setInputDate([item.selection])}
+					<DateRangePicker
+						onChange={(item: any) => setInputDate([item.selection])}
 						editableDateInputs={true}
 						moveRangeOnFirstSelection={false}
 						ranges={inputDate}
@@ -80,7 +73,7 @@ const DatePicker = ({
 						direction="horizontal"
 						className="calendarElement"
 						displayMode="dateRange"
-						rangeColors={["#FFB30F", "#FFF7E7", "#ffb30f"]}
+						rangeColors={["#F76039", "#FEEFEB", "#F76039"]}
 						minDate={new Date()}
 						// classNames={}
 					/>

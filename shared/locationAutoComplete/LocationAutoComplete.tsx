@@ -1,7 +1,7 @@
 "use client";
 
 import { useLoadScript } from "@react-google-maps/api";
-import React, { useEffect } from "react";
+import React, { InputHTMLAttributes, ReactNode, useEffect } from "react";
 import usePlacesAutocomplete, {
 	getGeocode,
 	GeocodeResult
@@ -25,21 +25,27 @@ type Library =
 
 const libraries: Library[] = ["places"];
 
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+	icon?: string;
+	name?: string;
+	label?: string;
+	className?: string;
+	error?: string | ReactNode;
+	placeholderValue?: string;
+	onAddressSelect?: (_address: any) => void;
+	register?: any;
+}
+
 const LocationAutoComplete = ({
 	onAddressSelect,
 	placeholder,
 	label,
 	placeholderValue,
 	error,
-	className
-}: {
-	onAddressSelect?: (_address: any) => void;
-	label?: string;
-	placeholder?: string;
-	placeholderValue?: string;
-	error?: string;
-	className?: string;
-}) => {
+	className,
+	register,
+	...options
+}: Props) => {
 	const {
 		ready,
 		value,
@@ -140,6 +146,8 @@ const LocationAutoComplete = ({
 				label={label}
 				error={error}
 				autoComplete="off"
+				{...register}
+				{...options}
 			/>
 
 			{status === "OK" && isLoaded && (

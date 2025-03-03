@@ -8,6 +8,7 @@ import { CopyIcon, EditIcon } from "@/shared/svgs/dashboard";
 import { useAppSelector } from "@/store/configureStore";
 import { toast } from "react-hot-toast";
 import { PaystackProps } from "react-paystack/dist/types";
+import { useCopy } from "@/hooks";
 
 interface Props {
 	openModal: boolean;
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const fundOptions: { gateway: "paystack" | "flutterwave"; label: string }[] = [
-	{ gateway: "flutterwave", label: "Fund with flutterwave" },
+	// { gateway: "flutterwave", label: "Fund with flutterwave" },
 	{ gateway: "paystack", label: "Fund with paystack" }
 ];
 
@@ -26,7 +27,7 @@ const paystackConfig = {
 };
 
 const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
-	const { wallet } = useAppSelector(s => s.wallet);
+	const handleCopy = useCopy();
 	const user = useAppSelector(s => s.user);
 	const [amount, setAmount] = useState<string | number>("");
 
@@ -47,7 +48,7 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 	const paystackComponentProps: PaystackProps = useMemo(
 		() => ({
 			...paystackConfig,
-			currency: "NGN",
+			currency: "₦",
 			email: user.email,
 			amount: +amount * 100,
 			metadata: {
@@ -63,16 +64,18 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 	return (
 		<Modal title="Deposit" openModal={openModal} setOpenModal={onClose}>
 			<div className={styles.container}>
-				{/* <p className={styles.header}>
+				<p className={styles.header}>
 					Transfer money to your <span className={styles.bold}>Gearup</span>{" "}
 					account
 				</p>
-				{wallet?.accountNumber && (
+				{user?.dedicatedAccountBank && (
 					<>
 						<div className={styles.container__details}>
 							<div className={styles.container__details__detail_container}>
 								<p className={styles.key}>Bank name</p>
-								<p className={styles.value}>{wallet.bankName}</p>
+								<p className={styles.value}>
+									{user.dedicatedAccountBank}
+								</p>
 							</div>
 							<div className={styles.container__details__detail_container}>
 								<p className={styles.key}>Account number</p>
@@ -84,17 +87,26 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 											gap: "5px"
 										}}
 									>
-										<span>{wallet.accountNumber}</span>
-										<span className={styles.icon}>
+										<span>{user.dedicatedAccountNumber}</span>
+										<span
+											className={styles.icon}
+											style={{ cursor: "pointer" }}
+											onClick={() =>
+												handleCopy(
+													user.dedicatedAccountNumber || ""
+												)
+											}
+										>
 											<CopyIcon />
 										</span>
-										Copy
 									</span>
 								</p>
 							</div>
 							<div className={styles.container__details__detail_container}>
 								<p className={styles.key}>Account name</p>
-								<p className={styles.value}>{wallet.accountName}</p>
+								<p className={styles.value}>
+									{user.dedicatedAccountName}
+								</p>
 							</div>
 						</div>
 						<span className={styles.divider_container}>
@@ -103,7 +115,7 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 							<hr className={styles.divider} />
 						</span>
 					</>
-				)} */}
+				)}
 				<InputField
 					placeholder="Enter amount"
 					label="Amount"
@@ -121,9 +133,10 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 									className={styles.container__bank_details__option}
 									onClick={() => {
 										if (!amount) {
-											return;
+											return toast.error("Please input an amount");
 										}
 									}}
+									data-disabled={+amount <= 0}
 								>
 									{option.gateway === "paystack" ? (
 										<PaystackPaymentButton

@@ -1,99 +1,124 @@
-import React from 'react'
-import styles from './EnterTransactionPin.module.scss'
-import Modal from '@/shared/modals/modal/Modal'
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { Button, InputField } from '@/shared';
-import toast from 'react-hot-toast';
-import { useAppSelector } from '@/store/configureStore';
-import * as Yup from 'yup';
-import { useConfirmTransactionPin } from '@/app/api/hooks/settings';
+import React from "react";
+import styles from "./EnterTransactionPin.module.scss";
+import Modal from "@/shared/modals/modal/Modal";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Button, InputField } from "@/shared";
+import toast from "react-hot-toast";
+import { useAppSelector } from "@/store/configureStore";
+import * as Yup from "yup";
+import { useConfirmTransactionPin } from "@/app/api/hooks/settings";
+import { useRouter } from "next/navigation";
 
 interface PinFormValues {
-    accountPin: string;
+	accountPin: string;
 }
 
-interface Props{
-    openModal: boolean;
-    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
-    setShowXlmExportModal: React.Dispatch<React.SetStateAction<boolean>>
+interface Props {
+	openModal: boolean;
+	setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowXlmExportModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const EnterTransactionPin = ({openModal, setOpenModal, setShowXlmExportModal}:Props) => {
-    const user = useAppSelector(state => state.user);
-    const {mutateAsync:confirmPin, isPending} = useConfirmTransactionPin()
+const EnterTransactionPin = ({
+	openModal,
+	setOpenModal,
+	setShowXlmExportModal
+}: Props) => {
+	const user = useAppSelector(state => state.user);
+	const { mutateAsync: confirmPin, isPending } = useConfirmTransactionPin();
+	const router = useRouter();
 
-    const initialValues: PinFormValues = {
-        accountPin: '',
-    };
+	const initialValues: PinFormValues = {
+		accountPin: ""
+	};
 
-    const validationSchema = Yup.object().shape({
-        accountPin: Yup.string()
-            .required('Please enter transaction pin to continue')
-            .matches(/^\d{6}$/, 'Pin must be exactly 6 digits'),
-    });
+	const validationSchema = Yup.object().shape({
+		accountPin: Yup.string()
+			.required("Please enter transaction pin to continue")
+			.matches(/^\d{6}$/, "Pin must be exactly 6 digits")
+	});
 
-    const handleSubmit = async  (values: PinFormValues, { resetForm }: { resetForm: () => void }) => {
-            await confirmPin({userId: user._id as string, pin: parseInt(values.accountPin)},{
-                onSuccess: (value) => {
-                    setOpenModal(false)
-                    setShowXlmExportModal(true)
-                    resetForm()
-                },
-                onError: (error: any) => {
-                    toast.error(error?.response?.data?.message ?? "Could not confirm transaction pin, try again later!!!");
-                },
-            })
-    };
+	const handleSubmit = async (
+		values: PinFormValues,
+		{ resetForm }: { resetForm: () => void }
+	) => {
+		await confirmPin(
+			{ userId: user._id as string, pin: parseInt(values.accountPin) },
+			{
+				onSuccess: value => {
+					setOpenModal(false);
+					setShowXlmExportModal(true);
+					resetForm();
+				},
+				onError: (error: any) => {
+					toast.error(
+						error?.response?.data?.message ??
+							"Could not confirm transaction pin, try again later!!!"
+					);
+				}
+			}
+		);
+	};
 
+	const onClose = () => {
+		setOpenModal(false);
+	};
 
-    const onClose = () => {
-        setOpenModal(false)
-    }
+	return (
+		<Modal title="Transaction pin" openModal={openModal} setOpenModal={onClose}>
+			<div className={styles.container}>
+				<Formik
+					initialValues={initialValues}
+					validationSchema={validationSchema}
+					onSubmit={handleSubmit}
+				>
+					{({ isSubmitting }) => (
+						<Form>
+							<div className={styles.container__form_container}>
+								<div className={styles.form_field}>
+									<Field
+										name="accountPin"
+										as={InputField}
+										placeholder="Enter transaction pin "
+										isPassword
+										type="number"
+									/>
+									<ErrorMessage
+										name="accountPin"
+										component="div"
+										className={styles.error_message}
+									/>
+								</div>
 
-  return (
-    <Modal title='Transaction pin' openModal={openModal} setOpenModal={onClose} >
-        <div className={styles.container}>
-        <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
-                >
-                    {({ isSubmitting }) => (
-                        <Form>
-                            <div className={styles.container__form_container}>
-                                <div className={styles.form_field}>
-                                    <Field
-                                        name="accountPin"
-                                        as={InputField}
-                                        placeholder="Enter transaction pin "
-                                        isPassword
-                                    />
-                                    <ErrorMessage
-                                        name="accountPin"
-                                        component="div"
-                                        className={styles.error_message}
-                                    />
-                                </div>
-                                
-                            <div className={styles.submit_btn_container}>
-                                <Button
-                                    buttonType="primary"
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    >
-                                    {isPending ? 'Processing...' : 'Proceed'}
-                                </Button>
-                            </div>
+								<div className={styles.submit_btn_container}>
+									<Button
+										buttonType="primary"
+										type="submit"
+										disabled={isSubmitting}
+									>
+										{isPending ? "Processing..." : "Proceed"}
+									</Button>
+								</div>
 
-                            <div className={styles.forgot_pin_container}>
-                                <p>Forgot pin? <span className={styles.contact_support}>Contact support</span></p>
-                            </div>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-        </div>
-    </Modal>
-  )
-}
+								<div className={styles.forgot_pin_container}>
+									<p>
+										Forgot pin?{" "}
+										<span
+											className={styles.contact_support}
+											onClick={() =>
+												router.push("/user/settings?q=account")
+											}
+										>
+											Contact support
+										</span>
+									</p>
+								</div>
+							</div>
+						</Form>
+					)}
+				</Formik>
+			</div>
+		</Modal>
+	);
+};
 
-export default EnterTransactionPin
+export default EnterTransactionPin;

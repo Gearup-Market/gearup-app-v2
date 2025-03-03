@@ -11,7 +11,7 @@ import { SmallLoader } from "@/shared/loaders";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import toast from "react-hot-toast";
 import { usePostTransaction } from "@/app/api/hooks/transactions";
-import { RentalPeriod } from "@/app/api/hooks/transactions/types";
+import { RentalBreakdown } from "@/app/api/hooks/transactions/types";
 import { resetCheckout } from "@/store/slices/checkoutSlice";
 import useCart from "@/hooks/useCart";
 import { PaystackPaymentButton } from "@/shared";
@@ -33,12 +33,12 @@ const PaymentComp = ({
 	item,
 	amount,
 	type,
-	rentalPeriod
+	rentalBreakdown
 }: {
 	item: Listing;
 	amount: number;
 	type: string;
-	rentalPeriod?: RentalPeriod;
+	rentalBreakdown?: RentalBreakdown[];
 }) => {
 	const { walletResult, isFetching } = useWallet();
 	const { data: xlmWallet, isFetching: xlmWalletFetching } = useStellarWallet();
@@ -55,7 +55,7 @@ const PaymentComp = ({
 		buyer: user.userId,
 		amount,
 		type,
-		rentalPeriod,
+		rentalBreakdown,
 		metadata: {
 			...saleProps,
 			thirdPartyCheckup: false
@@ -101,7 +101,7 @@ const PaymentComp = ({
 	const paystackComponentProps: PaystackProps = useMemo(
 		() => ({
 			...paystackConfig,
-			currency: "NGN",
+			currency: "₦",
 			email: user.email,
 			amount: +amount * 100,
 			metadata: {

@@ -32,10 +32,6 @@ const GetStarted = ({
 					verificationState.documentPhoto &&
 					verificationState.documentPhoto.length > 0
 			},
-			// {
-			// 	title: "Set up account pin",
-			// 	completed: !!user.accountPin
-			// },
 			{
 				title: "Face match",
 				completed: verificationState.isSubmitted

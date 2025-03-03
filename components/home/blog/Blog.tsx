@@ -5,13 +5,12 @@ import { CustomImage, InputField } from "@/shared";
 import { blogsData } from "@/mock/blogs.mock";
 import Link from "next/link";
 import slugify from "slugify";
-import { useGetAllRecommendedArticles } from "@/app/api/hooks/blogs";
+import { useGetAllArticles } from "@/app/api/hooks/blogs";
 import { shortenTitle } from "@/utils";
 import Image from "next/image";
 
 const Blog = () => {
-	const { data: blogsResp, isLoading: fetchingRecommended } =
-		useGetAllRecommendedArticles();
+	const { data: blogsResp, isLoading: fetchingRecommended } = useGetAllArticles();
 	const blogs = blogsResp?.data || [];
 	return (
 		<div className={styles.container}>
@@ -67,10 +66,7 @@ const Blog = () => {
 							</p>
 						</div>
 
-						<Link
-							href={`/blog/${slugify(blog.title)}-${blog._id}`}
-							className={styles.learn_more}
-						>
+						<Link href={`/blog/${blog.slug}`} className={styles.learn_more}>
 							<p className={styles.text}>Learn more</p>{" "}
 							<span className={styles.icon}>
 								{" "}

@@ -26,8 +26,8 @@ const FaceMatch = () => {
 	const verificationState = useAppSelector(s => s.verification);
 	const user = useAppSelector(s => s.user);
 	const dispatch = useAppDispatch();
-	const { mutateAsync: postSubmitDoc } = usePostSubmitKycDoc();
-	const { mutateAsync: postUploadFile, isPending: uploadingImgs } = useUploadFiles();
+	const { mutateAsync: postSubmitDoc, isPending } = usePostSubmitKycDoc();
+	// const { mutateAsync: postUploadFile, isPending: uploadingImgs } = useUploadFiles();
 
 	const startCamera = async () => {
 		setCameraActive(true);
@@ -93,16 +93,17 @@ const FaceMatch = () => {
 				const blob = await (await fetch(capturedImage)).blob();
 
 				// Create a File object from Blob
-				const file = new File(
-					[blob],
-					`${verificationState.firstName}-${verificationState.lastName}-selfie.png`,
-					{
-						type: "image/png"
-					}
-				);
+				// const file = new File(
+				// 	[blob],
+				// 	`${verificationState.firstName}-${verificationState.lastName}-selfie.png`,
+				// 	{
+				// 		type: "image/png"
+				// 	}
+				// );
 
-				const imgUploadRes = await postUploadFile([file]);
-				const selfie = imgUploadRes?.imageUrls[0];
+				// const imgUploadRes = await postUploadFile([file]);
+				// const selfie = imgUploadRes?.imageUrls[0];
+				const selfie = capturedImage.split("base64,")[1];
 
 				const payload = {
 					userId: user.userId,
@@ -112,14 +113,13 @@ const FaceMatch = () => {
 					...(verificationState.isRejected ? { hasResubmitted: true } : null)
 				} as iPostSubmitKycReq;
 
-				if (selfie) {
-					const res = await postSubmitDoc({ ...payload, selfie });
-					if (res?.data) {
-						dispatch(updateVerification(res?.data));
-					}
-					toast.success("Document submitted for review");
-					router.replace("user/dashboard");
+				// if (selfie) {
+				const res = await postSubmitDoc({ ...payload, selfie });
+				if (res?.data) {
+					dispatch(updateVerification(res?.data));
 				}
+				router.replace("user/dashboard");
+				// }
 			} else {
 				toast.error("Please re-capture image");
 			}
@@ -191,7 +191,7 @@ const FaceMatch = () => {
 							onClick={handleSubmit}
 							buttonType="secondary"
 							className={styles.button}
-							disabled={uploadingImgs}
+							disabled={isPending}
 						>
 							Submit
 						</Button>

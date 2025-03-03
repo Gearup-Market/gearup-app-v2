@@ -1,72 +1,114 @@
-'use client'
-import React, { useState } from 'react'
-import styles from './Details.module.scss'
-import { CopyIcon } from '@/shared/svgs/dashboard'
-import DetailsTimeline from '../TimeLines/TimeLines'
-import StatusUpdate from '../StatusUpdate/StatusUpdate'
-import PersonalDetails from '../PersonalDetails/PersonalDetails'
+"use client";
+import React, { useState } from "react";
+import styles from "./Details.module.scss";
+import { CopyIcon } from "@/shared/svgs/dashboard";
+import DetailsTimeline from "../TimeLines/TimeLines";
+import StatusUpdate from "../StatusUpdate/StatusUpdate";
+import PersonalDetails from "../PersonalDetails/PersonalDetails";
+import { calculateItemPrice, formatNum } from "@/utils";
+import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
+import { TransactionType } from "@/app/api/hooks/transactions/types";
 
 interface Props {
-    item?: any
+	item?: any;
 }
 
 const DetailsComponent = ({ item }: Props) => {
-    return (
-        <div className={styles.container}>
-            <div className={styles.container__left}>
-                <div className={styles.container__left__summary_container}>
-                    <h3 className={styles.title}>Transaction Details</h3>
-                    <div className={styles.summary_item}>
-                        <h4>Transaction type</h4>
-                        <p>Ebook course</p>
-                    </div>
-                    <div className={styles.summary_item}>
-                        <h4>Transaction ID</h4>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <p>0000045847378283543</p>
-                            <span className={styles.icon}>
-                                <CopyIcon />
-                            </span>
-                        </span>
-                    </div>
-                    <div className={styles.summary_item}>
-                        <h4>Transaction date</h4>
-                        <p>15 Dec, 2023</p>
-                    </div>
-                    <div>
-                        <div className={styles.summary_item}>
-                            <h4>Amount</h4>
-                            <p>$300</p>
-                        </div>
-                        <div className={styles.summary_item}>
-                            <h4>Shipping fee</h4>
-                            <p>$300</p>
-                        </div>
-                        <div className={styles.summary_item}>
-                            <h4>Gearup fee</h4>
-                            <p>$300</p>
-                        </div>
-                        <div className={styles.summary_item}>
-                            <h4>VAT</h4>
-                            <p>$300</p>
-                        </div>
-                        <div className={styles.summary_item}>
-                            <h4 >Total amount</h4>
-                            <p className={styles.total}>$300</p>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <DetailsTimeline />
-                </div>
-            </div>
-            <div className={styles.container__right}>
-                <PersonalDetails title="Customer" name='Wade Warren' subText='Lagos, Nigeria' profileLink='/admin/settings/profile' />
-                <PersonalDetails title="Merchant" name='Wade Warren' subText='Enugu, Nigeria' profileLink='/admin/settings/profile' />
-                <StatusUpdate />
-            </div>
-        </div>
-    )
-}
+	const { data: allPricings, isLoading } = useGetAllPricings();
+	const formatDate = (isoString: string): string => {
+		const date = new Date(isoString);
+		const options: Intl.DateTimeFormatOptions = {
+			day: "2-digit",
+			month: "short",
+			year: "numeric"
+		};
+		return date.toLocaleDateString("en-GB", options).replace(",", "");
+	};
 
-export default DetailsComponent
+	const itemObject = {
+		listing: item.item,
+		type: TransactionType.Rental,
+		rentalPeriod: item.rental
+	};
+
+	const price = item.amount;
+
+	const vat = price * (allPricings?.valueAddedTax! / 100);
+	const fee = price * (allPricings?.valueAddedTax! / 100);
+	const total = price + vat + fee;
+
+	return (
+		<div className={styles.container}>
+			<div className={styles.container__left}>
+				<div className={styles.container__left__summary_container}>
+					<h3 className={styles.title}>Transaction Details</h3>
+					<div className={styles.summary_item}>
+						<h4>Transaction type</h4>
+						<p>{item.type}</p>
+					</div>
+					<div className={styles.summary_item}>
+						<h4>Transaction ID</h4>
+						<span
+							style={{ display: "flex", alignItems: "center", gap: "10px" }}
+						>
+							<p>{item._id}</p>
+							<span className={styles.icon}>
+								<CopyIcon />
+							</span>
+						</span>
+					</div>
+					<div className={styles.summary_item}>
+						<h4>Transaction date</h4>
+						<p>{formatDate(item.createdAt)}</p>
+					</div>
+					{item.type === "Sale" ? (
+						<>
+							<div className={styles.summary_item}>
+								<h4>Amount</h4>
+								<p>₦{formatNum(item.amount)}</p>
+							</div>
+							{/* <div className={styles.summary_item}>
+							<h4>Shipping fee</h4>
+							<p>₦300</p>
+						</div> */}
+						</>
+					) : (
+						<></>
+					)}
+					<div className={styles.summary_item}>
+						<h4>Gearup fee</h4>
+						<p>₦{formatNum(fee)}</p>
+					</div>
+					<div className={styles.summary_item}>
+						<h4>VAT</h4>
+						<p>₦{formatNum(vat)}</p>
+					</div>
+					<div className={styles.summary_item}>
+						<h4>Total amount</h4>
+						<p className={styles.total}>₦{formatNum(total)}</p>
+					</div>
+				</div>
+				<div>
+					<DetailsTimeline />
+				</div>
+			</div>
+			<div className={styles.container__right}>
+				<PersonalDetails
+					title="Customer"
+					name="Wade Warren"
+					subText="Lagos, Nigeria"
+					profileLink="/admin/settings/profile"
+				/>
+				<PersonalDetails
+					title="Merchant"
+					name="Wade Warren"
+					subText="Enugu, Nigeria"
+					profileLink="/admin/settings/profile"
+				/>
+				<StatusUpdate />
+			</div>
+		</div>
+	);
+};
+
+export default DetailsComponent;

@@ -183,7 +183,7 @@ export type iPostRegisterKycResp = {
 			| "national_id"
 			| "voters_card"
 			| "nin";
-		documentPhoto: string[];
+		documentPhoto: string;
 		isSubmitted: boolean;
 		isApproved: boolean;
 		createdAt?: string;
@@ -202,7 +202,7 @@ export type iPostRegisterKycReq = {
 	city: string;
 	postalCode: string;
 	documentType?: "intl_passport" | "driver_license" | "national_id" | "voters_card";
-	documentPhoto?: string[];
+	documentPhoto?: string;
 };
 
 export type iPostSubmitKycRes = {
@@ -212,7 +212,7 @@ export type iPostSubmitKycRes = {
 		userId: string;
 		documentNo: string;
 		documentType: "intl_passport" | "driver_license" | "national_id" | "voters_card";
-		documentPhoto: string[];
+		documentPhoto: string;
 		selfie: string;
 		isSubmitted: boolean;
 	};
@@ -222,7 +222,7 @@ export type iPostSubmitKycReq = {
 	userId: string;
 	documentNo: string;
 	documentType: "intl_passport" | "driver_license" | "national_id" | "voters_card";
-	documentPhoto?: string[];
+	documentPhoto?: string;
 	selfie?: string;
 };
 

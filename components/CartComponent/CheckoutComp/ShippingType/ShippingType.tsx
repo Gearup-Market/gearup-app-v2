@@ -85,14 +85,10 @@ const ShippingType = ({ handleNext, handlePrev }: Props) => {
 					</div>
 				</div>
 				<div className={styles.button_container}>
-					<Button onClick={handleNextWizard} iconSuffix="/svgs/arrow.svg">
+					<Button onClick={handleNextWizard} iconSuffix="/svgs/arrow-white.svg">
 						Continue
 					</Button>
-					<Button
-						buttonType="secondary"
-						onClick={handlePrev}
-						iconSuffix="/svgs/arrow.svg"
-					>
+					<Button buttonType="secondary" onClick={handlePrev}>
 						Back
 					</Button>
 				</div>

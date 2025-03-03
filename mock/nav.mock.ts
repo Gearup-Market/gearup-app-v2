@@ -258,7 +258,7 @@ export const navLinks: NavLink[] = [
 					},
 					{
 						label: "Gearup Insurance Coverage",
-						href: "/",
+						href: "/insurance-coverage",
 						id: "faq-how-it-works",
 						external: false
 					},
@@ -378,17 +378,17 @@ export const footerNavLink = [
 		links: [
 			{
 				label: "How it works",
-				href: "/how-it-works-courses",
+				href: "/blog/how-gearup-works-for-learners-and-instructors",
 				external: false
 			},
 			{
 				label: "How to list a course",
-				href: "/how-to-list-a-course",
+				href: "/blog/how-to-list-a-course-on-gearup",
 				external: false
 			},
 			{
 				label: "Becoming a mentor",
-				href: "/becoming-a-mentor",
+				href: "/blog/becoming-a-mentor-with-gearup",
 				external: false
 			},
 			// {
@@ -398,7 +398,7 @@ export const footerNavLink = [
 			// },
 			{
 				label: "Types of course and duration",
-				href: "/types-of-course-and-duration",
+				href: "/blog/types-of-courses-and-their-duration-on-gearup",
 				external: false
 			}
 		]
@@ -408,22 +408,22 @@ export const footerNavLink = [
 		links: [
 			{
 				label: "Masterclass",
-				href: "/masterclass",
+				href: "/blog/filmmaking-for-beginners-everything-you-need-to-know-to-get-started",
 				external: false
 			},
 			{
 				label: "Learn film-making",
-				href: "/learn-film-making",
+				href: "/blog/learning-from-legends-how-masterclasses-help-creatives-reach-new-heights",
 				external: false
 			},
 			{
 				label: "Learn photography",
-				href: "/learn-photography",
+				href: "/blog/behind-the-lens-a-simple-approach-to-learning-photography",
 				external: false
 			},
 			{
 				label: "Learn cinematography",
-				href: "/learn-cinematography",
+				href: "/blog/10-essential-cinematography-techniques-every-aspiring-filmmaker-should-learn",
 				external: false
 			}
 		]

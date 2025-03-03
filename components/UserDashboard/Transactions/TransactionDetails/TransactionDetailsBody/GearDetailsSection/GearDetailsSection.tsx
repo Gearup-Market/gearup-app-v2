@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "./GearDetailsSection.module.scss";
 import { Button, DetailContainer } from "@/shared";
-import { mockListing } from "@/store/slices/addListingSlice";
 import { ImageSlider } from "@/components/listing";
 import Image from "next/image";
-import { formatNum, getDaysDifference } from "@/utils";
+import { formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
 import { useGetSingleTransactions } from "@/app/api/hooks/transactions";
 import { PageLoader } from "@/shared/loaders";
 import { useAppSelector } from "@/store/configureStore";
+import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
 
 interface Props {
 	transactionId: string;
@@ -15,15 +15,42 @@ interface Props {
 
 const GearDetailsSection = ({ transactionId }: Props) => {
 	const { transaction } = useAppSelector(s => s.transaction);
-	const newListing = mockListing;
+	const { data: allPricings } = useGetAllPricings();
 	const listingData = transaction?.listing;
 	const fieldValues = Object.entries(listingData!.fieldValues);
 
-	const endDate = transaction?.rentalPeriod?.end as string;
+	const rentalPeriod = transaction!.rentalBreakdown.reduce(
+		(total, period) => total + period.quantity,
+		0
+	);
 
-	const startDate = transaction?.rentalPeriod?.start as string;
+	const pricing = +(transaction?.transactionType === "Rental"
+		? transaction!.rentalBreakdown.reduce(
+				(total, period) => total + period.quantity * period.price,
+				0
+		  )
+		: listingData?.offer?.forSell?.pricing || 0);
 
-	const rentalPeriod = getDaysDifference(startDate, endDate);
+	const serviceFeePercentage = () => {
+		if (transaction?.userRole === "seller") return allPricings?.gearSellerFee;
+		if (transaction?.userRole === "buyer") return allPricings?.gearBuyerFee;
+		if (transaction?.userRole === "renter") {
+			if (!listingData?.offer.forRent) return 0;
+			return listingData.offer.forRent.rates[0].duration === "hour"
+				? allPricings?.studioRenterFee
+				: allPricings?.gearRenterFee;
+		}
+		if (transaction?.userRole === "lender") {
+			if (!listingData?.offer.forRent) return 0;
+			return listingData.offer.forRent.rates[0].duration === "hour"
+				? allPricings?.studioLeaseFee
+				: allPricings?.gearLeaseFee;
+		}
+	};
+
+	const vat = (allPricings?.valueAddedTax! / 100) * pricing || 0;
+	const serviceFee = (serviceFeePercentage()! / 100) * pricing || 0;
+	const total = (transaction?.amount || 0) + serviceFee + vat;
 
 	return (
 		<div className={styles.wrapper}>
@@ -37,7 +64,10 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 						{/* <h2>{newListing?.productName}</h2> */}
 						<h2>{listingData?.productName}</h2>
 					</div>
-					<DetailContainer title="Category" value={newListing.category?.name} />
+					<DetailContainer
+						title="Category"
+						value={listingData?.category?.name}
+					/>
 					{fieldValues?.map(([key, value]) => {
 						return typeof value === "string" ? (
 							<DetailContainer title={key} value={value} key={key} />
@@ -152,10 +182,8 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 								<h6 style={{ marginBottom: "1rem" }}>Sale PRICING</h6>
 							</div>
 							<DetailContainer
-								title="Amount(including VAT)"
-								value={formatNum(
-									+(listingData?.offer?.forSell?.pricing || 0)
-								)}
+								title="Amount (including VAT and Service Fee)"
+								value={formatNum(pricing + vat + serviceFee)}
 								prefix="₦"
 							/>
 							<div className={styles.divider}></div>
@@ -171,48 +199,26 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 									{" "}
 									Rental Pricing
 								</h6>
-								<DetailContainer
-									title="Daily price(including VAT)"
-									value={formatNum(
-										listingData?.offer?.forRent?.day1Offer
-									)}
-									prefix="₦"
-								/>
-								{listingData?.offer?.forRent?.day3Offer && (
+								{listingData?.offer?.forRent?.rates.map(rate => (
 									<DetailContainer
-										title="3 days offer(including VAT)"
-										value={formatNum(
-											+listingData?.offer?.forRent.day3Offer
-										)}
+										title={`${rate.quantity} ${rate.duration}${
+											rate.quantity > 1 ? "s" : ""
+										} price(including VAT)`}
+										value={formatNum(+rate.price)}
 										prefix="₦"
+										key={rate.quantity}
 									/>
-								)}
-								{listingData?.offer?.forRent?.day7Offer && (
-									<DetailContainer
-										title="7 days offer(including VAT)"
-										value={formatNum(
-											+listingData?.offer?.forRent.day7Offer
-										)}
-										prefix="₦"
-									/>
-								)}
-								{listingData?.offer?.forRent?.day30Offer && (
-									<DetailContainer
-										title="30 days offer(including VAT)"
-										value={formatNum(
-											+listingData?.offer?.forRent.day30Offer
-										)}
-										prefix="₦"
-									/>
-								)}
+								))}
 							</div>
 							<DetailContainer
-								title="Total replacement amount (Including VAT):"
+								title="Total replacement amount (Including VAT and Service Fee):"
 								value={formatNum(
 									+(
 										listingData?.offer?.forRent
 											?.totalReplacementValue || 0
-									)
+									) +
+										serviceFee +
+										vat
 								)}
 								prefix="₦"
 							/>
@@ -221,38 +227,69 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 					<div className={styles.divider}></div>
 				</div>
 			</div>
-			{transaction?.transactionType !== "Purchase" ? (
+			{transaction?.transactionType === "Rental" ? (
 				<div className={styles.rental_detail}>
 					<div className={styles.summary_container}>
 						<h3 className={styles.title}>Rental details</h3>
 						<div className={styles.summary_item}>
 							<h4>
-								Duration({rentalPeriod} day
-								{rentalPeriod > 1 ? "s" : ""})
+								Duration(
+								{transaction!.rentalBreakdown[0].duration}s)
 							</h4>
 							<p>
-								{startDate.split("T")[0]} - {endDate.split("T")[0]}
+								{rentalPeriod} {transaction!.rentalBreakdown[0].duration}
+								{rentalPeriod > 1 ? "s" : ""}
 							</p>
 						</div>
 						<div className={styles.summary_item}>
-							<h4>Rental price(per day)</h4>
-							<p>₦{formatNum(listingData?.offer.forRent?.day1Offer)}</p>
+							<h4>
+								Rental price(per{" "}
+								{transaction!.rentalBreakdown[0].duration})
+							</h4>
+							<p>
+								₦
+								{formatNum(
+									listingData?.offer.forRent?.rates.length
+										? listingData?.offer.forRent?.rates[0].price
+										: 0
+								)}
+							</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Multiple days discount</h4>
-							<p>₦{formatNum(listingData?.offer.forRent?.day3Offer)}</p>
+							<p>
+								₦
+								{formatNum(
+									listingData?.offer.forRent?.rates.length
+										? listingData?.offer.forRent?.rates[0].price
+										: 0
+								)}
+							</p>
 						</div>
 						<div className={styles.summary_item}>
-							<h4>Rental price( 10 days)</h4>
-							<p>₦40.00</p>
+							<h4>
+								Rental price({transaction.rentalBreakdown.length} days{" "}
+								{transaction.rentalBreakdown[0].duration === "hour"
+									? `for ${transaction.rentalBreakdown.reduce(
+											(total, period) => total + period.quantity,
+											0
+									  )} hours`
+									: null}
+								)
+							</h4>
+							<p>₦{formatNum(transaction.amount)}</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Gearup fee</h4>
-							<p>₦40.00</p>
+							<p>₦{formatNum(serviceFee)}</p>
+						</div>
+						<div className={styles.summary_item}>
+							<h4>VAT</h4>
+							<p>₦{formatNum(vat)}</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Total amount:</h4>
-							<p>₦40.00</p>
+							<p>₦{formatNum(total)}</p>
 						</div>
 					</div>
 				</div>
@@ -262,27 +299,27 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 						<h3 className={styles.title}>SHIPMENT INFORMATION</h3>
 						<div className={styles.summary_item}>
 							<h4>Username:</h4>
-							<p>{transaction.seller.userName}</p>
+							<p>{transaction?.seller.userName}</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Shipment type:</h4>
-							<p>{transaction.metadata?.shippingType}</p>
+							<p>{transaction?.metadata?.shippingType}</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Country</h4>
-							<p>{transaction.metadata?.country}</p>
+							<p>{transaction?.metadata?.country}</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>City</h4>
-							<p>{transaction.metadata?.city}</p>
+							<p>{transaction?.listing?.location?.city}</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Shipping address</h4>
-							<p>{transaction.metadata?.address}</p>
+							<p>{transaction?.listing?.location?.address}</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Mobile number</h4>
-							<p>{transaction.metadata?.phoneNumber}</p>
+							<p>{transaction?.metadata?.phoneNumber}</p>
 						</div>
 					</div>
 				</div>

@@ -8,6 +8,9 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import toast from "react-hot-toast";
+import Link from "next/link";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 const ImagesView = () => {
 	const router = useRouter();
@@ -23,6 +26,13 @@ const ImagesView = () => {
 		const files = e.target.files;
 		if (files && files.length > 0) {
 			const validFiles = Array.from(files).filter(file => file instanceof File);
+			if (validFiles[0] && validFiles[0].size > MAX_FILE_SIZE) {
+				return toast.error(
+					`${validFiles[0].name} exceeds max size of ${
+						MAX_FILE_SIZE / 1048576
+					}mb`
+				);
+			}
 			if (validFiles.length > 0) {
 				const localArr = [...displayedImages, ...validFiles];
 				setDisplayedImages(localArr);
@@ -50,17 +60,28 @@ const ImagesView = () => {
 	};
 
 	const nextPage = useCallback(async () => {
+		// Create URLs for new images only if they haven't been processed yet
+		const newImageUrls = displayedImages.map(file => {
+			// Check if this file has already been converted to URL
+			const existingUrl = newListing.listingPhotos.find(
+				photo => photo === URL.createObjectURL(file)
+			);
+			return existingUrl || URL.createObjectURL(file);
+		});
+
+		// Combine existing and new photos without duplicates
+		const combinedPhotos = Array.from(
+			new Set([...newListing.listingPhotos, ...newImageUrls])
+		);
+
 		const newListingData = {
-			listingPhotos: [...newListing.listingPhotos,
-				...displayedImages.map(c => URL.createObjectURL(c))],
-			
+			listingPhotos: combinedPhotos,
 			tempPhotos: displayedImages
 		};
-		
 
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/type");
-	}, [newListing.listingPhotos, displayedImages]);
+	}, [newListing.listingPhotos, displayedImages, dispatch, router]);
 
 	const disabledButton =
 		displayedImages.length === 0 && newListing.listingPhotos.length === 0;
@@ -69,7 +90,9 @@ const ImagesView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 3 of 6 : Pictures</p>
@@ -105,7 +128,7 @@ const ImagesView = () => {
 								type="file"
 								className={styles.file_input}
 								onChange={handleIconChange}
-								accept="image/*"
+								accept=".jpeg, .jpg, .png, .gif"
 								multiple
 								// required
 							/>
@@ -125,39 +148,50 @@ const ImagesView = () => {
 							</div>
 						</div>
 						<div className={styles.image_row}>
-							{newListing.listingPhotos.map((photo: string, index) => (
-								<div key={index} className={styles.image}>
-									<CustomImage src={photo} alt="" fill sizes="100vw" />
-									<div
-										className={styles.closeModal_container}
-										onClick={() => removeExistingImage(photo)}
-									>
-										<div className={styles.closeModal}>
-											<span></span>
-											<span></span>
+							{newListing.listingPhotos.length
+								? newListing.listingPhotos.map((photo: string, index) => (
+										<div key={index} className={styles.image}>
+											<CustomImage
+												src={photo}
+												alt=""
+												fill
+												sizes="100vw"
+											/>
+											<div
+												className={styles.closeModal_container}
+												onClick={() => removeExistingImage(photo)}
+											>
+												<div className={styles.closeModal}>
+													<span></span>
+													<span></span>
+												</div>
+											</div>
 										</div>
-									</div>
-								</div>
-							))}
-							{displayedImages.map((displayedImage: File) => (
-								<div key={displayedImage.name} className={styles.image}>
-									<CustomImage
-										src={URL.createObjectURL(displayedImage)}
-										alt=""
-										fill
-										sizes="100vw"
-									/>
-									<div
-										className={styles.closeModal_container}
-										onClick={() => deleteImage(displayedImage)}
-									>
-										<div className={styles.closeModal}>
-											<span></span>
-											<span></span>
+								  ))
+								: displayedImages.map((displayedImage: File) => (
+										<div
+											key={displayedImage.name}
+											className={styles.image}
+										>
+											<CustomImage
+												src={URL.createObjectURL(displayedImage)}
+												alt=""
+												fill
+												sizes="100vw"
+											/>
+											<div
+												className={styles.closeModal_container}
+												onClick={() =>
+													deleteImage(displayedImage)
+												}
+											>
+												<div className={styles.closeModal}>
+													<span></span>
+													<span></span>
+												</div>
+											</div>
 										</div>
-									</div>
-								</div>
-							))}
+								  ))}
 						</div>
 					</div>
 				</div>

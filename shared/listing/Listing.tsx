@@ -118,13 +118,27 @@ const Listing = ({ props, className, actionType }: Props) => {
 					<div className={styles.pricing}>
 						<p>
 							{offer.forRent?.currency}
-							{formatNumber(offer.forRent?.day1Offer || 0)}
-							<span>/Day</span>
+							{formatNumber(
+								offer?.forRent?.rates.length
+									? offer?.forRent?.rates[0].price
+									: 0
+							)}
+							<span>
+								/
+								{offer?.forRent?.rates.length
+									? offer?.forRent?.rates[0].duration
+									: "Day"}
+							</span>
 						</p>
 					</div>
 				)}
 				{forSale && (
-					<div className={styles.pricing}>
+					<div
+						className={styles.pricing}
+						data-sell={
+							props.listingType === "sell" || props.listingType === "both"
+						}
+					>
 						<p>
 							{offer.forSell?.currency}
 							{formatNumber(offer.forSell?.pricing || 0)}
@@ -136,14 +150,14 @@ const Listing = ({ props, className, actionType }: Props) => {
 				<div className={styles.small_row}>
 					<div className={styles.avatar}>
 						<Image
-							src={user.avatar || "/svgs/user.svg"}
-							alt={user.userName || ""}
+							src={(user && user.avatar) || "/svgs/user.svg"}
+							alt={(user && user.userName) || ""}
 							fill
 							sizes="100vw"
 						/>
 					</div>
 					<div className={styles.text} style={{ marginBottom: 0 }}>
-						<p>{user?.name || user?.userName}</p>
+						<p>{(user && user?.name) || (user && user?.userName)}</p>
 					</div>
 				</div>
 				<div className={styles.small_row}>

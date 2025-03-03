@@ -68,6 +68,13 @@
 			margin-top: 2rem;
 			width: 100%;
 		}
+		.suffix_container {
+			background: $orange-grad;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			font-weight: 700;
+			cursor: pointer;
+		}
 	}
 
 	@include screenMax("mobile") {

@@ -85,7 +85,7 @@
 			cursor: pointer !important;
 		}
 		.swiper-slide-thumb-active {
-			border: 0.3rem solid #ffb30f !important;
+			border: 0.3rem solid #f76039 !important;
 		}
 	}
 	@include screenMax("mobile") {
@@ -105,6 +105,12 @@
 	.rdrMonth {
 		width: 100%;
 	}
+}
+.rdrDefinedRangesWrapper {
+	display: none !important;
+}
+.rdrDateRangePickerWrapper {
+	width: 100%;
 }
 
 img {
@@ -127,4 +133,55 @@ section {
 svg {
 	width: 100%;
 	height: 100%;
+}
+
+// react calendar
+
+.react-calendar {
+	border: none !important;
+	border-radius: 1.6rem;
+	overflow: hidden;
+	&__navigation {
+		&__label {
+			&__labelText {
+				font-weight: 700;
+				font-size: 1.8rem;
+				color: #7b8086;
+			}
+		}
+	}
+	&__month-view {
+		&__weekdays {
+			&__weekday {
+				font-weight: 400;
+				font-size: 1.6rem;
+				color: #1b1e21;
+				text-transform: capitalize !important;
+			}
+		}
+		&__days {
+			&__day {
+				&--weekend {
+					color: #1b1e21 !important;
+					&:disabled {
+						color: #cdcdcd;
+					}
+				}
+			}
+		}
+	}
+	&__tile {
+		height: 50px !important;
+		width: 50px !important;
+	}
+	&__tile:disabled {
+		background-color: transparent !important;
+		color: #cdcdcd !important;
+	}
+	&__tile--active {
+		background: $orange-grad !important;
+		border-radius: 50%;
+		padding: 0 !important;
+		color: #1b1e21 !important;
+	}
 }

@@ -139,6 +139,7 @@ const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 						href="/user/settings?q=payments"
 						className={styles.navlinks_container__item}
 						data-active={active === "/user/settings"}
+						onClick={onClose}
 					>
 						<span className={styles.icon}>
 							<SettingsNavIcon />

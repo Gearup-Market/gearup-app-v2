@@ -145,7 +145,7 @@ const Wallet = () => {
 								className={` ${styles.withdraw_btn} ${styles.btn}`}
 							>
 								<span className={styles.icon}>
-									<WithdrawIcon color="#FFB30F" />
+									<WithdrawIcon color="#F76039" />
 								</span>
 								Withdraw
 							</Button>
@@ -192,7 +192,7 @@ const Wallet = () => {
 							className={`${styles.btn} ${styles.withdraw_btn}`}
 						>
 							<span className={styles.icon}>
-								<WithdrawIcon color="#FFB30F" />
+								<WithdrawIcon color="#F76039" />
 							</span>
 							Withdraw
 						</Button>
@@ -238,7 +238,7 @@ const Wallet = () => {
 							className={`${styles.btn} ${styles.withdraw_btn}`}
 						>
 							<span className={styles.icon}>
-								<WithdrawIcon color="#FFB30F" />
+								<WithdrawIcon color="#F76039" />
 							</span>
 							Withdraw
 						</Button>

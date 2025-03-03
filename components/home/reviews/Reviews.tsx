@@ -51,56 +51,58 @@ const reviews = [
 const Reviews = () => {
 	return (
 		<section className={styles.section}>
-			<div className={styles.center}>
-				<Title
-					title="Don’t Just take our word for it"
-					description="See what other creators has to say"
-					className={styles.title}
-					titleClassName={styles.title__title}
-					descriptionClassName={styles.title__description}
-				/>
-			</div>
-			<div className={`${styles.slider} reviews_slider`}>
-				<Swiper
-					slidesPerView={1}
-					pagination={{
-						clickable: true
-					}}
-					modules={[Pagination]}
-				>
-					{reviews.map((review: any, index: number) => (
-						<SwiperSlide key={index}>
-							<div className={styles.slide}>
-								<div className={styles.quote}>
-									<Image
-										src="/svgs/quote.svg"
-										fill
-										alt=""
-										sizes="100vw"
-									/>
+			<div className={styles.container}>
+				<div className={styles.center}>
+					<Title
+						title="Don’t Just take our word for it"
+						description="See what other creators has to say"
+						className={styles.title}
+						titleClassName={styles.title__title}
+						descriptionClassName={styles.title__description}
+					/>
+				</div>
+				<div className={`${styles.slider} reviews_slider`}>
+					<Swiper
+						slidesPerView={1}
+						pagination={{
+							clickable: true
+						}}
+						modules={[Pagination]}
+					>
+						{reviews.map((review: any, index: number) => (
+							<SwiperSlide key={index}>
+								<div className={styles.slide}>
+									<div className={styles.quote}>
+										<Image
+											src="/svgs/quote.svg"
+											fill
+											alt=""
+											sizes="100vw"
+										/>
+									</div>
+									<div className={styles.text}>
+										<h2>{review.review}</h2>
+									</div>
+									<div className={styles.avatar}>
+										<Image
+											src={review.avatar}
+											alt={review.user}
+											fill
+											sizes="100vw"
+										/>
+									</div>
+									<div className={styles.text}>
+										<h3>{review.user}</h3>
+										<p>{review.role}</p>
+									</div>
+									<div className={styles.rating}>
+										<Ratings readOnly />
+									</div>
 								</div>
-								<div className={styles.text}>
-									<h2>{review.review}</h2>
-								</div>
-								<div className={styles.avatar}>
-									<Image
-										src={review.avatar}
-										alt={review.user}
-										fill
-										sizes="100vw"
-									/>
-								</div>
-								<div className={styles.text}>
-									<h3>{review.user}</h3>
-									<p>{review.role}</p>
-								</div>
-								<div className={styles.rating}>
-									<Ratings readOnly />
-								</div>
-							</div>
-						</SwiperSlide>
-					))}
-				</Swiper>
+							</SwiperSlide>
+						))}
+					</Swiper>
+				</div>
 			</div>
 		</section>
 	);

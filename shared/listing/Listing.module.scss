@@ -6,7 +6,7 @@
 	.image {
 		position: relative;
 		width: 100%;
-		height: 24.4rem;
+		height: 30rem;
 		overflow: hidden;
 		border-radius: 0.4rem;
 		margin-bottom: 1.2rem;
@@ -42,7 +42,7 @@
 				.button {
 					&:first-child {
 						background: unset;
-						background-color: #072ac8;
+						background-color: #1b1e21;
 						color: #ffffff;
 					}
 				}
@@ -79,16 +79,16 @@
 			padding: 0.2rem 0.8rem;
 			border-radius: 10rem;
 			background: $orange-grad;
-			color: #1b1e21;
+			color: #fff;
 			p {
 				font-weight: 700;
 			}
 			span {
 				font-weight: 400;
 			}
-			&:nth-child(2) {
+			&[data-sell="true"] {
 				background: unset;
-				background-color: #072ac8;
+				background-color: #1b1e21;
 				color: #ffffff;
 			}
 		}

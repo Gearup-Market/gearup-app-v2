@@ -81,10 +81,25 @@
 			display: none;
 		}
 	}
+	.button {
+		display: none;
+	}
 
 	@include screenMax("mobile") {
 		padding: 3rem 1.6rem;
-
+		.button {
+			position: fixed;
+			display: block;
+			right: 1.6rem;
+			bottom: 6.4rem;
+			padding: 0;
+			width: 5rem;
+			height: 5rem;
+			&_icon {
+				width: 2.4rem;
+				height: 2.4rem;
+			}
+		}
 		.title_toggle {
 			.listing_text {
 				display: flex;

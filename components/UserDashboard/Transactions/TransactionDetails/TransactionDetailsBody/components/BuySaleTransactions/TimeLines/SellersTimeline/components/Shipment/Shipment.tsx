@@ -15,7 +15,7 @@ interface Props {
 	item: iTransactionDetails;
 }
 const Shipment = ({ handleNext, item }: Props) => {
-	const { metadata, listing } = item;
+	const { metadata, listing, buyer } = item;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
 
 	return (
@@ -44,12 +44,10 @@ const Shipment = ({ handleNext, item }: Props) => {
 					<h3 className={styles.title}>Shipment details</h3>
 					<div className={styles.summary_item}>
 						<h4>Full-name</h4>
-						<p>
+						<p style={{ textTransform: "capitalize" }}>
 							{thirdPartyVerification
 								? "Gearup service center"
-								: metadata?.name ||
-								  listing.user?.name ||
-								  listing.user?.userName}
+								: metadata?.name || buyer?.name || buyer?.userName}
 						</p>
 					</div>
 					{metadata?.shippingType === ShippingType.Shipping && (
@@ -81,14 +79,22 @@ const Shipment = ({ handleNext, item }: Props) => {
 					{metadata?.shippingType === ShippingType.LocalPickup && (
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								Buyer has opted for local pickup option. Please ensure the <strong>{listing.productName}</strong> is available for pickup at the agreed time.
+								Buyer has opted for local pickup option. Please ensure the{" "}
+								<strong>
+									{listing
+										? listing.productName
+										: "Listing not available"}
+								</strong>{" "}
+								is available for pickup at the agreed time.
 							</p>
 						</div>
 					)}
 				</div>
 			</div>
 			<div className={styles.btn_container}>
-				<Button onClick={() => handleNext(TransactionStage.SellerShipped)}>Confirm Shipment</Button>
+				<Button onClick={() => handleNext(TransactionStage.SellerShipped)}>
+					Confirm Shipment
+				</Button>
 			</div>
 		</div>
 	);

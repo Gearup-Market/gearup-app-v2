@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./NewListingViews.module.scss";
 import { Button, CheckBox, InputField, Logo, RangeInput, Select } from "@/shared";
 import Image from "next/image";
@@ -10,7 +10,13 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { ListingType } from "@/components/newListing";
 import RentOffer from "@/components/newListing/rentOffer/RentOffer";
-import { DayOfferEnum, RentingOffer, SellingOffer } from "@/interfaces/Listing";
+import {
+	DayOfferEnum,
+	RentingOffer,
+	RentingOfferRates,
+	SellingOffer
+} from "@/interfaces/Listing";
+import Link from "next/link";
 
 const enum View {
 	Idle = "idle",
@@ -26,7 +32,7 @@ interface RentOffer {
 }
 
 const initialForSellDetails: SellingOffer = {
-	currency: "NGN",
+	currency: "₦",
 	pricing: undefined,
 	acceptOffers: false,
 	shipping: {
@@ -37,15 +43,8 @@ const initialForSellDetails: SellingOffer = {
 };
 
 const initialForRentDetails: RentingOffer = {
-	currency: "NGN",
-	pricing: undefined,
-	priceStructure: undefined,
-	hour3Offer: 0,
-	hour7Offer: 0,
-	day1Offer: 0,
-	day3Offer: 0,
-	day7Offer: 0,
-	day30Offer: 0,
+	currency: "₦",
+	rates: [],
 	overtimePercentage: 0,
 	totalReplacementValue: 0
 };
@@ -64,12 +63,11 @@ const PricingView = () => {
 		newListing.offer.forSell ?? initialForSellDetails
 	);
 	const [forRentDetails, setForRentDetails] = useState<RentingOffer>(
-		newListing.offer.forRent ?? initialForRentDetails
+		newListing.offer.forRent || initialForRentDetails
 	);
 	const [errorFields, setErrorFields] = useState<ErrorFieldsProp>({
 		isRentPriceStructure: false
 	});
-
 	const nextPage = () => {
 		const data = {
 			offer: {
@@ -102,12 +100,31 @@ const PricingView = () => {
 		checkAvailability(newListing.listingType);
 	}, []);
 
-	const disabledButton = !newListing.listingType.length;
+	const disabledButton = useMemo(() => {
+		if (!newListing.listingType.length) return true;
+
+		if (view === View.Sell) {
+			return !forSellDetails.pricing;
+		}
+
+		if (view === View.Rent) {
+			const baseRate = forRentDetails.rates.find(rate => rate.quantity === 1);
+			if (!baseRate?.duration) return true;
+
+			const hasInvalidPrices = forRentDetails.rates.some(rate => rate.price < 1);
+			return hasInvalidPrices;
+		}
+
+		return true;
+	}, [newListing.listingType, view, forSellDetails.pricing, forRentDetails.rates]);
+
 	return (
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 5 of 6 : Pricing</p>
@@ -221,7 +238,7 @@ const BuyView = ({
 			<div className={styles.container}>
 				<Select
 					label="Currency"
-					options={["NGN"]}
+					options={["₦"]}
 					defaultOptionIndex={0}
 					onOptionChange={value =>
 						setForSellDetails(prev => ({ ...prev, currency: value }))
@@ -236,7 +253,7 @@ const BuyView = ({
 					</div>
 					<div className={styles.input}>
 						<InputField
-							prefix="N"
+							prefix="₦"
 							placeholder="0"
 							label="Amount"
 							min={1}
@@ -369,40 +386,90 @@ const RentView = ({
 	errorFields: ErrorFieldsProp;
 	setErrorFields: React.Dispatch<React.SetStateAction<ErrorFieldsProp>>;
 }) => {
-	const [toggleValues, setToggleValues] = useState<{
-		threeDayRent: boolean;
-		sevenDayRent: boolean;
-		thirtyDayRent: boolean;
-	}>({
-		threeDayRent: forRentDetails.day3Offer !== 0,
-		sevenDayRent: forRentDetails.day7Offer !== 0,
-		thirtyDayRent: forRentDetails.day30Offer !== 0
+	const [priceStructure, setPriceStructure] = useState<string>(
+		forRentDetails.rates.length ? forRentDetails.rates[0].duration : ""
+	);
+
+	const [rates, setRates] = useState<RentingOfferRates[]>(() => {
+		if (forRentDetails.rates.length) {
+			return forRentDetails.rates;
+		}
+		return [
+			{
+				duration: priceStructure,
+				quantity: 1,
+				price: 0
+			}
+		];
 	});
 
-	const updateFieldPrice = (field: string) => {
-		if (!forRentDetails.priceStructure) {
+	const updateOffer = (rateQuantity: number) => {
+		if (!priceStructure) {
 			setErrorFields(prev => ({ ...prev, isRentPriceStructure: true }));
 			return;
 		}
-		if (field === DayOfferEnum.THREE_DAYS) {
-			setToggleValues(prev => ({ ...prev, threeDayRent: !prev.threeDayRent }));
-		}
-		if (field === DayOfferEnum.SEVEN_DAYS) {
-			setToggleValues(prev => ({ ...prev, sevenDayRent: !prev.sevenDayRent }));
-		}
-		if (field === DayOfferEnum.THIRTY_DAYS) {
-			setToggleValues(prev => ({ ...prev, thirtyDayRent: !prev.thirtyDayRent }));
-		}
+		setRates(prevRates => {
+			const isRate = prevRates.find(rate => rate.quantity === rateQuantity);
+			return isRate
+				? prevRates.filter(rate => rate.quantity !== rateQuantity)
+				: [
+						...prevRates,
+						{ duration: priceStructure, quantity: rateQuantity, price: 0 }
+				  ];
+		});
 	};
 
-	const priceStructures = ["per day", "per hour"];
+	const offerValue = (rateQuantity: number, value: "price" | "quantity") => {
+		const findRate = rates.find(rate => rate.quantity === rateQuantity);
+		return findRate ? findRate[value] : undefined;
+	};
 
-	const defaultOptionIndex = priceStructures.findIndex(
-		item => item === forRentDetails.priceStructure
-	);
+	const updateRate = (rateQuantity: number, price: number) => {
+		setRates(prevRates => {
+			const rateIndex = prevRates.findIndex(rate => rate.quantity === rateQuantity);
+			const updatedRates = [...prevRates];
+			updatedRates[rateIndex] = {
+				...updatedRates[rateIndex],
+				price
+			};
+			return updatedRates;
+		});
+	};
 
-	const selectedPriceStructure = forRentDetails.priceStructure;
-	const dayPriceStructure = selectedPriceStructure === "per day";
+	useEffect(() => {
+		if (!priceStructure) return;
+
+		setRates(prevRates =>
+			prevRates.map(rate => ({
+				...rate,
+				duration: priceStructure
+			}))
+		);
+
+		setForRentDetails(prevDetails => ({
+			...prevDetails,
+			rates: prevDetails.rates.map(rate => ({
+				...rate,
+				duration: priceStructure
+			}))
+		}));
+	}, [priceStructure, setForRentDetails]);
+
+	useEffect(() => {
+		if (!rates.length) return;
+
+		setForRentDetails(prev => ({
+			...prev,
+			rates
+		}));
+	}, [rates, setForRentDetails, forRentDetails.rates]);
+
+	const priceStructures = ["daily", "hourly"];
+
+	const defaultOptionIndex =
+		forRentDetails.rates.length && forRentDetails.rates[0].duration
+			? priceStructures.findIndex(item => item === forRentDetails.rates[0].duration)
+			: -1;
 
 	return (
 		<div>
@@ -416,7 +483,7 @@ const RentView = ({
 			<div className={styles.container}>
 				<Select
 					label="Currency"
-					options={["NGN"]}
+					options={["₦"]}
 					defaultOptionIndex={0}
 					onOptionChange={value =>
 						setForRentDetails(prev => ({ ...prev, currency: value }))
@@ -428,22 +495,12 @@ const RentView = ({
 						<div>
 							<InputField
 								placeholder="Enter amount"
-								onChange={(e: any) => {
-									setForRentDetails(prev => ({
-										...prev,
-										pricing: +e.target.value
-									}));
-									setForRentDetails(prev => ({
-										...prev,
-										day1Offer: +e.target.value
-									}));
-								}}
-								label={`Price ( ${
-									forRentDetails.priceStructure ??
-									"select a price structure"
-								} )`}
+								onChange={(e: any) => updateRate(1, +e.target.value)}
+								label={`Price`}
 								className={`${styles.input}`}
-								value={forRentDetails?.pricing}
+								value={offerValue(1, "price")}
+								type="number"
+								min={0}
 							/>
 						</div>
 						<div>
@@ -452,10 +509,9 @@ const RentView = ({
 								options={priceStructures}
 								defaultOption="Select a price structure"
 								onOptionChange={value => {
-									setForRentDetails(prev => ({
-										...prev,
-										priceStructure: value
-									}));
+									setPriceStructure(
+										value === "hourly" ? "hour" : "day"
+									);
 									setErrorFields(prev => ({
 										...prev,
 										isRentPriceStructure: false
@@ -501,78 +557,37 @@ const RentView = ({
 							</h3>
 							<RentOffer
 								title={3}
-								value={
-									dayPriceStructure
-										? forRentDetails?.day3Offer
-										: forRentDetails?.hour3Offer
-								}
+								value={offerValue(3, "price")}
 								toggleInput={field => {
-									updateFieldPrice(field);
+									updateOffer(field);
 								}}
-								checked={toggleValues.threeDayRent}
-								name={DayOfferEnum.THREE_DAYS}
-								onChange={(e: any) =>
-									setForRentDetails(prev =>
-										dayPriceStructure
-											? {
-													...prev,
-													hour3Offer: 0,
-													day3Offer: +e.target.value
-											  }
-											: {
-													...prev,
-													hour3Offer: +e.target.value,
-													day3Offer: 0
-											  }
-									)
-								}
-								priceStructure={selectedPriceStructure}
+								checked={!!offerValue(3, "quantity")}
+								name={DayOfferEnum.THREE}
+								onChange={(e: any) => updateRate(3, +e.target.value)}
+								priceStructure={priceStructure}
 							/>
 							<RentOffer
 								title={7}
-								value={
-									dayPriceStructure
-										? forRentDetails?.day7Offer
-										: forRentDetails?.hour7Offer
-								}
+								value={offerValue(7, "price")}
 								toggleInput={field => {
-									updateFieldPrice(field);
+									updateOffer(field);
 								}}
-								checked={toggleValues.sevenDayRent}
-								name={DayOfferEnum.SEVEN_DAYS}
-								onChange={(e: any) =>
-									setForRentDetails(prev =>
-										dayPriceStructure
-											? {
-													...prev,
-													hour7Offer: 0,
-													day7Offer: +e.target.value
-											  }
-											: {
-													...prev,
-													hour7Offer: +e.target.value,
-													day7Offer: 0
-											  }
-									)
-								}
-								priceStructure={selectedPriceStructure}
+								checked={!!offerValue(7, "quantity")}
+								name={DayOfferEnum.SEVEN}
+								onChange={(e: any) => updateRate(7, +e.target.value)}
+								priceStructure={priceStructure}
 							/>
-							{dayPriceStructure && (
+							{priceStructure === "daily" && (
 								<RentOffer
 									title={30}
-									value={forRentDetails?.day30Offer}
+									value={offerValue(30, "price")}
 									toggleInput={field => {
-										updateFieldPrice(field);
+										updateOffer(field);
 									}}
-									checked={toggleValues.thirtyDayRent}
-									name={DayOfferEnum.THIRTY_DAYS}
-									onChange={(e: any) =>
-										setForRentDetails(prev => ({
-											...prev,
-											day30Offer: +e.target.value
-										}))
-									}
-									priceStructure={selectedPriceStructure}
+									checked={!!offerValue(30, "quantity")}
+									name={DayOfferEnum.THIRTY}
+									onChange={(e: any) => updateRate(30, +e.target.value)}
+									priceStructure={priceStructure}
 								/>
 							)}
 						</div>
@@ -588,7 +603,7 @@ const RentView = ({
 					</div>
 
 					<InputField
-						prefix="N"
+						prefix="₦"
 						placeholder="0"
 						type="number"
 						value={forRentDetails?.totalReplacementValue}

@@ -8,7 +8,7 @@ import { iTransactionDetails, TransactionStage, TransactionStatus } from "@/inte
 import { useAppSelector } from "@/store/configureStore";
 import { usePostTransactionStatus } from "@/app/api/hooks/transactions";
 import toast from "react-hot-toast";
-import { formatDate, getDaysDifference } from "@/utils";
+import { formatDate, getDaysDifference, getLastRentalDate } from "@/utils";
 
 interface Props {
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
@@ -18,7 +18,8 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 	const { userId } = useAppSelector(s => s.user);
 	const { currentStage } = useAppSelector(s => s.transaction);
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
-	const { isBuyer, id, amount, transactionStatus, listing, rentalPeriod, buyer } = item;
+	const { isBuyer, id, amount, transactionStatus, listing, rentalBreakdown, buyer } =
+		item;
 
 	const isCancelled = useMemo(
 		() => transactionStatus === TransactionStatus.Cancelled,
@@ -68,7 +69,9 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 					<>
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								You have made payment but we are still confirming the transaction status. This view will be updated immediately your payment is received and verified
+								You have made payment but we are still confirming the
+								transaction status. This view will be updated immediately
+								your payment is received and verified
 							</p>
 						</div>
 					</>
@@ -89,17 +92,26 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 										<span className={styles.bold}>₦{amount}</span> for
 										the rental of{" "}
 										<span className={styles.bold}>
-											{listing.productName}
+											{listing
+												? listing.productName
+												: "Listing not available"}
 										</span>{" "}
 										from{" "}
 										<span className={styles.bold}>
-											{formatDate(rentalPeriod?.start)} to{" "}
-											{formatDate(rentalPeriod?.end)} (
-											{getDaysDifference(
-												rentalPeriod?.start,
-												rentalPeriod?.end
-											)}
-											days)
+											{formatDate(rentalBreakdown[0].date)} to{" "}
+											{formatDate(
+												getLastRentalDate(rentalBreakdown)
+											)}{" "}
+											({rentalBreakdown.length}
+											days{" "}
+											{rentalBreakdown[0].duration === "hour"
+												? `for ${rentalBreakdown.reduce(
+														(total, period) =>
+															total + period.quantity,
+														0
+												  )} hours`
+												: null}
+											)
 										</span>{" "}
 										and the money is in escrow protection .{" "}
 									</p>

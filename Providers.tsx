@@ -13,15 +13,17 @@ const Providers: React.FC<{ children: ReactNode }> = ({ children }) => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<Provider store={store!}>
-				<Toaster
-					toastOptions={{
-						style: {
-							zIndex: 9999999
-						}
-					}}
-				/>
 				<PersistGate persistor={persistor}>
-					<AppProvider>{children}</AppProvider>
+					<Toaster
+						toastOptions={{
+							style: {
+								zIndex: 9999999
+							}
+						}}
+					/>
+					<AuthProvider>
+						<AppProvider>{children}</AppProvider>
+					</AuthProvider>
 				</PersistGate>
 			</Provider>
 		</QueryClientProvider>

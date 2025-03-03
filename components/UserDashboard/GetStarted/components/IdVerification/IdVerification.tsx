@@ -1,3 +1,5 @@
+"use client";
+
 import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState } from "react";
 import styles from "./IdVerification.module.scss";
 import HeaderSubText from "@/components/Admin/HeaderSubText/HeaderSubText";
@@ -11,8 +13,7 @@ import { usePostSubmitKycDoc } from "@/app/api/hooks/users";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateVerification } from "@/store/slices/verificationSlice";
 import toast from "react-hot-toast";
-import { Option, SelectOption } from "@/shared/selects/select/Select";
-import { useUploadFiles } from "@/app/api/hooks/listings";
+import { Option } from "@/shared/selects/select/Select";
 import { isEmpty } from "@/utils";
 
 export type DocumentIdentityFormValues = Omit<iPostSubmitKycReq, "userId">;
@@ -25,15 +26,22 @@ interface IdentificationDocumentProps {
 	onSubmitSuccess: () => void;
 }
 
+const initialImageObj = {
+	displayImage: new File([], ""),
+	image: ""
+};
+
 const IdVerification = forwardRef<
 	IdentificationDocumentHandle,
 	IdentificationDocumentProps
 >(({ onSubmitSuccess }, ref) => {
 	const formRef = useRef<FormikProps<DocumentIdentityFormValues>>(null);
-	const [displayedImages, setDisplayedImages] = useState<File[]>([]);
+	const [imageObj, setImageObj] = useState<{
+		displayImage: File;
+		image: string;
+	}>(initialImageObj);
 	const verificationState = useAppSelector(s => s.verification);
 	const dispatch = useAppDispatch();
-	const { mutateAsync: postUploadFile, isPending } = useUploadFiles();
 
 	useImperativeHandle(ref, () => ({
 		submitForm: () => {
@@ -72,24 +80,28 @@ const IdVerification = forwardRef<
 		[verificationState.documentType]
 	);
 
-	const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const convertFileToBase64 = (file: File): Promise<string> => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => resolve(reader.result as string);
+			reader.onerror = error => reject(error);
+		});
+	};
+
+	const handleIconChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
-		if (files && files.length > 0) {
-			const validFiles = Array.from(files).filter(file => file instanceof File);
-			if (validFiles.length > 0) {
-				const localArr = [...displayedImages, ...validFiles];
-				setDisplayedImages(localArr);
-			} else {
-				toast.error("No valid File objects were selected");
-			}
+		if (files && files.length) {
+			const base64String = await convertFileToBase64(files[0]);
+			const baseUrlString = base64String.split("base64,")[1];
+			setImageObj({ displayImage: files[0], image: baseUrlString });
 		} else {
 			toast.error("No files selected");
 		}
 	};
 
 	const removeExistingImage = (name: string) => {
-		const images = [...displayedImages.filter(x => x.name !== name)];
-		setDisplayedImages(images);
+		setImageObj(initialImageObj);
 	};
 
 	const initialValues: DocumentIdentityFormValues = {
@@ -109,27 +121,14 @@ const IdVerification = forwardRef<
 			);
 			if (isEmpty(values.documentNo) || isEmpty(values.documentType)) {
 				toast.error("Oops! All fields are required");
-			} else if (displayedImages && displayedImages.length > 0) {
-				await postUploadFile(displayedImages, {
-					onSuccess: (imgUploadRes: any) => {
-						const documentPhoto = imgUploadRes?.imageUrls;
-						if (documentPhoto.length > 0) {
-							dispatch(
-								updateVerification({
-									...values,
-									documentPhoto
-								})
-							);
-							onSubmitSuccess();
-						}
-					},
-					onError: error => {
-						toast.error(
-							error?.response?.data?.message ||
-								"An error occurred while uploading your documents"
-						);
-					}
-				});
+			} else if (imageObj.image) {
+				dispatch(
+					updateVerification({
+						...values,
+						documentPhoto: imageObj.image
+					})
+				);
+				onSubmitSuccess();
 			} else {
 				toast.error("Please upload the document image");
 			}
@@ -235,14 +234,14 @@ const IdVerification = forwardRef<
 								</div>
 							</div>
 							<div className={styles.documents_container}>
-								{displayedImages.map((item, index) => (
-									<div key={index}>
-										<UploadDetails
-											item={item}
-											removeExistingImage={removeExistingImage}
-										/>
-									</div>
-								))}
+								{/* {displayedImages.map((item, index) => ( */}
+								<div>
+									<UploadDetails
+										item={imageObj.displayImage}
+										removeExistingImage={removeExistingImage}
+									/>
+								</div>
+								{/* ))} */}
 							</div>
 						</Form>
 					)}

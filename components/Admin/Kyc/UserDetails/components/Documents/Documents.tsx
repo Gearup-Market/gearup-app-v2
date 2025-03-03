@@ -30,11 +30,11 @@ const Documents = ({ data, kycData }: { data: any; kycData?: Kyc }) => {
 				<div className={styles.summary_item}>
 					<h4>ID Photos</h4>
 
-					{!kycData?.documentPhoto
+					{/* {!kycData?.documentPhoto
 						? "not submitted"
 						: kycData?.documentPhoto?.map((photo, index) => (
 								<Link href={photo} key={index}>Click to view</Link>
-						  ))}
+						  ))} */}
 				</div>
 				<div className={styles.summary_item}>
 					<h4>Selfie photo</h4>

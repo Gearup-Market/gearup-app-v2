@@ -32,7 +32,9 @@ const UserProfileSection = () => {
 	const isBuy = !!listing?.data?.offer?.forSell;
 	const price =
 		listing?.data?.offer?.forSell?.pricing ||
-		listing?.data?.offer?.forRent?.day1Offer;
+		(listing?.data?.offer?.forRent?.rates.length
+			? listing?.data?.offer?.forRent?.rates[0].price
+			: 0);
 	const isBoth = isRent && isBuy;
 	const currency =
 		listing?.data?.offer?.forSell?.currency ||
@@ -47,7 +49,7 @@ const UserProfileSection = () => {
 					alignItems="center"
 					height="30rem"
 				>
-					<CircularProgressLoader color="#ffb30f" size={30} />
+					<CircularProgressLoader color="#F76039" size={30} />
 				</Box>
 			) : (
 				<>
@@ -114,7 +116,11 @@ const UserProfileSection = () => {
 								<span
 									className={styles.amount}
 								>{`${currency} ${price}`}</span>
-								{isRent && <span className={styles.day}>/Day</span>}
+								{isRent && (
+									<span className={styles.day}>
+										/{listing.data.offer.forRent?.rates[0].duration}
+									</span>
+								)}
 							</p>
 						</div>
 					)}

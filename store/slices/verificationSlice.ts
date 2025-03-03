@@ -37,7 +37,7 @@ const initialState: VerificationState = {
 	phoneNumber: "",
 	documentNo: "",
 	documentType: "intl_passport",
-	documentPhoto: [],
+	documentPhoto: "",
 	selfie: "",
 	resendCodeCountdown: 60,
 	_id: "",

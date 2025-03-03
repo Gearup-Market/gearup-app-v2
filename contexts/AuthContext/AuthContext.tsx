@@ -13,6 +13,7 @@ import { CircularProgressLoader } from "@/shared/loaders";
 import { queryClient } from "@/app/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { clearState, updateVerification } from "@/store/slices/verificationSlice";
+import { clearNewListing } from "@/store/slices/addListingSlice";
 
 const AuthContext = createContext<DefaultProviderType>({
 	isAuthenticated: false,
@@ -55,7 +56,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 
 		setIsTokenValid(!!tokenData);
-	}, [isFetched, tokenData]);
+	}, [isFetched, tokenData, dispatch]);
 
 	// Sync User Data
 	useEffect(() => {
@@ -79,8 +80,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		removeAuthToken();
 		dispatch(clearUser());
 		dispatch(clearState());
+		dispatch(clearNewListing());
 		queryClient.clear();
-		router.replace(`/login?returnUrl=${pathname}`);
+		router.replace("/login");
 	};
 
 	const authValues = useMemo(
@@ -123,12 +125,19 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	useEffect(() => {
 		if (!loading && !user.isAuthenticated) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
-				router.replace(`/login?returnUrl=${returnUrl}`);
+				router.replace(`/login`);
 			} else if (isAuthenticated && pathname === "/login") {
-				router.replace(returnUrl);
+				router.replace("/user/dashboard");
 			}
 		}
-	}, [isAuthenticated, loading, pathname, UNPROTECTED_ROUTES, router]);
+	}, [
+		isAuthenticated,
+		loading,
+		pathname,
+		UNPROTECTED_ROUTES,
+		router,
+		user.isAuthenticated
+	]);
 
 	if (loading) {
 		return (
@@ -140,7 +149,7 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 					height: "400px"
 				}}
 			>
-				<CircularProgressLoader color="#ffb30f" size={40} />
+				<CircularProgressLoader color="#F76039" size={40} />
 			</Box>
 		);
 	}

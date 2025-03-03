@@ -9,8 +9,8 @@
 	width: 100%;
 	height: 1rem;
 	border-radius: 0.5rem;
-	background: #fff7e7;
-	background-image: linear-gradient(#ffb30f, #edcb00);
+	background: #feefeb;
+	background-image: linear-gradient(#f76039, #f76039);
 	background-size: 70% 100%;
 	background-repeat: no-repeat;
 	outline: none;
@@ -24,14 +24,14 @@
 		width: 2.8rem;
 		height: 2.8rem;
 		border-radius: 50%;
-		background: #edcb00;
+		background: #f76039;
 		cursor: pointer;
 	}
 	&::-moz-range-thumb {
 		width: 2.8rem;
 		height: 2.8rem;
 		border-radius: 50%;
-		background: #edcb00;
+		background: #f76039;
 		cursor: pointer;
 	}
 }

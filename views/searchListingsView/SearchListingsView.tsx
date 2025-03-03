@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import styles from "./SearchListingsView.module.scss";
-import { ListingType } from "@/interfaces";
 import { Button, Listing, NoSearchResult, Pagination } from "@/shared";
 import { usePathname, useRouter } from "next/navigation";
 import { BreadCrumbSelect, Filter } from "@/components/listings";
-import { PageLoader } from "@/shared/loaders";
 import { useSearchParams } from "next/navigation";
 import { AppState, useAppSelector } from "@/store/configureStore";
 import { useListings } from "@/hooks/useListings";
@@ -15,19 +13,13 @@ import { useGetCategories } from "@/app/api/hooks/listings";
 
 const pageSize: number = 12;
 const SearchListingsView = () => {
-	useListings(true);
-	const { data: categories, isFetching: isFetchingCategories } = useGetCategories();
-	const { isFetching: isFetchingListings } = useListings(true);
-
+	const { data: categories } = useGetCategories();
 	const { searchedListings, listings } = useAppSelector(
 		(state: AppState) => state.listings
 	);
 	const router = useRouter();
 	const search = useSearchParams();
 	const typePathName = search.get("type");
-	// const categoryPathName = search.get("category");
-	const category = search.get("category");
-	const subCategory = search.get("subCategory");
 	const [hideFilters, setHideFilters] = useState<boolean>(false);
 	const [selectedCategory, setSelectedCategory] = useState<iCategory | null>(null);
 	const [selectedSubCategory, setSelectedSubCategory] = useState<iCategory | null>(
@@ -39,44 +31,30 @@ const SearchListingsView = () => {
 	const pathName = usePathname();
 	const listingsData = searchedListings.length > 0 ? searchedListings : listings;
 
-	// console.log(searchedListings, listings);
+	const searchParams = new URLSearchParams(search.toString());
+	const fieldsParams: Record<string, string[]> = {};
 
-	const filteredListings = useMemo(() => {
-		let initialFilteredListing = listingsData;
-		if (typePathName) {
-			initialFilteredListing = listingsData.filter(l => {
-				return l.listingType === typePathName || l.listingType === "both";
-			});
+	Array.from(searchParams.entries()).forEach(([key, value]) => {
+		if (key.startsWith("fields[")) {
+			const fieldName = key.slice(7, -1);
+			fieldsParams[fieldName] = value.split(",");
 		}
-		if (!!selectedCategory && !!selectedSubCategory) {
-			return initialFilteredListing.filter(l => {
-				if (l.subCategory) return l.subCategory._id === selectedSubCategory.id;
-				return l.category._id === selectedCategory.id;
-			});
-		} else if (!!selectedCategory) {
-			return initialFilteredListing.filter(l => {
-				return l.category._id === selectedCategory.id;
-			});
-		}
+	});
 
-		return initialFilteredListing;
-	}, [listingsData, selectedCategory, selectedSubCategory, typePathName]);
+	const queryParams = {
+		category: searchParams.get("category") || undefined,
+		subCategory: searchParams.get("subCategory") || undefined,
+		minPrice: searchParams.get("minPrice") || undefined,
+		maxPrice: searchParams.get("maxPrice") || undefined,
+		type: searchParams.get("type") || undefined,
+		fields: Object.keys(fieldsParams).length > 0 ? fieldsParams : undefined
+	};
+
+	const { meta, isFetching } = useListings(currentPage, queryParams);
 
 	const checkActive = (url: string) => {
 		return url === typePathName;
 	};
-
-	const currentTableData = useMemo(() => {
-		const firstPageIndex = (currentPage - 1) * pageSize;
-		const lastPageIndex = firstPageIndex + pageSize;
-		return filteredListings?.slice(firstPageIndex, lastPageIndex);
-	}, [currentPage, filteredListings]);
-
-	const startNumber = (currentPage - 1) * pageSize + 1;
-	const endNumber = Math.min(
-		startNumber + currentTableData?.length - 1,
-		filteredListings?.length
-	);
 
 	useEffect(() => {
 		const windowWidth = window.innerWidth;
@@ -97,60 +75,82 @@ const SearchListingsView = () => {
 		};
 	}, []);
 
-	// to update the selectedCategory and selectedSubCategory from the query
+	const onChangeSelectedCategory = useCallback(
+		(option: iCategory) => {
+			setSelectedCategory(option);
+			setSelectedSubCategory(null);
+
+			Array.from(searchParams.entries()).forEach(([key]) => {
+				if (key !== "type") {
+					searchParams.delete(key);
+				}
+			});
+
+			searchParams.set("category", option.name);
+
+			router.push(`${pathName}?${searchParams.toString()}`);
+		},
+		[router, pathName, searchParams]
+	);
+
+	const onChangeSelectedSubCategory = useCallback(
+		(option: iCategory | null) => {
+			setSelectedSubCategory(option);
+
+			Array.from(searchParams.entries()).forEach(([key]) => {
+				if (
+					key !== "type" &&
+					key !== "category" &&
+					(key.startsWith("fields[") ||
+						key === "minPrice" ||
+						key === "maxPrice" ||
+						key === "subCategory")
+				) {
+					searchParams.delete(key);
+				}
+			});
+
+			if (option) {
+				searchParams.set("subCategory", option.name);
+			}
+
+			router.push(`${pathName}?${searchParams.toString()}`);
+		},
+		[searchParams, router, pathName]
+	);
+
+	const updatePage = (page: number) => {
+		setCurrentPage(page);
+	};
+
 	useEffect(() => {
-		if (category) {
-			const _category = categories?.data.find(
-				c => c.name.toLowerCase() == category.toLowerCase()
+		if (!categories?.data) return;
+
+		const currentParams = new URLSearchParams(search.toString());
+		const categoryParam = currentParams.get("category");
+		const subCategoryParam = currentParams.get("subCategory");
+
+		if (categoryParam) {
+			const foundCategory = categories.data.find(
+				c => c.name.toLowerCase() === categoryParam.toLowerCase()
 			);
-			if (_category) {
-				setSelectedCategory(_category);
-				const _subCategory = _category.subCategories.find(
-					c => c.name.toLowerCase() == subCategory?.toLowerCase()
-				);
-				if (_subCategory) {
-					setSelectedSubCategory(_subCategory);
+
+			if (foundCategory) {
+				if (!selectedCategory || selectedCategory.id !== foundCategory.id) {
+					setSelectedCategory(foundCategory);
+
+					if (subCategoryParam) {
+						const foundSubCategory = foundCategory.subCategories.find(
+							sc => sc.name.toLowerCase() === subCategoryParam.toLowerCase()
+						);
+						if (foundSubCategory) {
+							setSelectedSubCategory(foundSubCategory);
+						}
+					}
 				}
 			}
 		}
-	}, [category, categories, subCategory]);
-
-	// useEffect(() => {
-	// 	if (!isFetchingCategories && categoryPathName) {
-	// 		const foundCategory = categories?.data.find(
-	// 			category => category.name.toLowerCase() === categoryPathName
-	// 		);
-	// 		const category = foundCategory || null;
-	// 		console.log(category, categoryPathName, foundCategory);
-	// 		setSelectedCategory(category);
-	// 	}
-	// 	if (!categoryPathName) {
-	// 		setSelectedCategory(null);
-	// 	}
-	// }, [categoryPathName, isFetchingCategories, categories?.data]);
-
-	const onChangeSelectedCategory = (option: iCategory) => {
-		setSelectedCategory(option);
-		setSelectedSubCategory(null);
-	};
-
-	useEffect(() => {
-		if (selectedCategory) {
-			updateQueryParam("category", selectedCategory.name);
-		}
-		if (selectedSubCategory) {
-			updateQueryParam("subCategory", selectedSubCategory.name);
-		}
-	}, [selectedCategory, selectedSubCategory]);
-
-	const updateQueryParam = (key: string, value: string) => {
-		const currentParams = new URLSearchParams(search.toString());
-		if (key === "category") {
-			currentParams.delete("subCategory");
-		}
-		currentParams.set(key, value);
-		router.push(`${pathName}?${currentParams.toString()}`);
-	};
+	}, [categories, search]);
 
 	return (
 		<section className={styles.section} data-hidden={hideFilters} ref={elementRef}>
@@ -163,7 +163,7 @@ const SearchListingsView = () => {
 					selectedCategory={selectedCategory}
 					selectedSubCategory={selectedSubCategory}
 					setSelectedCategory={onChangeSelectedCategory}
-					setSelectedSubCategory={setSelectedSubCategory}
+					setSelectedSubCategory={onChangeSelectedSubCategory}
 				/>
 				{/* {!!category && (
 					<p>
@@ -181,7 +181,7 @@ const SearchListingsView = () => {
 					selectedCategory={selectedCategory}
 					selectedSubCategory={selectedSubCategory}
 					setSelectedCategory={onChangeSelectedCategory}
-					setSelectedSubCategory={setSelectedSubCategory}
+					setSelectedSubCategory={onChangeSelectedSubCategory}
 				/>
 				<div className={styles.block}>
 					<div className={styles.row}>
@@ -189,7 +189,31 @@ const SearchListingsView = () => {
 							<Button
 								buttonType="transparent"
 								className={styles.button_container}
-								onClick={() => router.push("/listings?type=rent")}
+								onClick={() => {
+									const currentParams = new URLSearchParams(
+										search.toString()
+									);
+									currentParams.delete("type");
+									router.push(`/listings?${currentParams.toString()}`);
+								}}
+							>
+								<div
+									className={styles.button}
+									data-active={!typePathName}
+								>
+									All
+								</div>
+							</Button>
+							<Button
+								buttonType="transparent"
+								className={styles.button_container}
+								onClick={() => {
+									const currentParams = new URLSearchParams(
+										search.toString()
+									);
+									currentParams.set("type", "rent");
+									router.push(`/listings?${currentParams.toString()}`);
+								}}
 							>
 								<div
 									className={styles.button}
@@ -201,7 +225,13 @@ const SearchListingsView = () => {
 							<Button
 								buttonType="transparent"
 								className={styles.button_container}
-								onClick={() => router.push("/listings?type=buy")}
+								onClick={() => {
+									const currentParams = new URLSearchParams(
+										search.toString()
+									);
+									currentParams.set("type", "buy");
+									router.push(`/listings?${currentParams.toString()}`);
+								}}
 							>
 								<div
 									className={styles.button}
@@ -211,50 +241,31 @@ const SearchListingsView = () => {
 								</div>
 							</Button>
 						</div>
-						{/* <div className={styles.show_button}>
-							<div className={styles.text}>
-								<h3>Show on map</h3>
-							</div>
-							<label className={styles.switch}>
-								<input
-									type="checkbox"
-									onChange={() => setShowOnMaps(!showOnMaps)}
-									checked={showOnMaps}
-								/>
-								<span className={styles.slider}></span>
-							</label>
-						</div> */}
 					</div>
 
-					{!isFetchingListings ? (
-						currentTableData.length ? (
-							<>
-								<div className={styles.grid} data-filter={!hideFilters}>
-									{currentTableData.map((listing, index: number) => (
-										<Listing
-											props={listing}
-											className={styles.card}
-											actionType={typePathName || ""}
-											key={index}
-										/>
-									))}
-								</div>
-								<Pagination
-									currentPage={currentPage}
-									totalCount={filteredListings?.length}
-									pageSize={pageSize}
-									onPageChange={(page: any) => setCurrentPage(page)}
-									startNumber={startNumber}
-									endNumber={endNumber}
-								/>
-							</>
-						) : (
-							<div className={styles.empty}>
-								<NoSearchResult />
+					{listingsData.length ? (
+						<>
+							<div className={styles.grid} data-filter={!hideFilters}>
+								{listingsData.map((listing, index: number) => (
+									<Listing
+										props={listing}
+										className={styles.card}
+										actionType={typePathName || ""}
+										key={index}
+									/>
+								))}
 							</div>
-						)
+							<Pagination
+								currentPage={currentPage}
+								totalCount={meta?.total || 0}
+								pageSize={meta?.limit || 12}
+								onPageChange={(page: any) => updatePage(page)}
+							/>
+						</>
 					) : (
-						<PageLoader />
+						<div className={styles.empty}>
+							<NoSearchResult />
+						</div>
 					)}
 				</div>
 			</div>

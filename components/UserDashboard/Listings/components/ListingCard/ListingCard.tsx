@@ -21,6 +21,7 @@ interface Props {
 	onClickEdit?: (listingId: string) => void;
 	refetch?: () => void;
 	closePopOver?: () => void;
+	handleDelete?: (id: string) => void;
 }
 
 const ListingCard = ({
@@ -33,7 +34,8 @@ const ListingCard = ({
 	showStatusIcon = true,
 	onClickEdit,
 	refetch,
-	closePopOver
+	closePopOver,
+	handleDelete
 }: Props) => {
 	const [showMoreModal, setShowMoreModal] = useState(false);
 
@@ -63,7 +65,7 @@ const ListingCard = ({
 		<div className={`${styles.container} ${className}`}>
 			<div
 				className={styles.image}
-				data-disabled={props.status.toLowerCase() !== "unavailable"}
+				data-disabled={props.status.toLowerCase() === "unavailable"}
 			>
 				<CustomImage
 					src={props?.image ? props.image : ""}
@@ -104,7 +106,7 @@ const ListingCard = ({
 				</div>
 				{showStatusIcon && (
 					<div className={styles.chevron}>
-						<EllipseIcon color="#FFB30F" />
+						<EllipseIcon color="#F76039" />
 					</div>
 				)}
 			</div>

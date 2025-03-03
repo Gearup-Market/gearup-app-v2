@@ -36,22 +36,23 @@
 	.row {
 		@include flex(space-between, center);
 		.nav_button {
-			@include grid(repeat(2, 1fr), 0.8rem);
+			@include grid(repeat(3, 1fr), 0.8rem);
 			border: 0.2rem solid #dedfe0;
 			border-radius: 10rem;
-			width: 25.7rem;
+			width: 38.55rem;
 			padding: 0.4rem;
+			background-color: #070707;
 			.button_container {
 				padding: 0;
 				.button {
 					padding: 1.2rem 4rem;
-					color: #4b525a;
+					color: #a3a7ab;
 					border-radius: 10rem;
 					width: 100%;
 					font-weight: 400;
 					&[data-active="true"] {
 						background: $orange-grad;
-						color: #1b1e21;
+						color: #fff;
 						font-weight: 700;
 					}
 				}
@@ -156,7 +157,7 @@
 			align-items: flex-end;
 			.nav_button {
 				width: 100%;
-				background-color: $col-white;
+				// background-color: #070707;
 			}
 			.show_button {
 				border: none;
@@ -168,6 +169,9 @@
 		.section_grid {
 			.block {
 				width: 100%;
+				.grid {
+					margin-top: 8rem;
+				}
 			}
 		}
 	}

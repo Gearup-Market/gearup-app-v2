@@ -1,6 +1,8 @@
 @import "@/styles/imports";
 
 .section {
+	max-width: $max-width;
+	margin-inline: auto;
 	.row {
 		@include grid(repeat(3, 1fr));
 		margin-top: 6.4rem;
@@ -23,7 +25,7 @@
 			height: 1.6rem;
 		}
 		p {
-			color: #1b1e21;
+			color: #f76039;
 		}
 	}
 	@include screenMax("mobile") {

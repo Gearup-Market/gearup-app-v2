@@ -10,7 +10,7 @@ import { useListings } from "@/hooks/useListings";
 import { PageLoader } from "@/shared/loaders";
 
 const Listings = () => {
-	const { isFetching } = useListings(true);
+	const { isFetching } = useListings();
 	const { listings } = useAppSelector((state: AppState) => state.listings);
 	return (
 		<section className={styles.section}>
@@ -20,12 +20,17 @@ const Listings = () => {
 					<Button buttonType="secondary" className={styles.button}>
 						<p>See All Listings</p>
 						<div className={styles.icon}>
-							<Image src="/svgs/arrow.svg" fill alt="" sizes="100vw" />
+							<Image
+								src="/svgs/arrow-color.svg"
+								fill
+								alt=""
+								sizes="100vw"
+							/>
 						</div>
 					</Button>
 				</Link>
 			</div>
-			{isFetching ? (
+			{!listings.length ? (
 				<PageLoader />
 			) : (
 				<div className={styles.row}>
@@ -38,7 +43,7 @@ const Listings = () => {
 				<Button buttonType="secondary" className={styles.button}>
 					<p>See All Listings</p>
 					<div className={styles.icon}>
-						<Image src="/svgs/arrow.svg" fill alt="" sizes="100vw" />
+						<Image src="/svgs/arrow-color.svg" fill alt="" sizes="100vw" />
 					</div>
 				</Button>
 			</Link>

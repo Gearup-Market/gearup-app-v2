@@ -1,4 +1,10 @@
-import { iWallet, iWTransaction, StellarTransaction, StellarWallet, WalletStatus } from "@/app/api/hooks/wallets/types";
+import {
+	iWallet,
+	iWTransaction,
+	StellarTransaction,
+	StellarWallet,
+	WalletStatus
+} from "@/app/api/hooks/wallets/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type WalletState = {
@@ -14,7 +20,7 @@ const initialState: WalletState = {
 		balance: 0,
 		pendingDebit: 0,
 		pendingCredit: 0,
-		currency: "NGN",
+		currency: "₦",
 		accountName: "",
 		accountNumber: "",
 		bankName: "",

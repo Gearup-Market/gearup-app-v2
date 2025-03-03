@@ -321,6 +321,54 @@ const usePostValidateKycCode = (
 		...options
 	});
 
+const usePostSendOtpCode = (
+	options?: Omit<
+		UseMutationOptions<
+			iPostResendKycCodeResp,
+			iPostUserSignUpErr,
+			Partial<iPostResendKycCodeReq>
+		>,
+		"mutationFn"
+	>
+) =>
+	useMutation<
+		iPostResendKycCodeResp,
+		iPostUserSignUpErr,
+		Partial<iPostResendKycCodeReq>
+	>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.requestOtp, {
+					...props
+				})
+			).data,
+		...options
+	});
+
+const usePostValidateOtpCode = (
+	options?: Omit<
+		UseMutationOptions<
+			iPostResendKycCodeResp,
+			iPostUserSignUpErr,
+			Partial<iPostResendKycCodeReq>
+		>,
+		"mutationFn"
+	>
+) =>
+	useMutation<
+		iPostResendKycCodeResp,
+		iPostUserSignUpErr,
+		Partial<iPostResendKycCodeReq>
+	>({
+		mutationFn: async props =>
+			(
+				await api.post(API_URL.validateOtp, {
+					...props
+				})
+			).data,
+		...options
+	});
+
 const usePostUpdateBank = (
 	options?: Omit<
 		UseMutationOptions<iPostUpdateBankResp, iPostUserSignInErr, iPostUpdateBankRsq>,
@@ -397,5 +445,7 @@ export {
 	usePostUpdateUser,
 	usePostUpdateUserPin,
 	useGetVerifyToken,
-	useGetUserReviews
+	useGetUserReviews,
+	usePostSendOtpCode,
+	usePostValidateOtpCode
 };

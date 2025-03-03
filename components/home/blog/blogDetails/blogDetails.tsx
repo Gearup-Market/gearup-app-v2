@@ -3,36 +3,42 @@ import React from "react";
 import styles from "./blogDetails.module.scss";
 import { BackNavigation, CustomImage } from "@/shared";
 import Image from "next/image";
-import { useGetAllRecommendedArticles, useGetArticleById } from "@/app/api/hooks/blogs";
+import {
+	useGetAllRecommendedArticles,
+	useGetArticleById,
+	useGetArticleBySlug
+} from "@/app/api/hooks/blogs";
 import { Box } from "@mui/material";
 import { CircularProgressLoader } from "@/shared/loaders";
 import { shortenTitle } from "@/utils";
+import { IGetArticle } from "@/app/api/hooks/blogs/types";
+import Link from "next/link";
 
 interface Props {
-	slug: string;
+	data: IGetArticle;
 }
 
-const BlogDetails = ({ slug }: Props) => {
-	const blogId = slug[0].split("-").pop();
-	const { data, isLoading } = useGetArticleById(blogId as string);
+const BlogDetails = ({ data }: Props) => {
+	// const blogId = slug[0].split("-").pop();
+	// const { data, isLoading } = useGetArticleBySlug(slug as string);
 	const { data: recommendedBlogsResp, isLoading: fetchingRecommended } =
 		useGetAllRecommendedArticles();
 	const recommendedBlogs = recommendedBlogsResp?.data || [];
 
-	if (isLoading) {
-		return (
-			<Box
-				sx={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					height: "100vh"
-				}}
-			>
-				<CircularProgressLoader color="#FFB30F" />
-			</Box>
-		);
-	}
+	// if (isLoading) {
+	// 	return (
+	// 		<Box
+	// 			sx={{
+	// 				display: "flex",
+	// 				justifyContent: "center",
+	// 				alignItems: "center",
+	// 				height: "100vh"
+	// 			}}
+	// 		>
+	// 			<CircularProgressLoader color="#F76039" />
+	// 		</Box>
+	// 	);
+	// }
 
 	return (
 		<div className={styles.container_wrapper}>
@@ -61,6 +67,9 @@ const BlogDetails = ({ slug }: Props) => {
 						</span>
 					</div>
 					<div className={styles.blog_content}>
+						<div className={styles.title}>
+							<h1>{data?.title}</h1>
+						</div>
 						<div
 							dangerouslySetInnerHTML={{
 								__html: data?.content?.text ?? ""
@@ -116,6 +125,22 @@ const BlogDetails = ({ slug }: Props) => {
 										/>
 									</p>
 								</div>
+								<Link
+									href={`/blog/${blog.slug}`}
+									className={styles.learn_more}
+								>
+									<p className={styles.text}>Learn more</p>{" "}
+									<span className={styles.icon}>
+										{" "}
+										<Image
+											height={20}
+											width={20}
+											src="/svgs/learn-more-arrow.svg"
+											alt="arrow-right"
+											className={styles.image_arrow}
+										/>
+									</span>
+								</Link>
 							</div>
 						</li>
 					))}

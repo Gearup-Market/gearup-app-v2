@@ -10,6 +10,7 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { ListingType } from "@/components/newListing";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const gearConditions = [
 	"new",
@@ -39,11 +40,15 @@ const ListingTypeView = () => {
 			return;
 		}
 		const newListingData = {
-			condition,
+			...(condition && condition.trim() !== "" && { condition }),
 			listingType: type.length === 2 ? "both" : type[0]
 		};
 		dispatch(updateNewListing(newListingData));
 		router.push("/new-listing/pricing");
+	};
+
+	const handleClose = () => {
+		router.replace("/user/dashboard");
 	};
 
 	const handleToggle = (title: string) => {
@@ -56,6 +61,11 @@ const ListingTypeView = () => {
 		setChecked(prev => ({ ...prev, [title]: !isIncluded }));
 	};
 
+	const newListingData = {
+		...(condition && condition.trim() !== "" && { condition }),
+		listingType: type.length === 2 ? "both" : type[0]
+	};
+
 	useEffect(() => {
 		if (newListing.listingType && !type.length) {
 			setType(
@@ -63,7 +73,7 @@ const ListingTypeView = () => {
 					? ["rent", "sell"]
 					: [newListing.listingType]
 			);
-			setCondition(newListing.condition);
+			setCondition(newListing.condition || "");
 			const defaultOptionIndex = gearConditions.findIndex(
 				item => item === newListing.condition
 			);
@@ -81,14 +91,19 @@ const ListingTypeView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 4 of 5 : Type</p>
 						</div>
 					</div>
 				</div>
-				<div style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}>
+				<div
+					style={{ gap: "0.8rem", cursor: "pointer", display: "flex" }}
+					onClick={handleClose}
+				>
 					<div className={styles.text}>
 						<h6>Exit</h6>
 					</div>
@@ -113,13 +128,15 @@ const ListingTypeView = () => {
 							checked={checked.rent}
 							type="listingView"
 						/>
-						<ListingType
-							src="/svgs/for-sell.svg"
-							title="sell"
-							toggle={handleToggle}
-							checked={checked.sell}
-							type="listingView"
-						/>
+						{newListing.category?.name !== "Studios" && (
+							<ListingType
+								src="/svgs/for-sell.svg"
+								title="sell"
+								toggle={handleToggle}
+								checked={checked.sell}
+								type="listingView"
+							/>
+						)}
 						{!disabledButton && type.includes("sell") && (
 							<Select
 								label="Gear condition"

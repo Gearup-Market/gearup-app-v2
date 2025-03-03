@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./MobileCard.module.scss";
 import Image from "next/image";
 import CustomImage from "../customImage/CustomImage";
+import { formatNum } from "@/utils";
 
 interface Props {
 	mainHeaderText?: string;

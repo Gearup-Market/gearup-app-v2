@@ -68,7 +68,7 @@ interface Price {
 }
 
 export interface Item {
-	id: number;
+	id: number | string;
 	quantity: number;
 	name: string;
 }
@@ -80,10 +80,8 @@ export interface AddListing {
 	category?: Category;
 	subCategory?: Category;
 	fieldValues?: {
-		name: string;
-		fieldType: "single" | "multiple";
-		selectedValues: Category[];
-	}[];
+		[key: string]: string | string[];
+	};
 	description?: string;
 	images?: string[];
 	// images?: { id: string | null; url: string; fileName: string; type: string }[];
@@ -128,15 +126,15 @@ export interface SellingOffer {
 export interface RentingOffer {
 	currency?: string;
 	pricing?: number;
-	priceStructure?: string;
-	hour3Offer: number;
-	hour7Offer: number;
-	day1Offer: number;
-	day3Offer: number;
-	day7Offer: number;
-	day30Offer?: number;
+	rates: RentingOfferRates[];
 	overtimePercentage?: number;
 	totalReplacementValue?: number;
+}
+
+export interface RentingOfferRates {
+	duration: string;
+	quantity: number;
+	price: number;
 }
 
 interface Category {
@@ -150,7 +148,7 @@ interface Price {
 }
 
 export interface Item {
-	id: number;
+	id: number | string;
 	quantity: number;
 	name: string;
 }
@@ -166,21 +164,23 @@ export interface ListingState {
 	listingPhotos: string[];
 	tempPhotos?: File[];
 	listingType: string;
-	condition: string;
+	condition?: string;
 	userId: string;
-	fieldValues: Field[];
+	fieldValues: {
+		[key: string]: string | string[];
+	};
 	offer: {
 		forSell?: SellingOffer;
 		forRent?: RentingOffer;
 	};
-	location?: {
-		city?: string;
-		country?: string;
-		state?: string;
-		address?: string;
-		coords?: {
-			latitude?: number;
-			longitude?: number;
+	location: {
+		city: string;
+		country: string;
+		state: string;
+		address: string;
+		coords: {
+			latitude: number;
+			longitude: number;
 		};
 	};
 	perks?: {
@@ -205,10 +205,10 @@ interface Field {
 }
 
 export enum DayOfferEnum {
-	ONE_DAY = "ONE_DAY",
-	THREE_DAYS = "THREE_DAYS",
-	SEVEN_DAYS = "SEVEN_DAYS",
-	THIRTY_DAYS = "THIRTY_DAYS"
+	ONE = 1,
+	THREE = 3,
+	SEVEN = 7,
+	THIRTY = 30
 }
 
 export type Filter = {

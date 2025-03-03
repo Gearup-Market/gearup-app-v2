@@ -40,45 +40,28 @@ const VerificationViews = () => {
 		"Face Match"
 	];
 
-	// console.log(verificationState);
-
 	useEffect(() => {
-		if (verificationState.isSubmitted && !verificationState.isRejected) {
-			toast.success("KYC already submitted");
-			router.push("user/dashboard");
-		} else if (verificationState.isApproved) {
+		if (verificationState.isApproved) {
 			toast.success("KYC has been Approved");
-			router.back();
-		} else if (verificationState.isSubmitted && verificationState.hasResubmitted) {
-			toast.success("KYC has been resubmitted, please await approval");
 			router.push("user/dashboard");
 		} else {
-			if (verificationState._id && !verificationState.isSubmitted) {
+			if (verificationState.documentNo && verificationState.documentPhoto?.length) {
+				setCurrentStep(4);
+			} else if (verificationState.isPhoneNumberVerified) {
+				setCurrentStep(3);
+				setIsTokenVerified(true);
+			} else if (!verificationState._id) {
+				setCurrentStep(1);
+			} else {
 				setCurrentStep(2);
 			}
-			if (verificationState.isPhoneNumberVerified) {
-				setIsTokenVerified(true);
-				if (currentStep === 2) {
-					setCurrentStep(step => ++step);
-				}
-				// setCurrentStep(3);
-			}
-			// if (
-			// 	verificationState.documentNo &&
-			// 	verificationState.documentPhoto &&
-			// 	verificationState.documentPhoto.length > 0 &&
-			// 	!verificationState.isRejected
-			// ) {
-			// 	setCurrentStep(4);
-			// }
 		}
-	}, [verificationState, currentStep]);
+	}, [verificationState, currentStep, router]);
 
 	const handleNextStep = () => {
 		if (currentStep === stepCount) return;
 		if (currentStep === 1) {
 			personalIdentificationRef.current?.submitForm();
-			// The actual step increment will happen after successful form submission
 			return;
 		}
 		if (currentStep === 2 && !isTokenVerified) {
@@ -117,7 +100,11 @@ const VerificationViews = () => {
 					{currentStep === 2 && (
 						<PhoneVerification
 							ref={phoneNumberFormRef}
-							onSubmitSuccess={() => setIsTokenVerification(true)}
+							onSubmitSuccess={() => {
+								if (!isTokenVerification) {
+									setIsTokenVerification(true);
+								}
+							}}
 							isTokenVerification={isTokenVerification}
 							setIsTokenVerified={setIsTokenVerified}
 						/>

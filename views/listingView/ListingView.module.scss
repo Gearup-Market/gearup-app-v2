@@ -10,11 +10,11 @@
 	.section_grid {
 		// @include grid(30.2rem 1fr);
 		display: flex;
-		
+
 		width: 100%;
 		gap: 2.4rem;
 		position: relative;
-		
+
 		// .grid {
 		// 	width: 30.2rem;
 		// 	// @include flex();
@@ -26,36 +26,36 @@
 	.large_block {
 		width: 73.7rem;
 
-		.type_container{
+		.type_container {
 			display: flex;
 			gap: 2rem;
 			padding: 0.5rem 0.5rem;
 			border-radius: 10rem;
-			background-color: white;
+			background-color: #070707;
 			border: 1px solid $col-border;
-			width:fit-content;
+			width: fit-content;
 			transition: all 0.3s ease-in-out;
 			margin-bottom: 2.8rem;
 			margin-top: 2rem;
 
-			.type{
+			.type {
 				display: flex;
 				gap: 2rem;
 				align-items: center;
 				justify-content: center;
 				padding: 1rem 3rem;
-				background-color: $col-white;
+				color: #a3a7ab;
 				font-size: 1.4rem;
 				border-radius: 10rem;
 				cursor: pointer;
 				transition: all 0.3s ease-in-out;
 				text-transform: capitalize;
-	
-				&[data-active='true']{
-					background-color: #ffb30f;
+
+				&[data-active="true"] {
+					background-color: #f76039;
 					font-weight: 700;
+					color: white;
 				}
-			
 			}
 		}
 	}
@@ -68,7 +68,7 @@
 	.text {
 		margin-bottom: 4rem;
 		h1 {
-			font-family: $font-good;
+			font-family: $font-outfit;
 			@extend %title-28;
 		}
 	}

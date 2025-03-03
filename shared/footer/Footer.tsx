@@ -45,7 +45,23 @@ const Footer = () => {
 													{menu.label}
 												</a>
 											) : (
-												<Link href={menu.href}>{menu.label}</Link>
+												<Link
+													href={menu.href}
+													prefetch={
+														!menu.href.startsWith("/blog/")
+													}
+													onClick={e => {
+														if (
+															menu.href.startsWith("/blog/")
+														) {
+															e.preventDefault();
+															window.location.href =
+																menu.href;
+														}
+													}}
+												>
+													{menu.label}
+												</Link>
 											)}
 										</li>
 									))}

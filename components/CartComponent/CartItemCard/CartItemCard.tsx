@@ -16,7 +16,8 @@ interface CartItemCardContainerProps {
 	handleDeleteItem: (id: string) => void;
 	id: string;
 	type: TransactionType;
-	item: CartItem
+	item: CartItem;
+	amount: number;
 }
 
 const CartItemCardContainer = ({
@@ -26,12 +27,13 @@ const CartItemCardContainer = ({
 	handleDeleteItem,
 	children,
 	type,
-	item
+	item,
+	amount
 }: CartItemCardContainerProps) => {
 	const [showDetails, setShowDetails] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const amount = calculateItemPrice(item)
+	// const amount = calculateItemPrice(item)
 	const placeOrder = () => {
 		dispatch(
 			updateCheckout({
@@ -39,7 +41,7 @@ const CartItemCardContainer = ({
 					item: item.listing,
 					type,
 					amount: amount || 0,
-					rentalPeriod: item.rentalPeriod
+					rentalBreakdown: item.rentalBreakdown
 				}
 			})
 		);
@@ -81,7 +83,7 @@ const CartItemCardContainer = ({
 						<div className={styles.buttons_container}>
 							<Button
 								className={styles.place_btn}
-								iconSuffix="/svgs/arrow-right2.svg"
+								iconSuffix="/svgs/arrow-white.svg"
 								onClick={placeOrder}
 							>
 								Place order

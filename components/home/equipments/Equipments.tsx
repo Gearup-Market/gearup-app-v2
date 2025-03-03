@@ -13,16 +13,16 @@ import Image from "next/image";
 const gearList = [
 	{
 		title: "dj mixer",
-		image: "/images/mixer.png",
+		image: "/images/mixer.png"
 	},
 	{
 		title: "guitar",
-		image: "/images/guitar.png",
+		image: "/images/guitar.png"
 	},
 	{
 		title: "keyboard",
-		image: "/images/keyboard.png",
-	},
+		image: "/images/keyboard.png"
+	}
 ];
 
 const Equipments = () => {
@@ -38,7 +38,12 @@ const Equipments = () => {
 					<Button buttonType="secondary" className={styles.button}>
 						<p>See All Listings</p>
 						<div className={styles.icon}>
-							<Image src="/svgs/arrow.svg" fill alt="" sizes="100vw" />
+							<Image
+								src="/svgs/arrow-color.svg"
+								fill
+								alt=""
+								sizes="100vw"
+							/>
 						</div>
 					</Button>
 				</Link>
@@ -56,7 +61,7 @@ const Equipments = () => {
 				<Swiper
 					slidesPerView={1}
 					pagination={{
-						clickable: true,
+						clickable: true
 					}}
 					modules={[Pagination]}
 				>

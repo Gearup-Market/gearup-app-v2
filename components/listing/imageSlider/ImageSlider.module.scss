@@ -24,8 +24,8 @@
 					margin-top: 0.8rem;
 				}
 
-				&[data-type="buy"]{
-					background: #072ac8;
+				&[data-type="buy"] {
+					background: #1b1e21;
 					color: #fff;
 				}
 			}
@@ -33,11 +33,9 @@
 				.button {
 					&:first-child {
 						background: unset;
-						background-color: #072ac8;
+						background-color: #1b1e21;
 						color: #ffffff;
 					}
-					
-				
 				}
 			}
 		}

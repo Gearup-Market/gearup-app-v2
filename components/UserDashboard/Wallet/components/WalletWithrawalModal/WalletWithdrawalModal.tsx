@@ -124,6 +124,7 @@ const WalletWithrawalModal = ({
 															maxLength={10}
 															label="PIN"
 															type="number"
+															isPassword
 															onChange={e => {
 																field.onChange(e);
 															}}

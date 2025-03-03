@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./RecentDeals.module.scss";
 import { DataGrid, GridAddIcon, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -13,32 +13,41 @@ import useTransactions from "@/hooks/useTransactions";
 import { useAppSelector } from "@/store/configureStore";
 import { debounce } from "lodash";
 import { formatNum } from "@/utils";
+import { usePercentageToPixels } from "@/hooks";
 const sharedColDef: GridColDef = {
 	field: "",
 	sortable: true,
 	flex: 1
 };
 const RecentDeals = () => {
-	const [page, setPage] = useState(1);
-	const [limit, setLimit] = useState(5);
 	const [searchInput, setSearchInput] = useState<string>("");
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const pageSize: number = 12;
 	const { data, isFetching, error } = useTransactions();
 	const [paginatedTransactions, setPaginatedTransactions] =
 		useState<GridRowsProp>(data);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const titleWidth = usePercentageToPixels(containerRef, 25);
+	const priceWidth = usePercentageToPixels(containerRef, 15);
+	const dateWidth = usePercentageToPixels(containerRef, 15);
+	const typeWidth = usePercentageToPixels(containerRef, 10);
+	const statusWidth = usePercentageToPixels(containerRef, 10);
+	const actionsWidth = usePercentageToPixels(containerRef, 10);
 
 	const transactions = useMemo(
 		() =>
 			data.map(({ _id, item, amount, type, status, createdAt }) => {
 				return {
 					id: _id,
-					gearName: item.productName,
-					amount: `₦${formatNum(amount)}`,
+					gearName: item ? item.productName : "Listing not available",
+					amount: `₦${formatNum(
+						type === "Rental" ? amount : item.offer.forSell?.pricing
+					)}`,
 					transactionDate: createdAt.split("T")[0],
 					transactionType: type,
 					transactionStatus: status,
-					gearImage: item.listingPhotos[0]
+					gearImage: item ? item.listingPhotos[0] : ""
 				};
 			}),
 		[data]
@@ -86,7 +95,7 @@ const RecentDeals = () => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Name",
-			minWidth: 250,
+			minWidth: titleWidth,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
 					<Image src={row.gearImage} alt={value} width={16} height={16} />
@@ -102,7 +111,7 @@ const RecentDeals = () => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Amount",
-			minWidth: 200
+			minWidth: priceWidth
 		},
 		{
 			...sharedColDef,
@@ -110,7 +119,7 @@ const RecentDeals = () => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Transaction Date",
-			minWidth: 150
+			minWidth: dateWidth
 		},
 		{
 			...sharedColDef,
@@ -118,7 +127,7 @@ const RecentDeals = () => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Type",
-			minWidth: 150
+			minWidth: typeWidth
 		},
 		{
 			...sharedColDef,
@@ -126,7 +135,7 @@ const RecentDeals = () => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Status",
-			minWidth: 150,
+			minWidth: statusWidth,
 			renderCell: ({ value }) => (
 				<div className={styles.container__status_container}>
 					<p
@@ -147,7 +156,7 @@ const RecentDeals = () => {
 			headerName: "Actions",
 			headerAlign: "center",
 			align: "center",
-			minWidth: 150,
+			minWidth: actionsWidth,
 			renderCell: ({ value }) => (
 				<Link
 					href={`/user/transactions/${value}`}
@@ -160,7 +169,7 @@ const RecentDeals = () => {
 	];
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} ref={containerRef}>
 			<h2 className={styles.container__title}> Recent Deals</h2>
 			{!!paginatedTransactions?.length && (
 				<div className={styles.container__input_filter_container}>
@@ -185,7 +194,7 @@ const RecentDeals = () => {
 			{currentTableData?.length < 1 ? (
 				<div className={styles.empty_rows}>
 					<span className={styles.transaction_icon}>
-						<TransactionNavIcon color="#FFB30F" />
+						<TransactionNavIcon color="#F76039" />
 					</span>
 					Recent deals will be displayed here
 				</div>

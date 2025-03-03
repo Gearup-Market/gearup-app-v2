@@ -9,7 +9,7 @@ import {
 import {
 	Cart,
 	CartReq,
-	RentalPeriod,
+	RentalBreakdown,
 	TransactionType
 } from "@/app/api/hooks/transactions/types";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
@@ -20,10 +20,12 @@ import toast from "react-hot-toast";
 
 export type CartPayload = {
 	listing: Listing;
-	rentalPeriod?: {
-		start: Date;
-		end: Date;
-	};
+	rentalBreakdown?: {
+		date: Date;
+		duration: string;
+		quantity: number;
+		price: number;
+	}[];
 	type: TransactionType;
 	customPrice?: number;
 };
@@ -45,14 +47,14 @@ export default function useCart() {
 
 	const addItemToCart = async (payload: CartPayload) => {
 		try {
-			const { listing, rentalPeriod, type, customPrice } = payload;
+			const { listing, rentalBreakdown, type, customPrice } = payload;
 			if (userId) {
 				const res = await addToCart({
 					listingId: listing._id,
 					type,
 					userId,
-					customPrice,
-					rentalPeriod
+					customPrice: customPrice || 0,
+					rentalBreakdown: rentalBreakdown ? rentalBreakdown : []
 				});
 
 				if (res.data._id) {
@@ -66,12 +68,10 @@ export default function useCart() {
 				dispatch(
 					addCart({
 						listing,
-						rentalPeriod: rentalPeriod
-							? ({
-									start: rentalPeriod.start.toISOString(),
-									end: rentalPeriod.end.toISOString()
-							  } as unknown as RentalPeriod)
-							: undefined,
+						rentalBreakdown:
+							rentalBreakdown && rentalBreakdown.length
+								? rentalBreakdown
+								: [],
 						type,
 						price: customPrice
 					})
@@ -123,16 +123,11 @@ export default function useCart() {
 		try {
 			if (userId && cart.items.length > 0) {
 				const preparedPayload: CartReq[] = cart.items.map(
-					({ listing, type, rentalPeriod, price }) => ({
+					({ listing, type, rentalBreakdown, price }) => ({
 						listingId: listing._id,
 						type,
 						userId,
-						rentalPeriod: rentalPeriod
-							? {
-									start: new Date(rentalPeriod.start),
-									end: new Date(rentalPeriod.start)
-							  }
-							: undefined,
+						rentalBreakdown: rentalBreakdown,
 						customPrice: price
 					})
 				);

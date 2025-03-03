@@ -20,47 +20,24 @@ export const shortenTitle = (title: string, length: number = 10) => {
 };
 
 export const getIdFromSlug = (productSlug: string): string => {
-	if(!productSlug) return '';
-	const strArray = productSlug.split('-');
-	return strArray.at(-1) || '';
-}
-
-
-export const base64ToBlob = (base64: string): Blob => {
-    const byteString = atob(base64.split(',')[1]); // Decode base64
-    const mimeString = base64.split(',')[0].split(':')[1].split(';')[0]; // Extract MIME type
-
-    const byteArray = new Uint8Array(byteString.length);
-    for (let i = 0; i < byteString.length; i++) {
-        byteArray[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([byteArray], { type: mimeString });
+	if (!productSlug) return "";
+	const strArray = productSlug.split("-");
+	return strArray.at(-1) || "";
 };
 
-export function base64ToFile(base64Image: string, fileName: string) {
-    // Split the base64 string into data and contentType
-    const [base64Header, base64Data] = base64Image.split(',');
-    const mimeMatch = base64Header.match(/:(.*?);/);
-    const mimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+export const base64ToBlob = (base64: string): Blob => {
+	const byteString = atob(base64.split(",")[1]); // Decode base64
+	const mimeString = base64.split(",")[0].split(":")[1].split(";")[0]; // Extract MIME type
 
-    // Decode the base64 string
-    const byteCharacters = atob(base64Data);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
+	const byteArray = new Uint8Array(byteString.length);
+	for (let i = 0; i < byteString.length; i++) {
+		byteArray[i] = byteString.charCodeAt(i);
+	}
 
-    // Create a Blob with the binary data and MIME type
-    const blob = new Blob([byteArray], { type: mimeType });
-
-    // Convert the Blob to a File
-    return new File([blob], fileName, { type: mimeType });
-}
-
+	return new Blob([byteArray], { type: mimeString });
+};
 
 export const removeTrailingCommad = (text: string): string => {
-    if (!text) return '';
-    return text.replace(/,\s*$/, "");
-}
+	if (!text) return "";
+	return text.replace(/,\s*$/, "");
+};

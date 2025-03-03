@@ -1,121 +1,119 @@
 @import "@/styles/imports";
 
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	max-width: 60rem;
+	min-width: 50rem;
 
-.container{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 60rem;
-    min-width: 50rem;
+	.header {
+		text-align: center;
+		color: #4b525a;
+		font-weight: 400;
+		font-size: 1.4rem;
 
-    .header{
-        text-align: center;
-        color: #4B525A;
-        font-weight: 400;
-        font-size: 1.4rem;
+		.bold {
+			font-weight: 700;
+		}
+	}
 
-        .bold{
-            font-weight: 700;
-        }
-    }
+	&__details {
+		width: 100%;
+		padding: 1rem;
+		background-color: #fafafa;
+		animation: 0.5s fadeIn ease-in-out;
+		border-radius: 0.8rem;
 
-    &__details{
-        width: 100%;
-        padding: 1rem;
-        background-color: #FAFAFA;
-        animation: 0.5s fadeIn ease-in-out;
-        border-radius: 0.8rem;
+		@keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
 
-        @keyframes fadeIn {
-            0% {
-              opacity: 0;
-            }
-            100% {
-              opacity: 1;
-            }
-          }
+		&__detail_container {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 0.5rem 1rem;
 
-        &__detail_container{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding:0.5rem 1rem;
-        
-        .key{
-        font-size: 1.2rem;
-        font-weight: 400;
-        color: $col-grey-1;
-    }
-        
-        .value{
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: $col-grey-1;
+			.key {
+				font-size: 1.2rem;
+				font-weight: 400;
+				color: $col-grey-1;
+			}
 
-        
-        }
-}
-}
+			.value {
+				font-size: 1.4rem;
+				font-weight: 700;
+				color: $col-grey-1;
+			}
+		}
+	}
 
-.divider_container{
-    display: flex;
-     align-items: center;
-     gap: 1.4rem;
-     text-transform: uppercase;   
-        font-weight: 700;
-        font-size: 1.4rem;
-        color: #7B8086;
+	.divider_container {
+		display: flex;
+		align-items: center;
+		gap: 1.4rem;
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: 1.4rem;
+		color: #7b8086;
 
-    .divider{
-        width: 100%;
-        height: 1px;
-        background-color: #DEDFE0;
-        
-    }
-}
+		.divider {
+			width: 100%;
+			height: 1px;
+			background-color: #dedfe0;
+		}
+	}
 
-    &__bank_details{
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.6rem;
-        padding: 2rem 0;
+	&__bank_details {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.6rem;
+		padding: 2rem 0;
+		&__option {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			width: 100%;
+			padding: 2rem 1.6rem;
+			background: #fbfbfd;
+			border-radius: 1rem;
+			cursor: pointer;
+			justify-content: space-between;
+			&[data-disabled="true"] {
+				opacity: 0.7;
+				cursor: not-allowed;
+			}
 
-        &__option{
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            width: 100%;
-            padding: 2rem 1.6rem;
-            background: #FBFBFD;
-            border-radius: 1rem;
-            cursor: pointer;
-            justify-content: space-between;
+			.left {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
 
-            .left{
-                display: flex;
-            align-items: center;
-            gap: 1rem;
-            }
+			.icon {
+				height: 4rem;
+				width: 4rem;
+				cursor: pointer;
+			}
 
-            .icon{
-                height: 4rem;
-                width: 4rem;
-            }
+			.text {
+				font-size: 1.6rem;
+				font-weight: 600;
+				color: #1f222b;
+			}
+		}
+	}
 
-            .text{
-                font-size: 1.6rem;
-                font-weight: 600;
-                color: #1F222B;
-            }
-        }
-        
-    }
-
-    @include screenMax("mobile"){
-        min-width: 100%;
-    }
-        
+	@include screenMax("mobile") {
+		min-width: 100%;
+	}
 }

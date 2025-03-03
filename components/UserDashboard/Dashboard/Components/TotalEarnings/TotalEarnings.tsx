@@ -9,6 +9,7 @@ import TotalEarningsCard from "./Components/TotalEarningsCard/TotalEarningsCard"
 import { useFetchUserSalesAnalytics } from "@/app/api/hooks/analytics";
 import { GearData } from "@/app/api/hooks/analytics/types";
 import { useAppSelector } from "@/store/configureStore";
+import { formatNum } from "@/utils";
 
 const TotalEarnings = () => {
 	const { userId } = useAppSelector(state => state.user);
@@ -19,7 +20,7 @@ const TotalEarnings = () => {
 		flex: 1
 	};
 
-	const COLORS = ["#FFB30F", "#B57F0B", "#FFE7B5"];
+	const COLORS = ["#F76039", "#AF4428", "#FBB6A4"];
 
 	const columns: GridColDef[] = [
 		{
@@ -34,10 +35,10 @@ const TotalEarnings = () => {
 					<EllipseIcon
 						color={
 							value === "gearRentals"
-								? "#FFB30F"
+								? "#F76039"
 								: value === "gearSales"
-									? "#B57F0B"
-									: "#FFE7B5"
+								? "#AF4428"
+								: "#FBB6A4"
 						}
 					/>
 					<p style={{ fontSize: "1.2rem" }}>
@@ -124,7 +125,7 @@ export const convertObjToArray = (obj: GearData) => {
 	return Object.entries(obj).map(([key, value]) => ({
 		id: key,
 		name: key,
-		amount: value.amount,
+		amount: formatNum(value.amount),
 		percentage: value.percentage,
 		productCount: value.productCount,
 		value: !!value.amount ? value.amount : 50

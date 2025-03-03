@@ -86,16 +86,6 @@
 				cursor: pointer;
 				box-sizing: border-box;
 
-				@include screenMax("mobile") {
-					padding: 1.6rem 3.2rem;
-				}
-
-				&[data-active="true"] {
-					background: $col-active-nav-bg;
-					font-weight: 700;
-					border-left: 4px solid $col-orange;
-				}
-
 				.icon {
 					height: 2.4rem;
 					width: 2.4rem;
@@ -117,6 +107,20 @@
 					height: 2.4rem;
 					width: 2.4rem;
 				}
+
+				@include screenMax("mobile") {
+					padding: 1.6rem 3.2rem;
+				}
+
+				&[data-active="true"] {
+					background: $col-active-nav-bg;
+					font-weight: 700;
+					border-left: 4px solid $col-orange;
+					color: #f76039;
+					.title {
+						color: #f76039;
+					}
+				}
 			}
 
 			.wishlist_nav {
@@ -131,5 +135,14 @@
 
 	.btn_container {
 		padding: 0;
+	}
+	@include screenMax("mobile") {
+		.navlinks_wrapper {
+			max-height: 70%;
+			overflow-y: scroll;
+			.btn_container {
+				padding-bottom: 5rem;
+			}
+		}
 	}
 }

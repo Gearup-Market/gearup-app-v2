@@ -2,63 +2,55 @@
 @import "@/styles/imports";
 
 .container {
+	.title {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		color: $col-grey-1;
+	}
 
-    .title {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: $col-grey-1;
-    }
+	.description {
+		font-size: 1.4rem;
+		font-weight: 400;
+		margin-bottom: 1rem;
+		color: #4b525a;
+	}
 
-    .description {
-        font-size: 1.4rem;
-        font-weight: 400;
-        margin-bottom: 1rem;
-        color: #4B525A;
-    }
+	&__form_container {
+		border: 1px solid $col-border;
+		padding: 2.5rem;
+		border-radius: 2rem;
 
-  &__form_container {
-    border: 1px solid $col-border;
-    padding: 2.5rem;
-    border-radius: 2rem;
+		&__form {
+			display: grid;
+			gap: 2rem;
 
-    &__form {
-      display: grid;
-      gap: 2rem;
+			.map_container {
+				grid-column: span 2;
+				border: 1px solid $col-border;
+				border-radius: 1rem;
+				height: 250px;
+				background: #feefeb;
+			}
+		}
+		.submit_btn_container {
+			column-span: 2;
+			display: flex;
+			justify-content: flex-end;
+			margin-top: 2rem;
+			width: 100%;
+		}
+	}
 
-      .map_container {
-        grid-column: span 2;
-        border: 1px solid $col-border;
-        border-radius: 1rem;
-        height: 250px;
-        background: #FFF7E7;
-      }
+	@include screenMax("mobile") {
+		&__form_container {
+			padding: 1.6rem;
+		}
 
-
-
-    }
-    .submit_btn_container {
-      column-span: 2;
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 2rem;
-      width: 100%;
-    }
-  }
-
-  @include screenMax("mobile"){
-
-    &__form_container {
-      padding: 1.6rem;
-
-    }
-
-
-  .submit_btn_container{
-   button{
-     width: 100%;  
-   }
-  }
-  }
-
+		.submit_btn_container {
+			button {
+				width: 100%;
+			}
+		}
+	}
 }

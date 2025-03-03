@@ -18,6 +18,7 @@ import { updateNewListing } from "@/store/slices/addListingSlice";
 import { useRouter } from "next/navigation";
 import { useGetCategories } from "@/app/api/hooks/listings";
 import { iCategory } from "@/app/api/hooks/listings/types";
+import Link from "next/link";
 
 const ListingDetailsView = () => {
 	const router = useRouter();
@@ -26,7 +27,9 @@ const ListingDetailsView = () => {
 	const dispatch = useDispatch();
 	const [category, setCategory] = useState<iCategory>();
 	const [subCategory, setSubCategory] = useState<iCategory>();
-	const [selectedFields, setSelectedFields] = useState<any[]>([]);
+	const [selectedFields, setSelectedFields] = useState<any[]>(
+		convertObjToArr(newListing.fieldValues) || []
+	);
 	const [location, setLocation] = useState<{
 		city: string;
 		country: string;
@@ -36,16 +39,18 @@ const ListingDetailsView = () => {
 			longitude: number;
 		};
 		address: string;
-	}>({
-		city: "",
-		country: "",
-		state: "",
-		address: "",
-		coords: {
-			latitude: 0,
-			longitude: 0
+	}>(
+		newListing.location || {
+			city: "",
+			country: "",
+			state: "",
+			address: "",
+			coords: {
+				latitude: 0,
+				longitude: 0
+			}
 		}
-	});
+	);
 	const [inputValues, setInputValues] = useState<{
 		title: string;
 		description: string;
@@ -116,7 +121,9 @@ const ListingDetailsView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 2 of 6 : Description</p>
@@ -183,6 +190,13 @@ const ListingDetailsView = () => {
 											options={field.values}
 											onOptionChange={handleSelectedFields}
 											valueType="name"
+											defaultOption={
+												Object.keys(newListing.fieldValues).length
+													? (newListing.fieldValues as any)[
+															field.name
+													  ]
+													: `Select ${field.name}`
+											}
 											key={index}
 											objectOption={field.name}
 										/>
@@ -199,6 +213,10 @@ const ListingDetailsView = () => {
 										onOptionChange={handleSelectedFields}
 										key={index}
 										objectOption={field.name}
+										defaultValues={
+											(newListing.fieldValues as any)[field.name] ||
+											[]
+										}
 									/>
 								) : null;
 							})}
@@ -217,7 +235,7 @@ const ListingDetailsView = () => {
 						<LocationAutoComplete
 							className={styles.location}
 							label="Listing Location"
-							placeholder="Enter location"
+							placeholder={newListing.location?.address || "Enter location"}
 							onAddressSelect={setLocation}
 						/>
 					</div>
@@ -249,3 +267,14 @@ const ListingDetailsView = () => {
 };
 
 export default ListingDetailsView;
+
+const convertObjToArr = (obj: Record<string, string | string[]>): any[] => {
+	return Object.entries(obj).map(([key, value]) => {
+		return {
+			name: key,
+			selectedValues: Array.isArray(value)
+				? value.map(val => ({ name: val }))
+				: [{ name: value }]
+		};
+	});
+};

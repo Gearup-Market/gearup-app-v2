@@ -39,7 +39,7 @@ const RentOutHowItWorks = () => {
 				description="Put your unused gear to work. List, rent out, and start earning while helping fellow creators"
 			/>
 			<Platform
-				title="You can money renting out your gears "
+				title="You can Earn money renting out your gears "
 				description="Easy steps to making money"
 				data={platform}
 				image="/images/HIW-rentout.png"

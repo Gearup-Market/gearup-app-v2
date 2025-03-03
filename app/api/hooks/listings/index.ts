@@ -133,31 +133,51 @@ const useGetListingById = (
 		refetchOnMount: true
 	});
 
-const useGetListings = ({
+const useGetListingsByUser = ({
 	userId,
-	shouldFetchAll,
 	options,
 	page = 1
 }: {
 	userId?: string;
-	shouldFetchAll?: boolean;
 	page?: number;
 	options?: UseQueryOptions<iGetListingsResp, IGetErr>;
-}) =>
-	useQuery<iGetListingsResp, IGetErr>({
-		queryKey: [shouldFetchAll ? "listings" : "listingsByUser"],
+}) => {
+	return useQuery<iGetListingsResp, IGetErr>({
+		queryKey: ["listingsByUser"],
 		queryFn: async () =>
-			(
-				await api.get(
-					shouldFetchAll
-						? API_URL.listings
-						: `${API_URL.listingsByUser}/${userId}?page=${page}`
-				)
-			).data,
+			(await api.get(`${API_URL.listingsByUser}/${userId}?limit=12&page=${page}`))
+				.data,
 		...options,
-		enabled: shouldFetchAll || !!userId,
+		enabled: !!userId,
 		refetchOnMount: true
 	});
+};
+
+const getListings = async ({ queryKey }: { queryKey: any }) => {
+	const [_, queryParams] = queryKey;
+	const buildQueryParams = () => {
+		const params = new URLSearchParams();
+		params.append("limit", "12");
+		params.append("page", queryParams.page.toString());
+
+		if (queryParams.subCategory)
+			params.append("subCategory", queryParams.subCategory);
+		if (queryParams.category) params.append("category", queryParams.category);
+		if (queryParams.minPrice) params.append("minPrice", queryParams.minPrice);
+		if (queryParams.maxPrice) params.append("maxPrice", queryParams.maxPrice);
+		if (queryParams.type) params.append("type", queryParams.type);
+		if (queryParams.fields && typeof queryParams.fields === "object") {
+			Object.entries(queryParams.fields as Record<string, string[]>).forEach(
+				([key, values]) => {
+					params.append(`fields[${key}]`, values.join(","));
+				}
+			);
+		}
+
+		return params.toString().replace(/%20/g, " ");
+	};
+	return (await api.get(`${API_URL.listings}?${buildQueryParams()}`)).data;
+};
 
 const useGetCategories = (options?: UseQueryOptions<iCategoryResp, IGetErr>) =>
 	useQuery<iCategoryResp, IGetErr>({
@@ -185,8 +205,9 @@ export {
 	usePostChangeListingStatus,
 	usePostSearchListing,
 	useGetListingById,
-	useGetListings,
+	useGetListingsByUser,
 	useGetCategories,
 	useGetCategoriesDetailed,
-	usePostChangeUserListingStatus
+	usePostChangeUserListingStatus,
+	getListings
 };

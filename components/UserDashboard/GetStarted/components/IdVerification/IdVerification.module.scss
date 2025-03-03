@@ -2,78 +2,72 @@
 @import "@/styles/imports";
 
 .container {
+	&__form_container {
+		&__form {
+			display: grid;
+			gap: 2rem;
 
-    &__form_container{
+			.flex_fields {
+				display: flex;
+				align-items: center;
+				gap: 1.6rem;
+				width: 100%;
+			}
 
-        &__form{
-            display: grid;
-            gap: 2rem;
+			.field {
+				width: 100%;
+			}
 
-            .flex_fields{
-                display: flex;
-                align-items: center;
-                gap: 1.6rem;
-                width: 100%;
-            }
+			.upload_box {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 1rem;
+				flex-direction: column;
+				border: 2px dashed #ccc;
+				border-radius: 4px;
+				padding: 1rem;
+				width: 100%;
+				height: 25.5rem;
+				position: relative;
 
-            .field{
-                width: 100%;
-            }
-
-            .upload_box{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 1rem;
-                flex-direction: column;
-                border: 2px dashed #ccc;
-                border-radius: 4px;
-                padding: 1rem;
-                width: 100%;
-                height: 25.5rem;
-                position: relative;
-
-                // .addimage_container {
+				// .addimage_container {
 				// 	border: 0.1rem dashed #dedfe0;
 				// 	border-radius: 0.8rem;
 				// 	width: 100%;
 				// 	padding: 4.8rem;
 				// 	@extend %center;
 				// 	position: relative;
-					.file_input {
-						width: 100%;
-						height: 100%;
-						z-index: 1;
-						position: absolute;
-						inset: 0;
-						opacity: 0;
-						cursor: pointer;
-					}
+				.file_input {
+					width: 100%;
+					height: 100%;
+					z-index: 1;
+					position: absolute;
+					inset: 0;
+					opacity: 0;
+					cursor: pointer;
+				}
 
-                .rotate_icon{
-                    transform: rotate(90deg);
-                    border: 1px solid #DEDFE0;
-                    padding: 1rem;
-                    border-radius: 50%;
-                }
+				.rotate_icon {
+					transform: rotate(90deg);
+					border: 1px solid #dedfe0;
+					padding: 1rem;
+					border-radius: 50%;
+				}
 
-                .click_to_upload{
-                    font-size: 1.6rem;
-                    color: #FFB30F;
-                    font-weight: 500;
-                }
-            }
+				.click_to_upload {
+					font-size: 1.6rem;
+					color: #f76039;
+					font-weight: 500;
+				}
+			}
+		}
 
-        }
-
-        .documents_container{
-            display: flex;
-            gap: 1rem;
-            margin-top: 4rem;
-            flex-direction: column;
-        }
-
-    }
-
- 
+		.documents_container {
+			display: flex;
+			gap: 1rem;
+			margin-top: 4rem;
+			flex-direction: column;
+		}
+	}
 }

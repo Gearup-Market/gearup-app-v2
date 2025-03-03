@@ -15,17 +15,17 @@ interface Props {
 	removeExistingImage: (name: string) => void;
 }
 const UploadedDetails = ({ item, removeExistingImage }: Props) => {
-	const iconColor =
-		item.status === "success"
-			? "#40B773"
-			: item.status === "error"
-			? "#FF3729"
-			: "#FFB30F";
+	// const iconColor =
+	// 	item.status === "success"
+	// 		? "#40B773"
+	// 		: item.status === "error"
+	// 		? "#FF3729"
+	// 		: "#F76039";
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__left}>
 				<span className={`${styles.document} ${styles.document_icon}`}>
-					<DocumentIcon color={iconColor} />
+					<DocumentIcon color={"#F76039"} />
 				</span>
 				<div className={styles.name_container}>
 					<p className={styles.name}>{item.name}</p>

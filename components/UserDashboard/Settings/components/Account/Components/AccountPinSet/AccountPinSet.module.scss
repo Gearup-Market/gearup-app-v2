@@ -2,84 +2,77 @@
 @import "@/styles/imports";
 
 .container {
-  width: 100%;
-  .error_message{
-    font-size: 1.4rem;
-    font-weight: 400;
-    color: #FF3729;
-    margin-top: 0.5rem;
-  }
+	width: 100%;
+	.error_message {
+		font-size: 1.4rem;
+		font-weight: 400;
+		color: #ff3729;
+		margin-top: 0.5rem;
+	}
 
-    .title {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: $col-grey-1;
-    }
+	.title {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		color: $col-grey-1;
+	}
 
-    .description {
-        font-size: 1.4rem;
-        font-weight: 400;
-        margin-bottom: 1rem;
-        color: #4B525A;
-    }
+	.description {
+		font-size: 1.4rem;
+		font-weight: 400;
+		margin-bottom: 1rem;
+		color: #4b525a;
+	}
 
-  &__form_container {
-    border: 1px solid $col-border;
-    padding: 2.5rem;
-    border-radius: 2rem;
+	&__form_container {
+		border: 1px solid $col-border;
+		padding: 2.5rem;
+		border-radius: 2rem;
 
-    &[data-inmodal='true']{
-      border: none;
-      padding: 0;
-      border-radius: 0;
-    }
+		&[data-inmodal="true"] {
+			border: none;
+			padding: 0;
+			border-radius: 0;
+		}
 
-    &__form {
-      display: grid;
-      gap: 2rem;
+		&__form {
+			display: grid;
+			gap: 2rem;
 
-      .map_container {
-        grid-column: span 2;
-        border: 1px solid $col-border;
-        border-radius: 1rem;
-        height: 250px;
-        background: #FFF7E7;
-      }
+			.map_container {
+				grid-column: span 2;
+				border: 1px solid $col-border;
+				border-radius: 1rem;
+				height: 250px;
+				background: #feefeb;
+			}
+		}
+		.submit_btn_container {
+			column-span: 2;
+			display: flex;
+			justify-content: flex-end;
+			margin-top: 2rem;
+			width: 100%;
 
+			&[data-inmodal] {
+				justify-content: center;
 
+				button {
+					width: 100%;
+				}
+			}
+		}
+	}
 
-    }
-    .submit_btn_container {
-      column-span: 2;
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 2rem;
-      width: 100%;
+	@include screenMax("mobile") {
+		&__form_container {
+			padding: 1.6rem;
+		}
 
-      &[data-inmodal]{
-        justify-content: center;
-
-        button{
-          width: 100%;
-        }
-      }
-    }
-  }
-
-
-  @include screenMax("mobile"){
-
-    &__form_container {
-      padding: 1.6rem;
-
-    }
-
-
-  .submit_btn_container{
-   button{
-     width: 100%;  
-   }
-  }
-  }
+		.submit_btn_container {
+			button {
+				width: 100%;
+			}
+		}
+	}
 }

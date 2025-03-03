@@ -3,14 +3,16 @@
 import {
 	useGetCategories,
 	useGetListingById,
-	useGetListings
+	useGetListingsByUser
 } from "@/app/api/hooks/listings";
 import { Filter } from "@/interfaces/Listing";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { setListings } from "@/store/slices/listingsSlice";
 import { useEffect, useState } from "react";
+import { getListings } from "@/app/api/hooks/listings";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useListings(shouldFetchAll: boolean = false, page: number = 1) {
+export function useListingsByUser(page: number = 1) {
 	const { userId } = useAppSelector(s => s.user);
 	const dispatch = useAppDispatch();
 
@@ -18,26 +20,23 @@ export function useListings(shouldFetchAll: boolean = false, page: number = 1) {
 		data: listings,
 		isFetching,
 		refetch
-	} = useGetListings({
+	} = useGetListingsByUser({
 		userId,
-		shouldFetchAll,
 		page,
 		options: {
-			queryKey: [shouldFetchAll ? "listings" : "listingsByUser"],
+			queryKey: ["listingsByUser"],
 			refetchInterval: 60000
 		}
 	});
 
 	useEffect(() => {
 		if (listings) {
-			const dataToAdd = shouldFetchAll
-				? { listings: listings.data }
-				: { owned: listings.data };
+			const dataToAdd = { owned: listings.data };
 			dispatch(setListings(dataToAdd));
 		}
-	}, [isFetching, listings, shouldFetchAll]);
+	}, [isFetching, listings, dispatch]);
 
-	return { listings, isFetching, refetch };
+	return { listings, isFetching, refetch, meta: listings?.meta };
 }
 
 export function useSingleListing(listingId: string) {
@@ -56,6 +55,39 @@ export function useSingleListing(listingId: string) {
 	}, [isFetching, listing, listingId, error]);
 
 	return { listing, isFetching, refetch, error };
+}
+export function useListings(
+	page: number = 1,
+	queryParams?: {
+		category?: string;
+		subCategory?: string;
+		minPrice?: string;
+		maxPrice?: string;
+		type?: string;
+		fields?: Record<string, string[]>;
+	}
+) {
+	const queryClient = useQueryClient();
+	const dispatch = useAppDispatch();
+
+	const {
+		data: listings,
+		isFetching,
+		refetch
+	} = useQuery({
+		queryKey: ["listings", { page, ...queryParams }],
+		queryFn: getListings,
+		refetchInterval: 60000,
+		enabled: true
+	});
+
+	useEffect(() => {
+		if (listings) {
+			dispatch(setListings({ listings: listings.data }));
+		}
+	}, [listings, dispatch]);
+
+	return { isFetching, meta: listings?.meta, refetch, listings };
 }
 
 const parentFilters: Filter[] = [

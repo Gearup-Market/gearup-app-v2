@@ -1,24 +1,23 @@
+@import "@/styles/imports.scss";
+.container {
+	display: none;
 
-@import '@/styles/imports.scss';
-.container{
-    display: none;
+	@include screenMax("mobile") {
+		display: flex;
+		position: fixed;
+		bottom: 5rem;
+		right: 2rem;
+		height: 5.6rem;
+		width: 5.6rem;
+		border-radius: 50%;
+		background: linear-gradient(145deg, #f76039, #f76039);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-    @include screenMax("mobile"){
-    display: flex;
-    position: fixed;
-    bottom: 5rem;
-    right: 2rem;
-    height: 5.6rem;
-    width: 5.6rem;
-    border-radius: 50%;
-    background: linear-gradient(145deg, #FFB30F, #EDCB00);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .add_icon{
-        width: 2.4rem;
-        height: 2.4rem;
-    }
-}
+		.add_icon {
+			width: 2.4rem;
+			height: 2.4rem;
+		}
+	}
 }

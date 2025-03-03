@@ -17,8 +17,7 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
 	const { userId } = useAppSelector(s => s.user);
 
-	const { metadata, isBuyer, id, amount, transactionStatus, listing, rentalPeriod } =
-		item;
+	const { metadata, isBuyer, id, amount, transactionStatus, listing } = item;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
 
 	const isCancelled = useMemo(
@@ -68,14 +67,15 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 					<>
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								<span className={styles.bold}>
-									{listing.user?.name || listing.user?.userName}
-								</span>{" "}
+								<span className={styles.bold}>{item.buyer.userName}</span>{" "}
 								has successfully paid the sum of{" "}
-								<span className={styles.bold}>₦{formatNum(amount)}</span>{" "}
-								for the purchase of {listing.productName}, and the money
-								is in escrow protection, which will be released to you
-								once the transaction is completed{" "}
+								<span className={styles.bold}>
+									₦{formatNum(item.listing.offer.forSell?.pricing || 0)}
+								</span>{" "}
+								for the purchase of{" "}
+								{listing ? listing.productName : "Listing not available"},
+								and the money is in escrow protection, which will be
+								released to you once the transaction is completed{" "}
 							</p>
 						</div>
 						{thirdPartyVerification ? (

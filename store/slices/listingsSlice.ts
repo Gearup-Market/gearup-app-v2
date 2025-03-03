@@ -4,14 +4,14 @@ import { User } from "@/interfaces/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Item {
-	id: number;
+	id: number | string;
 	quantity: number;
 	name: string;
 }
 
 export interface ListingLocation {
-	address?: string;
-	city?: string;
+	address: string;
+	city: string;
 	state: string;
 	country: string;
 	coords: {
@@ -55,7 +55,7 @@ export interface Listing {
 	totalReviews: number;
 	contractId: string;
 	nftTokenId?: string;
-    transactionId?: string;
+	transactionId?: string;
 	location: ListingLocation;
 	user: Partial<User>;
 	ownerOtherListings?: Listing[];

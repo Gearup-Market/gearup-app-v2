@@ -17,6 +17,7 @@ import {
 } from "@/app/api/hooks/listings";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
 
 const SummaryView = () => {
 	const { mutateAsync: postUploadFile, isPending: uploadingImgs } = useUploadFiles();
@@ -61,6 +62,7 @@ const SummaryView = () => {
 			);
 			const data = {
 				...newListing,
+				condition: newListing.condition ? newListing.condition : undefined,
 				_id: undefined,
 				tempPhotos: undefined,
 				category: newListing.category?.id || "",
@@ -80,7 +82,10 @@ const SummaryView = () => {
 			router.push("/user/listings");
 		} catch (error: any) {
 			console.log(error);
-			toast.error(error?.response?.data?.message || `Error ${listingId ? "updating" : "creating"} product`);
+			toast.error(
+				error?.response?.data?.message ||
+					`Error ${listingId ? "updating" : "creating"} product`
+			);
 		}
 	};
 	const fieldValues = Object.entries(newListing?.fieldValues);
@@ -89,7 +94,9 @@ const SummaryView = () => {
 		<div className={styles.section}>
 			<div className={styles.header}>
 				<div className={styles.small_row}>
-					<Logo type="dark" />
+					<Link href="/">
+						<Logo type="dark" />
+					</Link>
 					<div className={styles.steps}>
 						<div className={styles.text}>
 							<p>Step 6 of 6 : Summary</p>
@@ -287,40 +294,18 @@ const SummaryView = () => {
 											{" "}
 											Rental Pricing
 										</h6>
-										<DetailContainer
-											title="Daily price(including VAT)"
-											value={formatNum(
-												+newListing.offer?.forRent?.day1Offer
-											)}
-											prefix="₦"
-										/>
-										{newListing.offer?.forRent?.day3Offer ? (
+										{newListing.offer.forRent.rates.map(rate => (
 											<DetailContainer
-												title="3 days offer(including VAT)"
-												value={formatNum(
-													+newListing.offer?.forRent.day3Offer
-												)}
+												title={`${rate.quantity} ${
+													rate.duration
+												}${
+													rate.quantity > 1 ? "s" : ""
+												} price(including VAT)`}
+												value={formatNum(+rate.price)}
 												prefix="₦"
+												key={rate.quantity}
 											/>
-										) : null}
-										{newListing.offer?.forRent?.day7Offer ? (
-											<DetailContainer
-												title="7 days offer(including VAT)"
-												value={formatNum(
-													+newListing.offer?.forRent.day7Offer
-												)}
-												prefix="₦"
-											/>
-										) : null}
-										{newListing.offer?.forRent?.day30Offer ? (
-											<DetailContainer
-												title="30 days offer(including VAT)"
-												value={formatNum(
-													+newListing.offer?.forRent.day30Offer
-												)}
-												prefix="₦"
-											/>
-										) : null}
+										))}
 									</div>
 									<DetailContainer
 										title="Total replacement amount (Including VAT):"

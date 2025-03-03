@@ -11,7 +11,6 @@ import MoreModal from "../MoreModal/MoreModal";
 import { customisedTableClasses } from "@/utils/classes";
 import Pagination from "../../../../../shared/pagination/Pagination";
 import { Popper } from "@mui/material";
-import { userListingsData } from "@/mock";
 import Fade from "@mui/material/Fade";
 import ListingCardMob from "./ListingCardMob/ListingCardMob";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
@@ -20,13 +19,16 @@ import { useRouter } from "next/navigation";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import {
 	usePostChangeListingStatus,
-	usePostChangeUserListingStatus
+	usePostChangeUserListingStatus,
+	usePostRemoveListing
 } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
 import { formatNum } from "@/utils";
 import NoListings from "../../NoListings/NoListings";
 import { useGetAllCourses } from "@/app/api/hooks/courses";
-import { useListings } from "@/hooks/useListings";
+import { useListingsByUser } from "@/hooks/useListings";
+import { usePercentageToPixels } from "@/hooks";
+import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 
 interface Props {
 	activeFilter: string;
@@ -45,7 +47,18 @@ const ListingTable = ({
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
+	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [listingIdToDelete, setListingIdToDelete] = useState<string>("");
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const titleWidth = usePercentageToPixels(containerRef, 25);
+	const categoryWidth = usePercentageToPixels(containerRef, 10);
+	const dateWidth = usePercentageToPixels(containerRef, 10);
+	const statusWidth = usePercentageToPixels(containerRef, 10);
+	const priceWidth = usePercentageToPixels(containerRef, 15);
+	const availabilityWidth = usePercentageToPixels(containerRef, 10);
+	const actionsWidth = usePercentageToPixels(containerRef, 10);
 	const { userId } = useAppSelector(s => s.user);
 	// const { data: courseListings, isLoading } = useGetAllCourses();
 	// const listings = useAppSelector(s => s.listings.owned);
@@ -55,7 +68,10 @@ const ListingTable = ({
 		refetch,
 		isFetching,
 		listings: userListings
-	} = useListings(false, currentPage);
+	} = useListingsByUser(currentPage);
+
+	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
+		usePostRemoveListing();
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
@@ -85,11 +101,13 @@ const ListingTable = ({
 					status,
 					listingPhotos,
 					category
-				}) => {
+				}: any) => {
 					const type = listingType === "both" ? "rent | sell" : listingType;
 					const price =
 						type === "rent"
-							? offer?.forRent?.day1Offer
+							? offer?.forRent?.rates.length
+								? offer?.forRent?.rates[0].price
+								: 0
 							: offer?.forSell?.pricing;
 					const image = listingPhotos?.[0] || null;
 					return {
@@ -101,14 +119,14 @@ const ListingTable = ({
 						status,
 						image,
 						availability: status === "available" ? "active" : "inactive",
-						date: createdAt,
+						date: createdAt.split("T")[0],
 						sold_count: 0,
 						revenue: 0,
 						category: category?.name?.toLowerCase() || null
 					};
 				}
 			)
-			.filter(l => {
+			.filter((l: any) => {
 				if (!l.type.includes(activeFilter)) return false;
 				if (
 					activeSubFilter &&
@@ -135,7 +153,7 @@ const ListingTable = ({
 	};
 
 	const onClickEdit = (listingId: string) => {
-		const listing = listings?.find(l => l._id === listingId);
+		const listing = listings?.find((l: any) => l._id === listingId);
 		const {
 			productName,
 			description,
@@ -144,7 +162,9 @@ const ListingTable = ({
 			condition,
 			offer,
 			listingPhotos,
-			_id
+			_id,
+			location,
+			listingType
 		} = listing!;
 		const payload = {
 			_id,
@@ -152,13 +172,18 @@ const ListingTable = ({
 			description,
 			category,
 			subCategory,
-			condition,
+			...(condition ? { condition } : {}),
 			offer,
 			listingPhotos,
-			fieldValues: [],
+			fieldValues: listing?.fieldValues,
 			tempPhotos: [],
-			userId
+			items: [{ name: productName, quantity: 1, id: 0 }],
+			userId,
+			location,
+			listingType
 		};
+
+		console.log(payload);
 
 		dispatch(updateNewListing(payload));
 		router.push(`/new-listing/listing-details`);
@@ -190,7 +215,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Product Name",
-			minWidth: 300,
+			minWidth: titleWidth,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
 					{row.image && (
@@ -209,7 +234,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Category",
-			minWidth: 200
+			minWidth: categoryWidth
 		},
 		{
 			...sharedColDef,
@@ -218,7 +243,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Date",
-			minWidth: 150
+			minWidth: dateWidth
 		},
 		{
 			...sharedColDef,
@@ -226,7 +251,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Status",
-			minWidth: 150,
+			minWidth: statusWidth,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__status_container}>
 					<ToggleSwitch
@@ -249,7 +274,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Price",
-			minWidth: 150,
+			minWidth: priceWidth,
 			renderCell: ({ value }) => "₦" + formatNum(value)
 		},
 		{
@@ -259,7 +284,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Availability",
-			minWidth: 150,
+			minWidth: availabilityWidth,
 			renderCell: ({ value }) => (
 				<div className={styles.container__availability_container}>
 					<span
@@ -279,7 +304,7 @@ const ListingTable = ({
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Actions",
-			minWidth: 150,
+			minWidth: actionsWidth,
 			renderCell: ({ row, value }) => (
 				<span className={`${styles.container__action_btn} options_icon`}>
 					<Popper
@@ -297,6 +322,7 @@ const ListingTable = ({
 										onClickEdit={onClickEdit}
 										refetch={refetch}
 										closePopOver={closePopOver}
+										// handleDelete={handleOpenDeleteModal}
 									/>
 								</div>
 							</Fade>
@@ -402,6 +428,7 @@ const ListingTable = ({
 										activeFilter={activeFilter}
 										refetch={refetch}
 										closePopOver={closePopOver}
+										// handleDelete={handleOpenDeleteModal}
 									/>
 								</div>
 							</Fade>
@@ -453,8 +480,26 @@ const ListingTable = ({
 		}
 	];
 
+	const handleOpenDeleteModal = (id: string) => {
+		setListingIdToDelete(id);
+		setOpenModal(true);
+	};
+
+	const onDeleteListing = async () => {
+		if (!listingIdToDelete) return;
+		try {
+			const payload = { userId, listingId: listingIdToDelete };
+			const res = await postRemoveListing(payload);
+			if (res.data) {
+				toast.success("Listing deleted");
+				refetch!();
+				closePopOver!();
+			}
+		} catch (error) {}
+	};
+
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} ref={containerRef}>
 			<div className={styles.container__input_filter_container}>
 				<InputField
 					placeholder="Search"
@@ -462,7 +507,7 @@ const ListingTable = ({
 					iconTitle="search-icon"
 				/>
 				<div className={styles.layout_icons}>
-					{listData.map(data => (
+					{/* {listData.map(data => (
 						<span
 							key={data.id}
 							onClick={() => setActiveLayout(data.value)}
@@ -472,7 +517,23 @@ const ListingTable = ({
 						>
 							{data.icon}
 						</span>
-					))}
+					))} */}
+					<span
+						onClick={() => setActiveLayout("list")}
+						data-active={activeLayout === "list"}
+						data-type={"list"}
+						className={styles.layout_icons__icon}
+					>
+						<ListIcon color={activeLayout === "list" ? "#fff" : "#A3A7AB"} />
+					</span>
+					<span
+						onClick={() => setActiveLayout("grid")}
+						data-active={activeLayout === "grid"}
+						data-type={"grid"}
+						className={styles.layout_icons__icon}
+					>
+						<GridIcon color={activeLayout === "grid" ? "#fff" : "#A3A7AB"} />
+					</span>
 				</div>
 			</div>
 			{mappedListings?.length > 0 ? (
@@ -500,7 +561,7 @@ const ListingTable = ({
 							</div>
 
 							<MobileCardContainer>
-								{mappedListings?.map((item, ind) => (
+								{mappedListings?.map((item: any, ind: number) => (
 									<ListingCardMob
 										activeFilter={activeFilter}
 										key={ind}
@@ -524,7 +585,7 @@ const ListingTable = ({
 					) : (
 						<>
 							<div className={styles.container__grid}>
-								{mappedListings?.map(item => (
+								{mappedListings?.map((item: any) => (
 									<ListingCard
 										key={item.id}
 										props={item}
@@ -534,6 +595,7 @@ const ListingTable = ({
 										onClickEdit={onClickEdit}
 										refetch={refetch}
 										closePopOver={closePopOver}
+										handleDelete={handleOpenDeleteModal}
 									/>
 								))}
 							</div>
@@ -549,6 +611,13 @@ const ListingTable = ({
 				pageSize={10}
 				onPageChange={(page: any) => updatePage(page)}
 			/>
+			{openModal && (
+				<ConfirmPin
+					openModal={openModal}
+					setOpenModal={setOpenModal}
+					onSuccess={onDeleteListing}
+				/>
+			)}
 		</div>
 	);
 };
