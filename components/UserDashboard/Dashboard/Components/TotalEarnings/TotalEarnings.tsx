@@ -9,6 +9,7 @@ import TotalEarningsCard from "./Components/TotalEarningsCard/TotalEarningsCard"
 import { useFetchUserSalesAnalytics } from "@/app/api/hooks/analytics";
 import { GearData } from "@/app/api/hooks/analytics/types";
 import { useAppSelector } from "@/store/configureStore";
+import { formatNum } from "@/utils";
 
 const TotalEarnings = () => {
 	const { userId } = useAppSelector(state => state.user);
@@ -124,7 +125,7 @@ export const convertObjToArray = (obj: GearData) => {
 	return Object.entries(obj).map(([key, value]) => ({
 		id: key,
 		name: key,
-		amount: value.amount,
+		amount: formatNum(value.amount),
 		percentage: value.percentage,
 		productCount: value.productCount,
 		value: !!value.amount ? value.amount : 50

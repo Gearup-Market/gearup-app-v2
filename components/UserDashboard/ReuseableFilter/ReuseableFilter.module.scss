@@ -21,7 +21,7 @@
 			gap: 2rem;
 			padding: 0.5rem 0.5rem;
 			border-radius: 10rem;
-			background-color: white;
+			background-color: #070707;
 			border: 1px solid $col-border;
 			width: fit-content;
 			transition: all 0.3s ease-in-out;
@@ -32,9 +32,10 @@
 				align-items: center;
 				justify-content: center;
 				padding: 1rem 3rem;
-				background-color: $col-white;
+				// background-color: $col-white;
 				font-size: 1.4rem;
 				border-radius: 10rem;
+				color: #a3a7ab;
 				cursor: pointer;
 				transition: all 0.3s ease-in-out;
 

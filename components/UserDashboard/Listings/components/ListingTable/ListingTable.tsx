@@ -507,7 +507,7 @@ const ListingTable = ({
 					iconTitle="search-icon"
 				/>
 				<div className={styles.layout_icons}>
-					{listData.map(data => (
+					{/* {listData.map(data => (
 						<span
 							key={data.id}
 							onClick={() => setActiveLayout(data.value)}
@@ -517,7 +517,23 @@ const ListingTable = ({
 						>
 							{data.icon}
 						</span>
-					))}
+					))} */}
+					<span
+						onClick={() => setActiveLayout("list")}
+						data-active={activeLayout === "list"}
+						data-type={"list"}
+						className={styles.layout_icons__icon}
+					>
+						<ListIcon color={activeLayout === "list" ? "#fff" : "#A3A7AB"} />
+					</span>
+					<span
+						onClick={() => setActiveLayout("grid")}
+						data-active={activeLayout === "grid"}
+						data-type={"grid"}
+						className={styles.layout_icons__icon}
+					>
+						<GridIcon color={activeLayout === "grid" ? "#fff" : "#A3A7AB"} />
+					</span>
 				</div>
 			</div>
 			{mappedListings?.length > 0 ? (

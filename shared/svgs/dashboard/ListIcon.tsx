@@ -1,6 +1,6 @@
 import React from "react";
 
-const ListIcon = () => {
+const ListIcon = ({ color = "#fff" }: { color?: string }) => {
 	return (
 		<svg
 			width="20"
@@ -51,8 +51,8 @@ const ListIcon = () => {
 					y2="1.51296"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.102194" stopColor="#F76039" />
-					<stop offset="1" stopColor="#F76039" />
+					<stop offset="0.102194" stopColor={color} />
+					<stop offset="1" stopColor={color} />
 				</linearGradient>
 				<linearGradient
 					id="paint1_linear_4392_19945"
@@ -62,8 +62,8 @@ const ListIcon = () => {
 					y2="6.51296"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.102194" stopColor="#F76039" />
-					<stop offset="1" stopColor="#F76039" />
+					<stop offset="0.102194" stopColor={color} />
+					<stop offset="1" stopColor={color} />
 				</linearGradient>
 				<linearGradient
 					id="paint2_linear_4392_19945"
@@ -73,8 +73,8 @@ const ListIcon = () => {
 					y2="11.513"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.102194" stopColor="#F76039" />
-					<stop offset="1" stopColor="#F76039" />
+					<stop offset="0.102194" stopColor={color} />
+					<stop offset="1" stopColor={color} />
 				</linearGradient>
 				<linearGradient
 					id="paint3_linear_4392_19945"
@@ -84,8 +84,8 @@ const ListIcon = () => {
 					y2="5.25585"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.102194" stopColor="#F76039" />
-					<stop offset="1" stopColor="#F76039" />
+					<stop offset="0.102194" stopColor={color} />
+					<stop offset="1" stopColor={color} />
 				</linearGradient>
 				<linearGradient
 					id="paint4_linear_4392_19945"
@@ -95,8 +95,8 @@ const ListIcon = () => {
 					y2="10.2558"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.102194" stopColor="#F76039" />
-					<stop offset="1" stopColor="#F76039" />
+					<stop offset="0.102194" stopColor={color} />
+					<stop offset="1" stopColor={color} />
 				</linearGradient>
 				<linearGradient
 					id="paint5_linear_4392_19945"
@@ -106,8 +106,8 @@ const ListIcon = () => {
 					y2="15.2558"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop offset="0.102194" stopColor="#F76039" />
-					<stop offset="1" stopColor="#F76039" />
+					<stop offset="0.102194" stopColor={color} />
+					<stop offset="1" stopColor={color} />
 				</linearGradient>
 			</defs>
 		</svg>

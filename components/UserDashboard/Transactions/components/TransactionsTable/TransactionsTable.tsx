@@ -70,7 +70,7 @@ const TransactionTable = ({ transactionType }: Props) => {
 					amount: `₦${formatNum(
 						type === "Rental" ? amount : item.offer.forSell?.pricing
 					)}`,
-					transactionDate: createdAt,
+					transactionDate: createdAt.split("T")[0],
 					transactionType,
 					transactionStatus: status,
 					gearImage: item ? item.listingPhotos[0] : "",
