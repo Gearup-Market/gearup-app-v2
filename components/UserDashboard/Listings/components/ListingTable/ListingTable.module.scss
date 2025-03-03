@@ -106,20 +106,20 @@
 			display: flex;
 			align-items: center;
 			border: 1px solid #f76039;
-			border-radius: 1rem;
+			border-radius: 0.8em;
 
 			&__icon {
 				padding: 1rem;
-
+				cursor: pointer;
 				&[data-active="true"][data-type="list"] {
-					background: #000000;
-					border-top-left-radius: 1rem;
-					border-bottom-left-radius: 1rem;
+					background: #f76039;
+					border-top-left-radius: 0.8rem;
+					border-bottom-left-radius: 0.8rem;
 				}
 				&[data-active="true"][data-type="grid"] {
-					background: #000000;
-					border-top-right-radius: 1rem;
-					border-bottom-right-radius: 1rem;
+					background: #f76039;
+					border-top-right-radius: 0.8rem;
+					border-bottom-right-radius: 0.8rem;
 				}
 			}
 		}
