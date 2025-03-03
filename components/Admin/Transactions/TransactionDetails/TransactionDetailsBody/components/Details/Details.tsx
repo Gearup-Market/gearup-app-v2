@@ -5,9 +5,10 @@ import { CopyIcon } from "@/shared/svgs/dashboard";
 import DetailsTimeline from "../TimeLines/TimeLines";
 import StatusUpdate from "../StatusUpdate/StatusUpdate";
 import PersonalDetails from "../PersonalDetails/PersonalDetails";
-import { calculateItemPrice, formatNum } from "@/utils";
+import { AppRoutes, calculateItemPrice, formatNum } from "@/utils";
 import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
+import { useGetUser } from "@/app/api/hooks/users";
 
 interface Props {
 	item?: any;
@@ -15,6 +16,9 @@ interface Props {
 
 const DetailsComponent = ({ item }: Props) => {
 	const { data: allPricings, isLoading } = useGetAllPricings();
+	const { data: merchant } = useGetUser({ userId: item?.seller?.userId })
+	const { data: customer } = useGetUser({ userId: item?.buyer?.userId })
+
 	const formatDate = (isoString: string): string => {
 		const date = new Date(isoString);
 		const options: Intl.DateTimeFormatOptions = {
@@ -36,6 +40,11 @@ const DetailsComponent = ({ item }: Props) => {
 	const vat = price * (allPricings?.valueAddedTax! / 100);
 	const fee = price * (allPricings?.valueAddedTax! / 100);
 	const total = price + vat + fee;
+
+
+	console.log(item,"item transaction")
+	console.log(merchant, "merchant")
+	console.log(customer, "cutomer")
 
 	return (
 		<div className={styles.container}>
@@ -95,15 +104,15 @@ const DetailsComponent = ({ item }: Props) => {
 			<div className={styles.container__right}>
 				<PersonalDetails
 					title="Customer"
-					name="Wade Warren"
-					subText="Lagos, Nigeria"
-					profileLink="/admin/settings/profile"
+					name={customer?.data?.userName}
+					subText={!!customer?.data?.address ? customer?.data?.address : "Nigeria"}
+					profileLink={AppRoutes.userDetails(customer?.data?.userId)}
 				/>
 				<PersonalDetails
 					title="Merchant"
-					name="Wade Warren"
-					subText="Enugu, Nigeria"
-					profileLink="/admin/settings/profile"
+					name={merchant?.data?.userName}
+					subText={!!merchant?.data?.address ? merchant?.data?.address : "Nigeria"}
+					profileLink={AppRoutes.userDetails(merchant?.data?.userId)}
 				/>
 				<StatusUpdate />
 			</div>

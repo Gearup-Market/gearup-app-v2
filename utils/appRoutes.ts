@@ -6,6 +6,7 @@ export const AppRoutes = {
         profile: "/user/profile",
         transactions: "/user/transactions",
         wallet: "/user/wallet",
-        
-    }
+    },
+    users: "/users",
+    userDetails: (userId: string) => `/users/${userId}`
 }

@@ -36,7 +36,7 @@ const PersonalDetails = ({ name, subText, profileLink, title, isVerified = false
                 </div>
                 <div className={styles.btn_container}>
                     <Button buttonType='secondary' className={styles.btn}>
-                        <Link href={profileLink}>
+                        <Link href={profileLink} target="_blank">
                             View Profile
                         </Link>
                     </Button>
