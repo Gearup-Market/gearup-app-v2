@@ -8,7 +8,7 @@ const sourceSans = Source_Sans_3({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: {
-		template: "GearUp Market | %s",
+		template: "GearUp | %s",
 		default: "The Peer-2-Peer Marketplace for African Creators"
 	},
 	description:
