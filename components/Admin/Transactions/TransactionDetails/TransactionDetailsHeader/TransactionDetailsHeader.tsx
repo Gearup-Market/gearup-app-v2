@@ -33,7 +33,7 @@ const TransactionDetailsHeader = ({ slug, transaction }: Props) => {
 				<div className={styles.left}>
 					<Image
 						src={transaction?.item?.listingPhotos[0] || "/images/admin-img.jpg"}
-						alt={transaction?.item?.productName}
+						alt={transaction?.item?.productName ?? "product name"}
 						width={16}
 						height={16}
 					/>

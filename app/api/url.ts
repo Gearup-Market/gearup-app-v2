@@ -87,5 +87,6 @@ export const API_URL = {
 	wishlists: "/wishlist",
 	confirmTransactionPin: "/users/check-pin",
 	getAllPricings: "admin/pricing/retrieve",
-	updatePricing: "admin/pricing/update"
+	updatePricing: "admin/pricing/update",
+	adminGetUserTransactions:(userId: string)=> `admin/transactions/${userId}`
 };

@@ -15,13 +15,13 @@ import Link from "next/link";
 import { transactions } from "@/mock/transactions.mock";
 import TransactionCardMob from "./TransactionCardMob/TransactionCardMob";
 import useTransactions from "@/hooks/useTransactions";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { TransactionType, UserRole } from "@/app/api/hooks/transactions/types";
 import NoTransactions from "@/components/UserDashboard/Transactions/components/NoTransactions/NoTransactions";
 import { formatDate, formatNum } from "@/utils";
 import { Filter } from "@/interfaces/Listing";
 import { useAppSelector } from "@/store/configureStore";
-import { useGetAllTransactions } from "@/app/api/hooks/Admin/transactions";
+import { useGetAllTransactions, useGetAllUserTransactions } from "@/app/api/hooks/Admin/transactions";
 
 interface Props {
 	transactionType: string;
@@ -42,13 +42,17 @@ const TransactionTable = ({
 	const [limit, setLimit] = useState(7);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [isNoSearchResult, setIsNoSearchResult] = useState(false);
+	const { slug: currentUserId } = useParams()
 	// const userId = useMemo(
 	// 	() => pathname.split("/")[pathname.split("/").length - 1],
 	// 	[pathname]
 	// );
 	const { userId } = useAppSelector(s => s.user);
 	const { data, isFetching, refetch, isLoading } = useGetAllTransactions(currentPage);
-	const listings = data?.data || [];
+	const { data: userTransactions } = useGetAllUserTransactions({ page: currentPage, userId: currentUserId as string });
+
+	// if the currentUserId is present in the url, it means that this table is currently been rendered in the user details page and therefore we need to show the transaction for this particular user
+	const listings = !!currentUserId ? (userTransactions?.data || []) : data?.data || [];
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
@@ -97,11 +101,6 @@ const TransactionTable = ({
 	// );
 
 	const [paginatedTransactions, setPaginatedTransactions] = useState<number>(limit);
-
-	const filteredTransactions = useMemo(
-		() => transactions.slice(page - 1 * limit, paginatedTransactions),
-		[transactions, paginatedTransactions]
-	);
 
 	const mappedListings = useMemo(() => {
 		// const activeSubFilter = filters
@@ -394,7 +393,7 @@ const TransactionTable = ({
 												? true
 												: false
 										}
-										// loading={isFetching}
+									// loading={isFetching}
 									/>
 								))}
 							</>

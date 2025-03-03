@@ -14,6 +14,22 @@ export const useGetAllTransactions = (
 		refetchOnMount: true
 	});
 
+export const useGetAllUserTransactions = (
+	{
+	page,
+	userId,
+}: {page:number, userId: string},
+	options?: UseQueryOptions<any, any>
+) =>
+	useQuery<any, any>({
+		queryKey: ["getAllUserTransactions"],
+		queryFn: async () =>
+			(await api.get(`${API_URL.adminGetUserTransactions(userId)}?page=${page}`)).data,
+		...options,
+		refetchOnMount: true,
+		enabled: !!userId
+	});
+
 export const useGetTransactionsById = (
 	transactionId: string,
 	options?: UseQueryOptions<any, any>
@@ -26,3 +42,5 @@ export const useGetTransactionsById = (
 		enabled: !!transactionId,
 		refetchOnMount: true
 	});
+
+

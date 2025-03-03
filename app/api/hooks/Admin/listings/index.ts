@@ -13,3 +13,17 @@ export const useAdminGetAllListings = (
 		...options,
 		refetchOnMount: true
 	});
+
+export const useAdminGetAllUserListings = (
+	{
+		userId
+	}: { userId: string },
+	options?: UseQueryOptions<iGetListingsResp, IGetErr>
+) =>
+	useQuery<iGetListingsResp, IGetErr>({
+		queryKey: ["adminGetAllUserListings"],
+		queryFn: async () => (await api.get(`${API_URL.listingsByUser}/${userId}`)).data,
+		...options,
+		refetchOnMount: true,
+		enabled: !!userId
+	});

@@ -1,5 +1,5 @@
 import React from "react";
-import { HeaderSubText, Listings } from "../../../components/Admin";
+import { Listings } from "../../../components/Admin";
 
 interface Props {
 	showTitle?: boolean;

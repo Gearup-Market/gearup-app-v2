@@ -37,7 +37,7 @@ const DetailsTimeline = ({ timelines, status }: Props) => {
 				<ul className={styles.timelines_container}>
 					{timelines?.map((timeline: any, ind) => {
 						return (
-							<li key={timeline.id} className={styles.timeline_container}>
+							<li key={timeline._id} className={styles.timeline_container}>
 								<div key={timeline.id} className={styles.timeline}>
 									<div className={styles.span_container}>
 										<span

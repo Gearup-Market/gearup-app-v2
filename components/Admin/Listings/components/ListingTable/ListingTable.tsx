@@ -14,14 +14,14 @@ import { Popper } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import { useAppDispatch } from "@/store/configureStore";
 import { Filter } from "@/interfaces/Listing";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { usePostChangeListingStatus } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
 import { formatDate, formatNum } from "@/utils";
 import NoListings from "@/components/UserDashboard/Listings/NoListings/NoListings";
 import ListingCardMob from "./ListingCarMob/ListingCarMob";
 import Link from "next/link";
-import { useAdminGetAllListings } from "@/app/api/hooks/Admin/listings";
+import { useAdminGetAllListings, useAdminGetAllUserListings } from "@/app/api/hooks/Admin/listings";
 
 interface Props {
 	activeFilter: string;
@@ -38,23 +38,21 @@ const ListingTable = ({
 	userid,
 	handleAddItem
 }: Props) => {
+	const { slug: userId} = useParams()
 	const [activeLayout, setActiveLayout] = useState("list");
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 	const [page, setPage] = useState(1);
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
-	// const { userId } = useAppSelector(s => s.user);
-	const { data, isFetching, refetch, isLoading } = useAdminGetAllListings();
-	const listings = data?.data || [];
-	// console.log(data);
 
-	const dispatch = useAppDispatch();
-	const router = useRouter();
+	const { data, isFetching, refetch, isLoading } = useAdminGetAllListings();
+	const { data: userListing } = useAdminGetAllUserListings({userId: userId as string});
+
+
+	// if the userId is present in the url, it means that this table is currently been rendered in the user details page and therefore we need to show the listings for this particular user
+	const listings = !!userId ? userListing?.data || [] : data?.data || [];
 
 	const mappedListings = useMemo(() => {
-		const activeSubFilter = filters
-			?.find(filter => filter.name.toLowerCase() === activeFilter)
-			?.name.toLowerCase();
 
 		return listings
 			.map(

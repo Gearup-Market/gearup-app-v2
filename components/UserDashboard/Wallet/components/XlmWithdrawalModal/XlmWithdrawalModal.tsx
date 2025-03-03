@@ -1,5 +1,5 @@
 "use cient";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./XlmWithdrawalModal.module.scss";
 import Modal from "@/shared/modals/modal/Modal";
 import Image from "next/image";

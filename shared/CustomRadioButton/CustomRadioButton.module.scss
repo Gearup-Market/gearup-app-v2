@@ -17,10 +17,20 @@
 
 		&:checked ~ .radioCustom {
 			border-color: #f76039;
+			opacity: 1;
 		}
 
 		&:checked ~ .radioCustom:after {
 			display: block;
+		}
+
+		&:disabled ~ .radioCustom {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+
+		&:checked:disabled ~ .radioCustom {
+			opacity: 1;
 		}
 	}
 
