@@ -225,7 +225,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			background: #fff;
+			background: #070707;
 			margin: 2rem 0;
 			padding: 1rem;
 			border-radius: 10rem;
@@ -236,7 +236,7 @@
 				display: flex;
 				align-items: center;
 				gap: 1rem;
-				color: #515b6f;
+				color: #a3a7ab;
 				font-size: 1.4rem;
 				font-weight: 400;
 				width: 100%;
@@ -244,8 +244,8 @@
 			.active {
 				font-weight: 700;
 				box-shadow: 0px 4px 40px 0px #0000001f;
-				background: #fff;
-				color: #f76039;
+				color: #fff;
+				background: #f76039;
 			}
 		}
 

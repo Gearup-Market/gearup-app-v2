@@ -8,6 +8,7 @@ import { fiatWalletTransactions } from "@/mock/fiatWalletTransactions.mock";
 import { iWTransaction } from "@/app/api/hooks/wallets/types";
 import { useWalletTransactions } from "@/hooks";
 import NoWalletTransactions from "../NoWalletTransactions/NoWalletTransactions";
+import { formatDate, formatNum } from "@/utils";
 
 const WalletTransactionsTable = () => {
 	const [page, setPage] = useState(1);
@@ -88,7 +89,7 @@ const WalletTransactionsTable = () => {
 												{transaction.type}
 											</p>
 											<p className={styles.amount}>
-												{transaction.amount}
+												₦{formatNum(transaction.amount)}
 											</p>
 										</div>
 									</div>
@@ -100,7 +101,7 @@ const WalletTransactionsTable = () => {
 											{transaction.status}
 										</p>
 										<p className={styles.date}>
-											{transaction.createdAt}
+											{formatDate(transaction.createdAt)}
 										</p>
 									</div>
 								</li>

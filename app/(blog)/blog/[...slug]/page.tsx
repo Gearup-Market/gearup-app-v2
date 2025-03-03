@@ -1,6 +1,6 @@
 import { IGetArticle } from "@/app/api/hooks/blogs/types";
 import { BlogDetailsView } from "@/views";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
 export interface Props {
@@ -40,40 +40,63 @@ export async function generateMetadata({
 	const article = await getArticleBySlug(params.slug);
 	const formattedArticle: any = isSlug(params.slug) ? article?.data : article;
 
-	if (!article) {
+	if (!article || !formattedArticle) {
 		return {
 			title: "Blog Not Found",
 			description: "The requested blog article could not be found."
 		};
 	}
 
+	const title = formattedArticle.title;
+	const description =
+		formattedArticle.excerpt ||
+		formattedArticle.description ||
+		`Read ${title} on GearUp Market`;
+	const url = `https://gearup.market/blog/${formattedArticle.slug}`;
+	const imageUrl = formattedArticle.bannerImage;
+
 	return {
-		title: formattedArticle.title,
-		description:
-			formattedArticle.excerpt ||
-			formattedArticle.description ||
-			`Read ${formattedArticle.title} on GearUp`,
+		metadataBase: new URL("https://gearup.market"),
+		title: {
+			absolute: title
+		},
+		description,
+
 		openGraph: {
 			type: "article",
-			url: `https://gearup.market/blog/${formattedArticle.slug}`,
-			title: formattedArticle.title,
-			description: formattedArticle.excerpt || formattedArticle.description,
+			title: {
+				absolute: title
+			},
+			description,
+			url,
 			images: [
 				{
-					url: formattedArticle.bannerImage,
+					url: imageUrl,
 					width: 1200,
 					height: 630,
-					alt: formattedArticle.title
+					alt: title
 				}
 			],
-			siteName: "GearUp"
+			siteName: "GearUp Market"
 		},
+
 		twitter: {
 			card: "summary_large_image",
-			site: "@gearupmarket",
-			title: formattedArticle.title,
-			description: formattedArticle.excerpt || formattedArticle.description,
-			images: [formattedArticle.bannerImage]
+			title: {
+				absolute: title
+			},
+			description,
+			images: [imageUrl],
+			site: "@gearupmarket"
+		},
+
+		robots: {
+			index: true,
+			follow: true
+		},
+
+		alternates: {
+			canonical: url
 		}
 	};
 }
