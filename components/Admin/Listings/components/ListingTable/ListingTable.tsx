@@ -45,7 +45,10 @@ const ListingTable = ({
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 
-	const { data, isFetching, refetch, isLoading } = useAdminGetAllListings();
+	const { data, isFetching, refetch, isLoading } = useAdminGetAllListings({
+		enabled: !userId
+	});
+	
 	const { data: userListing } = useAdminGetAllUserListings({userId: userId as string});
 
 

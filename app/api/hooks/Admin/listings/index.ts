@@ -5,7 +5,7 @@ import { iGetListingsResp } from "../../listings/types";
 import { IGetErr } from "../../listings";
 
 export const useAdminGetAllListings = (
-	options?: UseQueryOptions<iGetListingsResp, IGetErr>
+	options?: Partial<UseQueryOptions<any, any>>
 ) =>
 	useQuery<iGetListingsResp, IGetErr>({
 		queryKey: ["adminGetAllListings"],

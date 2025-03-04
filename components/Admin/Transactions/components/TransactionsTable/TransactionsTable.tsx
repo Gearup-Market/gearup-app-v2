@@ -43,12 +43,13 @@ const TransactionTable = ({
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [isNoSearchResult, setIsNoSearchResult] = useState(false);
 	const { slug: currentUserId } = useParams()
-	// const userId = useMemo(
-	// 	() => pathname.split("/")[pathname.split("/").length - 1],
-	// 	[pathname]
-	// );
+
 	const { userId } = useAppSelector(s => s.user);
-	const { data, isFetching, refetch, isLoading } = useGetAllTransactions(currentPage);
+
+	const { data, isFetching, refetch, isLoading } = useGetAllTransactions(currentPage, {
+		enabled: !currentUserId
+	});
+
 	const { data: userTransactions } = useGetAllUserTransactions({ page: currentPage, userId: currentUserId as string });
 
 	// if the currentUserId is present in the url, it means that this table is currently been rendered in the user details page and therefore we need to show the transaction for this particular user

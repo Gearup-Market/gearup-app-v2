@@ -3,8 +3,8 @@ import { API_URL } from "@/app/api/url";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetAllTransactions = (
-	page: number,
-	options?: UseQueryOptions<any, any>
+	page:number,
+	options?: Partial<UseQueryOptions<any, any>>
 ) =>
 	useQuery<any, any>({
 		queryKey: ["getAllTransactions"],
