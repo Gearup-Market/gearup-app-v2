@@ -3,80 +3,70 @@ import React, { useState, useEffect } from "react";
 import styles from "./TimeLines.module.scss";
 import HeaderSubText from "@/components/Admin/HeaderSubText/HeaderSubText";
 import { CheckmarkIcon } from "@/shared/svgs/dashboard";
-import { useSearchParams } from "next/navigation";
-import { saleBuyersTimeline, saleBuyersTimelineThirdParty } from "../utils/data";
+import { formatDate } from "@/utils";
 
 interface Timeline {
-	id: number;
-	name: string;
+	isCurrent: boolean
+	stage: string
+	transactionHash: string
+	updatedAt: string
+	_id: string
 }
 interface Props {
-	timelines?: any;
+	timelines?: Timeline[];
+	status?: string
 }
 
-const DetailsTimeline = ({ timelines }: Props) => {
-	const [steps, setSteps] = useState(1);
-	const [newTimelines, setNewTimelines] = useState<Timeline[]>([]);
-	const search = useSearchParams();
-	const thirdPartyVerification = search.get("third_party");
+const DetailsTimeline = ({ timelines, status }: Props) => {
 
-	const handlePrev = () => {
-		if (steps > 1) {
-			setSteps(steps - 1);
-		}
-	};
+	const getActiveTimelineId = () => {
+		const activeTimeline = timelines?.findIndex((timeline) => timeline.isCurrent);
+		return activeTimeline ?? -1;
+	}
 
-	const handleNext = () => {
-		if (steps < newTimelines.length) {
-			setSteps(steps + 1);
-		}
-	};
+	const removeTextUnderscores = (text: string) => {
+		return text.replace(/_/g, " ");
+	}
 
-	useEffect(() => {
-		if (thirdPartyVerification) {
-			setNewTimelines(saleBuyersTimelineThirdParty);
-		} else {
-			setNewTimelines(saleBuyersTimeline);
-		}
-	}, [thirdPartyVerification]);
+	const isTransactionEnded = status?.toLowerCase() === "completed" || status?.toLowerCase() === "declined"
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.left}>
 				<HeaderSubText title="Transaction timeline" />
 				<ul className={styles.timelines_container}>
-					{newTimelines?.map((timeline: any) => {
+					{timelines?.map((timeline: any, ind) => {
 						return (
-							<li key={timeline.id} className={styles.timeline_container}>
+							<li key={timeline._id} className={styles.timeline_container}>
 								<div key={timeline.id} className={styles.timeline}>
 									<div className={styles.span_container}>
 										<span
 											className={styles.id_container}
-											data-active={timeline.id <= steps}
+											data-active={ind < getActiveTimelineId()}
 										>
-											{steps - 1 < timeline.id ? (
+											{getActiveTimelineId() < ind ? (
 												timeline.id
 											) : (
 												<span
 													className={styles.check_icon}
-													data-active={timeline.id <= steps}
+													data-active={ind < getActiveTimelineId() || isTransactionEnded}
 												>
 													<CheckmarkIcon color="#fff" />
 												</span>
 											)}
 										</span>
-										{timeline.id < newTimelines.length && (
+										{ind + 1 < timelines.length && (
 											<div
-												data-active={timeline.id <= steps - 1}
+												data-active={ind < getActiveTimelineId()}
 												className={styles.line_icon}
 											></div>
 										)}
 									</div>
-									<p data-active={timeline.id <= steps}>
-										{timeline.name}
+									<p data-active={timeline?.isCurrent} className={styles.timeline_stage}>
+										{removeTextUnderscores(timeline?.stage)}
 									</p>
 								</div>
-								<p className={styles.date_text}>15 Dec, 2023 8:30 Am</p>
+								<p className={styles.date_text}>{formatDate(timeline?.updatedAt)}</p>
 							</li>
 						);
 					})}

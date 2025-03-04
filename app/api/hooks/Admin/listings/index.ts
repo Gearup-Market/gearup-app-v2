@@ -5,11 +5,25 @@ import { iGetListingsResp } from "../../listings/types";
 import { IGetErr } from "../../listings";
 
 export const useAdminGetAllListings = (
-	options?: UseQueryOptions<iGetListingsResp, IGetErr>
+	options?: Partial<UseQueryOptions<any, any>>
 ) =>
 	useQuery<iGetListingsResp, IGetErr>({
 		queryKey: ["adminGetAllListings"],
 		queryFn: async () => (await api.get(`${API_URL.adminGetAllListings}`)).data,
 		...options,
 		refetchOnMount: true
+	});
+
+export const useAdminGetAllUserListings = (
+	{
+		userId
+	}: { userId: string },
+	options?: UseQueryOptions<iGetListingsResp, IGetErr>
+) =>
+	useQuery<iGetListingsResp, IGetErr>({
+		queryKey: ["adminGetAllUserListings"],
+		queryFn: async () => (await api.get(`${API_URL.listingsByUser}/${userId}`)).data,
+		...options,
+		refetchOnMount: true,
+		enabled: !!userId
 	});

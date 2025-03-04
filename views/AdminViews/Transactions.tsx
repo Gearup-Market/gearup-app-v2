@@ -1,5 +1,5 @@
 import React from 'react'
-import { HeaderSubText, Transactions } from '../../components/Admin'
+import { Transactions } from '../../components/Admin'
 
 interface Props {
   showTitle?: boolean

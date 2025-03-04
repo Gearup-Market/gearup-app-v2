@@ -27,8 +27,8 @@ export const useChatSocket = (chatId?: string) => {
 		setSocket(() => socketInstance);
 
 		// Join a specific chat room and listen for new messages
+		socketInstance.emit("joinChat", chatId);
 		if (chatId) {
-			socketInstance.emit("joinChat", chatId);
 			socketInstance.on("getMessages", ({ chatId, message }) => {
 				console.log("socket message==>", message, chatId);
 				queryClient.setQueryData(["getChatMessages", chatId], (oldData: any) => {
@@ -37,6 +37,7 @@ export const useChatSocket = (chatId?: string) => {
 						data: message
 					};
 				});
+				
 			});
 		}
 		// Listen for chat overview updates (all chats)

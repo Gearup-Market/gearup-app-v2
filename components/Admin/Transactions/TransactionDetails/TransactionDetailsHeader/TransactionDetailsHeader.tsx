@@ -32,13 +32,13 @@ const TransactionDetailsHeader = ({ slug, transaction }: Props) => {
 			<div className={styles.item_details}>
 				<div className={styles.left}>
 					<Image
-						src={transaction.item.listingPhotos[0] || "/images/admin-img.jpg"}
-						alt={transaction?.item.productName}
+						src={transaction?.item?.listingPhotos[0] || "/images/admin-img.jpg"}
+						alt={transaction?.item?.productName ?? "product name"}
 						width={16}
 						height={16}
 					/>
 					<span className={styles.right}>
-						<h2>{transaction?.item.productName}</h2>
+						<h2>{transaction?.item?.productName}</h2>
 						<p>{formatNum(transaction?.amount)}</p>
 					</span>
 				</div>
