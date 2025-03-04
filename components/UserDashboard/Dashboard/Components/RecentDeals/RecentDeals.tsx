@@ -41,9 +41,7 @@ const RecentDeals = () => {
 				return {
 					id: _id,
 					gearName: item ? item.productName : "Listing not available",
-					amount: `₦${formatNum(
-						type === "Rental" ? amount : item.offer.forSell?.pricing
-					)}`,
+					amount: `₦${formatNum(amount)}`,
 					transactionDate: createdAt.split("T")[0],
 					transactionType: type,
 					transactionStatus: status,
