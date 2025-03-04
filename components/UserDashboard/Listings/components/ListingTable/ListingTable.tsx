@@ -15,9 +15,10 @@ import Fade from "@mui/material/Fade";
 import ListingCardMob from "./ListingCardMob/ListingCardMob";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { Filter } from "@/interfaces/Listing";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import {
+	getListingsByUser,
 	usePostChangeListingStatus,
 	usePostChangeUserListingStatus,
 	usePostRemoveListing
@@ -29,20 +30,14 @@ import { useGetAllCourses } from "@/app/api/hooks/courses";
 import { useListingsByUser } from "@/hooks/useListings";
 import { usePercentageToPixels } from "@/hooks";
 import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
+import { useQuery } from "@tanstack/react-query";
+import SearchListings from "./searchListings/SearchListings";
 
 interface Props {
-	activeFilter: string;
-	activeSubFilterId: number | string;
-	filters: Filter[];
-	handleAddItem: () => void;
+	activeFilter: Filter;
 }
 
-const ListingTable = ({
-	activeFilter,
-	activeSubFilterId,
-	filters,
-	handleAddItem
-}: Props) => {
+const ListingTable = ({ activeFilter }: Props) => {
 	const [activeLayout, setActiveLayout] = useState("list");
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 	const [currentPage, setCurrentPage] = useState<number>(1);
@@ -50,6 +45,9 @@ const ListingTable = ({
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [listingIdToDelete, setListingIdToDelete] = useState<string>("");
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
+	const [showSearchContainer, setShowSearchContainer] = useState<boolean>(false);
+	const [searchTerm, setSearchTerm] = useState<string>("");
+
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	const titleWidth = usePercentageToPixels(containerRef, 25);
@@ -60,15 +58,28 @@ const ListingTable = ({
 	const availabilityWidth = usePercentageToPixels(containerRef, 10);
 	const actionsWidth = usePercentageToPixels(containerRef, 10);
 	const { userId } = useAppSelector(s => s.user);
-	// const { data: courseListings, isLoading } = useGetAllCourses();
-	// const listings = useAppSelector(s => s.listings.owned);
+
 	const dispatch = useAppDispatch();
 	const router = useRouter();
+
+	const search = useSearchParams();
+	const searchParams = new URLSearchParams(search.toString());
+
+	const queryParams = {
+		category: searchParams.get("category") || undefined,
+		type: searchParams.get("type") || undefined
+	};
+
 	const {
-		refetch,
+		data: userListings,
 		isFetching,
-		listings: userListings
-	} = useListingsByUser(currentPage);
+		refetch
+	} = useQuery({
+		queryKey: ["getUserListings", { page: currentPage, userId, ...queryParams }],
+		queryFn: getListingsByUser,
+		refetchInterval: 60000,
+		enabled: true
+	});
 
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
 		usePostRemoveListing();
@@ -85,58 +96,42 @@ const ListingTable = ({
 	const listings = userListings?.data || [];
 
 	const mappedListings = useMemo(() => {
-		const activeSubFilter = filters
-			.find(filter => filter.name.toLowerCase() === activeFilter)
-			?.subFilters.find(sub => sub.id === activeSubFilterId)
-			?.name.toLowerCase();
-
-		return listings
-			?.map(
-				({
-					_id,
-					productName,
-					offer,
-					createdAt,
-					listingType,
+		return listings?.map(
+			({
+				_id,
+				productName,
+				offer,
+				createdAt,
+				listingType,
+				status,
+				listingPhotos,
+				category
+			}: any) => {
+				const type = listingType === "both" ? "rent | sell" : listingType;
+				const price =
+					type === "rent"
+						? offer?.forRent?.rates.length
+							? offer?.forRent?.rates[0].price
+							: 0
+						: offer?.forSell?.pricing;
+				const image = listingPhotos?.[0] || null;
+				return {
+					id: _id,
+					title: productName,
+					price,
+					transaction_date: createdAt,
+					type,
 					status,
-					listingPhotos,
-					category
-				}: any) => {
-					const type = listingType === "both" ? "rent | sell" : listingType;
-					const price =
-						type === "rent"
-							? offer?.forRent?.rates.length
-								? offer?.forRent?.rates[0].price
-								: 0
-							: offer?.forSell?.pricing;
-					const image = listingPhotos?.[0] || null;
-					return {
-						id: _id,
-						title: productName,
-						price,
-						transaction_date: createdAt,
-						type,
-						status,
-						image,
-						availability: status === "available" ? "active" : "inactive",
-						date: createdAt.split("T")[0],
-						sold_count: 0,
-						revenue: 0,
-						category: category?.name?.toLowerCase() || null
-					};
-				}
-			)
-			.filter((l: any) => {
-				if (!l.type.includes(activeFilter)) return false;
-				if (
-					activeSubFilter &&
-					activeSubFilter !== l.category &&
-					activeSubFilterId !== 1
-				)
-					return false;
-				return true;
-			});
-	}, [listings, activeFilter, activeSubFilterId, filters]);
+					image,
+					availability: status === "available" ? "active" : "inactive",
+					date: createdAt.split("T")[0],
+					sold_count: 0,
+					revenue: 0,
+					category: category?.name?.toLowerCase() || null
+				};
+			}
+		);
+	}, [listings]);
 
 	const sharedColDef: GridColDef = {
 		field: "",
@@ -182,8 +177,6 @@ const ListingTable = ({
 			location,
 			listingType
 		};
-
-		console.log(payload);
 
 		dispatch(updateNewListing(payload));
 		router.push(`/new-listing/listing-details`);
@@ -318,10 +311,10 @@ const ListingTable = ({
 								<div className={`${styles.more_modal} popover-content`}>
 									<MoreModal
 										row={selectedRow}
-										activeFilter={activeFilter}
 										onClickEdit={onClickEdit}
 										refetch={refetch}
 										closePopOver={closePopOver}
+										activeFilter={activeFilter}
 										// handleDelete={handleOpenDeleteModal}
 									/>
 								</div>
@@ -498,6 +491,18 @@ const ListingTable = ({
 		} catch (error) {}
 	};
 
+	useEffect(() => {
+		const handleClickOutside = () => {
+			setShowSearchContainer(false);
+			setSearchTerm("");
+		};
+
+		document.addEventListener("click", handleClickOutside);
+		return () => {
+			document.removeEventListener("click", handleClickOutside);
+		};
+	}, []);
+
 	return (
 		<div className={styles.container} ref={containerRef}>
 			<div className={styles.container__input_filter_container}>
@@ -505,6 +510,12 @@ const ListingTable = ({
 					placeholder="Search"
 					icon="/svgs/icon-search-dark.svg"
 					iconTitle="search-icon"
+					value={searchTerm}
+					onClick={e => {
+						e.nativeEvent.stopImmediatePropagation();
+						setShowSearchContainer(true);
+					}}
+					onChange={e => setSearchTerm(e.target.value)}
 				/>
 				<div className={styles.layout_icons}>
 					{/* {listData.map(data => (
@@ -547,7 +558,7 @@ const ListingTable = ({
 								<DataGrid
 									rows={mappedListings}
 									columns={
-										activeFilter === "courses"
+										activeFilter.name === "courses"
 											? coursesColumns
 											: columns
 									}
@@ -563,7 +574,7 @@ const ListingTable = ({
 							<MobileCardContainer>
 								{mappedListings?.map((item: any, ind: number) => (
 									<ListingCardMob
-										activeFilter={activeFilter}
+										activeFilter={activeFilter.name}
 										key={ind}
 										item={item}
 										ind={ind}
@@ -616,6 +627,13 @@ const ListingTable = ({
 					openModal={openModal}
 					setOpenModal={setOpenModal}
 					onSuccess={onDeleteListing}
+				/>
+			)}
+			{showSearchContainer && (
+				<SearchListings
+					setShowSearchContainer={setShowSearchContainer}
+					searchTerm={searchTerm}
+					setSearchTerm={setSearchTerm}
 				/>
 			)}
 		</div>

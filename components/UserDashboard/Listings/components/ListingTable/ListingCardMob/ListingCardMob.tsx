@@ -15,8 +15,8 @@ interface Props {
 	lastEle?: boolean;
 	activeFilter?: string;
 	onToggleHideListing: (id: string, status: string) => void;
-	refetch: () => void;
-	onClickEdit: (id: string) => void;
+	refetch?: () => void;
+	onClickEdit?: (id: string) => void;
 }
 
 const ListingCardMob = ({
@@ -38,7 +38,7 @@ const ListingCardMob = ({
 			const res = await postRemoveListing(payload);
 			if (res.data) {
 				toast.success("Listing deleted");
-				refetch();
+				refetch!();
 			}
 		} catch (error) {}
 	};
@@ -144,25 +144,27 @@ const ListingCardMob = ({
 							See detials
 						</Button>
 					</Link>
-					<div className={styles.container__details__detail_container}>
-						<p className={styles.key}>Actions</p>
-						<p className={`${styles.value} ${styles.action_icons}`}>
-							<Image
-								src={"/svgs/edit.svg"}
-								alt={item.title}
-								width={16}
-								height={16}
-								onClick={() => onClickEdit(item.id)}
-							/>
-							<Image
-								onClick={onDeleteListing}
-								src={"/svgs/red-trash.svg"}
-								alt={item.title}
-								width={16}
-								height={16}
-							/>
-						</p>
-					</div>
+					{onClickEdit && (
+						<div className={styles.container__details__detail_container}>
+							<p className={styles.key}>Actions</p>
+							<p className={`${styles.value} ${styles.action_icons}`}>
+								<Image
+									src={"/svgs/edit.svg"}
+									alt={item.title}
+									width={16}
+									height={16}
+									onClick={() => onClickEdit(item.id)}
+								/>
+								<Image
+									onClick={onDeleteListing}
+									src={"/svgs/red-trash.svg"}
+									alt={item.title}
+									width={16}
+									height={16}
+								/>
+							</p>
+						</div>
+					)}
 				</>
 			)}
 		</MobileCard>

@@ -79,7 +79,10 @@ export const usePostUpdateBlogStatus = (
 			const { blogId } = props;
 			delete props.blogId;
 			return (
-				await api.patch(`${API_URL.adminBlogsArticles}/${blogId}/status`, props)
+				await api.patch(
+					`${API_URL.adminBlogsArticlesById}/${blogId}/status`,
+					props
+				)
 			).data;
 		},
 		...options
@@ -93,7 +96,7 @@ export const usePostCreateBlog = (
 ) =>
 	useMutation<ICreateArticleResp, IGetErr, IPostBlogReq>({
 		mutationFn: async props =>
-			(await api.post(`${API_URL.adminBlogsArticles}/create`, props)).data,
+			(await api.post(`${API_URL.adminBlogsArticlesById}/create`, props)).data,
 		...options
 	});
 
@@ -105,8 +108,12 @@ export const usePostUpdateBlog = (
 ) =>
 	useMutation<ICreateArticleResp, IGetErr, IUpdateBlogReq>({
 		mutationFn: async props =>
-			(await api.put(`${API_URL.adminBlogsArticles}/update/${props._id}`, props))
-				.data,
+			(
+				await api.put(
+					`${API_URL.adminBlogsArticlesById}/update/${props._id}`,
+					props
+				)
+			).data,
 		...options
 	});
 
@@ -116,7 +123,7 @@ export const useDeleteBlogById = (
 	useMutation<IGetArticle, IGetErr, any>({
 		mutationFn: async props => {
 			const { blogId } = props;
-			return (await api.delete(`${API_URL.adminBlogsArticles}/${blogId}`)).data;
+			return (await api.delete(`${API_URL.adminBlogsArticlesById}/${blogId}`)).data;
 		},
 		...options
 	});

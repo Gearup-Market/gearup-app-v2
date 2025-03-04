@@ -119,6 +119,45 @@ const useGetTransactions = (
 		refetchOnMount: true
 	});
 
+const useGetSearchTransactions = (
+	userId: string,
+	page?: number,
+	searchQuery?: string,
+	options?: UseQueryOptions<iGetTransactionRes, IGetErr>
+) =>
+	useQuery<iGetTransactionRes, IGetErr>({
+		queryKey: ["getSearchTransactions"],
+		queryFn: async () =>
+			(
+				await api.get(
+					`${API_URL.getTransactions}/${userId}/search?page=${page}&searchQuery=${searchQuery}`
+				)
+			).data,
+		...options,
+		enabled: !!searchQuery,
+		refetchOnMount: true
+	});
+
+const getTransactions = async ({ queryKey }: { queryKey: any }) => {
+	const [_, queryParams] = queryKey;
+	if (!queryParams.userId) return;
+
+	const buildQueryParams = () => {
+		const params = new URLSearchParams();
+		params.append("page", queryParams.page.toString());
+
+		if (queryParams.type) params.append("type", queryParams.type);
+		if (queryParams.status) params.append("status", queryParams.status);
+
+		return params.toString().replace(/%20/g, " ");
+	};
+	return (
+		await api.get(
+			`${API_URL.getTransactions}/${queryParams.userId}?${buildQueryParams()}`
+		)
+	).data;
+};
+
 const useGetSingleTransactions = (
 	transactionId?: string,
 	options?: Omit<UseQueryOptions<iGetSingleTransactionRes, IGetErr>, "queryKey">
@@ -141,5 +180,7 @@ export {
 	useGetTransactions,
 	useAddAllToCart,
 	useGetSingleTransactions,
-	usePostTransactionStatus
+	usePostTransactionStatus,
+	getTransactions,
+	useGetSearchTransactions
 };

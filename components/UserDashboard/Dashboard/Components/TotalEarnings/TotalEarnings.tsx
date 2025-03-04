@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./TotalEarnings.module.scss";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { customisedTableClasses } from "@/utils/classes";
@@ -10,10 +10,18 @@ import { useFetchUserSalesAnalytics } from "@/app/api/hooks/analytics";
 import { GearData } from "@/app/api/hooks/analytics/types";
 import { useAppSelector } from "@/store/configureStore";
 import { formatNum } from "@/utils";
+import { usePercentageToPixels } from "@/hooks";
 
 const TotalEarnings = () => {
 	const { userId } = useAppSelector(state => state.user);
 	const { data: salesData } = useFetchUserSalesAnalytics(userId as string);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const typeWidth = usePercentageToPixels(containerRef, 20);
+	const productsWidth = usePercentageToPixels(containerRef, 20);
+	const revenueWidth = usePercentageToPixels(containerRef, 20);
+	const valueWidth = usePercentageToPixels(containerRef, 20);
+
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,
@@ -29,7 +37,7 @@ const TotalEarnings = () => {
 			cellClassName: styles.table_cell,
 			headerName: "Type",
 			headerClassName: styles.table_header,
-			minWidth: 150,
+			minWidth: typeWidth,
 			renderCell: ({ value }) => (
 				<div className={styles.container__type_container}>
 					<EllipseIcon
@@ -53,7 +61,7 @@ const TotalEarnings = () => {
 			cellClassName: styles.table_cell,
 			headerName: "No of Products",
 			headerClassName: styles.table_header,
-			minWidth: 200
+			minWidth: productsWidth
 		},
 		{
 			...sharedColDef,
@@ -61,7 +69,7 @@ const TotalEarnings = () => {
 			cellClassName: styles.table_cell,
 			headerName: "% of Revenue",
 			headerClassName: styles.table_header,
-			minWidth: 150
+			minWidth: revenueWidth
 		},
 		{
 			...sharedColDef,
@@ -69,7 +77,7 @@ const TotalEarnings = () => {
 			cellClassName: styles.table_cell,
 			headerName: "Value",
 			headerClassName: styles.table_header,
-			minWidth: 150
+			minWidth: valueWidth
 		}
 	];
 

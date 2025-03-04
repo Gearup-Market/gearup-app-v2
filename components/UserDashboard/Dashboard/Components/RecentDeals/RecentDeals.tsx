@@ -171,9 +171,9 @@ const RecentDeals = () => {
 	return (
 		<div className={styles.container} ref={containerRef}>
 			<h2 className={styles.container__title}> Recent Deals</h2>
-			{!!paginatedTransactions?.length && (
-				<div className={styles.container__input_filter_container}>
-					<InputField
+			{/* {!!paginatedTransactions?.length && ( */}
+			<div className={styles.container__input_filter_container}>
+				{/* <InputField
 						placeholder="Enter name or id"
 						icon="/svgs/icon-search-dark.svg"
 						iconTitle="search-icon"
@@ -187,9 +187,9 @@ const RecentDeals = () => {
 							height={16}
 						/>
 						<p>Filter</p>
-					</div>
-				</div>
-			)}
+					</div> */}
+			</div>
+			{/* )} */}
 
 			{currentTableData?.length < 1 ? (
 				<div className={styles.empty_rows}>

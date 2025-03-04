@@ -9,6 +9,7 @@ import ReuseableFilters from "../ReuseableFilter/ReuseableFilter";
 import { useRouter } from "next/navigation";
 import { useListingFilters } from "@/hooks/useListings";
 import { useAppSelector } from "@/store/configureStore";
+import { Filter } from "@/interfaces/Listing";
 
 enum Type {
 	Rent = "Rent",
@@ -19,21 +20,20 @@ enum Type {
 const Listings = () => {
 	const [activeFilterId, setActiveFilterId] = useState<number | string>(1);
 	const [activeSubFilterId, setActiveSubFilterId] = useState<number | string>(1);
-	const [activeFilter, setActiveFilter] = useState<Type>(Type.Rent);
+	const [activeFilter, setActiveFilter] = useState<Filter>({
+		id: 1,
+		name: "All",
+		subFilters: []
+	});
 	const router = useRouter();
 	const { filters: parentFilters } = useListingFilters();
 	const listings = useAppSelector(s => s.listings.owned);
 
-	useEffect(() => {
-		const activeFilter = parentFilters.find(filter => filter.id === activeFilterId);
-		setActiveFilter(activeFilter?.name as Type);
-	}, [activeFilterId]);
-
 	const handleButtonClick = () => {
-		if (activeFilter === Type.Courses) {
+		if (activeFilter.name === Type.Courses) {
 			router.push("/course-listing");
 		}
-		if (activeFilter === Type.Rent || activeFilter === Type.Buy) {
+		if (activeFilter.name === Type.Rent || activeFilter.name === Type.Buy) {
 			router.push("/new-listing");
 		}
 	};
@@ -49,12 +49,10 @@ const Listings = () => {
 			</div>
 			<div className={styles.container__filters_container}>
 				<ReuseableFilters
+					page="listings"
 					parentFilters={parentFilters}
-					activeFilterId={activeFilterId}
-					setActiveFilterId={setActiveFilterId}
-					setActiveSubFilterId={setActiveSubFilterId}
-					activeSubFilterId={activeSubFilterId}
-					showChildrenFilters={!!listings.length}
+					setActiveFilter={setActiveFilter}
+					activeFilter={activeFilter}
 				/>
 				<div className={styles.container__filters_container__listings_container}>
 					<span>
@@ -64,7 +62,7 @@ const Listings = () => {
 							<Button onClick={handleButtonClick}>
 								{" "}
 								<GridAddIcon className={styles.add_icon} />{" "}
-								{activeFilter === Type.Courses
+								{activeFilter.name === Type.Courses
 									? "New Course"
 									: "Create a listing"}
 							</Button>
@@ -75,12 +73,7 @@ const Listings = () => {
 			<Button onClick={handleButtonClick} className={styles.button}>
 				<GridAddIcon className={styles.button_icon} />
 			</Button>
-			<ListingTable
-				activeFilter={activeFilter?.toLowerCase()}
-				activeSubFilterId={activeSubFilterId}
-				filters={parentFilters}
-				handleAddItem={handleButtonClick}
-			/>
+			<ListingTable activeFilter={activeFilter} />
 		</div>
 	);
 };

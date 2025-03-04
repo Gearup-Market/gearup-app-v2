@@ -104,6 +104,18 @@ const usePostSearchListing = (
 		...options
 	});
 
+const usePostSearchListingByUser = (
+	options?: Omit<
+		UseMutationOptions<iGetListingsResp, iPostListingErr, any>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iGetListingsResp, iPostListingErr, any>({
+		mutationFn: async props =>
+			(await api.post(`${API_URL.listingById}/user-listings/search`, props)).data,
+		...options
+	});
+
 const usePostUpdateListing = (
 	options?: Omit<
 		UseMutationOptions<iPostListingResp, iPostListingErr, any>,
@@ -179,6 +191,26 @@ const getListings = async ({ queryKey }: { queryKey: any }) => {
 	return (await api.get(`${API_URL.listings}?${buildQueryParams()}`)).data;
 };
 
+const getListingsByUser = async ({ queryKey }: { queryKey: any }) => {
+	const [_, queryParams] = queryKey;
+	if (!queryParams.userId) return;
+
+	const buildQueryParams = () => {
+		const params = new URLSearchParams();
+		params.append("page", queryParams.page.toString());
+
+		if (queryParams.type) params.append("type", queryParams.type);
+		if (queryParams.category) params.append("category", queryParams.category);
+
+		return params.toString().replace(/%20/g, " ");
+	};
+	return (
+		await api.get(
+			`${API_URL.listingsByUser}/${queryParams.userId}?${buildQueryParams()}`
+		)
+	).data;
+};
+
 const useGetCategories = (options?: UseQueryOptions<iCategoryResp, IGetErr>) =>
 	useQuery<iCategoryResp, IGetErr>({
 		queryKey: ["category"],
@@ -209,5 +241,7 @@ export {
 	useGetCategories,
 	useGetCategoriesDetailed,
 	usePostChangeUserListingStatus,
-	getListings
+	getListings,
+	getListingsByUser,
+	usePostSearchListingByUser
 };

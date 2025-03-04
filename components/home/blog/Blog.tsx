@@ -2,16 +2,14 @@
 import React from "react";
 import styles from "./Blog.module.scss";
 import { CustomImage, InputField } from "@/shared";
-import { blogsData } from "@/mock/blogs.mock";
 import Link from "next/link";
-import slugify from "slugify";
 import { useGetAllArticles } from "@/app/api/hooks/blogs";
 import { shortenTitle } from "@/utils";
 import Image from "next/image";
 
 const Blog = () => {
 	const { data: blogsResp, isLoading: fetchingRecommended } = useGetAllArticles();
-	const blogs = blogsResp?.data || [];
+	const blogs = blogsResp?.data.filter(blog => blog.status === "available") || [];
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__hero_section}>
