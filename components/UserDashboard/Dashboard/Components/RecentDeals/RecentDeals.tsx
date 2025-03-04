@@ -45,7 +45,8 @@ const RecentDeals = () => {
 					transactionDate: createdAt.split("T")[0],
 					transactionType: type,
 					transactionStatus: status,
-					gearImage: item ? item.listingPhotos[0] : ""
+					gearImage: item ? item.listingPhotos[0] : "",
+					item
 				};
 			}),
 		[data]
@@ -155,13 +156,19 @@ const RecentDeals = () => {
 			headerAlign: "center",
 			align: "center",
 			minWidth: actionsWidth,
-			renderCell: ({ value }) => (
-				<Link
-					href={`/user/transactions/${value}`}
-					className={styles.container__action_btn}
-				>
-					<Button>View details</Button>
-				</Link>
+			renderCell: ({ value, row }) => (
+				<>
+					{row.item ? (
+						<Link
+							href={`/user/transactions/${value}`}
+							className={styles.container__action_btn}
+						>
+							<Button>View details</Button>
+						</Link>
+					) : (
+						<p className={styles.container__action_btn}>Listing Not Found</p>
+					)}
+				</>
 			)
 		}
 	];

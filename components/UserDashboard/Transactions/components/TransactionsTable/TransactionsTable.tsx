@@ -88,7 +88,8 @@ const TransactionTable = () => {
 						transactionType,
 						transactionStatus: status,
 						gearImage: item ? item.listingPhotos[0] : "",
-						userRole
+						userRole,
+						item
 					};
 				}
 			),
@@ -202,12 +203,18 @@ const TransactionTable = () => {
 			align: "center",
 			minWidth: actionsWidth,
 			renderCell: ({ row, value }) => (
-				<Link
-					href={`/user/transactions/${row.id}`}
-					className={styles.container__action_btn}
-				>
-					view details
-				</Link>
+				<>
+					{row.item ? (
+						<Link
+							href={`/user/transactions/${row.id}`}
+							className={styles.container__action_btn}
+						>
+							view details
+						</Link>
+					) : (
+						<p className={styles.container__action_btn}>Listing Not Found</p>
+					)}
+				</>
 			)
 		}
 	];
