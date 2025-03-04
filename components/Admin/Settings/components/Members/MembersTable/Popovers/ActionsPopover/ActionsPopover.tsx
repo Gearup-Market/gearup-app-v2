@@ -1,9 +1,15 @@
 "use client";
 import React from "react";
 import styles from "./ActionsPopover.module.scss";
+import { useDeleteUserById } from "@/app/api/hooks/settings";
+import Spinner from "@/shared/Spinner/Spinner";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { AppRoutes } from "@/utils";
 
 interface ActionsProps {
 	row?: any;
+	refetch: any;
 }
 
 enum ActionsEnum {
@@ -22,14 +28,22 @@ const actions = [
 	}
 ];
 
-const ActionsPopover = ({ row }: ActionsProps) => {
+const ActionsPopover = ({ row, refetch }: ActionsProps) => {
+	const { mutateAsync: deleteUser, isPending } = useDeleteUserById()
+	const router = useRouter()
+
 	const handleActions = (id: number) => {
 		switch (id) {
 			case ActionsEnum.PREVIEW:
-				console.log(`previewing ${row.userId}`);
+				router.push(AppRoutes.userDetails(row?.userId))
 				break;
 			case ActionsEnum.DELETE:
-				console.log(`deleting ${row.userId}`);
+				deleteUser({ userId: row?.userId }, {
+					onSuccess: () => {
+						refetch()
+						toast.success("User deleted successfully")
+					}
+				})
 				break;
 			default:
 				break;
@@ -42,11 +56,13 @@ const ActionsPopover = ({ row }: ActionsProps) => {
 				<li
 					onClick={() => handleActions(role.id)}
 					key={role.id}
-					className={`${styles.item} ${
-						role.id === ActionsEnum.DELETE && styles.red
-					}`}
+					className={`${styles.item} ${role.id === ActionsEnum.DELETE && styles.red
+						}`}
 				>
 					{role.title}
+					{
+						isPending && role.id === ActionsEnum.DELETE && <Spinner size="small" />
+					}
 				</li>
 			))}
 		</ul>

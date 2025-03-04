@@ -2,43 +2,24 @@
 import React, { useEffect, useState } from "react";
 import { Members, Profile, RolesPermission, Sidebar } from "./components";
 import styles from "./Settings.module.scss";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import HeaderSubText from "../HeaderSubText/HeaderSubText";
+
 
 const Settings = () => {
 	const searchParams = useSearchParams();
 	const searchQuery = searchParams.get("q");
 	const [active, setActive] = useState<string>("/admin/settings?q=profile");
-	const settingsLists = [
-		{
-			id: 1,
-			name: "Profile",
-			path: "/admin/settings?q=profile",
-			slug: "profile",
-			description: "Create your profile as a Super Admin"
-		},
-		{
-			id: 2,
-			name: "Members",
-			path: "/admin/settings?q=members",
-			slug: "members",
-			description: "Add & Manage gearup members"
-		},
+	const router = useRouter();
+	const pathname = usePathname();
 
-		{
-			id: 4,
-			name: "Roles & Permissions",
-			path: "/admin/settings?q=roles-permissions",
-			slug: "roles-permissions",
-			description: "Grant special roles and permissions"
-		}
-	];
+
 
 	useEffect(() => {
-		setActive(searchQuery || "profile");
-		// if(!searchQuery){
-		//   searchParams.
-		// }
+		setActive(searchQuery ?? "profile");
+		if (!searchQuery) {
+			router.push(`${pathname}?q=profile`)
+		}
 	}, [searchQuery]);
 
 	return (
@@ -59,3 +40,29 @@ const Settings = () => {
 };
 
 export default Settings;
+
+
+const settingsLists = [
+	{
+		id: 1,
+		name: "Profile",
+		path: "/admin/settings?q=profile",
+		slug: "profile",
+		description: "Create your profile as a Super Admin"
+	},
+	{
+		id: 2,
+		name: "Members",
+		path: "/admin/settings?q=members",
+		slug: "members",
+		description: "Add & Manage gearup members"
+	},
+
+	{
+		id: 4,
+		name: "Roles & Permissions",
+		path: "/admin/settings?q=roles-permissions",
+		slug: "roles-permissions",
+		description: "Grant special roles and permissions"
+	}
+];

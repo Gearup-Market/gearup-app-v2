@@ -31,7 +31,7 @@ const lists = [
 
 const Members = () => {
 	const [openModal, setOpenModal] = useState(false);
-	const { data } = useGetAdminMembers();
+	const { data, refetch } = useGetAdminMembers();
 	const noMembers = true;
 
 	const memberData = useMemo(() => {
@@ -47,18 +47,20 @@ const Members = () => {
 					updatedAt,
 					totalMembers
 				}: any) => [
-					_id,
-					{ roleName, permissions, createdAt, updatedAt, totalMembers }
-				]
+						_id,
+						{ roleName, permissions, createdAt, updatedAt, totalMembers }
+					]
 			)
 		);
 
 		const members = data.data.flatMap((item: any) =>
-			(item.members || []).map((member: any) => ({
+			(item.members || []).map((member: any, ind: number) => ({
 				...member,
+				id: `${member._id}-${ind}-${Math.floor(Math.random() * (965 - 45 + 1)) + 45}`,
 				role: rolesMap.get(member.role) || null
 			}))
 		);
+
 
 		const roles = Array.from(rolesMap.values());
 
@@ -94,7 +96,7 @@ const Members = () => {
 								alt={item.roleName}
 								className={styles.avatar}
 							/>
-							<div>
+							<div className={styles.title_container}>
 								<span className={styles.title}>{item.roleName}</span>
 								<p className={styles.amount}>{item.totalMembers}</p>
 							</div>
@@ -124,7 +126,7 @@ const Members = () => {
 							</Button>
 						</div>
 					) : (
-						<MembersTable members={memberData.members} />
+						<MembersTable members={memberData.members} refetch={refetch} />
 					)
 				) : (
 					<PageLoader />

@@ -6,6 +6,7 @@ import { Form, Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { usePostCreateAdminRoles } from '@/app/api/hooks/Admin/users';
 import toast from 'react-hot-toast';
+import Spinner from '@/shared/Spinner/Spinner';
 
 interface AddMemberProps {
     openModal: boolean;
@@ -14,7 +15,7 @@ interface AddMemberProps {
 
 const AddRole = ({ openModal, setOpenModal }: AddMemberProps) => {
     const [selectedRole, setSelectedRole] = React.useState<string>('');
-    const {mutateAsync: postCreateRole, isPending} = usePostCreateAdminRoles()
+    const { mutateAsync: postCreateRole, isPending } = usePostCreateAdminRoles()
 
     interface RoleFormValues {
         roleName: string;
@@ -28,15 +29,15 @@ const AddRole = ({ openModal, setOpenModal }: AddMemberProps) => {
         roleName: Yup.string().required('Role name is required'),
     });
 
-    const handleSubmit = async(values: RoleFormValues) => {
+    const handleSubmit = async (values: RoleFormValues) => {
         // You can also call an API to create the role here
-        await postCreateRole(values,{
+        await postCreateRole(values, {
             onSuccess: () => {
                 toast.success('Role created successfully');
                 setOpenModal(false);
             },
-            onError: (err) => {
-                toast.error('Error creating role');
+            onError: (err: any) => {
+                toast.error(err?.response?.data?.message ?? "Error creating role");
             }
         })
 
@@ -69,7 +70,7 @@ const AddRole = ({ openModal, setOpenModal }: AddMemberProps) => {
                             <Form>
                                 <div className={styles.container__form_container__form}>
                                     <div className={styles.address_field}>
-                                        <Field 
+                                        <Field
                                             name='roleName'
                                             render={({ field }: any) => (
                                                 <InputField
@@ -88,7 +89,7 @@ const AddRole = ({ openModal, setOpenModal }: AddMemberProps) => {
                                     </div>
                                 </div>
                                 <div className={styles.submit_btn_container}>
-                                    <Button buttonType='primary' type="submit">Create Role</Button>
+                                    <Button buttonType='primary' type="submit">Create Role {isPending && <Spinner className={styles.white_loader} size="small" />}</Button>
                                 </div>
                             </Form>
                         )}

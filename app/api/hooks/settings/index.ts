@@ -76,3 +76,13 @@ export const useGetAccountName = (
 		enabled: !!accountNumber && !!bankCode,
 		refetchOnMount: true
 	});
+
+
+	export const useDeleteUserById = (
+	) =>
+		useMutation<any, any, any>({
+			mutationFn: async props =>
+				(await api.delete(`${API_URL.getAdmin}${props.userId}`, {
+					...props
+				})).data,
+		});

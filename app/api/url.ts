@@ -88,5 +88,6 @@ export const API_URL = {
 	confirmTransactionPin: "/users/check-pin",
 	getAllPricings: "admin/pricing/retrieve",
 	updatePricing: "admin/pricing/update",
-	adminGetUserTransactions:(userId: string)=> `admin/transactions/${userId}`
+	adminGetUserTransactions:(userId: string)=> `admin/transactions/${userId}`,
+	getAllThirdPartyRequests: "/admin/third-party-requests"
 };

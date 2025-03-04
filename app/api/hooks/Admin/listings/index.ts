@@ -15,9 +15,7 @@ export const useAdminGetAllListings = (
 	});
 
 export const useAdminGetAllUserListings = (
-	{
-		userId
-	}: { userId: string },
+	{ userId }: { userId: string },
 	options?: UseQueryOptions<iGetListingsResp, IGetErr>
 ) =>
 	useQuery<iGetListingsResp, IGetErr>({

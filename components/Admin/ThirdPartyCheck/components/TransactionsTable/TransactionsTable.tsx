@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import styles from "./TransactionTable.module.scss";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import { Button, InputField, MobileCardContainer, Pagination } from "@/shared";
 import { customisedTableClasses } from "@/utils/classes";
 import Link from "next/link";
-import { transactions } from "@/mock/transactions.mock";
 import TransactionCardMob from "./TransactionCardMob/TransactionCardMob";
+import { useGetAllThirdPartyRequests } from "@/app/api/hooks/Admin/thirdparty";
 
 interface Props {
     transactionType: string;
@@ -16,9 +16,10 @@ interface Props {
 const TransactionTable = ({ transactionType }: Props) => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(7);
-    const [paginatedTransactions, setPaginatedTransactions] = useState<GridRowsProp>(
-        transactions.slice(0, limit)
-    );
+    const { data, isLoading } = useGetAllThirdPartyRequests({ page })
+    const thirdPartyRequests = data?.data || []
+    const { totalCount, totalPages, currentPage } = data?.pagination ?? { totalCount: 0, totalPages: 0, currentPage: 1, limit: 10 }
+
 
     const sharedColDef: GridColDef = {
         field: "",
@@ -27,9 +28,6 @@ const TransactionTable = ({ transactionType }: Props) => {
     };
 
     const handlePagination = (page: number) => {
-        const start = (page - 1) * limit;
-        const end = start + limit;
-        setPaginatedTransactions(transactions.slice(start, end));
         setPage(page);
     };
 
@@ -122,26 +120,27 @@ const TransactionTable = ({ transactionType }: Props) => {
                 style={{ width: "100%", height: "100%" }}
             >
                 <DataGrid
-                    rows={paginatedTransactions}
+                    rows={thirdPartyRequests}
                     columns={columns}
                     paginationMode="server"
                     sx={customisedTableClasses}
                     hideFooter
                     autoHeight
+                    loading={isLoading}
                 />
             </div>
 
 
             <MobileCardContainer>
-                {paginatedTransactions.map((item, ind) => (
-                    <TransactionCardMob key={item.id} item={item} transactionType={transactionType} ind={ind} lastEle={(ind + 1) === paginatedTransactions.length ? true : false} />
+                {thirdPartyRequests.map((item: any, ind: number) => (
+                    <TransactionCardMob key={item.id} item={item} transactionType={transactionType} ind={ind} lastEle={(ind + 1) === thirdPartyRequests?.length ? true : false} />
                 ))}
             </MobileCardContainer>
 
             <Pagination
-                currentPage={page}
+                currentPage={currentPage}
                 onPageChange={handlePagination}
-                totalCount={transactions.length}
+                totalCount={totalCount}
                 pageSize={limit}
             />
         </div>
