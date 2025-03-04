@@ -10,10 +10,11 @@ import {
 } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
 import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
+import { Filter } from "@/interfaces/Listing";
 
 interface MoreModalProps {
 	row?: any;
-	activeFilter?: string;
+	activeFilter?: Filter;
 	onClickEdit?: (listingId: string) => void;
 	refetch?: () => void;
 	closePopOver?: () => void;
@@ -75,7 +76,7 @@ const MoreModal = ({
 			>
 				Edit
 			</div>
-			{activeFilter === "courses" ? (
+			{activeFilter?.name === "courses" ? (
 				<div className={`${styles.container__edit} ${styles.item}`}>Share</div>
 			) : (
 				<div className={`${styles.container__status_container} ${styles.item}`}>

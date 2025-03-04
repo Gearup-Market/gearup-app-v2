@@ -9,11 +9,13 @@ import { useGlobalContext } from "@/contexts/AppContext";
 import { EllipseIcon, MoreIcon } from "@/shared/svgs/dashboard";
 import MoreModal from "../MoreModal/MoreModal";
 import { Button, CustomImage } from "@/shared";
+import { Field } from "@/app/api/hooks/listings/types";
+import { Filter } from "@/interfaces/Listing";
 
 interface Props {
 	props: any;
 	className?: string;
-	activeFilter?: string;
+	activeFilter?: Filter;
 	activeRow?: number;
 	setActiveRow?: React.Dispatch<React.SetStateAction<number>>;
 	showMoreIcon?: boolean;

@@ -194,14 +194,11 @@ export function useListingFilters() {
 		if (categories) {
 			const _filter = parentFilters.map(f => ({
 				...f,
-				subFilters: [
-					...f.subFilters,
-					...categories.data.map((c, i) => ({
-						id: c.id,
-						name: c.name,
-						image: c.image
-					}))
-				]
+				subFilters: categories.data.map((c, i) => ({
+					id: c.id,
+					name: c.name,
+					image: c.image
+				}))
 			}));
 
 			setFilters(_filter);

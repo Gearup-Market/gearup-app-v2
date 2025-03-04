@@ -1,171 +1,157 @@
-@import '@/styles/imports.scss';
+@import "@/styles/imports.scss";
 
-.container{
-    margin-top: 2rem;
+.container {
+	margin-top: 2rem;
+	position: relative;
 
+	&__name_container {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		height: 100%;
+		font-size: 1.2rem;
 
-    &__name_container{
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        height: 100%;
-        font-size: 1.2rem;
-        
-        img{
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-        }
+		img {
+			width: 2.5rem;
+			height: 2.5rem;
+			border-radius: 50%;
+		}
 
-        &__name{
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: $col-grey-1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-    
-    }
+		&__name {
+			font-size: 1.2rem;
+			font-weight: 600;
+			color: $col-grey-1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
 
-    &__title{
-        font-size: 2.4rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: $col-grey-1;
-    }
+	&__title {
+		font-size: 2.4rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		color: $col-grey-1;
+	}
 
-    &__action_btn{
-        border:1px solid $col-grey-300;
-        padding: 0.5rem 1rem;
-        border-radius: 10rem;
-        font-size:1.4rem;
-        font-weight: 700;
-        color: #4B525A;
-    }
+	&__action_btn {
+		border: 1px solid $col-grey-300;
+		padding: 0.5rem 1rem;
+		border-radius: 10rem;
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #4b525a;
+	}
 
-    &__status_container{
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        height: 100%;
-        font-weight: 400;
-        font-size: 1.2rem;
+	&__status_container {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		height: 100%;
+		font-weight: 400;
+		font-size: 1.2rem;
 
-        &__status{
-            padding: 0.1rem 1rem;
-            border-radius: 1.5rem;
-            font-weight: 600;
-            &[data-status="pending"]{
-                background-color: #FFFAEB;
-                color: #B54708;
-            }
-            &[data-status="completed"]{
-                background-color: #ECFDF3;
-                color: #027A48;
-            }
-            &[data-status="ongoing"]{
-                background-color:#F0F9FF;
-                color:#026AA2;
-            }
-            &[data-status="declined"]{
-                background-color: #FEF3F2;
-                color: #B42318;
-            }
+		&__status {
+			padding: 0.1rem 1rem;
+			border-radius: 1.5rem;
+			font-weight: 600;
+			&[data-status="pending"] {
+				background-color: #fffaeb;
+				color: #b54708;
+			}
+			&[data-status="completed"] {
+				background-color: #ecfdf3;
+				color: #027a48;
+			}
+			&[data-status="ongoing"] {
+				background-color: #f0f9ff;
+				color: #026aa2;
+			}
+			&[data-status="declined"] {
+				background-color: #fef3f2;
+				color: #b42318;
+			}
+		}
+	}
 
-        }
-    }
+	&__input_filter_container {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin: 2rem 0;
+		position: relative;
+		overflow: visible;
 
-    &__input_filter_container{
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin: 2rem 0;
-        position: relative;
-        overflow: visible;
+		.no_search_result {
+			position: absolute;
+			top: 5rem;
+			left: 0;
+			width: 100%;
+			z-index: 100;
+			display: none;
 
+			&[data-show="true"] {
+				display: block;
+			}
+		}
 
-        .no_search_result{
-            position: absolute;
-            top: 5rem;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            display: none;
+		.filter_icon_container {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 1rem;
+			border: 1px solid $col-border;
+			border-radius: 0.5rem;
 
-            &[data-show='true']{
-                display: block;
-            }
-        }
+			img {
+				width: 2rem;
+				height: 2rem;
+			}
+		}
 
+		&__input {
+			padding: 0.5rem;
+			border: 1px solid $col-grey-300;
+			border-radius: 0.5rem;
+			font-size: 1.2rem;
+			font-weight: 400;
+			color: $col-grey-1;
+		}
 
-        .filter_icon_container{
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem;
-            border: 1px solid $col-border;
-            border-radius: 0.5rem;
-        
-            img{
-                width: 2rem;
-                height: 2rem;
-        
-            }
-        }
+		&__filter {
+			padding: 0.5rem 1rem;
+			border: 1px solid $col-grey-300;
+			border-radius: 0.5rem;
+			font-size: 1.2rem;
+			font-weight: 400;
+			color: $col-grey-1;
+			background-color: $col-grey-50;
+		}
+	}
 
-        &__input{
-            padding: 0.5rem;
-            border: 1px solid $col-grey-300;
-            border-radius: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: $col-grey-1;
-        }
+	&__table {
+		overflow: auto;
+		@include screenMax("mobile") {
+			display: none;
+		}
 
-        &__filter{
-            padding: 0.5rem 1rem;
-            border: 1px solid $col-grey-300;
-            border-radius: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: $col-grey-1;
-            background-color: $col-grey-50;
-        }
+		.table_header {
+			width: 100%;
+			font-weight: 700;
+		}
 
-        @include screenMax("mobile") {
-            display: none;
-        }
-    }
+		.table_cell {
+			font-size: 1.2rem;
+			background-color: $col-white;
+		}
 
-    &__table{
-        overflow: auto;
-        @include screenMax("mobile") {
-            display: none;
-        }
-
-        
-        .table_header{
-         
-            width: 100%;
-            font-weight: 700;
-        }
-
-        .table_cell{
-            font-size: 1.2rem;
-            background-color: $col-white;
-        }
-
-        .dataGridOverlay {
-            background-color: $col-grey-50;
-            color: #333;
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-          }
-    }
-
-    
-
+		.dataGridOverlay {
+			background-color: $col-grey-50;
+			color: #333;
+			display: flex;
+			width: 100%;
+			justify-content: center;
+			align-items: center;
+		}
+	}
 }

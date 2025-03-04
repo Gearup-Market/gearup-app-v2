@@ -133,7 +133,6 @@ const NewBlog = () => {
 					...values,
 					bannerImage: imageSrc, // Use existing imageSrc
 					user: user.userId,
-					status,
 					_id: articleId as string,
 					category: categoryId,
 					content: { text: parsedContent as string }
@@ -360,6 +359,9 @@ const NewBlog = () => {
 													options={blogsCategories}
 													defaultOptionIndex={
 														defaultOptionIndex
+													}
+													defaultOption={
+														data?.category.name || ""
 													}
 													{...field}
 													onOptionChange={value => {

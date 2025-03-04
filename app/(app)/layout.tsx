@@ -1,6 +1,13 @@
 import "@/styles/index.scss";
 import styles from "./layout.module.scss";
 import { Footer, Header } from "@/shared";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "GearUp | The Peer-2-Peer Marketplace for African Creators",
+	description:
+		"GearUp connects African creators with opportunities to rent, buy, and sell creative gear, book studio spaces, access professional courses, and land gigs."
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (

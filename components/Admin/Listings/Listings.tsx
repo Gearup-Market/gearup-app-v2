@@ -51,14 +51,14 @@ const Listings = ({ showTitle, userid }: Props) => {
 				</div>
 			</div>
 			<div className={styles.container__filters_container}>
-				<ReuseableFilters
+				{/* <ReuseableFilters
 					parentFilters={parentFilters}
 					activeFilterId={activeFilterId}
 					setActiveFilterId={setActiveFilterId}
 					setActiveSubFilterId={setActiveSubFilterId}
 					activeSubFilterId={activeSubFilterId}
 					showChildrenFilters={true}
-				/>
+				/> */}
 				<div className={styles.container__filters_container__listings_container}>
 					<span>
 						<p>Hide All Listings</p>

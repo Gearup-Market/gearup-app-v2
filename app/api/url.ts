@@ -60,7 +60,7 @@ export const API_URL = {
 	updateUserPin: "/users/update-pin",
 	updateAccountPin: "/users/update-pin",
 	adminBlogsArticles: "/blog",
-	adminBlogsArticlesById: "/blog/",
+	adminBlogsArticlesById: "admin/blog",
 	getAllBlogCategories: "/blog/category/all",
 	createBlogCategory: "/admin/blog/create-category",
 	updateBlogCategory: "/admin/blog/category/update",

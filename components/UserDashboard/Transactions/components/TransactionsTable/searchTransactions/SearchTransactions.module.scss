@@ -1,0 +1,135 @@
+@import "@/styles/imports.scss";
+
+.container {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 7rem;
+	border: 1px solid $col-border;
+	background-color: $col-white;
+	z-index: 1;
+	padding: 1.6rem;
+	border-radius: 1.6rem;
+	.text {
+		width: 100%;
+		padding: 2rem;
+		p {
+			text-align: center;
+		}
+	}
+	&__name_container {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		height: 100%;
+		font-size: 1.2rem;
+
+		img {
+			width: 2.5rem;
+			height: 2.5rem;
+			border-radius: 50%;
+		}
+
+		&__name {
+			font-size: 1.2rem;
+			font-weight: 600;
+			color: $col-grey-1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+	&__availability_container,
+	&__status_container,
+	&__action_cell {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		height: 100%;
+		font-weight: 400;
+		font-size: 1.2rem;
+
+		.modal_container {
+			position: relative;
+		}
+
+		&__status {
+			border-radius: 1.5rem;
+			font-weight: 600;
+		}
+
+		&__status_courses {
+			border-radius: 1.5rem;
+			font-weight: 600;
+			background-color: #f0f0f1;
+			padding: 0.1rem 1rem;
+			&[data-status="ongoing"] {
+				background-color: #ecfdf3;
+				color: #027a48;
+			}
+		}
+
+		&__availability {
+			border-radius: 0.5rem;
+			font-weight: 400;
+			font-size: 1.2rem;
+			padding: 0.1rem 1rem;
+			border-radius: 1.5rem;
+			&[data-status="rented out"] {
+				background-color: #f0f9ff;
+				color: #026aa2;
+			}
+			&[data-status="hidden"] {
+				background-color: #f2f4f7;
+				color: #344054;
+			}
+			&[data-status="active listing"] {
+				background-color: #feefeb;
+				color: #f76039;
+			}
+		}
+	}
+	&__status_container {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		height: 100%;
+		font-weight: 400;
+		font-size: 1.2rem;
+
+		&__status {
+			padding: 0.1rem 1rem;
+			border-radius: 1.5rem;
+			font-weight: 600;
+			&[data-status="pending"] {
+				background-color: #fffaeb;
+				color: #b54708;
+			}
+			&[data-status="completed"] {
+				background-color: #ecfdf3;
+				color: #027a48;
+			}
+			&[data-status="ongoing"] {
+				background-color: #f0f9ff;
+				color: #026aa2;
+			}
+			&[data-status="declined"] {
+				background-color: #fef3f2;
+				color: #b42318;
+			}
+		}
+	}
+	&__action_btn {
+		border: 1px solid $col-grey-300;
+		padding: 1rem;
+		border-radius: 10rem;
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #4b525a;
+	}
+	@include screenMax("mobile") {
+		.container__table {
+			display: none;
+		}
+	}
+}

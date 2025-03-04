@@ -6,15 +6,15 @@ import Script from "next/script";
 
 const sourceSans = Source_Sans_3({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-	// title: {
-	// 	template: "GearUp | %s",
-	// 	default: "The Peer-2-Peer Marketplace for African Creators"
-	// },
-	title: "GearUp | The Peer-2-Peer Marketplace for African Creators",
-	description:
-		"GearUp connects African creators with opportunities to rent, buy, and sell creative gear, book studio spaces, access professional courses, and land gigs."
-};
+// export const metadata: Metadata = {
+// 	// title: {
+// 	// 	template: "GearUp | %s",
+// 	// 	default: "The Peer-2-Peer Marketplace for African Creators"
+// 	// },
+// 	title: "GearUp | The Peer-2-Peer Marketplace for African Creators",
+// 	description:
+// 		"GearUp connects African creators with opportunities to rent, buy, and sell creative gear, book studio spaces, access professional courses, and land gigs."
+// };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<link rel="icon" href="/favicon.png" sizes="any" />
 					<meta property="og:type" content="website" />
 					<meta property="og:url" content="https://gearup.market/" />
-					<meta
+					{/* <meta
 						property="og:title"
 						content=" GearUp | The Peer-2-Peer Marketplace for African Creators"
 					/>
@@ -71,7 +71,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						content="https://gearup.market/images/social-card.png"
 					/>
 
-					{/* Twitter */}
 					<meta property="twitter:card" content="summary_large_image" />
 					<meta property="twitter:url" content="https://gearup.market/" />
 					<meta
@@ -85,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<meta
 						property="twitter:image"
 						content="https://gearup.market/images/social-card.png"
-					/>
+					/> */}
 				</head>
 			</head>
 			<body className={sourceSans.className}>
