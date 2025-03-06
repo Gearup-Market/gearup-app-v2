@@ -225,10 +225,11 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			background: #070707;
+			background: #fff;
 			margin: 2rem 0;
-			padding: 1rem;
+			padding: 0.5rem;
 			border-radius: 10rem;
+			border: 1px solid $col-border;
 
 			button {
 				background: transparent;
@@ -236,7 +237,7 @@
 				display: flex;
 				align-items: center;
 				gap: 1rem;
-				color: #a3a7ab;
+				color: #4b525a;
 				font-size: 1.4rem;
 				font-weight: 400;
 				width: 100%;
