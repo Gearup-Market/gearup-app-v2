@@ -1,21 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./RolesPermissionTable.module.scss";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
-import Image from "next/image";
-import { CustomRadioButton, InputField, Pagination, ToggleSwitch } from "@/shared";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { CustomRadioButton, InputField } from "@/shared";
 import { customisedTableClasses } from "@/utils/classes";
-import Link from "next/link";
-import { membersData } from "@/mock/members.mock";
-import { ListingCard } from "@/components/Admin/Listings/components";
 import { permissionsData } from "@/mock/permissionsData.mock";
-import RadioBox from "@/shared/Radio/Radio";
-import { Radio } from "@mui/material";
 import RolesPermissionCardMob from "../RolesPermissionCardMob/RolesPermissionCardMob";
 import { useGetAdminRoles } from "@/app/api/hooks/Admin/users";
 import { RoleProps } from "@/app/api/hooks/Admin/users/types";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import { set } from "lodash";
+
+type RolePermissions = Record<string, Record<string, boolean>>;
+
 
 const RolesPermissionTable = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false)
@@ -33,108 +29,74 @@ const RolesPermissionTable = () => {
         return rolesAndPermissions.find((role: RoleProps) => role.roleName.toLowerCase() === roleName.toLowerCase())
     }
 
-    const columns: GridColDef[] = [
+    const extraColumns: GridColDef[] = rolesAndPermissions.map((role, index) => ({
+        ...sharedColDef,
+        field: `${role.roleName.toUpperCase().replace(/\s+/g, "_")}-${index}`,
+        cellClassName: styles.table_cell,
+        headerClassName: styles.table_header,
+        headerName: `${role.roleName}`,
+        minWidth: 150,
+        renderCell: ({ row }: { row: any }) => {
+            return (
+                <div className={styles.super_admin}>
+                    <ul>
+                        {row.permissions.map((permission: string, i: number) => {
+                            const rolePermissions: any = role.permissions;
+                            
+                            const rowTitle: string = row?.title?.toLowerCase() ?? "";
+                            
+                            const availablePermissions = Object.keys(rolePermissions); // Get valid keys
+                            
+                            const isPermissionAvailable = availablePermissions.includes(rowTitle);
+                            
+                            const currentPermission = permission.split(" ")[0]?.toLowerCase(); // Extract first word of permission
+                            
+                            const isPermitted = isPermissionAvailable 
+                                ? rolePermissions[rowTitle]?.[currentPermission] ?? false 
+                                : false;
+            
+                            return (
+                                <li key={i} className={styles.permission}>
+                                    <CustomRadioButton 
+                                        onChange={() => handleToggle(role.roleName, permission)} 
+                                        checked={isPermitted} 
+                                    />
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            );
+
+        },
+    }));
+
+
+    const columns = useMemo<GridColDef[]>(() => [
         {
             ...sharedColDef,
-
             field: "permissions",
             cellClassName: styles.table_cell,
             headerClassName: styles.table_header,
             headerName: "Permissions",
             minWidth: 250,
-
-            renderCell: ({ row, value }) => (
-                <div className={styles.container__permissions_wrapper} >
+            pinnable: true,
+            renderCell: ({ row }) => (
+                <div className={styles.container__permissions_wrapper}>
                     <h2 className={styles.permission_title} style={{ fontWeight: 700 }}>{row.title}</h2>
                     <ul className={styles.permissions_container}>
                         {row.permissions.map((permission: string) => (
-                            <li style={{ fontSize: "1.2rem", color: "#4B525A", fontWeight: 400 }} key={permission}>{permission}</li>
+                            <li style={{ fontSize: "1.2rem", color: "#4B525A", fontWeight: 400 }} key={permission}>
+                                {permission}
+                            </li>
                         ))}
                     </ul>
                 </div>
             ),
         },
-        {
-            ...sharedColDef,
+        ...extraColumns
+    ], [rolesAndPermissions]);
 
-            field: 'super_admin',
-            cellClassName: styles.table_cell,
-            headerClassName: styles.table_header,
-            headerName: 'Super Admin',
-            minWidth: 150,
-            renderCell: ({ row, value }) => {
-                const superAdminPermissions = getPermissionsByRoleName("super admin")
-                return (
-                    <div className={styles.super_admin}>
-                        <ul>
-                            {
-                                row.permissions.map((item: string, index: number) => {
-                                    return (
-                                        <li key={index} className={styles.permission}>
-                                            <CustomRadioButton
-                                                onChange={() => handleToggle(row.title, item)}
-                                            />
-                                        </li>
-                                    )
-                                })}
-                        </ul>
-                    </div>
-                )
-            }
-        },
-        {
-            ...sharedColDef,
-
-            field: 'admin',
-            cellClassName: styles.table_cell,
-            headerClassName: styles.table_header,
-            headerName: 'Admin',
-            minWidth: 150,
-            renderCell: ({ row, value }) => {
-                const adminPermissions = getPermissionsByRoleName("admin")
-                return (
-                    <div className={styles.super_admin}>
-                        <ul>
-                            {
-                                row.permissions.map((item: string, index: number) => {
-                                    return (
-                                        <li key={index} className={styles.permission}>
-                                            <CustomRadioButton
-                                                onChange={() => handleToggle(row.title, item)}
-                                            />
-                                        </li>
-                                    )
-                                })}
-                        </ul>
-                    </div>
-                )
-            },
-        },
-        {
-            ...sharedColDef,
-            field: 'design',
-            cellClassName: styles.table_cell,
-            headerClassName: styles.table_header,
-            headerName: 'design',
-            maxWidth: 150,
-            renderCell: ({ row, value }) => (
-                <div className={styles.super_admin}>
-                    <ul>
-                        {
-                            row.permissions.map((item: string, index: number) => {
-                                return (
-                                    <li key={index} className={styles.permission}>
-                                        <CustomRadioButton
-                                            onChange={() => handleToggle(row.title, item)}
-                                        />
-                                    </li>
-                                )
-                            })}
-                    </ul>
-                </div>
-            ),
-        },
-    ];
 
     const closeConfirmModal = () => {
         setShowConfirmModal(false)
@@ -147,16 +109,6 @@ const RolesPermissionTable = () => {
     const handleToggle = (roleName: string, permission: string) => {
         const role = getPermissionsByRoleName(roleName)
         setShowConfirmModal(true)
-        /*    const updatedPermissions = role.permissions.map((item: string) => {
-               if(item === permission) {
-                   return {
-                       ...item,
-                       selected: !item.selected
-                   }
-               }
-               return item
-           })
-           role?.permissions = updatedPermissions */
     }
 
     return (
@@ -188,7 +140,7 @@ const RolesPermissionTable = () => {
 
             <ul className={styles.container__cards_container}>
                 {paginatedData.map(item => (
-                    <RolesPermissionCardMob key={item.id} item={item} handleToggle={handleToggle}/>
+                    <RolesPermissionCardMob key={item.id} item={item} handleToggle={handleToggle} />
                 ))}
             </ul>
             <ConfirmModal openModal={showConfirmModal} onClose={closeConfirmModal} onConfirm={handleSetPermissions} />
