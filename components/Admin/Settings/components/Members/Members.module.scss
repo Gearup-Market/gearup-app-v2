@@ -35,20 +35,20 @@
 			padding: 2rem;
 			background-color: #fafafb;
 			margin-top: 2.4rem;
-			width: 100%;
-			overflow: auto;
+			overflow: scroll;
+			width: fit;
 			@include noScrollBar();
 
 			.member {
 				display: flex;
+				flex: 1;
 				gap: 1.2rem;
 				align-items: center;
 				padding: 1rem 2rem;
 				cursor: pointer;
 				box-sizing: border-box;
-				flex: 1;
 				transition: all 0.3s linear;
-				width: 100%;
+				width: 500px;
 
 				&:hover {
 					background: $col-active-nav-bg;
