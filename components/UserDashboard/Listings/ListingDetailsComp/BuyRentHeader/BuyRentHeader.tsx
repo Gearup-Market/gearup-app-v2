@@ -20,9 +20,10 @@ const BuyRentHeader = ({
 	listing,
 	isFetching
 }: {
-	listing: Listing;
+	listing?: Listing;
 	isFetching: boolean;
 }) => {
+	if (!listing) return;
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { userId } = useAppSelector(s => s.user);
@@ -34,12 +35,12 @@ const BuyRentHeader = ({
 		usePostChangeListingStatus();
 
 	const onToggleHideListing = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (listing.status === "unavailable")
+		if (listing?.status === "unavailable")
 			return toast.error("This listing has not been approved yet");
 		try {
 			const res = await postChangeListingStatus({
 				userId,
-				listingId: listing._id
+				listingId: listing?._id
 			});
 			if (res.data) {
 				toast.success("Status updated");
@@ -50,7 +51,7 @@ const BuyRentHeader = ({
 
 	const onHandleDeleteListing = async () => {
 		try {
-			const payload = { userId, listingId: listing._id };
+			const payload = { userId, listingId: listing?._id };
 			const res = await postRemoveListing(payload);
 			if (res.data) {
 				toast.success("Listing deleted");
@@ -62,12 +63,12 @@ const BuyRentHeader = ({
 	const onClickEdit = () => {
 		const payload = {
 			...listing,
-			...(listing.condition ? { condition: listing.condition } : {}),
+			...(listing?.condition ? { condition: listing?.condition } : {}),
 			items: [
 				{
-					name: listing.productName || "Default Product Name",
+					name: listing?.productName || "Default Product Name",
 					quantity: 1,
-					id: listing._id || 0
+					id: listing?._id || 0
 				}
 			],
 			tempPhotos: [],
@@ -75,7 +76,7 @@ const BuyRentHeader = ({
 		};
 
 		dispatch(updateNewListing(payload));
-		router.push(`/new-listing?id=${listing._id}`);
+		router.push(`/new-listing?id=${listing?._id}`);
 	};
 
 	console.log(listing);
@@ -90,7 +91,7 @@ const BuyRentHeader = ({
 						<HeaderSubText title="Details" />
 						<div className={styles.toggle_container_mobile}>
 							<ToggleListing
-								checked={listing.status === "unavailable"}
+								checked={listing?.status === "unavailable"}
 								onChange={onToggleHideListing}
 								disabled={isPendingUpdate}
 							/>
@@ -99,7 +100,7 @@ const BuyRentHeader = ({
 					<div className={styles.actions_btns}>
 						<div className={styles.toggle_container_desktop}>
 							<ToggleListing
-								checked={listing.status === "unavailable"}
+								checked={listing?.status === "unavailable"}
 								onChange={onToggleHideListing}
 								disabled={isPendingUpdate}
 							/>
