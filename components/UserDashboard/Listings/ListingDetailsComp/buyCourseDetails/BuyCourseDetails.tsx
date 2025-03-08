@@ -27,7 +27,7 @@ const BuyCourseDetails = ({
 	const user = useAppSelector(s => s.user);
 	const { mutateAsync: updateCourseListing, isPending: isPendingUpdate } =
 		usePostUpdateCourse();
-	const [link, setLink] = useState<string>(course.link || "");
+	const [link, setLink] = useState<string>(course?.link || "");
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const handleEditLink = async () => {
@@ -37,7 +37,7 @@ const BuyCourseDetails = ({
 				link
 			};
 
-			await updateCourseListing({ ...data, courseId: course._id });
+			await updateCourseListing({ ...data, courseId: course?._id });
 			toast.success(`Link updated successfully`);
 			setOpenModal(false);
 			refetch();
@@ -51,10 +51,10 @@ const BuyCourseDetails = ({
 			<div className={styles.body}>
 				<div className={styles.details}>
 					<div className={styles.container}>
-						<ImageSlider images={[course.cover]} type={course.courseType} />
+						<ImageSlider images={[course?.cover]} type={course?.courseType} />
 						<div className={styles.block}>
 							<div className={styles.text}>
-								<h2>{course.title}</h2>
+								<h2>{course?.title}</h2>
 							</div>
 							{course?.courseType === CourseType.Live && (
 								<LiveCourse
@@ -90,14 +90,14 @@ const BuyCourseDetails = ({
 							)}
 							<DescriptionCard
 								className={styles.description_container}
-								description={course.description}
+								description={course?.description}
 								title="Description"
 							/>
 							<div className={styles.divider}></div>
 							<HeaderSubText title="PRICING" />
 							<DetailContainer
 								title="Amount"
-								value={course.price}
+								value={course?.price}
 								prefix="₦"
 							/>
 							<div className={styles.divider}></div>
