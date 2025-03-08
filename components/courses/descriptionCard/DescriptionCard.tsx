@@ -33,7 +33,7 @@ const DescriptionCard = ({
 				/>
 				{/* <p>{description.slice(0, textLength)}</p> */}
 			</div>
-			{description.length > initialLength && (
+			{description?.length > initialLength && (
 				<div
 					className={styles.button}
 					onClick={() => {

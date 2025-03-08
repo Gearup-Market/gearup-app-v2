@@ -56,7 +56,7 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 		<div className={styles.wrapper}>
 			<div className={styles.container}>
 				<ImageSlider
-					images={listingData?.listingPhotos}
+					images={listingData?.listingPhotos || []}
 					type={listingData?.listingType}
 				/>
 				<div className={styles.block}>

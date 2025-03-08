@@ -6,7 +6,7 @@ import { Courses } from "@/interfaces";
 import Image from "next/image";
 import { Button, Ratings } from "..";
 import { Course } from "@/store/slices/coursesSlice";
-import { formatNum } from "@/utils";
+import { formatNum, shortenTitle } from "@/utils";
 import Link from "next/link";
 
 interface Props {
@@ -25,7 +25,7 @@ const CourseCard = ({ props, className }: Props) => {
 				<Button className={styles.button}>{props.courseType}</Button>
 			</div>
 			<div className={styles.text}>
-				<h2>{props.title}</h2>
+				<h2>{shortenTitle(props.title, 50)}</h2>
 			</div>
 			<div className={styles.small_row} style={{ marginBottom: "1.2rem" }}>
 				<div className={styles.text}>

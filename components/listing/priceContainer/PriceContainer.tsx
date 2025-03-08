@@ -103,6 +103,15 @@ const PriceContainer = ({
 			price: appliedRate?.price || 0
 		};
 	});
+
+	const duration =
+		offer.forRent?.rates[0].duration === "hour"
+			? formattedHourRentalBreakdown.reduce(
+					(total, period) => total + period.quantity,
+					0
+			  )
+			: dayRentalBreakdown.length;
+
 	const item: CartItem = {
 		listing,
 		type: TransactionType.Rental,
@@ -113,6 +122,12 @@ const PriceContainer = ({
 	};
 
 	const price = calculateItemPrice(item);
+
+	const discountedPrice = (appliedRate?.price ?? 0) * duration || 0;
+
+	const nonDiscountedPrice = (offer.forRent?.rates[0].price ?? 0) * duration;
+
+	const discount = nonDiscountedPrice - discountedPrice;
 
 	const vat = (allPricings?.valueAddedTax! / 100) * price;
 	const serviceFee = (allPricings?.gearLeaseFee! / 100) * price;
@@ -255,10 +270,14 @@ const PriceContainer = ({
 				{isDateSelected && (
 					<div className={styles.price_details_container}>
 						<PriceItem
-							item={`Rental price (${appliedRate?.quantity} ${
-								appliedRate?.duration
-							}${(appliedRate?.quantity as number) > 1 ? "s offer" : ""})`}
-							value={`${currency}${formatNumber(appliedRate?.price ?? 0)}`}
+							item={`Rental price (${duration} ${appliedRate?.duration}${
+								(appliedRate?.quantity as number) > 1 ? "s" : ""
+							})`}
+							value={`${currency}${formatNumber(discountedPrice)}`}
+						/>
+						<PriceItem
+							item={`Multiple days discount`}
+							value={`-${currency}${formatNumber(discount)}`}
 						/>
 						<PriceItem
 							item="Gearup service fee"
@@ -302,6 +321,20 @@ const PriceContainer = ({
 					// />
 					modalToOpen()}
 			</div>
+			{offer.forRent?.rates?.length! > 1 ? (
+				<div className={styles.price_card}>
+					<div className={styles.text}>
+						<h3>MULTIPLE DAYS DISCOUNTS</h3>
+						{offer.forRent?.rates.slice(1).map((rate, index) => (
+							<PriceItem
+								item={`${rate.quantity} ${rate.duration}s offer`}
+								key={index}
+								value={`${currency}${formatNumber(rate.price)}`}
+							/>
+						))}
+					</div>
+				</div>
+			) : null}
 			<div className={styles.ad_card}>
 				<Logo />
 				<div className={styles.title}>
