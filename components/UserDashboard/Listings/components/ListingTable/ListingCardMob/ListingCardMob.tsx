@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ListingCardMob.module.scss";
 import Image from "next/image";
 import { Button, MobileCard, ToggleSwitch } from "@/shared";
@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useAppSelector } from "@/store/configureStore";
 import { usePostRemoveListing } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
+import { useDeleteCourse } from "@/app/api/hooks/courses";
+import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 
 interface Props {
 	item: any;
@@ -28,9 +30,13 @@ const ListingCardMob = ({
 	refetch,
 	onClickEdit
 }: Props) => {
+	const [openModal, setOpenModal] = useState<boolean>(false);
 	const { userId } = useAppSelector(s => s.user);
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
 		usePostRemoveListing();
+
+	const { mutateAsync: postRemoveCourse, isPending: isPendingCourseRemoval } =
+		useDeleteCourse();
 
 	const onDeleteListing = async () => {
 		try {
@@ -42,9 +48,20 @@ const ListingCardMob = ({
 			}
 		} catch (error) {}
 	};
+
+	const onDeleteCourse = async () => {
+		try {
+			const payload = { userId, courseId: item.id };
+			const res = await postRemoveCourse(payload);
+			if (res.data) {
+				toast.success("Course deleted");
+				refetch!();
+			}
+		} catch (error) {}
+	};
 	return (
 		<MobileCard
-			mainHeaderImage={item.image || "/images/admin-img.jpg"}
+			mainHeaderImage={item.image || item.cover || "/images/admin-img.jpg"}
 			mainHeaderText={item.title}
 			subHeaderText={activeFilter !== "courses" ? item.price : ""}
 			lastEle={lastEle}
@@ -54,7 +71,7 @@ const ListingCardMob = ({
 				<>
 					<div className={styles.container__details__detail_container}>
 						<p className={styles.key}>Price</p>
-						<p className={styles.value}>{formatNum(item.price)}</p>
+						<p className={styles.value}>₦{formatNum(item.price)}</p>
 					</div>
 					<div className={styles.container__details__detail_container}>
 						<p className={styles.key}>Sold</p>
@@ -70,11 +87,11 @@ const ListingCardMob = ({
 							{item.status}
 						</p>
 					</div>
-					<div className={styles.container__details__btn_container}>
-						<Button buttonType="secondary" className={styles.btn}>
-							see details
+					<Link href={`/user/courses/${item.id}`}>
+						<Button buttonType="secondary" className={styles.button}>
+							See Details
 						</Button>
-					</div>
+					</Link>
 
 					<p className={`${styles.courses_action_icons}`}>
 						<span>
@@ -95,7 +112,10 @@ const ListingCardMob = ({
 							/>
 							Edit
 						</span>
-						<span className={styles.delete}>
+						<span
+							className={styles.delete}
+							onClick={() => setOpenModal(true)}
+						>
 							<Image
 								src={"/svgs/red-trash.svg"}
 								alt={item.title}
@@ -141,7 +161,7 @@ const ListingCardMob = ({
 					</div>
 					<Link href={`/user/listings/${item.id}`}>
 						<Button className={styles.button} buttonType="secondary">
-							See detials
+							See Details
 						</Button>
 					</Link>
 					{onClickEdit && (
@@ -156,7 +176,7 @@ const ListingCardMob = ({
 									onClick={() => onClickEdit(item.id)}
 								/>
 								<Image
-									onClick={onDeleteListing}
+									onClick={() => setOpenModal(true)}
 									src={"/svgs/red-trash.svg"}
 									alt={item.title}
 									width={16}
@@ -166,6 +186,15 @@ const ListingCardMob = ({
 						</div>
 					)}
 				</>
+			)}
+			{openModal && (
+				<ConfirmPin
+					openModal={openModal}
+					setOpenModal={setOpenModal}
+					onSuccess={
+						activeFilter === "courses" ? onDeleteCourse : onDeleteListing
+					}
+				/>
 			)}
 		</MobileCard>
 	);

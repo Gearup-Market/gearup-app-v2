@@ -11,24 +11,32 @@ import {
 	PURGE,
 	REGISTER,
 	REHYDRATE,
-	createMigrate,
+	createMigrate
 } from "redux-persist";
 import { updateStoreVersion } from "./global";
 import userSlice from "./slices/userSlice";
 import addListingSlice from "./slices/addListingSlice";
+import addCourseSlice from "./slices/addCourseSlice";
 import listingsSlice from "./slices/listingsSlice";
+import courseSlice from "./slices/coursesSlice";
 import verificationSlice from "./slices/verificationSlice";
 import walletSlice from "./slices/walletSlice";
 import cartSlice from "./slices/cartSlice";
 import checkoutSlice from "./slices/checkoutSlice";
 import transactionSlice from "./slices/transactionSlice";
 
-const PERSISTED_KEYS: string[] = ["user", "newListing", "verification", "cart"];
+const PERSISTED_KEYS: string[] = [
+	"user",
+	"newListing",
+	"verification",
+	"cart",
+	"newCourse"
+];
 
 const migrations = {
 	0: (state: any) => ({
-		...state,
-	}),
+		...state
+	})
 };
 
 const persistConfig = {
@@ -37,7 +45,7 @@ const persistConfig = {
 	blacklist: ["profile"],
 	storage,
 	version: 0,
-	migrate: createMigrate(migrations, { debug: false }),
+	migrate: createMigrate(migrations, { debug: false })
 };
 
 const persistedReducer = persistReducer(
@@ -50,14 +58,16 @@ const persistedReducer = persistReducer(
 		user: userSlice,
 		verification: verificationSlice,
 		wallet: walletSlice,
-		transaction: transactionSlice
+		transaction: transactionSlice,
+		newCourse: addCourseSlice,
+		courses: courseSlice
 	})
 );
 
 // eslint-disable-next-line import/no-mutable-exports
 // let store: ReturnType<typeof makeStore>;
 
-let store: ReturnType<typeof makeStore> | undefined;;
+let store: ReturnType<typeof makeStore> | undefined;
 
 export function makeStore(preloadedState = undefined) {
 	return configureStore({
@@ -66,11 +76,11 @@ export function makeStore(preloadedState = undefined) {
 			getDefaultMiddleware({
 				thunk: true,
 				serializableCheck: {
-					ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-				},
+					ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+				}
 			}),
 		devTools: process.env.NODE_ENV === "development",
-		preloadedState,
+		preloadedState
 	});
 }
 
@@ -80,9 +90,8 @@ export const initializeStore = (preloadedState: any = undefined) => {
 	if (preloadedState && store) {
 		_store = makeStore({
 			...store.getState(),
-			...preloadedState,
+			...preloadedState
 		});
-	
 	}
 
 	if (typeof window === "undefined") return _store;

@@ -2,7 +2,7 @@ import Accordion from "./accordion/Accordion";
 import BackgroundBox from "./backgroundBox/BackgroundBox";
 import Button from "./button/Button";
 import CheckBox from "./checkBox/CheckBox";
-import Course from "./course/Course";
+import CourseCard from "./course/Course";
 import CustomLink from "./customLink/CustomLink";
 import DatePicker from "./datePicker/DatePicker";
 import DetailContainer from "./detailContainer/DetailContainer";
@@ -66,7 +66,7 @@ export {
 	Title,
 	Listing,
 	BackgroundBox,
-	Course,
+	CourseCard,
 	Ratings,
 	Accordion,
 	CheckBox,

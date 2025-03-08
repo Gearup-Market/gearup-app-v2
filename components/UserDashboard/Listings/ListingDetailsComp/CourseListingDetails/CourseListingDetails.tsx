@@ -1,75 +1,124 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import styles from "./CourseListingDetails.module.scss";
 import Image from "next/image";
 import { CustomImage } from "@/shared";
 import { CopyIcon } from "@/shared/svgs/dashboard";
 import Link from "next/link";
-import { shortenTitle } from "@/utils";
+import { formatNum, getIdFromSlug, shortenTitle } from "@/utils";
+import { useDeleteCourse, useGetCourseById } from "@/app/api/hooks/courses";
+import { useParams, useRouter } from "next/navigation";
+import { PageLoader } from "@/shared/loaders";
+import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
+import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/store/configureStore";
+import { updateNewCourse } from "@/store/slices/addCourseSlice";
+import { CourseType } from "@/views/CourseListingView/CourseListingView";
+import format from "date-fns/format";
+import { useCopy } from "@/hooks";
 
 const CourseListingDetails = () => {
+	const { userId } = useAppSelector(s => s.user);
+	const router = useRouter();
+	const dispatch = useAppDispatch();
+	const { listingId } = useParams();
+	const handleCopy = useCopy();
+	const courseId = getIdFromSlug(listingId.toString());
+	const { isFetching, data: courseData } = useGetCourseById(courseId);
+	const [openModal, setOpenModal] = useState<boolean>(false);
+	const { mutateAsync: postRemoveCourse, isPending: isPendingCourseRemoval } =
+		useDeleteCourse();
+	const course = courseData?.data;
+
+	const onDeleteCourse = async () => {
+		try {
+			const payload = { userId, courseId: course?._id };
+			const res = await postRemoveCourse(payload);
+			if (res.data) {
+				toast.success("course deleted");
+			}
+		} catch (error) {}
+	};
+
+	const onClickEdit = () => {
+		const payload = {
+			...course,
+			tempPhoto: []
+		};
+
+		dispatch(updateNewCourse(payload));
+		router.push(`/course-listing?id=${course?._id}`);
+	};
+
 	return (
 		<div className={styles.container}>
-			<div className={styles.header}>
-				<div className={styles.item_details}>
-					<div className={styles.left}>
-						<Image
-							src="/images/admin-img.jpg"
-							alt="image-item"
-							width={16}
-							height={16}
-						/>
-						<span className={styles.right}>
-							<h2>
-								The Complete Cinematography course : From Zero To Expert
-							</h2>
-							<p>$300</p>
-						</span>
+			{isFetching ? (
+				<PageLoader />
+			) : (
+				<div className={styles.header}>
+					<div className={styles.item_details}>
+						<div className={styles.left}>
+							<Image
+								src={course?.cover || ""}
+								alt="image-item"
+								width={16}
+								height={16}
+							/>
+							<span className={styles.right}>
+								<h2>{course?.title}</h2>
+								<p>₦{formatNum(course?.price || 0)}</p>
+							</span>
+						</div>
+						<div className={styles.status} data-status={"published"}>
+							<p>Published</p>
+						</div>
 					</div>
-					<div className={styles.status} data-status={"published"}>
-						<p>Published</p>
+					<div className={styles.action_btns}>
+						<div className={styles.btns_text_wrapper}>
+							<span className={styles.icons_container}>
+								<Image
+									src="/svgs/share.svg"
+									alt="heart"
+									width={16}
+									height={16}
+								/>
+							</span>
+							<p className={styles.icon_label}>Share</p>
+						</div>
+						<div className={styles.btns_text_wrapper} onClick={onClickEdit}>
+							<span className={styles.icons_container}>
+								<Image
+									src="/svgs/edit.svg"
+									alt="edit-icon"
+									width={16}
+									height={16}
+								/>
+							</span>
+							<p className={styles.icon_label}>Edit</p>
+						</div>
+						<div
+							className={styles.btns_text_wrapper}
+							onClick={() => setOpenModal(true)}
+						>
+							<span className={styles.icons_container}>
+								<Image
+									src="/svgs/red-trash.svg"
+									alt="trash-icon"
+									width={16}
+									height={16}
+								/>
+							</span>
+							<p className={styles.icon_label}>Delete</p>
+						</div>
 					</div>
 				</div>
-				<div className={styles.action_btns}>
-					<div className={styles.btns_text_wrapper}>
-						<span className={styles.icons_container}>
-							<Image
-								src="/svgs/share.svg"
-								alt="heart"
-								width={16}
-								height={16}
-							/>
-						</span>
-						<p className={styles.icon_label}>Share</p>
-					</div>
-					<div className={styles.btns_text_wrapper}>
-						<span className={styles.icons_container}>
-							<Image
-								src="/svgs/edit.svg"
-								alt="edit-icon"
-								width={16}
-								height={16}
-							/>
-						</span>
-						<p className={styles.icon_label}>Edit</p>
-					</div>
-					<div className={styles.btns_text_wrapper}>
-						<span className={styles.icons_container}>
-							<Image
-								src="/svgs/red-trash.svg"
-								alt="trash-icon"
-								width={16}
-								height={16}
-							/>
-						</span>
-						<p className={styles.icon_label}>Delete</p>
-					</div>
-				</div>
-			</div>
+			)}
 			<div className={styles.card_container}>
 				<CardContainer title="Sold" value={75} icon="/svgs/sold-icon.svg" />
 				<CardContainer
 					title="Revenue"
-					value={`$200.00`}
+					value={`₦200.00`}
 					icon="/svgs/revenue-icon.svg"
 				/>
 				<CardContainer title="Rating" value={4.7} icon="/svgs/rating-icon.svg" />
@@ -78,13 +127,49 @@ const CourseListingDetails = () => {
 				<div className={styles.summary_container}>
 					<h3 className={styles.title}>Overview</h3>
 					{/* conditionally render the type of course */}
-					<LiveCourse />
-					{/* <EbooksType /> */}
-					{/* <VideosType /> */}
+					{course?.courseType === CourseType.Live && (
+						<LiveCourse
+							handleCopy={handleCopy}
+							link={course?.link}
+							startDate={course?.liveTutorials?.startDate as Date}
+							endDate={course?.liveTutorials?.endDate as Date}
+						/>
+					)}
+					{course?.courseType === CourseType.Ebook && (
+						<EbooksType
+							handleCopy={handleCopy}
+							link={course?.link}
+							pages={course?.ebooks?.pages || 0}
+							size={course?.ebooks?.size || ""}
+						/>
+					)}
+					{course?.courseType === CourseType.Video && (
+						<VideosType
+							handleCopy={handleCopy}
+							link={course?.link}
+							duration={course?.videoTutorials?.duration || ""}
+							size={course?.videoTutorials?.size || ""}
+						/>
+					)}
+					{course?.courseType === CourseType.Audio && (
+						<AudiosType
+							handleCopy={handleCopy}
+							link={course?.link}
+							duration={course?.audioTutorials?.duration || ""}
+							size={course?.audioTutorials?.size || ""}
+						/>
+					)}
 				</div>
 
 				<EnrolledLearners />
 			</div>
+			{openModal && (
+				<ConfirmPin
+					openModal={openModal}
+					setOpenModal={setOpenModal}
+					onSuccess={onDeleteCourse}
+				/>
+			)}
 		</div>
 	);
 };
@@ -143,12 +228,19 @@ const EnrolledLearners = () => {
 	);
 };
 
-const LiveCourse = () => {
+interface LiveProps {
+	startDate: Date;
+	endDate: Date;
+	handleCopy: (e?: any) => void;
+	link: string;
+}
+
+export const LiveCourse = ({ startDate, endDate, handleCopy, link }: LiveProps) => {
 	return (
 		<>
 			<div className={styles.summary_item}>
 				<h4>Course type</h4>
-				<p>Live</p>
+				<p>Live Tutorials</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Duration</h4>
@@ -156,11 +248,11 @@ const LiveCourse = () => {
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Starts</h4>
-				<p>16/12/2023</p>
+				<p>{format(startDate, "MM/dd/yyyy")}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Ends</h4>
-				<p>16/12/2023</p>
+				<p>{format(endDate, "MM/dd/yyyy")}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Daily hours</h4>
@@ -169,13 +261,8 @@ const LiveCourse = () => {
 			<div className={styles.summary_item}>
 				<h4>Meeting link</h4>
 				<span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-					<p className={styles.truncated_text}>
-						{shortenTitle(
-							"https://Einsteindesign.notion.site/Alison-s-Oasis-2024-ca9ef8c373b842fe8299e4278052cd90?pvs=4",
-							30
-						)}
-					</p>
-					<span className={styles.icon}>
+					<p className={styles.truncated_text}>{shortenTitle(link, 30)}</p>
+					<span className={styles.icon} onClick={() => handleCopy(link)}>
 						<CopyIcon />
 					</span>
 				</span>
@@ -184,7 +271,14 @@ const LiveCourse = () => {
 	);
 };
 
-const EbooksType = () => {
+interface EbookProps {
+	pages: number;
+	size: string;
+	handleCopy: (e?: any) => void;
+	link: string;
+}
+
+export const EbooksType = ({ pages, size, handleCopy, link }: EbookProps) => {
 	return (
 		<>
 			<div className={styles.summary_item}>
@@ -193,23 +287,17 @@ const EbooksType = () => {
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Pages</h4>
-				<p>300</p>
+				<p>{pages}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Size</h4>
-				<p>10 days</p>
+				<p>{size}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Link to course</h4>
 				<span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-					<p className={styles.truncated_text}>
-						{" "}
-						{shortenTitle(
-							"https://Einsteindesign.notion.site/Alison-s-Oasis-2024-ca9ef8c373b842fe8299e4278052cd90?pvs=4",
-							30
-						)}
-					</p>
-					<span className={styles.icon}>
+					<p className={styles.truncated_text}>{shortenTitle(link, 30)}</p>
+					<span className={styles.icon} onClick={() => handleCopy(link)}>
 						<CopyIcon />
 					</span>
 				</span>
@@ -218,7 +306,14 @@ const EbooksType = () => {
 	);
 };
 
-const VideosType = () => {
+interface TutorialProps {
+	duration: string;
+	size: string;
+	handleCopy: (e?: any) => void;
+	link: string;
+}
+
+export const VideosType = ({ duration, size, handleCopy, link }: TutorialProps) => {
 	return (
 		<>
 			<div className={styles.summary_item}>
@@ -227,22 +322,45 @@ const VideosType = () => {
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Duration</h4>
-				<p>300</p>
+				<p>{duration}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Size</h4>
-				<p>10 days</p>
+				<p>{size}</p>
 			</div>
 			<div className={styles.summary_item}>
 				<h4>Link to course</h4>
 				<span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-					<p className={styles.truncated_text}>
-						{shortenTitle(
-							"https://Einsteindesign.notion.site/Alison-s-Oasis-2024-ca9ef8c373b842fe8299e4278052cd90?pvs=4",
-							30
-						)}
-					</p>
-					<span className={styles.icon}>
+					<p className={styles.truncated_text}>{shortenTitle(link, 30)}</p>
+					<span className={styles.icon} onClick={() => handleCopy(link)}>
+						<CopyIcon />
+					</span>
+				</span>
+			</div>
+		</>
+	);
+};
+
+export const AudiosType = ({ duration, size, handleCopy, link }: TutorialProps) => {
+	return (
+		<>
+			<div className={styles.summary_item}>
+				<h4>Course type</h4>
+				<p>Audio</p>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>Duration</h4>
+				<p>{duration}</p>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>Size</h4>
+				<p>{size}</p>
+			</div>
+			<div className={styles.summary_item}>
+				<h4>Link to course</h4>
+				<span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+					<p className={styles.truncated_text}>{shortenTitle(link, 30)}</p>
+					<span className={styles.icon} onClick={() => handleCopy(link)}>
 						<CopyIcon />
 					</span>
 				</span>

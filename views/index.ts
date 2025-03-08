@@ -36,8 +36,14 @@ import PrivacyPolicyView from "./footerLinksViews/privacyPolicyView/PrivacyPolic
 import CookiesPolicyView from "./footerLinksViews/cookiesPolicyView/CookiesPolicyView";
 import ReturnPolicyView from "./footerLinksViews/returnPolicyView/ReturnPolicyView";
 import TermsView from "./footerLinksViews/termsView/TermsView";
+import CourseSummaryView from "./CourseListingView/CourseSummaryView";
+import CourseListingsView from "./courseListingsView/CourseListingsView";
+import CourseView from "./courseView/CourseView";
 
 export {
+	CourseView,
+	CourseListingsView,
+	CourseSummaryView,
 	TermsView,
 	ReturnPolicyView,
 	CookiesPolicyView,

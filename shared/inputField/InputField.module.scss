@@ -84,3 +84,31 @@
 	border: none !important;
 	padding: none !important;
 }
+
+.row {
+	@include flex(flex-start, center);
+	gap: 0.8rem;
+	.icon {
+		cursor: default;
+		.description {
+			position: absolute;
+			background-color: #1b1e21;
+			padding: 1.6rem;
+			border-radius: 1.2rem;
+			top: 2rem;
+			z-index: 1;
+			min-width: 20rem;
+			left: 0;
+			display: none;
+			p {
+				color: #fff;
+				@extend %text-12;
+			}
+		}
+		&:hover {
+			.description {
+				display: block;
+			}
+		}
+	}
+}

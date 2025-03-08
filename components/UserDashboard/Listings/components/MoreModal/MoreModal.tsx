@@ -18,6 +18,7 @@ interface MoreModalProps {
 	onClickEdit?: (listingId: string) => void;
 	refetch?: () => void;
 	closePopOver?: () => void;
+	type?: "listings" | "courses";
 }
 
 const MoreModal = ({
@@ -25,7 +26,8 @@ const MoreModal = ({
 	activeFilter,
 	onClickEdit,
 	refetch,
-	closePopOver
+	closePopOver,
+	type = "listings"
 }: MoreModalProps) => {
 	const { userId } = useAppSelector(s => s.user);
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
@@ -64,7 +66,7 @@ const MoreModal = ({
 		<div className={styles.container}>
 			<div className={`${styles.container__details} ${styles.item}`}>
 				<Link
-					href={`/user/listings/${row.id}`}
+					href={`/user/listings/${row.id}${type ? `?type=${type}` : null}`}
 					className={`${styles.container__details}`}
 				>
 					View Details
@@ -84,10 +86,18 @@ const MoreModal = ({
 					<span className={styles.switch}>
 						<ToggleSwitch
 							onChange={onToggleHideListing}
-							checked={row.status.toLowerCase() === "available"}
+							checked={
+								row.status
+									? row.status.toLowerCase() === "available"
+									: false
+							}
 							disabled={isPendingUpdate}
 						/>
-						{row.status.toLowerCase() === "available" ? "Live" : "Draft"}
+						{row.status
+							? row.status.toLowerCase() === "available"
+								? "Live"
+								: "Draft"
+							: ""}
 					</span>
 				</div>
 			)}

@@ -1,15 +1,28 @@
-import React from 'react'
-import styles from './NoSearchResult.module.scss'
-import Image from 'next/image'
+import React from "react";
+import styles from "./NoSearchResult.module.scss";
+import Image from "next/image";
 
-const NoSearchResult = () => {
-  return (
-    <div className={styles.container}>
-        <Image src="/svgs/empty-state-icon.svg" height={100} alt="empty-state-icon" width={100}/>
-        <h2>No Search Result Found</h2>
-        <p>Your current search result is not available</p>
-    </div>
-  )
+interface Props {
+	title?: string;
+	description?: string;
 }
 
-export default NoSearchResult
+const NoSearchResult = ({
+	title = "No Search Result Found",
+	description = "Your current search result is not available"
+}: Props) => {
+	return (
+		<div className={styles.container}>
+			<Image
+				src="/svgs/empty-state-icon.svg"
+				height={100}
+				alt="empty-state-icon"
+				width={100}
+			/>
+			<h2>{title}</h2>
+			<p>{description}</p>
+		</div>
+	);
+};
+
+export default NoSearchResult;
