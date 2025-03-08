@@ -24,7 +24,6 @@ const BuyCourseDetails = ({
 	course: Course;
 	refetch: (e?: any) => void;
 }) => {
-	if (!course) return;
 	const user = useAppSelector(s => s.user);
 	const { mutateAsync: updateCourseListing, isPending: isPendingUpdate } =
 		usePostUpdateCourse();

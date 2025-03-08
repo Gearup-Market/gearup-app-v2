@@ -17,7 +17,6 @@ interface Props {
 }
 
 const BuyRentDetailsBody = ({ listing }: Props) => {
-	if (!listing) return;
 	const {
 		offer,
 		listingPhotos,
