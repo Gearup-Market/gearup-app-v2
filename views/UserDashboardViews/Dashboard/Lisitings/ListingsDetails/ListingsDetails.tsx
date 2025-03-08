@@ -31,18 +31,27 @@ const ListingsDetails = () => {
 		isFetching,
 		refetch,
 		error
-	} = useGetListingById(listingId.toString());
+	} = useGetListingById(type !== "courses" ? listingId.toString() : "");
 	const courseId = getIdFromSlug(listingId.toString());
-	const { refetch: courseRefetch, isFetching: isCourseFetching } =
-		useGetSingleCourse(courseId);
+	const { refetch: courseRefetch, isFetching: isCourseFetching } = useGetSingleCourse(
+		type === "courses" ? courseId : ""
+	);
 
 	if (!courseId || !listingId) return <PageLoader />;
 
 	if (
-		((type === "rent" || type === "buy") && !currentListing && isFetching) ||
+		((type === "rent" || type === "buy") && !listing && isFetching) ||
 		(type === "course" && !currentCourse && isCourseFetching)
 	)
 		return <PageLoader />;
+
+	if (type !== "courses" && (!listing || !listing.data)) {
+		return <PageLoader />; // Fallback UI
+	}
+
+	if (type === "courses" && !currentCourse) {
+		return <PageLoader />; // Fallback UI
+	}
 	// if (!currentListing) return null;
 
 	return (

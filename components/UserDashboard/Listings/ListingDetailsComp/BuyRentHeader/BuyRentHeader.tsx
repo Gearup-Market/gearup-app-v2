@@ -23,7 +23,6 @@ const BuyRentHeader = ({
 	listing?: Listing;
 	isFetching: boolean;
 }) => {
-	if (!listing) return;
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { userId } = useAppSelector(s => s.user);

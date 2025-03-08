@@ -13,7 +13,6 @@ import { Button, ToggleSwitch } from "@/shared";
 import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 
 const BuyCourseHeader = ({ course }: { course: Course }) => {
-	if (!course) return;
 	const { userId } = useAppSelector(s => s.user);
 	const router = useRouter();
 	const dispatch = useAppDispatch();
@@ -47,18 +46,18 @@ const BuyCourseHeader = ({ course }: { course: Course }) => {
 				<HeaderSubText title="Details" />
 				<div className={styles.toggle_container_mobile}>
 					<ToggleListing
-						checked={status === "unavailable"}
-						// onChange={onToggleHideListing}
-						// disabled={isPendingUpdate}
+					// checked={course.status === "unavailable"}
+					// onChange={onToggleHideListing}
+					// disabled={isPendingUpdate}
 					/>
 				</div>
 			</div>
 			<div className={styles.actions_btns}>
 				<div className={styles.toggle_container_desktop}>
 					<ToggleListing
-						checked={status === "unavailable"}
-						// onChange={onToggleHideListing}
-						// disabled={isPendingUpdate}
+					// checked={status === "unavailable"}
+					// onChange={onToggleHideListing}
+					// disabled={isPendingUpdate}
 					/>
 				</div>
 				<div className={styles.btns}>
