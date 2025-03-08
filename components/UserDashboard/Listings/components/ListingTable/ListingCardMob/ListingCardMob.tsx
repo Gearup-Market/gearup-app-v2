@@ -87,7 +87,7 @@ const ListingCardMob = ({
 							{item.status}
 						</p>
 					</div>
-					<Link href={`/user/courses/${item.id}`}>
+					<Link href={`/user/listings/${item.id}?type=courses`}>
 						<Button buttonType="secondary" className={styles.button}>
 							See Details
 						</Button>

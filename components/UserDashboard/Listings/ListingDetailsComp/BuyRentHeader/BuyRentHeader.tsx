@@ -78,8 +78,6 @@ const BuyRentHeader = ({
 		router.push(`/new-listing?id=${listing?._id}`);
 	};
 
-	console.log(listing);
-
 	return (
 		<div className={styles.container}>
 			{isFetching ? (
