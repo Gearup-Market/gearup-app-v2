@@ -13,6 +13,7 @@ import { Button, ToggleSwitch } from "@/shared";
 import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 
 const BuyCourseHeader = ({ course }: { course: Course }) => {
+	if (!course) return;
 	const { userId } = useAppSelector(s => s.user);
 	const router = useRouter();
 	const dispatch = useAppDispatch();

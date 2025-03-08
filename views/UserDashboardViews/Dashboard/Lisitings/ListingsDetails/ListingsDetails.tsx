@@ -17,6 +17,7 @@ import { useGetCourseById } from "@/app/api/hooks/courses";
 import { getIdFromSlug } from "@/utils";
 import { Course } from "@/store/slices/coursesSlice";
 import BuyCourseDetails from "@/components/UserDashboard/Listings/ListingDetailsComp/buyCourseDetails/BuyCourseDetails";
+import { useGetListingById } from "@/app/api/hooks/listings";
 
 const ListingsDetails = () => {
 	const { listingId } = useParams();
@@ -25,11 +26,23 @@ const ListingsDetails = () => {
 	const search = useSearchParams();
 	const searchParams = new URLSearchParams(search.toString());
 	const type = searchParams.get("type");
-	const { refetch, isFetching, listing } = useSingleListing(listingId.toString());
+	const {
+		data: listing,
+		isFetching,
+		refetch,
+		error
+	} = useGetListingById(listingId.toString());
 	const courseId = getIdFromSlug(listingId.toString());
-	const { refetch: courseRefetch } = useGetSingleCourse(courseId);
+	const { refetch: courseRefetch, isFetching: isCourseFetching } =
+		useGetSingleCourse(courseId);
 
-	if (!currentListing && isFetching) return <PageLoader />;
+	if (!courseId || !listingId) return <PageLoader />;
+
+	if (
+		((type === "rent" || type === "buy") && !currentListing && isFetching) ||
+		(type === "course" && !currentCourse && isCourseFetching)
+	)
+		return <PageLoader />;
 	// if (!currentListing) return null;
 
 	return (
@@ -47,10 +60,10 @@ const ListingsDetails = () => {
 			) : (
 				<>
 					<BuyRentDetailsHeader
-						listing={listing?.data as Listing}
+						listing={listing?.data}
 						isFetching={isFetching}
 					/>
-					<BuyRentDetailsBody listing={listing?.data as Listing} />
+					<BuyRentDetailsBody listing={listing?.data} />
 				</>
 			)}
 		</div>
