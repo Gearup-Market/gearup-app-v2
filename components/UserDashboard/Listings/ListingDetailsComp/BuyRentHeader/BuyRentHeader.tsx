@@ -14,12 +14,18 @@ import {
 	usePostRemoveListing
 } from "@/app/api/hooks/listings";
 import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
+import { PageLoader } from "@/shared/loaders";
 
-const BuyRentHeader = ({ listing }: { listing: Listing }) => {
+const BuyRentHeader = ({
+	listing,
+	isFetching
+}: {
+	listing: Listing;
+	isFetching: boolean;
+}) => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { userId } = useAppSelector(s => s.user);
-	const { status } = listing;
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
@@ -28,7 +34,7 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 		usePostChangeListingStatus();
 
 	const onToggleHideListing = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (status === "unavailable")
+		if (listing.status === "unavailable")
 			return toast.error("This listing has not been approved yet");
 		try {
 			const res = await postChangeListingStatus({
@@ -72,41 +78,49 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 		router.push(`/new-listing?id=${listing._id}`);
 	};
 
+	console.log(listing);
+
 	return (
 		<div className={styles.container}>
-			<div className={styles.header}>
-				<HeaderSubText title="Details" />
-				<div className={styles.toggle_container_mobile}>
-					<ToggleListing
-						checked={status === "unavailable"}
-						onChange={onToggleHideListing}
-						disabled={isPendingUpdate}
-					/>
-				</div>
-			</div>
-			<div className={styles.actions_btns}>
-				<div className={styles.toggle_container_desktop}>
-					<ToggleListing
-						checked={status === "unavailable"}
-						onChange={onToggleHideListing}
-						disabled={isPendingUpdate}
-					/>
-				</div>
-				<div className={styles.btns}>
-					<Button
-						iconPrefix="/svgs/trash.svg"
-						buttonType="transparent"
-						className={styles.delete_btn}
-						onClick={() => setOpenModal(true)}
-						disabled={isPendingRemoval}
-					>
-						Delete
-					</Button>
-					<Button iconPrefix="/svgs/edit.svg" onClick={onClickEdit}>
-						Edit
-					</Button>
-				</div>
-			</div>
+			{isFetching ? (
+				<PageLoader />
+			) : (
+				<>
+					<div className={styles.header}>
+						<HeaderSubText title="Details" />
+						<div className={styles.toggle_container_mobile}>
+							<ToggleListing
+								checked={listing.status === "unavailable"}
+								onChange={onToggleHideListing}
+								disabled={isPendingUpdate}
+							/>
+						</div>
+					</div>
+					<div className={styles.actions_btns}>
+						<div className={styles.toggle_container_desktop}>
+							<ToggleListing
+								checked={listing.status === "unavailable"}
+								onChange={onToggleHideListing}
+								disabled={isPendingUpdate}
+							/>
+						</div>
+						<div className={styles.btns}>
+							<Button
+								iconPrefix="/svgs/trash.svg"
+								buttonType="transparent"
+								className={styles.delete_btn}
+								onClick={() => setOpenModal(true)}
+								disabled={isPendingRemoval}
+							>
+								Delete
+							</Button>
+							<Button iconPrefix="/svgs/edit.svg" onClick={onClickEdit}>
+								Edit
+							</Button>
+						</div>
+					</div>
+				</>
+			)}
 			{openModal && (
 				<ConfirmPin
 					openModal={openModal}

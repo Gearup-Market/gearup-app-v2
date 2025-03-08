@@ -25,7 +25,7 @@ const ListingsDetails = () => {
 	const search = useSearchParams();
 	const searchParams = new URLSearchParams(search.toString());
 	const type = searchParams.get("type");
-	const { refetch, isFetching } = useSingleListing(listingId.toString());
+	const { refetch, isFetching, listing } = useSingleListing(listingId.toString());
 	const courseId = getIdFromSlug(listingId.toString());
 	const { refetch: courseRefetch } = useGetSingleCourse(courseId);
 
@@ -46,8 +46,11 @@ const ListingsDetails = () => {
 				</>
 			) : (
 				<>
-					<BuyRentDetailsHeader listing={currentListing as Listing} />
-					<BuyRentDetailsBody listing={currentListing as Listing} />
+					<BuyRentDetailsHeader
+						listing={listing?.data as Listing}
+						isFetching={isFetching}
+					/>
+					<BuyRentDetailsBody listing={listing?.data as Listing} />
 				</>
 			)}
 		</div>
