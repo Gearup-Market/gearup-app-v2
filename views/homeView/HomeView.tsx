@@ -28,7 +28,7 @@ const HomeView = () => {
 			<Listings />
 			<Gears />
 			<Equipments />
-			{/* <Courses /> */}
+			<Courses />
 			<Reviews />
 			<ScrollComponent />
 			<Faq faq={faq.slice(0, 6)} />

@@ -48,7 +48,7 @@ const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 		{
 			name: "Listings",
 			icon: <ListingsNavIcon />,
-			link: "/user/listings"
+			link: "/user/listings?type=rent"
 		},
 		{
 			name: "Categories",
@@ -107,7 +107,7 @@ const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 					{sidebarItems.map((item, index) => (
 						<Link
 							key={index}
-							data-active={active === item.link}
+							data-active={active === item.link.split("?")[0]}
 							href={item.link}
 							className={styles.navlinks_container__item}
 							onClick={onClose}

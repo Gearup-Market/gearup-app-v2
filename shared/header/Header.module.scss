@@ -86,7 +86,7 @@
 						position: relative;
 						// transform: translateY(-100rem);
 						transition: $all-transition;
-						@include flex(space-between, flex-start, nowrap);
+						@include flex(space-between, center, nowrap);
 						gap: 3.2rem;
 						.container {
 							@include flex();
@@ -156,11 +156,6 @@
 								}
 							}
 						}
-						.youtube_banner {
-							position: relative;
-							width: 53.2rem;
-							height: 46rem;
-						}
 					}
 					&[data-active="true"] {
 						.subMenu_navlist,
@@ -201,6 +196,13 @@
 				}
 			}
 		}
+	}
+	.youtube_banner {
+		position: relative;
+		width: 53.2rem;
+		height: 46rem;
+		overflow: hidden;
+		border-radius: 1.2rem;
 	}
 	.button_container {
 		@include flex(flex-start, center);

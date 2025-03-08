@@ -13,6 +13,7 @@ import { AppState, useAppSelector } from "@/store/configureStore";
 import { useAuth } from "@/contexts/AuthContext";
 import useCart from "@/hooks/useCart";
 import { GridAddIcon } from "@mui/x-data-grid";
+import ReactPlayer from "react-player/youtube";
 
 enum Scroll {
 	Idle = "idle",
@@ -288,7 +289,7 @@ const LinkItem = ({
 		>
 			{link.label === "blog" || link.label === "courses" ? (
 				<Link
-					href={link.label === "courses" ? "/user/dashboard" : link.href}
+					href={link.href}
 					className={styles.link_row}
 					onClick={() => setCollapsed(!collapsed)}
 				>
@@ -385,14 +386,26 @@ const LinkItem = ({
 										)
 									)}
 								</div>
+
 								<div className={styles.youtube_banner}>
-									<Image
-										src="/svgs/youtube-banner.svg"
-										fill
-										alt="youtube"
-										sizes="100vw"
+									<ReactPlayer
+										url="https://www.youtube.com/embed/sJwQK_FdSBY?si=DQZjtamMx3D9rwnx"
+										width="100%"
+										height="100%"
+										controls
 									/>
 								</div>
+								{/* <div className={styles.youtube_banner}>
+									<iframe
+										width="100%"
+										height="auto"
+										src="https://www.youtube.com/embed/sJwQK_FdSBY?si=DQZjtamMx3D9rwnx"
+										title="YouTube video player"
+										frameBorder="0"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+										allowFullScreen
+									></iframe>
+								</div> */}
 							</div>
 						</div>
 					)}

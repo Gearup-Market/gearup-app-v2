@@ -26,12 +26,14 @@ import {
 import toast from "react-hot-toast";
 import { formatNum } from "@/utils";
 import NoListings from "../../NoListings/NoListings";
-import { useGetAllCourses } from "@/app/api/hooks/courses";
-import { useListingsByUser } from "@/hooks/useListings";
+import { getCoursesByUser, useGetAllCourses } from "@/app/api/hooks/courses";
+import { useCoursesByUser, useListingsByUser } from "@/hooks/useListings";
 import { usePercentageToPixels } from "@/hooks";
 import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 import { useQuery } from "@tanstack/react-query";
 import SearchListings from "./searchListings/SearchListings";
+import { Course } from "@/store/slices/coursesSlice";
+import { updateNewCourse } from "@/store/slices/addCourseSlice";
 
 interface Props {
 	activeFilter: Filter;
@@ -57,6 +59,7 @@ const ListingTable = ({ activeFilter }: Props) => {
 	const priceWidth = usePercentageToPixels(containerRef, 15);
 	const availabilityWidth = usePercentageToPixels(containerRef, 10);
 	const actionsWidth = usePercentageToPixels(containerRef, 10);
+
 	const { userId } = useAppSelector(s => s.user);
 
 	const dispatch = useAppDispatch();
@@ -64,11 +67,14 @@ const ListingTable = ({ activeFilter }: Props) => {
 
 	const search = useSearchParams();
 	const searchParams = new URLSearchParams(search.toString());
+	const type = searchParams.get("type");
 
 	const queryParams = {
 		category: searchParams.get("category") || undefined,
-		type: searchParams.get("type") || undefined
+		type: type || undefined
 	};
+
+	const { courses: userCourses } = useCoursesByUser(currentPage, queryParams);
 
 	const {
 		data: userListings,
@@ -80,6 +86,17 @@ const ListingTable = ({ activeFilter }: Props) => {
 		refetchInterval: 60000,
 		enabled: true
 	});
+
+	// const {
+	// 	data: userCourses,
+	// 	isFetching: courseFetching,
+	// 	refetch: courseRefetch
+	// } = useQuery({
+	// 	queryKey: ["getUserCourses", { page: currentPage, userId, ...queryParams }],
+	// 	queryFn: getCoursesByUser,
+	// 	refetchInterval: 60000,
+	// 	enabled: true
+	// });
 
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
 		usePostRemoveListing();
@@ -94,6 +111,7 @@ const ListingTable = ({ activeFilter }: Props) => {
 	}, [currentPage, refetch]);
 
 	const listings = userListings?.data || [];
+	const courses = userCourses?.data || [];
 
 	const mappedListings = useMemo(() => {
 		return listings?.map(
@@ -131,6 +149,15 @@ const ListingTable = ({ activeFilter }: Props) => {
 				};
 			}
 		);
+	}, [listings]);
+
+	const mappedCourses = useMemo(() => {
+		return courses?.map((course: Course) => {
+			return {
+				...course,
+				id: course._id
+			};
+		});
 	}, [listings]);
 
 	const sharedColDef: GridColDef = {
@@ -180,6 +207,17 @@ const ListingTable = ({ activeFilter }: Props) => {
 
 		dispatch(updateNewListing(payload));
 		router.push(`/new-listing/listing-details`);
+	};
+
+	const onClickEditCourse = (courseId: string) => {
+		const course = courses?.find((l: any) => l._id === courseId);
+		const payload = {
+			...course,
+			tempPhoto: []
+		};
+
+		dispatch(updateNewCourse(payload));
+		router.push(`/course-listing?id=${course?._id}`);
 	};
 
 	const { mutateAsync: postChangeListingStatus, isPending: isPendingUpdate } =
@@ -341,10 +379,10 @@ const ListingTable = ({ activeFilter }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Course Name",
-			minWidth: 300,
+			minWidth: titleWidth,
 			renderCell: ({ row, value }) => (
 				<div className={styles.container__name_container}>
-					<Image src={row.image} alt={value} width={16} height={16} />
+					<Image src={row.cover} alt={value} width={16} height={16} />
 					<p className={styles.container__name} style={{ fontSize: "1.2rem" }}>
 						{value}
 					</p>
@@ -357,7 +395,8 @@ const ListingTable = ({ activeFilter }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Sold",
-			minWidth: 200
+			minWidth: categoryWidth,
+			renderCell: ({ value }) => 10
 		},
 		{
 			...sharedColDef,
@@ -365,7 +404,8 @@ const ListingTable = ({ activeFilter }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Revenue",
-			minWidth: 150
+			minWidth: dateWidth,
+			renderCell: ({ value }) => "₦" + formatNum(10)
 		},
 		{
 			...sharedColDef,
@@ -373,7 +413,8 @@ const ListingTable = ({ activeFilter }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Price",
-			minWidth: 150
+			minWidth: priceWidth,
+			renderCell: ({ value }) => "₦" + formatNum(value)
 		},
 		{
 			...sharedColDef,
@@ -383,15 +424,17 @@ const ListingTable = ({ activeFilter }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Status",
-			minWidth: 150,
+			minWidth: statusWidth,
 			renderCell: ({ value }) => (
 				<div className={styles.container__status_container}>
 					<p
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status_courses}
-						data-status={value?.toLowerCase()}
+						// data-status={value?.toLowerCase()}
+						data-status={"available"}
 					>
-						{value?.toLowerCase() === "ongoing" ? "Published" : "Draft"}
+						{/* {value?.toLowerCase() === "ongoing" ? "Published" : "Draft"} */}
+						Live
 					</p>
 				</div>
 			)
@@ -404,7 +447,7 @@ const ListingTable = ({ activeFilter }: Props) => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Actions",
-			minWidth: 150,
+			minWidth: actionsWidth,
 			renderCell: ({ row, value }) => (
 				<span className={`${styles.container__action_btn} options_icon`}>
 					<Popper
@@ -421,6 +464,8 @@ const ListingTable = ({ activeFilter }: Props) => {
 										activeFilter={activeFilter}
 										refetch={refetch}
 										closePopOver={closePopOver}
+										type="courses"
+										onClickEdit={onClickEditCourse}
 										// handleDelete={handleOpenDeleteModal}
 									/>
 								</div>
@@ -547,75 +592,157 @@ const ListingTable = ({ activeFilter }: Props) => {
 					</span>
 				</div>
 			</div>
-			{mappedListings?.length > 0 ? (
-				<>
-					{activeLayout === "list" ? (
-						<>
-							<div
-								className={styles.container__table}
-								style={{ width: "100%", height: "100%" }}
-							>
-								<DataGrid
-									rows={mappedListings}
-									columns={
-										activeFilter.name === "courses"
-											? coursesColumns
-											: columns
-									}
-									hideFooterPagination={true}
-									paginationMode="server"
-									hideFooter
-									autoHeight
-									sx={customisedTableClasses}
-									loading={isFetching}
-								/>
-							</div>
-
-							<MobileCardContainer>
-								{mappedListings?.map((item: any, ind: number) => (
-									<ListingCardMob
-										activeFilter={activeFilter.name}
-										key={ind}
-										item={item}
-										ind={ind}
-										refetch={refetch}
-										onClickEdit={onClickEdit}
-										onToggleHideListing={onToggleHideListing}
-										lastEle={
-											ind + 1 === mappedListings.length
-												? true
-												: false
-										}
+			{type && type !== "courses" ? (
+				mappedListings?.length ? (
+					<>
+						{activeLayout === "list" ? (
+							<>
+								<div
+									className={styles.container__table}
+									style={{ width: "100%", height: "100%" }}
+								>
+									<DataGrid
+										rows={mappedListings}
+										columns={columns}
+										hideFooterPagination={true}
+										paginationMode="server"
+										hideFooter
+										autoHeight
+										sx={customisedTableClasses}
+										loading={isFetching}
 									/>
-								))}
-							</MobileCardContainer>
-							{/* <div className={styles.btn_container}>
+								</div>
+
+								<MobileCardContainer>
+									{mappedListings?.map((item: any, ind: number) => (
+										<ListingCardMob
+											activeFilter={activeFilter.name.toLowerCase()}
+											key={ind}
+											item={item}
+											ind={ind}
+											refetch={refetch}
+											onClickEdit={onClickEdit}
+											onToggleHideListing={onToggleHideListing}
+											lastEle={
+												ind + 1 ===
+												(type && type === "courses"
+													? mappedCourses
+													: mappedListings
+												).length
+													? true
+													: false
+											}
+										/>
+									))}
+								</MobileCardContainer>
+								{/* <div className={styles.btn_container}>
 								<AddBtn onClick={handleAddItem} />
 								</div> */}
-						</>
-					) : (
-						<>
-							<div className={styles.container__grid}>
-								{mappedListings?.map((item: any) => (
-									<ListingCard
-										key={item.id}
-										props={item}
-										activeFilter={activeFilter}
-										activeRow={selectedRow}
-										setActiveRow={setSelectedRow}
-										onClickEdit={onClickEdit}
-										refetch={refetch}
-										closePopOver={closePopOver}
-										handleDelete={handleOpenDeleteModal}
+							</>
+						) : (
+							<>
+								<div className={styles.container__grid}>
+									{mappedListings?.map((item: any) => (
+										<ListingCard
+											key={item.id}
+											props={item}
+											activeFilter={activeFilter}
+											activeRow={selectedRow}
+											setActiveRow={setSelectedRow}
+											onClickEdit={onClickEdit}
+											refetch={refetch}
+											closePopOver={closePopOver}
+											handleDelete={handleOpenDeleteModal}
+											type={"listings"}
+										/>
+									))}
+								</div>
+							</>
+						)}
+					</>
+				) : (
+					<NoListings showCreateButton />
+				)
+			) : null}
+			{type && type === "courses" ? (
+				mappedCourses.length ? (
+					<>
+						{activeLayout === "list" ? (
+							<>
+								<div
+									className={styles.container__table}
+									style={{ width: "100%", height: "100%" }}
+								>
+									<DataGrid
+										rows={
+											type && type === "courses"
+												? mappedCourses
+												: mappedListings
+										}
+										columns={coursesColumns}
+										hideFooterPagination={true}
+										paginationMode="server"
+										hideFooter
+										autoHeight
+										sx={customisedTableClasses}
+										loading={isFetching}
 									/>
-								))}
-							</div>
-						</>
-					)}
-				</>
-			) : (
-				<NoListings showCreateButton />
-			)}
+								</div>
+
+								<MobileCardContainer>
+									{mappedCourses?.map((item: any, ind: number) => (
+										<ListingCardMob
+											activeFilter={activeFilter.name.toLowerCase()}
+											key={ind}
+											item={item}
+											ind={ind}
+											refetch={refetch}
+											onClickEdit={onClickEdit}
+											onToggleHideListing={onToggleHideListing}
+											lastEle={
+												ind + 1 ===
+												(type && type === "courses"
+													? mappedCourses
+													: mappedListings
+												).length
+													? true
+													: false
+											}
+										/>
+									))}
+								</MobileCardContainer>
+								{/* <div className={styles.btn_container}>
+								<AddBtn onClick={handleAddItem} />
+								</div> */}
+							</>
+						) : (
+							<>
+								<div className={styles.container__grid}>
+									{(type && type === "courses"
+										? mappedCourses
+										: mappedListings
+									)?.map((item: any) => (
+										<ListingCard
+											key={item.id}
+											props={item}
+											activeFilter={activeFilter}
+											activeRow={selectedRow}
+											setActiveRow={setSelectedRow}
+											onClickEdit={onClickEdit}
+											refetch={refetch}
+											closePopOver={closePopOver}
+											handleDelete={handleOpenDeleteModal}
+											type={"courses"}
+										/>
+									))}
+								</div>
+							</>
+						)}
+					</>
+				) : (
+					<NoListings showCreateButton type="courses" />
+				)
+			) : null}
 			<Pagination
 				currentPage={currentPage}
 				totalCount={userListings?.meta?.total || 0}

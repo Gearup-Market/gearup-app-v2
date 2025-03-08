@@ -1,0 +1,73 @@
+@import "@/styles/imports";
+
+.container {
+	width: 100%;
+	padding-bottom: 20rem;
+	padding: 8rem;
+	padding-top: 13.8rem !important;
+	@include flex();
+	flex-direction: column;
+	gap: 3.2rem;
+	&__hero_section {
+		background-color: #feefeb;
+		display: flex;
+		padding: 8rem;
+		flex-direction: column;
+		align-items: center;
+		justify-self: center;
+		width: 100%;
+
+		&__content {
+			max-width: 62.7rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			gap: 1.6rem;
+
+			&__title {
+				font-size: 3.4rem;
+				line-height: 4.4rem;
+				font-weight: 700;
+				color: #1b1e21;
+				text-align: center;
+				font-family: $font-outfit;
+				text-transform: capitalize;
+			}
+
+			&__description {
+				font-size: 1.8rem;
+				font-weight: 400;
+				color: #4b525a;
+				text-align: center;
+			}
+
+			&__search_field {
+				width: 100%;
+				background-color: $col-white;
+				row-gap: 0;
+			}
+		}
+	}
+	.categories {
+		@include flex();
+		gap: 1.6rem;
+		.button {
+			padding: 1.2rem 1.6rem;
+			color: #1b1e21;
+			border-radius: 10rem;
+			border-color: #dedfe0;
+			font-weight: 400;
+			&[data-active="true"] {
+				background: $orange-grad;
+				color: #fff;
+				font-weight: 700;
+			}
+		}
+	}
+	.grid {
+		width: 100%;
+		@include grid(repeat(4, 1fr), 2.4rem, 2.4rem);
+	}
+}

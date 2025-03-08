@@ -1,23 +1,31 @@
+"use client";
+
 import React from "react";
 import styles from "./Course.module.scss";
 import { Courses } from "@/interfaces";
 import Image from "next/image";
 import { Button, Ratings } from "..";
+import { Course } from "@/store/slices/coursesSlice";
+import { formatNum } from "@/utils";
+import Link from "next/link";
 
 interface Props {
-	props: Courses;
+	props: Course;
 	className?: string;
 }
 
-const Course = ({ props, className }: Props) => {
+const CourseCard = ({ props, className }: Props) => {
 	return (
-		<div className={`${styles.container} ${className}`}>
+		<Link
+			href={`/courses/${props._id}`}
+			className={`${styles.container} ${className}`}
+		>
 			<div className={styles.image}>
-				<Image src={props.image} alt={props.label} fill sizes="100vw" />
-				<Button className={styles.button}>{props.type}</Button>
+				<Image src={props.cover} alt={props.title} fill sizes="100vw" />
+				<Button className={styles.button}>{props.courseType}</Button>
 			</div>
 			<div className={styles.text}>
-				<h2>{props.label}</h2>
+				<h2>{props.title}</h2>
 			</div>
 			<div className={styles.small_row} style={{ marginBottom: "1.2rem" }}>
 				<div className={styles.text}>
@@ -25,25 +33,33 @@ const Course = ({ props, className }: Props) => {
 				</div>
 				<Ratings readOnly />
 				<div className={styles.text}>
-					<span>({props.reviews} reviews)</span>
+					<span>
+						({/* {props.reviews}  */}
+						reviews)
+					</span>
 				</div>
 			</div>
 			<div className={styles.text}>
-				<h3>${props.price}</h3>
+				<h3>₦{formatNum(props.price)}</h3>
 			</div>
-			{/* <div className={styles.divider}></div> */}
+			<div className={styles.divider}></div>
 			<div className={styles.row}>
 				<div className={styles.small_row}>
 					<div className={styles.avatar}>
-						<Image src={props.avatar} alt={props.user} fill sizes="100vw" />
+						<Image
+							src={"/svgs/user.svg"}
+							alt={props.author}
+							fill
+							sizes="100vw"
+						/>
 					</div>
 					<div className={styles.text} style={{ marginBottom: 0 }}>
-						<p>{props.user}</p>
+						<p>user</p>
 					</div>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 
-export default Course;
+export default CourseCard;

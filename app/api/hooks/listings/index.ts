@@ -193,7 +193,7 @@ const getListings = async ({ queryKey }: { queryKey: any }) => {
 
 const getListingsByUser = async ({ queryKey }: { queryKey: any }) => {
 	const [_, queryParams] = queryKey;
-	if (!queryParams.userId) return;
+	if (!queryParams.userId || queryParams.type === "courses") return;
 
 	const buildQueryParams = () => {
 		const params = new URLSearchParams();

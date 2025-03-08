@@ -184,35 +184,6 @@
 				color: #121212;
 				margin-bottom: 1.6rem;
 			}
-
-			.summary_item {
-				@include flex;
-				justify-content: space-between;
-				gap: 2rem;
-				margin-bottom: 1.2rem;
-				flex-wrap: nowrap;
-
-				.truncated_text {
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					width: 100%;
-				}
-
-				h4 {
-					font-size: 1.4rem;
-					font-weight: 400;
-					color: #7b8086;
-					text-wrap: nowrap;
-				}
-
-				p {
-					font-size: 1.4rem;
-					font-weight: 700;
-					overflow: hidden;
-					color: #1b1e21;
-				}
-			}
 		}
 	}
 
@@ -296,5 +267,37 @@
 			display: flex;
 			flex-direction: column;
 		}
+	}
+}
+
+.summary_item {
+	@include flex;
+	justify-content: space-between;
+	gap: 2rem;
+	margin-bottom: 1.2rem;
+	flex-wrap: nowrap;
+
+	.truncated_text {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		width: 100%;
+		.icon {
+			cursor: pointer;
+		}
+	}
+
+	h4 {
+		font-size: 1.4rem;
+		font-weight: 400;
+		color: #7b8086;
+		text-wrap: nowrap;
+	}
+
+	p {
+		font-size: 1.4rem;
+		font-weight: 700;
+		overflow: hidden;
+		color: #1b1e21;
 	}
 }
