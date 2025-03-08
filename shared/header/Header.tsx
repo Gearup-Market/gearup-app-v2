@@ -115,20 +115,6 @@ const Header = () => {
 						</ul>
 					</nav>
 					<div className={styles.button_container}>
-						<Button buttonType="transparent" className={styles.small_icon}>
-							<div>
-								<Image
-									src={
-										scroll === Scroll.FinalScroll
-											? "/svgs/icon-search-dark.svg"
-											: "/svgs/icon-search.svg"
-									}
-									fill
-									alt=""
-									sizes="100vw"
-								/>
-							</div>
-						</Button>
 						<Button
 							buttonType="transparent"
 							className={styles.cart_icon}
@@ -186,33 +172,6 @@ const Header = () => {
 					</div>
 				</div>
 				<div className={styles.mob_buttons}>
-					<Button
-						buttonType="transparent"
-						className={styles.small_icon}
-						onClick={() => {
-							router.push("/cart");
-							setCollapsed(!collapsed);
-						}}
-						data-cart={!!cartItems?.items.length}
-					>
-						<div>
-							<Image
-								src={
-									!collapsed || scroll === Scroll.FinalScroll
-										? "/svgs/icon-search-dark.svg"
-										: "/svgs/icon-search.svg"
-								}
-								fill
-								alt=""
-								sizes="100vw"
-							/>
-						</div>
-						{cartItems?.items.length ? (
-							<div className={styles.cart}>
-								<p>{cartItems?.items.length}</p>
-							</div>
-						) : null}
-					</Button>
 					<Button
 						buttonType="transparent"
 						className={styles.small_icon}

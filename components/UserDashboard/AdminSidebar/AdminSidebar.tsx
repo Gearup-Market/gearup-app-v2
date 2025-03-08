@@ -38,7 +38,7 @@ const AdminSidebar = ({ isMobile, onClose, setShowWishList }: Props) => {
 		{
 			name: "Transactions",
 			icon: <TransactionNavIcon />,
-			link: "/user/transactions"
+			link: "/user/transactions?type=rent"
 		},
 		{
 			name: "Messages",
