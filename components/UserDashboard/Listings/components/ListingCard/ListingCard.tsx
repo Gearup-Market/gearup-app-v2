@@ -24,6 +24,7 @@ interface Props {
 	refetch?: () => void;
 	closePopOver?: () => void;
 	handleDelete?: (id: string) => void;
+	type?: "listings" | "courses";
 }
 
 const ListingCard = ({
@@ -37,7 +38,8 @@ const ListingCard = ({
 	onClickEdit,
 	refetch,
 	closePopOver,
-	handleDelete
+	handleDelete,
+	type = "listings"
 }: Props) => {
 	const [showMoreModal, setShowMoreModal] = useState(false);
 
@@ -67,10 +69,12 @@ const ListingCard = ({
 		<div className={`${styles.container} ${className}`}>
 			<div
 				className={styles.image}
-				data-disabled={props.status.toLowerCase() === "unavailable"}
+				data-disabled={
+					props.status ? props.status.toLowerCase() === "unavailable" : false
+				}
 			>
 				<CustomImage
-					src={props?.image ? props.image : ""}
+					src={props?.image || props?.cover || ""}
 					alt={props.title}
 					fill
 					sizes="100vw"
@@ -95,11 +99,14 @@ const ListingCard = ({
 							onClickEdit={onClickEdit}
 							refetch={refetch}
 							closePopOver={closePopOver}
+							type={type}
 						/>
 					</div>
 				)}
 				<div className={styles.button_container}>
-					<Button className={styles.button}>{props.type}</Button>
+					<Button className={styles.button}>
+						{props.type || props.courseType}
+					</Button>
 				</div>
 			</div>
 			<div className={styles.row} style={{ alignItems: "flex-start" }}>

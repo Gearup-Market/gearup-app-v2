@@ -5,16 +5,22 @@ import styles from "./DescriptionCard.module.scss";
 
 interface Props {
 	description: string;
+	title?: string;
+	initialLength?: number;
 }
 
-const initialLength = 250;
+// const initialLength = 250;
 
-const DescriptionCard = ({ description }: Props) => {
+const DescriptionCard = ({
+	description,
+	title = "DESCRIPTION",
+	initialLength = 250
+}: Props) => {
 	const [textLength, setTextLength] = useState<number>(initialLength);
 	return (
 		<div className={styles.card}>
 			<div className={styles.text}>
-				<h3>DESCRIPTION</h3>
+				<h3>{title}</h3>
 			</div>
 			<div className={styles.text}>
 				<p>{description.slice(0, textLength)}</p>

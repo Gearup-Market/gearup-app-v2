@@ -13,6 +13,7 @@ import { AppState, useAppSelector } from "@/store/configureStore";
 import { useAuth } from "@/contexts/AuthContext";
 import useCart from "@/hooks/useCart";
 import { GridAddIcon } from "@mui/x-data-grid";
+import ReactPlayer from "react-player/youtube";
 
 enum Scroll {
 	Idle = "idle",
@@ -114,20 +115,6 @@ const Header = () => {
 						</ul>
 					</nav>
 					<div className={styles.button_container}>
-						<Button buttonType="transparent" className={styles.small_icon}>
-							<div>
-								<Image
-									src={
-										scroll === Scroll.FinalScroll
-											? "/svgs/icon-search-dark.svg"
-											: "/svgs/icon-search.svg"
-									}
-									fill
-									alt=""
-									sizes="100vw"
-								/>
-							</div>
-						</Button>
 						<Button
 							buttonType="transparent"
 							className={styles.cart_icon}
@@ -185,33 +172,6 @@ const Header = () => {
 					</div>
 				</div>
 				<div className={styles.mob_buttons}>
-					<Button
-						buttonType="transparent"
-						className={styles.small_icon}
-						onClick={() => {
-							router.push("/cart");
-							setCollapsed(!collapsed);
-						}}
-						data-cart={!!cartItems?.items.length}
-					>
-						<div>
-							<Image
-								src={
-									!collapsed || scroll === Scroll.FinalScroll
-										? "/svgs/icon-search-dark.svg"
-										: "/svgs/icon-search.svg"
-								}
-								fill
-								alt=""
-								sizes="100vw"
-							/>
-						</div>
-						{cartItems?.items.length ? (
-							<div className={styles.cart}>
-								<p>{cartItems?.items.length}</p>
-							</div>
-						) : null}
-					</Button>
 					<Button
 						buttonType="transparent"
 						className={styles.small_icon}
@@ -288,7 +248,7 @@ const LinkItem = ({
 		>
 			{link.label === "blog" || link.label === "courses" ? (
 				<Link
-					href={link.label === "courses" ? "/user/dashboard" : link.href}
+					href={link.href}
 					className={styles.link_row}
 					onClick={() => setCollapsed(!collapsed)}
 				>
@@ -385,14 +345,26 @@ const LinkItem = ({
 										)
 									)}
 								</div>
+
 								<div className={styles.youtube_banner}>
-									<Image
-										src="/svgs/youtube-banner.svg"
-										fill
-										alt="youtube"
-										sizes="100vw"
+									<ReactPlayer
+										url="https://www.youtube.com/embed/sJwQK_FdSBY?si=DQZjtamMx3D9rwnx"
+										width="100%"
+										height="100%"
+										controls
 									/>
 								</div>
+								{/* <div className={styles.youtube_banner}>
+									<iframe
+										width="100%"
+										height="auto"
+										src="https://www.youtube.com/embed/sJwQK_FdSBY?si=DQZjtamMx3D9rwnx"
+										title="YouTube video player"
+										frameBorder="0"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+										allowFullScreen
+									></iframe>
+								</div> */}
 							</div>
 						</div>
 					)}

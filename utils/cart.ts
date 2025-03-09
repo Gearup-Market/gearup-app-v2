@@ -85,7 +85,7 @@ export function getApplicableRate(
 
 	for (const rate of sortedRates) {
 		if (duration >= rate.quantity) {
-			return { price: rate.price, appliedRate: rate };
+			return { price: rate.price, appliedRate: rate, duration };
 		}
 	}
 

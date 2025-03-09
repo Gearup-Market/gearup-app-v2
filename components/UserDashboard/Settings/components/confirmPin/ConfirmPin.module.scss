@@ -4,8 +4,9 @@
 	display: flex;
 	flex-direction: column;
 	// max-width: 70rem;
-	min-width: 40rem;
-	width: 100%;
+	// min-width: 40rem;
+	width: 40rem;
+	max-width: 100%;
 
 	.error_message {
 		color: #ff0000;

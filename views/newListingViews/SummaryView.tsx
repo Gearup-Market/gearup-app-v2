@@ -38,7 +38,7 @@ const SummaryView = () => {
 	const handleSubmission = async () => {
 		if (!user?.userId || !isAuthenticated) {
 			toast.error("Please login to create a product");
-			router.push(`/login?returnUrl=${pathname}`);
+			router.push(`/login`);
 			return;
 		}
 
@@ -78,8 +78,8 @@ const SummaryView = () => {
 				await createProductListing(data);
 			}
 			toast.success(`Product ${listingId ? "updated" : "created"} successfully`);
+			router.push("/user/listings?type=rent");
 			dispatch(clearNewListing());
-			router.push("/user/listings");
 		} catch (error: any) {
 			console.log(error);
 			toast.error(

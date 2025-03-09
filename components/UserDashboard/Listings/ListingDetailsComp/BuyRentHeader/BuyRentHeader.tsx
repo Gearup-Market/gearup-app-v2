@@ -14,12 +14,18 @@ import {
 	usePostRemoveListing
 } from "@/app/api/hooks/listings";
 import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
+import { PageLoader } from "@/shared/loaders";
 
-const BuyRentHeader = ({ listing }: { listing: Listing }) => {
+const BuyRentHeader = ({
+	listing,
+	isFetching
+}: {
+	listing?: Listing;
+	isFetching: boolean;
+}) => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { userId } = useAppSelector(s => s.user);
-	const { status } = listing;
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
@@ -28,12 +34,12 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 		usePostChangeListingStatus();
 
 	const onToggleHideListing = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (status === "unavailable")
+		if (listing?.status === "unavailable")
 			return toast.error("This listing has not been approved yet");
 		try {
 			const res = await postChangeListingStatus({
 				userId,
-				listingId: listing._id
+				listingId: listing?._id
 			});
 			if (res.data) {
 				toast.success("Status updated");
@@ -44,7 +50,7 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 
 	const onHandleDeleteListing = async () => {
 		try {
-			const payload = { userId, listingId: listing._id };
+			const payload = { userId, listingId: listing?._id };
 			const res = await postRemoveListing(payload);
 			if (res.data) {
 				toast.success("Listing deleted");
@@ -56,12 +62,12 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 	const onClickEdit = () => {
 		const payload = {
 			...listing,
-			...(listing.condition ? { condition: listing.condition } : {}),
+			...(listing?.condition ? { condition: listing?.condition } : {}),
 			items: [
 				{
-					name: listing.productName || "Default Product Name",
+					name: listing?.productName || "Default Product Name",
 					quantity: 1,
-					id: listing._id || 0
+					id: listing?._id || 0
 				}
 			],
 			tempPhotos: [],
@@ -69,44 +75,50 @@ const BuyRentHeader = ({ listing }: { listing: Listing }) => {
 		};
 
 		dispatch(updateNewListing(payload));
-		router.push(`/new-listing?id=${listing._id}`);
+		router.push(`/new-listing?id=${listing?._id}`);
 	};
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.header}>
-				<HeaderSubText title="Details" />
-				<div className={styles.toggle_container_mobile}>
-					<ToggleListing
-						checked={status === "unavailable"}
-						onChange={onToggleHideListing}
-						disabled={isPendingUpdate}
-					/>
-				</div>
-			</div>
-			<div className={styles.actions_btns}>
-				<div className={styles.toggle_container_desktop}>
-					<ToggleListing
-						checked={status === "unavailable"}
-						onChange={onToggleHideListing}
-						disabled={isPendingUpdate}
-					/>
-				</div>
-				<div className={styles.btns}>
-					<Button
-						iconPrefix="/svgs/trash.svg"
-						buttonType="transparent"
-						className={styles.delete_btn}
-						onClick={() => setOpenModal(true)}
-						disabled={isPendingRemoval}
-					>
-						Delete
-					</Button>
-					<Button iconPrefix="/svgs/edit.svg" onClick={onClickEdit}>
-						Edit
-					</Button>
-				</div>
-			</div>
+			{isFetching ? (
+				<PageLoader />
+			) : (
+				<>
+					<div className={styles.header}>
+						<HeaderSubText title="Details" />
+						<div className={styles.toggle_container_mobile}>
+							<ToggleListing
+								checked={listing?.status === "unavailable"}
+								onChange={onToggleHideListing}
+								disabled={isPendingUpdate}
+							/>
+						</div>
+					</div>
+					<div className={styles.actions_btns}>
+						<div className={styles.toggle_container_desktop}>
+							<ToggleListing
+								checked={listing?.status === "unavailable"}
+								onChange={onToggleHideListing}
+								disabled={isPendingUpdate}
+							/>
+						</div>
+						<div className={styles.btns}>
+							<Button
+								iconPrefix="/svgs/trash.svg"
+								buttonType="transparent"
+								className={styles.delete_btn}
+								onClick={() => setOpenModal(true)}
+								disabled={isPendingRemoval}
+							>
+								Delete
+							</Button>
+							<Button iconPrefix="/svgs/edit.svg" onClick={onClickEdit}>
+								Edit
+							</Button>
+						</div>
+					</div>
+				</>
+			)}
 			{openModal && (
 				<ConfirmPin
 					openModal={openModal}

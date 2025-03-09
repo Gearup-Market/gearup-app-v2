@@ -28,6 +28,7 @@ const Listings = () => {
 	const router = useRouter();
 	const { filters: parentFilters } = useListingFilters();
 	const listings = useAppSelector(s => s.listings.owned);
+	const courses = useAppSelector(s => s.courses.owned);
 
 	const handleButtonClick = () => {
 		if (activeFilter.name === Type.Courses) {
@@ -58,21 +59,32 @@ const Listings = () => {
 					<span>
 						<p>Hide All Listings</p>
 						<ToggleSwitch />
-						{!!listings.length && (
+						{activeFilter.name !== Type.Courses && !listings.length ? (
 							<Button onClick={handleButtonClick}>
 								{" "}
-								<GridAddIcon className={styles.add_icon} />{" "}
-								{activeFilter.name === Type.Courses
-									? "New Course"
-									: "Create a listing"}
+								<GridAddIcon className={styles.add_icon} /> Create a
+								listing
 							</Button>
-						)}
+						) : null}
+						{activeFilter.name === Type.Courses && !courses.length ? (
+							<Button onClick={handleButtonClick}>
+								{" "}
+								<GridAddIcon className={styles.add_icon} /> New Course
+							</Button>
+						) : null}
 					</span>
 				</div>
 			</div>
-			<Button onClick={handleButtonClick} className={styles.button}>
-				<GridAddIcon className={styles.button_icon} />
-			</Button>
+			{activeFilter.name !== Type.Courses && !listings.length ? (
+				<Button onClick={handleButtonClick} className={styles.button}>
+					<GridAddIcon className={styles.button_icon} />
+				</Button>
+			) : null}
+			{activeFilter.name === Type.Courses && !courses.length ? (
+				<Button onClick={handleButtonClick} className={styles.button}>
+					<GridAddIcon className={styles.button_icon} />
+				</Button>
+			) : null}
 			<ListingTable activeFilter={activeFilter} />
 		</div>
 	);

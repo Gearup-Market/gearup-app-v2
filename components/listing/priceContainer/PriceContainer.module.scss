@@ -103,24 +103,23 @@
 				font-size: 2.4rem;
 				color: #1b1e21;
 			}
+		}
+	}
+	.content {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
-			.content {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
+		.price_item {
+			font-size: 1.6rem;
+			color: #7b8086;
+			font-weight: 400;
+		}
 
-				.price_item {
-					font-size: 1.6rem;
-					color: #7b8086;
-					font-weight: 400;
-				}
-
-				.price_value {
-					color: #1b1e21;
-					font-weight: 700;
-					font-size: 1.6rem;
-				}
-			}
+		.price_value {
+			color: #1b1e21;
+			font-weight: 700;
+			font-size: 1.6rem;
 		}
 	}
 	.ad_card {

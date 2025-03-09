@@ -13,7 +13,7 @@ import Link from "next/link";
 import { getExplorerUrl } from "@/utils/stellar";
 
 interface Props {
-	listing: Listing;
+	listing?: Listing;
 }
 
 const BuyRentDetailsBody = ({ listing }: Props) => {
@@ -26,7 +26,7 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 		productName,
 		category,
 		subCategory
-	} = listing;
+	} = listing!;
 
 	const [mainGroup, subGroup] = useMemo(() => {
 		if (!fieldValues) return [[], []];
