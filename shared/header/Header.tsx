@@ -44,7 +44,7 @@ const Header = () => {
 		"/insurance-coverage",
 		"/seller-protection",
 		"/legal",
-		"/hire-freelancers",
+		// "/hire-freelancers",
 		"/faqs",
 		"/privacy-policy",
 		"/cookies-policy",
