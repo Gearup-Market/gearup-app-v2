@@ -39,6 +39,7 @@ import TermsView from "./footerLinksViews/termsView/TermsView";
 import CourseSummaryView from "./CourseListingView/CourseSummaryView";
 import CourseListingsView from "./courseListingsView/CourseListingsView";
 import CourseView from "./courseView/CourseView";
+import HireFreelancersView from './HireFreelancersView/HireFreelancersView';
 
 export {
 	CourseView,
@@ -81,5 +82,6 @@ export {
 	BlogDetailsView,
 	CartView,
 	CheckoutView,
-	UserDetailsView
+	UserDetailsView,
+	HireFreelancersView
 };

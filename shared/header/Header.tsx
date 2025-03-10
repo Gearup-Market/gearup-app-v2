@@ -44,6 +44,7 @@ const Header = () => {
 		"/insurance-coverage",
 		"/seller-protection",
 		"/legal",
+		"/hire-freelancers",
 		"/faqs",
 		"/privacy-policy",
 		"/cookies-policy",
@@ -246,7 +247,7 @@ const LinkItem = ({
 			onMouseEnter={showBackground}
 			onMouseLeave={() => setIsBackground(false)}
 		>
-			{link.label === "blog" || link.label === "courses" ? (
+			{link.label === "blog" || link.label === "courses" || link.label === "hire freelancers" ? (
 				<Link
 					href={link.href}
 					className={styles.link_row}

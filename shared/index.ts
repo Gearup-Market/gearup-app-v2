@@ -49,6 +49,7 @@ import RadioButton from "./radioButton/RadioButton";
 import LocationAutoComplete from "./locationAutoComplete/LocationAutoComplete";
 import BankSelect from "./selects/bankSelect/BankSelect";
 import HourSelect from "./selects/hourSelect/HourSelect";
+import SearchField from "./SearchField/SearchField";
 
 export {
 	HourSelect,
@@ -101,5 +102,6 @@ export {
 	KycPrompt,
 	CustomNoRowsOverlay,
 	FavoriteStar,
-	NoSearchResult
+	NoSearchResult,
+	SearchField,
 };

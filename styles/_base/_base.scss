@@ -12,17 +12,24 @@ html {
 	margin: 0;
 	padding: 0;
 	height: 100%;
+
 	&::-webkit-scrollbar {
 		display: none;
 	}
+
 	& {
-		-ms-overflow-style: none; /* IE and Edge */
-		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none;
+		/* IE and Edge */
+		scrollbar-width: none;
+		/* Firefox */
 	}
+
 	@media screen and (min-width: 1441px) {
 		font-size: 10px;
 	}
+
 	@include flex(stretch, stretch, column);
+
 	@include screenMax("tablet") {
 		font-size: calc(100vw / 950 * 10);
 	}
@@ -30,6 +37,7 @@ html {
 	@include screenMax("mobile") {
 		font-size: calc(100vw / 450 * 10);
 	}
+
 	@include screenMax("ssm-mobile") {
 		font-size: calc(100vw / 380 * 10);
 	}
@@ -51,4 +59,30 @@ body {
 	flex-grow: 1;
 
 	@include flex(stretch, stretch, column);
+}
+
+
+.swiper {
+	width: 100%;
+	height: 100%;
+	padding: 0 1.6rem;
+}
+
+.swiper-slide {
+	padding: 0 1.6rem;
+	text-align: center;
+	font-size: 18px;
+	background: #fff;
+
+	/* Center slide text vertically */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.swiper-slide img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
