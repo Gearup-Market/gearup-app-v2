@@ -31,7 +31,11 @@ const Blog = () => {
 
 			<div className={styles.container__blogs_section}>
 				{blogs.map((blog, index) => (
-					<div key={index} className={styles.container__blogs_section__blog}>
+					<Link
+						href={`/blog/${blog.slug}`}
+						key={index}
+						className={styles.container__blogs_section__blog}
+					>
 						<div className={styles.banner_image}>
 							<CustomImage
 								fill
@@ -77,7 +81,7 @@ const Blog = () => {
 								/>
 							</span>
 						</Link>
-					</div>
+					</Link>
 				))}
 			</div>
 		</div>

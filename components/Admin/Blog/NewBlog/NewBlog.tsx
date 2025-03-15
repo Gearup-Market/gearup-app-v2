@@ -180,7 +180,7 @@ const NewBlog = () => {
 						...values,
 						bannerImage: image,
 						user: user.userId,
-						status, // Set status based on save action
+						status: "unavailable", // Set status based on save action
 						category: categoryId,
 						content: { text: parsedContent }
 					},
@@ -389,6 +389,7 @@ const NewBlog = () => {
 												<InputField
 													type="number"
 													label="Read minutes"
+													min={0}
 													placeholder="Enter read minutes"
 													{...field}
 												/>
