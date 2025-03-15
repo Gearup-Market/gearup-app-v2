@@ -284,12 +284,12 @@ export const navLinks: NavLink[] = [
 		icon: "/svgs/icon-courses.svg",
 		external: false
 	},
-	{
-		label: "hire freelancers",
-		href: "/hire-freelancers",
-		icon: "/svgs/icon-courses.svg",
-		external: true
-	},
+	// {
+	// 	label: "hire freelancers",
+	// 	href: "/hire-freelancers",
+	// 	icon: "/svgs/icon-courses.svg",
+	// 	external: true
+	// },
 	{
 		label: "blog",
 		href: "/blog",

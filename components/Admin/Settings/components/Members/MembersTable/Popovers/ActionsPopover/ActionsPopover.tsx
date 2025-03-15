@@ -9,7 +9,7 @@ import { AppRoutes } from "@/utils";
 
 interface ActionsProps {
 	row?: any;
-	refetch: any;
+	refetch?: any;
 }
 
 enum ActionsEnum {
@@ -29,21 +29,24 @@ const actions = [
 ];
 
 const ActionsPopover = ({ row, refetch }: ActionsProps) => {
-	const { mutateAsync: deleteUser, isPending } = useDeleteUserById()
-	const router = useRouter()
+	const { mutateAsync: deleteUser, isPending } = useDeleteUserById();
+	const router = useRouter();
 
 	const handleActions = (id: number) => {
 		switch (id) {
 			case ActionsEnum.PREVIEW:
-				router.push(AppRoutes.userDetails(row?.userId))
+				router.push(AppRoutes.userDetails(row?.userId));
 				break;
 			case ActionsEnum.DELETE:
-				deleteUser({ userId: row?.userId }, {
-					onSuccess: () => {
-						refetch()
-						toast.success("User deleted successfully")
+				deleteUser(
+					{ userId: row?.userId },
+					{
+						onSuccess: () => {
+							refetch();
+							toast.success("User deleted successfully");
+						}
 					}
-				})
+				);
 				break;
 			default:
 				break;
@@ -56,13 +59,14 @@ const ActionsPopover = ({ row, refetch }: ActionsProps) => {
 				<li
 					onClick={() => handleActions(role.id)}
 					key={role.id}
-					className={`${styles.item} ${role.id === ActionsEnum.DELETE && styles.red
-						}`}
+					className={`${styles.item} ${
+						role.id === ActionsEnum.DELETE && styles.red
+					}`}
 				>
 					{role.title}
-					{
-						isPending && role.id === ActionsEnum.DELETE && <Spinner size="small" />
-					}
+					{isPending && role.id === ActionsEnum.DELETE && (
+						<Spinner size="small" />
+					)}
 				</li>
 			))}
 		</ul>
