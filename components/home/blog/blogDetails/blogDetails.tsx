@@ -82,7 +82,7 @@ const BlogDetails = ({ data }: Props) => {
 				<h2 className={styles.recommended_title}>Recommended for you</h2>
 				<ul className={styles.recommended_blogs_section}>
 					{recommendedBlogs?.slice(0, 3)?.map((blog, index) => (
-						<li key={index}>
+						<Link href={`/blog/${blog.slug}`} key={index}>
 							<div className={styles.recommended_blog}>
 								<div className={styles.blog_recommended_img}>
 									<CustomImage
@@ -142,7 +142,7 @@ const BlogDetails = ({ data }: Props) => {
 									</span>
 								</Link>
 							</div>
-						</li>
+						</Link>
 					))}
 				</ul>
 			</aside>
