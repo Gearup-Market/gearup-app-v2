@@ -285,6 +285,12 @@ export const navLinks: NavLink[] = [
 		external: false
 	},
 	{
+		label: "hire freelancers",
+		href: "/hire-freelancers",
+		icon: "/svgs/icon-courses.svg",
+		external: true
+	},
+	{
 		label: "blog",
 		href: "/blog",
 		icon: "/svgs/icon-courses.svg",

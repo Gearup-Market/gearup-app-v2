@@ -12,12 +12,12 @@ export const permissionsData = [
     },
     {
         "id": "668401c0cadace9a252fc83b",
-        title: "Transaction",
+        title: "Transactions",
         permissions: ['View Transactions', 'Manage Transactions'],
     },
     {
         "id": "668401c01acfcbf28bcd5bce",
-        title: "Wallets",
+        title: "Wallet",
         permissions: ['View Wallets', 'Manage Wallets'],
     },
     {

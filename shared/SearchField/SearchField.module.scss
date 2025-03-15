@@ -1,0 +1,59 @@
+@import "@/styles/imports";
+
+.container {
+    display: flex;
+    gap: 2.4rem;
+
+    .input {
+        @include flex(flex-start, center);
+        width: 40rem;
+        padding: 1.6rem 2.4rem;
+        row-gap: 0.7rem;
+        border: 1px solid white;
+        border-radius: 1.6rem;
+
+        .input_wrapper {
+            position: relative;
+            width: 100%;
+            column-gap: 0.4rem;
+            background-color: transparent;
+            transition: all 0.1s ease-in;
+            @include flex(flex-start, center, row nowrap);
+        }
+
+        .input_icon {
+            position: relative;
+            width: 2.4rem;
+            height: 2.4rem;
+            flex-shrink: 0;
+        }
+
+        .input_field {
+            all: unset;
+            flex-grow: 1;
+            height: 100%;
+            font-size: 1.4rem;
+            line-height: 2.5rem;
+            font-weight: 500;
+            font-family: $font;
+            width: 100%;
+            color: white;
+
+            &::placeholder {
+                font-size: 1.4rem;
+                line-height: 2.5rem;
+                color: #a3a7ab;
+            }
+        }
+    }
+
+    @include screenMax("ssm-mobile") {
+        flex-direction: column;
+        width: 100%;
+
+
+        .input{
+            width: 100%;
+        }
+	}
+}

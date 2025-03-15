@@ -11,6 +11,14 @@
 
     &__form_container {
         background-color: #fff;
+
+
+        .white_loader{
+          color: white;
+          margin-left: 0.5rem;
+          height: 1.4rem;
+          width: 1.4rem;
+        }
     
         &__form {
           display: grid;

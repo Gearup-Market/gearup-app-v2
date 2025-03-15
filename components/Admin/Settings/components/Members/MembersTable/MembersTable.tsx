@@ -1,49 +1,43 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
 import styles from "./MembersTable.module.scss";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
-import { InputField, MobileCardContainer, Pagination, ToggleSwitch } from "@/shared";
+import { InputField, MobileCardContainer, Pagination } from "@/shared";
 import { customisedTableClasses } from "@/utils/classes";
-import Link from "next/link";
-import { membersData } from "@/mock/members.mock";
-import { ListingCard } from "@/components/Admin/Listings/components";
-import { useRouter } from "next/navigation";
 import MembersCardMob from "../MembersCardMob/MembersCardMob";
 import { Fade, Popper } from "@mui/material";
 import { MoreIcon } from "@/shared/svgs/dashboard";
-import { ActionsPopover, RolesPopover } from "./Popovers";
+import { ActionsPopover } from "./Popovers";
 import { debounce } from "lodash";
 
-const MembersTable = ({ members }: any) => {
-	const [activeLayout, setActiveLayout] = useState("list");
-	const [activeRow, setActiveRow] = useState<number | null>(null);
-	const [showMoreModal, setShowMoreModal] = useState(false);
-	const [page, setPage] = useState(1);
-	const [limit, setLimit] = useState(7);
-	const router = useRouter();
+const MembersTable = ({ members, refetch }: any) => {
+
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 	const [anchorElAction, setAnchorElAction] = React.useState<HTMLElement | null>(null);
-	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [selectedRowAction, setSelectedRowAction] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 	const [openPoppoverAction, setOpenPopoverAction] = useState(Boolean(anchorElAction));
 	const [searchInput, setSearchInput] = useState("");
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const pageSize: number = 7;
-	const [paginatedData, setPaginatedData] = useState(membersData.slice(0, limit));
+
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,
 		flex: 1
 	};
 
-	const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
 	const handlePopoverOpenAction = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElAction(event.currentTarget);
 	};
+
+	const reset = () => {
+		setAnchorEl(null);
+		setAnchorElAction(null);
+		setOpenPopoverAction(false);
+		setOpenPopover(false);
+	}
 
 	const columns: GridColDef[] = [
 		{
@@ -90,11 +84,11 @@ const MembersTable = ({ members }: any) => {
 					<p
 						style={{ fontSize: "1.2rem" }}
 						className={styles.role}
-						// onClick={e => {
-						// 	setOpenPopover(true);
-						// 	setSelectedRow(row);
-						// 	handlePopoverOpen(e);
-						// }}
+					// onClick={e => {
+					// 	setOpenPopover(true);
+					// 	setSelectedRow(row);
+					// 	handlePopoverOpen(e);
+					// }}
 					>
 						{value && value !== "N/A" ? value.roleName : "N/A"}{" "}
 						{/* <Image
@@ -143,14 +137,17 @@ const MembersTable = ({ members }: any) => {
 									<div
 										className={`${styles.more_modal} popover-content`}
 									>
-										<ActionsPopover row={selectedRow} />
+										<ActionsPopover row={selectedRowAction} refetch={() => {
+											refetch()
+											reset()
+										}
+										} />
 									</div>
 								</Fade>
 							)}
 						</Popper>
 						<MoreIcon
 							onClick={e => {
-								console.log("clicked");
 								setOpenPopoverAction(true);
 								setSelectedRowAction(row);
 								handlePopoverOpenAction(e);
@@ -195,28 +192,27 @@ const MembersTable = ({ members }: any) => {
 		};
 	}, [debouncedSearch]);
 
-	// useEffect(() => {
-	// 	// Function to handle click events
-	// 	const handleClick = (event: MouseEvent) => {
-	// 		const target = event.target as HTMLElement;
 
-	// 		// Check if the click happened outside the specified elements
-	// 		if (!target.closest(".options_icon") && !target.closest(".popover-content")) {
-	// 			setAnchorEl(null);
-	// 			setAnchorElAction(null);
-	// 			setOpenPopoverAction(false);
-	// 			setOpenPopover(false);
-	// 		}
-	// 	};
 
-	// 	// Add event listener to the document
-	// 	document.addEventListener("click", handleClick);
+	useEffect(() => {
+		// Function to handle click events
+		const handleClick = (event: MouseEvent) => {
+			const target = event.target as HTMLElement;
 
-	// 	// Clean up the event listener
-	// 	return () => {
-	// 		document.removeEventListener("click", handleClick);
-	// 	};
-	// }, []);
+			// Check if the click happened outside the specified elements
+			if (!target.closest(".options_icon") && !target.closest(".popover-content")) {
+				reset()
+			}
+		};
+
+		// Add event listener to the document
+		document.addEventListener("click", handleClick);
+
+		// Clean up the event listener
+		return () => {
+			document.removeEventListener("click", handleClick);
+		};
+	}, []);
 
 	return (
 		<div className={styles.container}>
@@ -225,7 +221,7 @@ const MembersTable = ({ members }: any) => {
 					placeholder="Search"
 					icon="/svgs/icon-search-dark.svg"
 					iconTitle="search-icon"
-					// onChange={e => debouncedSearch(e.target.value)}
+				// onChange={e => debouncedSearch(e.target.value)}
 				/>
 			</div>
 
@@ -241,7 +237,7 @@ const MembersTable = ({ members }: any) => {
 					hideFooter
 					autoHeight
 					sx={customisedTableClasses}
-					getRowId={row => row._id}
+					getRowId={row => row.id}
 				/>
 			</div>
 
