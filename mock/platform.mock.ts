@@ -28,7 +28,7 @@ export const platformList: Platfom[] = [
 		title: "Taking a course",
 		description:
 			"Take courses led by industry experts and elevate your skills to new heights",
-		url: "#",
+		url: "/courses",
 		urlLabel: "Explore courses",
 		id: 4
 	}

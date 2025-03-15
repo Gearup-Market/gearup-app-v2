@@ -96,7 +96,7 @@ export const usePostCreateBlog = (
 ) =>
 	useMutation<ICreateArticleResp, IGetErr, IPostBlogReq>({
 		mutationFn: async props =>
-			(await api.post(`${API_URL.adminBlogsArticlesById}/create`, props)).data,
+			(await api.post(`${API_URL.adminBlogsArticles}/create`, props)).data,
 		...options
 	});
 

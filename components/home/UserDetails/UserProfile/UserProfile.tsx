@@ -11,7 +11,7 @@ interface Props {
 }
 
 const UserDetailsProfile = ({ user }: Props) => {
-	const { userId } = useAppSelector(state => state.user);
+	const { kyc } = useAppSelector(state => state.user);
 	return (
 		<div className={styles.container}>
 			<div className={styles.profile_details}>
@@ -27,7 +27,7 @@ const UserDetailsProfile = ({ user }: Props) => {
 				</div>
 				<p className={styles.name}>
 					{user?.userName}
-					{user?.isVerified && (
+					{!!kyc && (
 						<span className={styles.verfiy_icon}>
 							<VerifyIcon />
 						</span>
