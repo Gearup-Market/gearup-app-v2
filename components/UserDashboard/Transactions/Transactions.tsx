@@ -11,7 +11,24 @@ const Transactions = () => {
 	const [activeFilter, setActiveFilter] = useState<Filter>({
 		id: 1,
 		name: "All",
-		subFilters: []
+		subFilters: [
+			{
+				id: 2,
+				name: "Requested"
+			},
+			{
+				id: 3,
+				name: "Accepted/Ongoing"
+			},
+			{
+				id: 4,
+				name: "Completed"
+			},
+			{
+				id: 5,
+				name: "Canceled/declined"
+			}
+		]
 	});
 	const parentFilters = [
 		{

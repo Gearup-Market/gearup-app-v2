@@ -51,7 +51,7 @@ const ReuseableFilters = ({
 	const activeSubFilterFromQuery = searchParams.get(childrenQueryName);
 
 	useEffect(() => {
-		if (activeFilterFromQuery) {
+		if (activeFilterFromQuery && page !== "transactions") {
 			const matchedFilter = parentFilters.find(
 				filter =>
 					filter.name.toLowerCase() === activeFilterFromQuery.toLowerCase()
@@ -61,7 +61,7 @@ const ReuseableFilters = ({
 				setActiveFilter(matchedFilter);
 			}
 		}
-	}, [activeFilterFromQuery, parentFilters, setActiveFilter]);
+	}, [activeFilterFromQuery, parentFilters, setActiveFilter, page]);
 
 	return (
 		<div className={styles.container}>

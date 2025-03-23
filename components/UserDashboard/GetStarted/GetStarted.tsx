@@ -85,8 +85,8 @@ const GetStarted = ({
 							className={styles.container__steps_container__step}
 						>
 							<RadioInput
-								checked={!!step.completed}
-								disabled={true}
+								active={!!step.completed}
+								disabled={false}
 								onChange={() => {}}
 							/>
 							<span>{step.title}</span>

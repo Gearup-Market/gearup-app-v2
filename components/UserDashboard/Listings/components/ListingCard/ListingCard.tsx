@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ListingCard.module.scss";
 import Image from "next/image";
-import { formatLink, shortenTitle } from "@/utils";
+import { formatLink, formatNum, shortenTitle } from "@/utils";
 import Link from "next/link";
 import { useGlobalContext } from "@/contexts/AppContext";
 import { EllipseIcon, MoreIcon } from "@/shared/svgs/dashboard";
@@ -121,7 +121,7 @@ const ListingCard = ({
 			</div>
 			<div className={styles.pricing_container}>
 				<div className={styles.pricing}>
-					<p>{props.price}</p>
+					<p>₦{formatNum(props.price)}</p>
 				</div>
 			</div>
 		</div>

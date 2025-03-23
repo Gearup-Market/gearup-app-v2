@@ -61,9 +61,9 @@ export const ReUseableChatHeader = ({ data, listing }: { data: any; listing: any
 				</div>
 			</div>
 			<div className={styles.right}>
-				<span className={styles.icon}>
+				{/* <span className={styles.icon}>
 					<Image src="/svgs/call.svg" alt="phone-icon" height={30} width={30} />
-				</span>
+				</span> */}
 				<span className={styles.icon}>
 					<Image
 						src="/svgs/error.svg"

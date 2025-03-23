@@ -24,6 +24,7 @@ import walletSlice from "./slices/walletSlice";
 import cartSlice from "./slices/cartSlice";
 import checkoutSlice from "./slices/checkoutSlice";
 import transactionSlice from "./slices/transactionSlice";
+import messagesSlice from "./slices/messagesSlice";
 
 const PERSISTED_KEYS: string[] = [
 	"user",
@@ -60,7 +61,8 @@ const persistedReducer = persistReducer(
 		wallet: walletSlice,
 		transaction: transactionSlice,
 		newCourse: addCourseSlice,
-		courses: courseSlice
+		courses: courseSlice,
+		messages: messagesSlice
 	})
 );
 

@@ -123,7 +123,7 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	const returnUrl = searchParams.get("returnUrl") || pathname;
 
 	useEffect(() => {
-		if (!loading && !user.isAuthenticated) {
+		if (!loading) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
 				router.replace(`/login`);
 			} else if (isAuthenticated && pathname === "/login") {
