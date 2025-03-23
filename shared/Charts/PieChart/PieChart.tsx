@@ -3,6 +3,7 @@ import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
 import styles from "./PieChart.module.scss";
 import { GearData, SalesAnalyticsData } from "@/app/api/hooks/analytics/types";
+import { formatNum } from "@/utils";
 
 interface Props {
 	data?: any;
@@ -54,7 +55,7 @@ const CustomLabel = ({ viewBox, totalEarning }: any) => {
 					Total Earnings
 				</tspan>
 				<tspan x={cx} dy="1.2em" fontSize="16" fontWeight="bold">
-					{totalEarning}
+					₦{formatNum(totalEarning)}
 				</tspan>
 			</text>
 		</g>

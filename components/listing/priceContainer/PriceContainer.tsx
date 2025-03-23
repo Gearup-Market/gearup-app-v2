@@ -141,7 +141,12 @@ const PriceContainer = ({
 			return;
 		}
 		if (transactionType === TransactionType.Rental) {
-			if (!hourRentalBreakdown.length || !dayRentalBreakdown.length) {
+			if (
+				(offer.forRent?.rates[0].duration === "hour" &&
+					!hourRentalBreakdown.length) ||
+				(offer.forRent?.rates[0].duration !== "hour" &&
+					!dayRentalBreakdown.length)
+			) {
 				toast.error("Minimum rent duration is 0");
 				return;
 			}
@@ -169,6 +174,7 @@ const PriceContainer = ({
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const modalToOpen = () => {
+		if (user._id === listing.user._id) return toast.error("Can not rent own listing");
 		if (listing.offer.forRent?.rates[0].duration !== "hour") {
 			return (
 				<DatePicker
@@ -311,15 +317,7 @@ const PriceContainer = ({
 						Add to cart
 					</Button>
 				</div>
-				{openModal &&
-					// <DatePicker
-					// 	openModal={openModal}
-					// 	setInputDate={setInputDate}
-					// 	setOpenModal={setOpenModal}
-					// 	inputDate={inputDate}
-					// 	setIsDateSelected={setIsDateSelected}
-					// />
-					modalToOpen()}
+				{openModal && modalToOpen()}
 			</div>
 			{offer.forRent?.rates?.length! > 1 ? (
 				<div className={styles.price_card}>
@@ -339,7 +337,7 @@ const PriceContainer = ({
 				<Logo />
 				<div className={styles.title}>
 					<h1>Need Equipment Urgently?</h1>
-					<p>Call us and we’ll secure it for you.</p>
+					<p>Call us and we&apos;ll secure it for you.</p>
 				</div>
 				<div className={styles.row}>
 					<Link

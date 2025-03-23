@@ -47,8 +47,16 @@ const SummaryView = () => {
 		try {
 			let listingPhotos: string[] = newListing.listingPhotos;
 			if (newListing.tempPhotos && newListing.tempPhotos.length > 0) {
-				const imgUploadRes = await postUploadFile(newListing.tempPhotos!);
-				listingPhotos = imgUploadRes?.imageUrls;
+				try {
+					const imgUploadRes = await postUploadFile(newListing.tempPhotos!);
+					if (!imgUploadRes || !imgUploadRes.imageUrls) {
+						throw new Error("Failed to upload images");
+					}
+					listingPhotos = imgUploadRes.imageUrls;
+				} catch (uploadError: any) {
+					toast.error(uploadError?.message || "Failed to upload images");
+					return;
+				}
 			}
 			const photos = Array.from(
 				new Set([...(newListing.listingPhotos || []), ...listingPhotos])
@@ -121,7 +129,7 @@ const SummaryView = () => {
 				<div className={styles.details}>
 					<div className={styles.text}>
 						<h1>Review & Submit</h1>
-						<p>Review your listing, hit submit, and you’re done!</p>
+						<p>Review your listing, hit submit, and you&apos;re done!</p>
 					</div>
 					<div className={styles.container}>
 						<ImageSlider
@@ -341,13 +349,15 @@ const SummaryView = () => {
 					className={styles.button}
 					onClick={handleSubmission}
 					type="button"
-					// disabled={disabledButton}
+					disabled={isPending || uploadingImgs}
 				>
-					{isPending || uploadingImgs ? (
-						<LoadingSpinner size="small" />
-					) : (
-						"Submit"
-					)}
+					{uploadingImgs
+						? "Uploading image"
+						: isPending
+						? "Creating listing"
+						: isPendingUpdate
+						? "Updating listing"
+						: "Submit"}
 				</Button>
 			</div>
 		</div>

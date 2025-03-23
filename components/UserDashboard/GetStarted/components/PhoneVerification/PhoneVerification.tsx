@@ -153,6 +153,7 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 						isLoading: false
 					})
 				);
+				isSubmittingRef.current = false;
 			}
 		};
 

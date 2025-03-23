@@ -109,6 +109,7 @@ const LoginView = () => {
 											placeholder="Enter email address"
 											className={styles.input}
 											error={(touched.email && errors.email) || ""}
+											type="email"
 										/>
 									)}
 								</Field>

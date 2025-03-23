@@ -11,7 +11,7 @@ import { useSingleListing } from "@/hooks/useListings";
 import { useGetListingById } from "@/app/api/hooks/listings";
 import UserSocials from "@/shared/userSocials/UserSocials";
 import { UserUpdateResp } from "@/app/api/hooks/users/types";
-import { shortenTitle } from "@/utils";
+import { formatNum, shortenTitle } from "@/utils";
 
 const UserProfileSection = () => {
 	const searchParams = useSearchParams();
@@ -113,9 +113,9 @@ const UserProfileSection = () => {
 								{listing?.data.productName}
 							</h2>
 							<p className={styles.text}>
-								<span
-									className={styles.amount}
-								>{`${currency} ${price}`}</span>
+								<span className={styles.amount}>{`${currency} ${formatNum(
+									price
+								)}`}</span>
 								{isRent && (
 									<span className={styles.day}>
 										/{listing.data.offer.forRent?.rates[0].duration}
