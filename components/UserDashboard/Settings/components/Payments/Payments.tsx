@@ -121,6 +121,7 @@ const Payments: React.FC = () => {
 					})
 				);
 				toast.success("Account details updated");
+				refetchWallet();
 			}
 		} catch (error: any) {
 			toast.error(error.response.data.message);
@@ -172,14 +173,12 @@ const Payments: React.FC = () => {
 												/>
 											)}
 										</Field>
-										{isFetching || isWalletFetching ? (
+										{isFetching ? (
 											<PageLoader />
 										) : accountName?.data.accountName ? (
 											accountName?.data.accountName
-										) : walletResult?.data.accountName ? (
-											walletResult?.data.accountName
 										) : (
-											"No Account Connected yet"
+											""
 										)}
 									</div>
 									<div className={styles.form_field}>
@@ -206,13 +205,13 @@ const Payments: React.FC = () => {
 												/>
 											)}
 										</Field>
-										{isWalletFetching ? (
+										{/* {isWalletFetching ? (
 											<PageLoader />
 										) : walletResult?.data.bankName ? (
 											walletResult?.data.bankName
 										) : (
 											"No Account Connected yet"
-										)}
+										)} */}
 									</div>
 								</div>
 								<div className={styles.submit_btn_container}>
@@ -233,6 +232,28 @@ const Payments: React.FC = () => {
 						);
 					}}
 				</Formik>
+				{walletResult?.data.bankName && (
+					<div className={styles.container__bank_details}>
+						<div className={styles.left}>
+							<h2 className={styles.details_title}>Bank details</h2>
+							<div className={styles.img_bank_container}>
+								<div className={styles.bank_container}>
+									<h3 className={styles.bank_name}>
+										{walletResult?.data.accountName}
+									</h3>
+								</div>
+								<div className={styles.bank_container}>
+									<h3 className={styles.bank_name}>
+										{walletResult?.data.bankName}
+									</h3>
+									<p className={styles.bank_number}>
+										{walletResult?.data.accountNumber}
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 			{openPinModal && (
 				<ConfirmPin

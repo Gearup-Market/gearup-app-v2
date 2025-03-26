@@ -79,10 +79,9 @@ const messagesSlice = createSlice({
 			state.currentChatMessages = action.payload;
 		},
 		addChatMessage(state, action: PayloadAction<ChatMessage>) {
-			state.currentChatMessages.messages = [
-				...state.currentChatMessages.messages,
-				action.payload
-			];
+			// console.log(action.payload);
+			state.currentChatMessages.messages.push(action.payload);
+			state.currentChatMessages.messageCount += 1;
 		},
 		clearMessages: () => initialState
 	}

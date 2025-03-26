@@ -174,7 +174,6 @@ const PriceContainer = ({
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const modalToOpen = () => {
-		if (user._id === listing.user._id) return toast.error("Can not rent own listing");
 		if (listing.offer.forRent?.rates[0].duration !== "hour") {
 			return (
 				<DatePicker
@@ -202,6 +201,7 @@ const PriceContainer = ({
 		if (!user.isAuthenticated) {
 			return router.push("/signup");
 		}
+		if (user._id === listing.user._id) return toast.error("Can not rent own listing");
 		setOpenModal(true);
 	};
 

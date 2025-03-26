@@ -112,11 +112,20 @@ const PricingView = () => {
 			if (!baseRate?.duration) return true;
 
 			const hasInvalidPrices = forRentDetails.rates.some(rate => rate.price < 1);
-			return hasInvalidPrices;
+			if (hasInvalidPrices) return true;
+
+			if (!forRentDetails.totalReplacementValue) return true;
+			return false;
 		}
 
 		return true;
-	}, [newListing.listingType, view, forSellDetails.pricing, forRentDetails.rates]);
+	}, [
+		newListing.listingType,
+		view,
+		forSellDetails.pricing,
+		forRentDetails.rates,
+		forRentDetails.totalReplacementValue
+	]);
 
 	return (
 		<div className={styles.section}>
@@ -498,7 +507,11 @@ const RentView = ({
 								onChange={(e: any) => updateRate(1, +e.target.value)}
 								label={`Price`}
 								className={`${styles.input}`}
-								value={offerValue(1, "price")}
+								value={
+									offerValue(1, "price") === 0
+										? ""
+										: offerValue(1, "price")
+								}
 								type="number"
 								min={0}
 							/>
@@ -577,7 +590,7 @@ const RentView = ({
 								onChange={(e: any) => updateRate(7, +e.target.value)}
 								priceStructure={priceStructure}
 							/>
-							{priceStructure === "daily" && (
+							{priceStructure === "day" && (
 								<RentOffer
 									title={30}
 									value={offerValue(30, "price")}

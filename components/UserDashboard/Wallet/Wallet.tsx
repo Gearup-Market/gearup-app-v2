@@ -149,7 +149,7 @@ const Wallet = () => {
 								</span>
 								Withdraw
 							</Button>
-							<Link href="/user/settings?q=import-wallet">
+							<Link href="/user/settings?q=payments">
 								<Button
 									buttonType="secondary"
 									className={`${styles.transparent_btn} ${styles.btn}`}

@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
 import styles from "./NewListingViews.module.scss";
-import { Button, DetailContainer, LoadingSpinner, Logo } from "@/shared";
+import { Button, DetailContainer, Logo } from "@/shared";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState, useAppSelector } from "@/store/configureStore";
 import { clearNewListing, updateNewListing } from "@/store/slices/addListingSlice";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ImageSlider } from "@/components/listing";
 import { formatNum } from "@/utils";
 import {
@@ -29,7 +28,6 @@ const SummaryView = () => {
 	const { mutateAsync: updateProductListing, isPending: isPendingUpdate } =
 		usePostUpdateListing();
 	const dispatch = useDispatch();
-	const pathname = usePathname();
 
 	const handleClose = () => {
 		router.replace("/user/dashboard");
@@ -352,7 +350,7 @@ const SummaryView = () => {
 					disabled={isPending || uploadingImgs}
 				>
 					{uploadingImgs
-						? "Uploading image"
+						? "Uploading images"
 						: isPending
 						? "Creating listing"
 						: isPendingUpdate

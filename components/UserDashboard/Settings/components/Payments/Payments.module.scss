@@ -2,86 +2,136 @@
 @import "@/styles/imports";
 
 .container {
+	.title {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+		color: $col-grey-1;
+	}
 
-    .title {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: $col-grey-1;
-    }
+	.description {
+		font-size: 1.4rem;
+		font-weight: 400;
+		margin-bottom: 1rem;
+		color: #4b525a;
+	}
 
-    .description {
-        font-size: 1.4rem;
-        font-weight: 400;
-        margin-bottom: 1rem;
-        color: #4B525A;
-    }
+	&__form_container {
+		border: 1px solid $col-border;
+		padding: 2.5rem;
+		border-radius: 2rem;
 
-  &__form_container {
-    border: 1px solid $col-border;
-    padding: 2.5rem;
-    border-radius: 2rem;
+		&__form {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 2rem;
 
-    &__form {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2rem;
+			.formField {
+				margin-bottom: 20px;
 
-      .formField {
-        margin-bottom: 20px;
+				label {
+					display: block;
+					margin-bottom: 5px;
+				}
 
-        label {
-          display: block;
-          margin-bottom: 5px;
-        }
+				input[type="text"],
+				select {
+					width: 100%;
+					padding: 8px;
+					border: 1px solid #ccc;
+					border-radius: 5px;
+				}
 
-        input[type='text'],
-        select {
-          width: 100%;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-        }
+				.error {
+					color: red;
+					font-size: 0.8rem;
+				}
+			}
+		}
+		.submit_btn_container {
+			column-span: 2;
+			display: flex;
+			justify-content: flex-end;
+			margin-top: 2rem;
+			width: 100%;
+		}
+	}
+	&__bank_details {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		background: #fbfbfd;
+		padding: 2rem;
 
-        .error {
-          color: red;
-          font-size: 0.8rem;
-        }
-      }
+		margin-block: 1.6rem;
+		.left {
+			.details_title {
+				color: #1b1e21;
+				font-size: 1.4rem;
+				font-weight: 700;
+			}
 
-    }
-    .submit_btn_container {
-      column-span: 2;
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 2rem;
-      width: 100%;
-    }
-  }
+			.img_bank_container {
+				display: flex;
+				gap: 1rem;
+				margin-top: 1rem;
+				align-items: center;
 
-  @include screenMax("mobile"){
-    &__form_container {
-      border: 1px solid $col-border;
-      padding: 2rem 1.6rem;
-      border-radius: 2rem;
-  
-      &__form {
-        display: grid;
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-        gap: 2rem;
-      }
-      .submit_btn_container {
-        column-span: 2;
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 4rem;
-        width: 100%;
+				img {
+					height: 2rem;
+					width: 3rem;
+					border-radius: 0.5rem;
+				}
 
-        button{
-          width: 100%;
-        }
-      }
-    }
+				.bank_container {
+					width: 100%;
+					.bank_name {
+						color: #1b1e21;
+						font-size: 1.2rem;
+					}
 
-  }
+					.bank_number {
+						font-size: 1.2rem;
+						color: #7b8086;
+					}
+				}
+			}
+		}
+		.right {
+			display: flex;
+			gap: 1rem;
+			align-items: center;
+			font-weight: 700;
+			color: #7b8086;
+			.icon {
+				height: 2rem;
+				width: 2rem;
+			}
+		}
+	}
+
+	@include screenMax("mobile") {
+		&__form_container {
+			border: 1px solid $col-border;
+			padding: 2rem 1.6rem;
+			border-radius: 2rem;
+
+			&__form {
+				display: grid;
+				grid-template-columns: repeat(1, minmax(0, 1fr));
+				gap: 2rem;
+			}
+			.submit_btn_container {
+				column-span: 2;
+				display: flex;
+				justify-content: flex-end;
+				margin-top: 4rem;
+				width: 100%;
+
+				button {
+					width: 100%;
+				}
+			}
+		}
+	}
 }

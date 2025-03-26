@@ -46,7 +46,7 @@ const ChatBodyElement = () => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
-	const { mutateAsync: addChatMessage } = useAddChatMessage();
+	const { mutateAsync: addChat } = useAddChatMessage();
 	// const {
 	// 	data: chatMessages,
 	// 	isFetching: isPending,
@@ -72,7 +72,7 @@ const ChatBodyElement = () => {
 					newChatId = resp?.data?._id;
 				}
 
-				await addChatMessage({
+				await addChat({
 					senderId: userId as string,
 					chatId: chatId || newChatId,
 					message: values.message,
@@ -91,7 +91,7 @@ const ChatBodyElement = () => {
 		if (lastMessageRef.current) {
 			lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
 		}
-	}, [currentChatMessages?.messages]);
+	}, [currentChatMessages?.messageCount]);
 
 	const groupedMessages = currentChatMessages?.messages
 		? Object.entries(
