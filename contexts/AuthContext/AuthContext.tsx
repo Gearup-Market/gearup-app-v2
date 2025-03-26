@@ -115,7 +115,9 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 			"/forgot-password",
 			"/password-reset",
 			"/verify",
-			"/reset"
+			"/reset",
+			"/verified",
+			"new-password"
 		],
 		[]
 	);
@@ -125,9 +127,9 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	useEffect(() => {
 		if (!loading) {
 			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
-				router.replace(`/login`);
+				router.replace(`/login?returnUrl=${pathname}`);
 			} else if (isAuthenticated && pathname === "/login") {
-				router.replace("/user/dashboard");
+				router.replace(returnUrl);
 			}
 		}
 	}, [
@@ -136,7 +138,8 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 		pathname,
 		UNPROTECTED_ROUTES,
 		router,
-		user.isAuthenticated
+		user.isAuthenticated,
+		returnUrl
 	]);
 
 	if (loading) {

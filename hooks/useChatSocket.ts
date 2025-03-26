@@ -31,25 +31,8 @@ export const useChatSocket = (chatId?: string) => {
 
 		// Listen for new messages
 		socketInstance.on("newMessage", ({ chatId, message }) => {
-			const chatMessage: ChatMessage = {
-				_id: message._id,
-				sender: {
-					_id: message.sender._id,
-					userId: message.sender.userId,
-					email: message.sender.email,
-					password: "",
-					userName: message.sender.userName,
-					isVerified: true,
-					createdAt: new Date().toISOString(),
-					__v: 0,
-					id: message.sender._id
-				},
-				message: message.message,
-				status: "sent",
-				timestamp: message.timestamp || new Date().toISOString(),
-				attachment: message.attachments || []
-			};
-			dispatch(addChatMessage(chatMessage));
+			// console.log("newMessage", message);
+			dispatch(addChatMessage(message));
 		});
 
 		// Listen for all messages for a specific chat
@@ -60,7 +43,7 @@ export const useChatSocket = (chatId?: string) => {
 
 		// Listen for message status updates
 		socketInstance.on("messageStatusUpdated", ({ chatId, messageId, status }) => {
-			console.log("Message status updated:", messageId, "to", status);
+			// console.log("Message status updated:", messageId, "to", status);
 			queryClient.setQueryData(["getChatMessages", chatId], (oldData: any) => ({
 				...oldData,
 				data: oldData.data.map((msg: any) =>
