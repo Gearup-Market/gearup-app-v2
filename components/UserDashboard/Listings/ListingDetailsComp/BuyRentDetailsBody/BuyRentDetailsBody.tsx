@@ -229,9 +229,7 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 										Transaction ID
 									</p>
 									<Link
-										href={getExplorerUrl(
-											`txns/${listing.transactionId}`
-										)}
+										href={`https://stellar.expert/explorer/public/tx/${listing.transactionId}`}
 										target="_blank"
 										className={styles.view_explorer}
 									>
