@@ -9,6 +9,7 @@ import { StellarWallet } from "@/app/api/hooks/wallets/types";
 import { PageLoader } from "@/shared/loaders";
 import { toast } from "react-hot-toast";
 import { shortenTitle } from "@/utils";
+import { useCopy } from "@/hooks";
 
 interface Props {
 	openModal: boolean;
@@ -48,6 +49,8 @@ const XlmDepositModal = ({ setOpenModal, openModal, wallet, isLoading }: Props) 
 	const [modalType, setModalType] = useState<string>(ModalType.SHOW_OPTIONS);
 	const [backBtn, setBackBtn] = useState<boolean>(false);
 
+	const handleCopy = useCopy();
+
 	const handleSubmit = () => {};
 
 	const onClose = () => {
@@ -65,9 +68,9 @@ const XlmDepositModal = ({ setOpenModal, openModal, wallet, isLoading }: Props) 
 				setModalTitle("Deposit XLM");
 				setModalType(ModalType.SCAN_BARCODE);
 				setBackBtn(true);
-                break;
-            default:
-                toast.error("Select a funding option");
+				break;
+			default:
+				toast.error("Select a funding option");
 		}
 	};
 
@@ -129,7 +132,7 @@ const XlmDepositModal = ({ setOpenModal, openModal, wallet, isLoading }: Props) 
 								<div className={styles.barcode_container}>
 									<div className={styles.barcode}>
 										<QRCodeSVG
-											value={wallet?.publicKey || ""}
+											value={wallet?.accountId || ""}
 											size={100}
 											style={{ width: "100%", height: "100%" }}
 										/>
@@ -142,8 +145,15 @@ const XlmDepositModal = ({ setOpenModal, openModal, wallet, isLoading }: Props) 
 										Deposit address
 									</p>
 									<div className={styles.address_container}>
-										<p className={styles.public_key}>{wallet?.publicKey}</p>
-										<span className={styles.icon}>
+										<p className={styles.public_key}>
+											{wallet?.accountId}
+										</p>
+										<span
+											className={styles.icon}
+											onClick={() =>
+												handleCopy(wallet?.accountId || "")
+											}
+										>
 											<CopyIcon />
 										</span>
 									</div>
