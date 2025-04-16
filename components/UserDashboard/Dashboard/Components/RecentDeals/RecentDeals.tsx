@@ -41,7 +41,7 @@ const RecentDeals = () => {
 				return {
 					id: _id,
 					gearName: item ? item.productName : "Listing not available",
-					amount: `₦${formatNum(amount)}`,
+					amount,
 					transactionDate: createdAt.split("T")[0],
 					transactionType: type,
 					transactionStatus: status,
@@ -110,7 +110,8 @@ const RecentDeals = () => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Amount",
-			minWidth: priceWidth
+			minWidth: priceWidth,
+			renderCell: ({ value }) => "₦" + formatNum(value)
 		},
 		{
 			...sharedColDef,

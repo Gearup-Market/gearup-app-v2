@@ -22,6 +22,7 @@ interface Props {
 	setConfirmWithdrawal: React.Dispatch<React.SetStateAction<boolean>>;
 	wallet?: iWallet;
 	refetch: () => void;
+	walletBalance: number;
 }
 
 const validationSchema = Yup.object().shape({
@@ -42,7 +43,8 @@ const WalletWithrawalModal = ({
 	setOpenModal,
 	setConfirmWithdrawal,
 	wallet,
-	refetch
+	refetch,
+	walletBalance
 }: Props) => {
 	const user = useAppSelector(state => state.user);
 	const router = useRouter();
@@ -55,7 +57,7 @@ const WalletWithrawalModal = ({
 	const isBankDetails = wallet?.bankName && wallet?.accountNumber;
 
 	const handleSubmit = async (values: PayoutFormValues) => {
-		if (values.amount > wallet?.balance!) {
+		if (values.amount > walletBalance) {
 			toast.error("Amount is greater than available balance");
 			return;
 		}
@@ -84,7 +86,7 @@ const WalletWithrawalModal = ({
 			<div className={styles.container}>
 				<div className={styles.container__balance_container}>
 					<p className={styles.title}>Available balance</p>
-					<p className={styles.amount}>₦{formatNum(wallet?.balance)}</p>
+					<p className={styles.amount}>₦{formatNum(walletBalance)}</p>
 				</div>
 				{isBankDetails ? (
 					<>
