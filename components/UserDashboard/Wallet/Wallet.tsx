@@ -243,10 +243,10 @@ const Wallet = () => {
 							Withdraw
 						</Button>
 					</div>
-					<div className={styles.table_section}>
+					{/* <div className={styles.table_section}>
 						<HeaderSubText title="Transaction History" variant="normal" />
 						<XlmTransactionsTable />
-					</div>
+					</div> */}
 				</div>
 				{showWalletWithdrawalModal && (
 					<WalletWithdrawalModal
@@ -255,6 +255,7 @@ const Wallet = () => {
 						setConfirmWithdrawal={setConfirmWithdrawal}
 						wallet={walletResult?.data}
 						refetch={refetchWallet}
+						walletBalance={walletBalance}
 					/>
 				)}
 				{confirmWithdrawal && (

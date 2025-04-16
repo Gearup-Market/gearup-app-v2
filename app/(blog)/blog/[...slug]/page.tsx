@@ -13,15 +13,15 @@ const isSlug = (idOrSlug: string) => {
 
 async function getArticleBySlug(slug: string): Promise<Props | null> {
 	try {
-		const res = await fetch(
-			`${process.env.NEXT_PUBLIC_API_BASE_URL}/blog/${
-				isSlug(slug) ? "slug/" : ""
-			}${slug}`,
-			{
-				cache: "no-cache",
-				next: { tags: ["blog-article"] }
-			}
-		);
+		const link = `${process.env.NEXT_PUBLIC_API_BASE_URL}blog/${
+			isSlug(slug) ? "slug/" : ""
+		}${slug[0]}`;
+		const res = await fetch(link, {
+			cache: "no-cache",
+			next: { tags: ["blog-article"] }
+		});
+
+		console.log(link);
 
 		if (!res.ok) return null;
 

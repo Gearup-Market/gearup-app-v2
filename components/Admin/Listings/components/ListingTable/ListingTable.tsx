@@ -21,7 +21,11 @@ import { formatDate, formatNum } from "@/utils";
 import NoListings from "@/components/UserDashboard/Listings/NoListings/NoListings";
 import ListingCardMob from "./ListingCarMob/ListingCarMob";
 import Link from "next/link";
-import { useAdminGetAllListings, useAdminGetAllUserListings } from "@/app/api/hooks/Admin/listings";
+import {
+	useAdminGetAllListings,
+	useAdminGetAllUserListings
+} from "@/app/api/hooks/Admin/listings";
+import { PageLoader } from "@/shared/loaders";
 
 interface Props {
 	activeFilter: string;
@@ -38,26 +42,28 @@ const ListingTable = ({
 	userid,
 	handleAddItem
 }: Props) => {
-	const { slug: userId} = useParams()
+	const { slug: userId } = useParams();
 	const [activeLayout, setActiveLayout] = useState("list");
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-	const [page, setPage] = useState(1);
+	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [selectedRow, setSelectedRow] = useState<any | undefined>();
 	const [openPoppover, setOpenPopover] = useState(Boolean(anchorEl));
 
 	const { data, isFetching, refetch, isLoading } = useAdminGetAllListings({
-		enabled: !userId
+		page: currentPage
 	});
-	
-	const { data: userListing } = useAdminGetAllUserListings({userId: userId as string});
 
+	const {
+		data: userListing,
+		refetch: userRefetch,
+		isLoading: userLoading
+	} = useAdminGetAllUserListings({ userId: userId as string, page: currentPage });
 
 	// if the userId is present in the url, it means that this table is currently been rendered in the user details page and therefore we need to show the listings for this particular user
-	const listings = !!userId ? userListing?.data || [] : data?.data || [];
+	const listings = !!userId ? userListing || null : data || null;
 
 	const mappedListings = useMemo(() => {
-
-		return listings
+		return listings?.data
 			.map(
 				({
 					_id,
@@ -403,6 +409,14 @@ const ListingTable = ({
 		};
 	}, []);
 
+	useEffect(() => {
+		if (userId) {
+			userRefetch();
+		} else {
+			refetch();
+		}
+	}, [currentPage, refetch, userRefetch, userId]);
+
 	const listData = [
 		{
 			id: 1,
@@ -416,9 +430,15 @@ const ListingTable = ({
 		}
 	];
 
+	const updatePage = (page: number) => {
+		setCurrentPage(page);
+	};
+
 	return (
 		<div className={styles.container}>
-			{mappedListings.length > 0 ? (
+			{isLoading || userLoading ? (
+				<PageLoader />
+			) : mappedListings!.length > 0 ? (
 				<>
 					<div className={styles.container__input_filter_container}>
 						<InputField
@@ -463,14 +483,14 @@ const ListingTable = ({
 							</div>
 
 							<MobileCardContainer>
-								{mappedListings.map((item, ind) => (
+								{mappedListings!.map((item, ind) => (
 									<ListingCardMob
 										activeFilter={activeFilter}
 										key={ind}
 										item={item}
 										ind={ind}
 										lastEle={
-											ind + 1 === mappedListings.length
+											ind + 1 === mappedListings!.length
 												? true
 												: false
 										}
@@ -478,16 +498,16 @@ const ListingTable = ({
 								))}
 							</MobileCardContainer>
 							<Pagination
-								currentPage={1}
-								onPageChange={setPage}
-								totalCount={mappedListings.length}
-								pageSize={5}
+								currentPage={currentPage}
+								totalCount={listings?.meta?.total || 0}
+								pageSize={12}
+								onPageChange={(page: any) => updatePage(page)}
 							/>
 						</>
 					) : (
 						<>
 							<div className={styles.container__grid}>
-								{mappedListings.map((item, ind) => (
+								{mappedListings!.map((item, ind) => (
 									<Link
 										key={ind}
 										href={`/admin/listings/${item.id}`}
