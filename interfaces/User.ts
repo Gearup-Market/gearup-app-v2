@@ -23,6 +23,7 @@ export interface User {
 	isAuthenticated?: boolean;
 	isAdmin?: boolean;
 	role?: any;
+	rating?: number;
 	accountPin?: string;
 	accountName?: string;
 	accountNumber?: string;

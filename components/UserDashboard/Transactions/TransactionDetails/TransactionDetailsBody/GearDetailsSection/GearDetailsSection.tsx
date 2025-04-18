@@ -8,6 +8,7 @@ import { useGetSingleTransactions } from "@/app/api/hooks/transactions";
 import { PageLoader } from "@/shared/loaders";
 import { useAppSelector } from "@/store/configureStore";
 import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 
 interface Props {
 	transactionId: string;
@@ -17,7 +18,11 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 	const { transaction } = useAppSelector(s => s.transaction);
 	const { data: allPricings } = useGetAllPricings();
 	const listingData = transaction?.listing;
-	const fieldValues = Object.entries(listingData!.fieldValues);
+	const fieldValues = Object.entries(
+		isListing(listingData, transaction?.itemType as string)
+			? listingData!.fieldValues
+			: {}
+	);
 
 	const rentalPeriod = transaction!.rentalBreakdown.reduce(
 		(total, period) => total + period.quantity,
@@ -29,20 +34,32 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 				(total, period) => total + period.quantity * period.price,
 				0
 		  )
-		: listingData?.offer?.forSell?.pricing || 0);
+		: isListing(listingData, transaction?.itemType as string)
+		? listingData?.offer?.forSell?.pricing || 0
+		: 0);
 
 	const serviceFeePercentage = () => {
 		if (transaction?.userRole === "seller") return allPricings?.gearSellerFee;
 		if (transaction?.userRole === "buyer") return allPricings?.gearBuyerFee;
 		if (transaction?.userRole === "renter") {
-			if (!listingData?.offer.forRent) return 0;
-			return listingData.offer.forRent.rates[0].duration === "hour"
+			if (
+				isListing(listingData, transaction?.itemType as string) &&
+				!listingData?.offer.forRent
+			)
+				return 0;
+			return isListing(listingData, transaction?.itemType as string) &&
+				listingData?.offer.forRent?.rates[0].duration === "hour"
 				? allPricings?.studioRenterFee
 				: allPricings?.gearRenterFee;
 		}
 		if (transaction?.userRole === "lender") {
-			if (!listingData?.offer.forRent) return 0;
-			return listingData.offer.forRent.rates[0].duration === "hour"
+			if (
+				isListing(listingData, transaction?.itemType as string) &&
+				!listingData?.offer.forRent
+			)
+				return 0;
+			return isListing(listingData, transaction?.itemType as string) &&
+				listingData?.offer.forRent?.rates[0].duration === "hour"
 				? allPricings?.studioLeaseFee
 				: allPricings?.gearLeaseFee;
 		}
@@ -56,17 +73,33 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 		<div className={styles.wrapper}>
 			<div className={styles.container}>
 				<ImageSlider
-					images={listingData?.listingPhotos || []}
-					type={listingData?.listingType}
+					images={
+						isListing(listingData, transaction?.itemType as string)
+							? listingData?.listingPhotos || []
+							: []
+					}
+					type={
+						isListing(listingData, transaction?.itemType as string)
+							? listingData?.listingType
+							: ""
+					}
 				/>
 				<div className={styles.block}>
 					<div className={styles.text}>
 						{/* <h2>{newListing?.productName}</h2> */}
-						<h2>{listingData?.productName}</h2>
+						<h2>
+							{isListing(listingData, transaction?.itemType as string)
+								? listingData?.productName
+								: ""}
+						</h2>
 					</div>
 					<DetailContainer
 						title="Category"
-						value={listingData?.category?.name}
+						value={
+							isListing(listingData, transaction?.itemType as string)
+								? listingData?.category?.name
+								: ""
+						}
 					/>
 					{fieldValues?.map(([key, value]) => {
 						return typeof value === "string" ? (
@@ -75,7 +108,11 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 					})}
 					<DetailContainer
 						title="Description"
-						description={listingData?.description}
+						description={
+							isListing(listingData, transaction?.itemType as string)
+								? listingData?.description
+								: ""
+						}
 					/>
 					<div className={styles.text} style={{ marginTop: "3.2rem" }}>
 						{fieldValues?.map(([key, value]) => {
@@ -105,125 +142,164 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 						})}
 					</div>
 
-					{listingData?.offer?.forSell && (
-						<>
-							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<h6
-									className={styles.perks}
-									style={{ marginBottom: "1rem" }}
+					{isListing(listingData, transaction?.itemType as string) &&
+						listingData?.offer?.forSell && (
+							<>
+								<div
+									className={styles.text}
+									style={{ marginTop: "3.2rem" }}
 								>
-									{" "}
-									FOR SALE PERKS
-								</h6>
-								{listingData?.offer?.forSell?.acceptOffers &&
-									listingData?.offer?.forSell?.acceptOffers && (
-										<p
-											className={styles.perks}
-											style={{ marginBottom: "0.6rem" }}
-										>
-											<Image
-												className={styles.check}
-												src="/svgs/check-icon.svg"
-												alt="check"
-												height={10}
-												width={10}
+									<h6
+										className={styles.perks}
+										style={{ marginBottom: "1rem" }}
+									>
+										{" "}
+										FOR SALE PERKS
+									</h6>
+									{isListing(
+										listingData,
+										transaction?.itemType as string
+									) &&
+										listingData?.offer?.forSell?.acceptOffers && (
+											<p
+												className={styles.perks}
+												style={{ marginBottom: "0.6rem" }}
+											>
+												<Image
+													className={styles.check}
+													src="/svgs/check-icon.svg"
+													alt="check"
+													height={10}
+													width={10}
+												/>
+												Accepts offers
+											</p>
+										)}
+									{isListing(
+										listingData,
+										transaction?.itemType as string
+									) &&
+										listingData?.offer?.forSell?.shipping
+											?.shippingOffer && (
+											<p
+												className={styles.perks}
+												style={{ marginBottom: "0.6rem" }}
+											>
+												<Image
+													className={styles.check}
+													src="/svgs/check-icon.svg"
+													alt="check"
+													height={10}
+													width={10}
+												/>
+												Offers shipping
+											</p>
+										)}
+									{isListing(
+										listingData,
+										transaction?.itemType as string
+									) &&
+										listingData?.offer?.forSell?.shipping
+											?.shippingCosts && (
+											<p
+												className={styles.perks}
+												style={{ marginBottom: "0.6rem" }}
+											>
+												<Image
+													className={styles.check}
+													src="/svgs/check-icon.svg"
+													alt="check"
+													height={10}
+													width={10}
+												/>
+												Cover shipping costs
+											</p>
+										)}
+									{isListing(
+										listingData,
+										transaction?.itemType as string
+									) &&
+										listingData?.offer?.forSell?.shipping
+											?.offerLocalPickup && (
+											<p
+												className={styles.perks}
+												style={{ marginBottom: "0.6rem" }}
+											>
+												<Image
+													className={styles.check}
+													src="/svgs/check-icon.svg"
+													alt="check"
+													height={10}
+													width={10}
+												/>
+												Offer local pick up
+											</p>
+										)}
+								</div>
+								<div
+									className={styles.text}
+									style={{ marginTop: "3.2rem" }}
+								>
+									<h6 style={{ marginBottom: "1rem" }}>Sale PRICING</h6>
+								</div>
+								<DetailContainer
+									title="Amount (including VAT and Service Fee)"
+									value={formatNum(pricing + vat + serviceFee)}
+									prefix="₦"
+								/>
+								<div className={styles.divider}></div>
+							</>
+						)}
+					{isListing(listingData, transaction?.itemType as string) &&
+						listingData?.offer?.forRent && (
+							<>
+								<div
+									className={styles.text}
+									style={{ marginTop: "3.2rem" }}
+								>
+									<h6
+										className={styles.perks}
+										style={{ marginBottom: "1rem" }}
+									>
+										{" "}
+										Rental Pricing
+									</h6>
+									{isListing(
+										listingData,
+										transaction?.itemType as string
+									) &&
+										listingData?.offer?.forRent?.rates.map(rate => (
+											<DetailContainer
+												title={`${rate.quantity} ${
+													rate.duration
+												}${
+													rate.quantity > 1 ? "s" : ""
+												} price(including VAT)`}
+												value={formatNum(+rate.price)}
+												prefix="₦"
+												key={rate.quantity}
 											/>
-											Accepts offers
-										</p>
+										))}
+								</div>
+								<DetailContainer
+									title="Total replacement amount (Including VAT and Service Fee):"
+									value={formatNum(
+										+(
+											(isListing(
+												listingData,
+												transaction?.itemType as string
+											) &&
+												listingData?.offer?.forRent
+													?.totalReplacementValue) ||
+											0
+										) +
+											serviceFee +
+											vat
 									)}
-								{listingData?.offer?.forSell?.shipping?.shippingOffer && (
-									<p
-										className={styles.perks}
-										style={{ marginBottom: "0.6rem" }}
-									>
-										<Image
-											className={styles.check}
-											src="/svgs/check-icon.svg"
-											alt="check"
-											height={10}
-											width={10}
-										/>
-										Offers shipping
-									</p>
-								)}
-								{listingData?.offer?.forSell?.shipping?.shippingCosts && (
-									<p
-										className={styles.perks}
-										style={{ marginBottom: "0.6rem" }}
-									>
-										<Image
-											className={styles.check}
-											src="/svgs/check-icon.svg"
-											alt="check"
-											height={10}
-											width={10}
-										/>
-										Cover shipping costs
-									</p>
-								)}
-								{listingData?.offer?.forSell?.shipping
-									?.offerLocalPickup && (
-									<p
-										className={styles.perks}
-										style={{ marginBottom: "0.6rem" }}
-									>
-										<Image
-											className={styles.check}
-											src="/svgs/check-icon.svg"
-											alt="check"
-											height={10}
-											width={10}
-										/>
-										Offer local pick up
-									</p>
-								)}
-							</div>
-							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<h6 style={{ marginBottom: "1rem" }}>Sale PRICING</h6>
-							</div>
-							<DetailContainer
-								title="Amount (including VAT and Service Fee)"
-								value={formatNum(pricing + vat + serviceFee)}
-								prefix="₦"
-							/>
-							<div className={styles.divider}></div>
-						</>
-					)}
-					{listingData?.offer?.forRent && (
-						<>
-							<div className={styles.text} style={{ marginTop: "3.2rem" }}>
-								<h6
-									className={styles.perks}
-									style={{ marginBottom: "1rem" }}
-								>
-									{" "}
-									Rental Pricing
-								</h6>
-								{listingData?.offer?.forRent?.rates.map(rate => (
-									<DetailContainer
-										title={`${rate.quantity} ${rate.duration}${
-											rate.quantity > 1 ? "s" : ""
-										} price(including VAT)`}
-										value={formatNum(+rate.price)}
-										prefix="₦"
-										key={rate.quantity}
-									/>
-								))}
-							</div>
-							<DetailContainer
-								title="Total replacement amount (Including VAT and Service Fee):"
-								value={formatNum(
-									+(
-										listingData?.offer?.forRent
-											?.totalReplacementValue || 0
-									) +
-										serviceFee +
-										vat
-								)}
-								prefix="₦"
-							/>
-						</>
-					)}
+									prefix="₦"
+								/>
+							</>
+						)}
 					<div className={styles.divider}></div>
 				</div>
 			</div>
@@ -249,8 +325,11 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 							<p>
 								₦
 								{formatNum(
-									listingData?.offer.forRent?.rates.length
-										? listingData?.offer.forRent?.rates[0].price
+									isListing(
+										listingData,
+										transaction?.itemType as string
+									) && listingData?.offer?.forRent?.rates.length
+										? listingData?.offer?.forRent?.rates[0].price
 										: 0
 								)}
 							</p>
@@ -260,8 +339,11 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 							<p>
 								₦
 								{formatNum(
-									listingData?.offer.forRent?.rates.length
-										? listingData?.offer.forRent?.rates[0].price
+									isListing(
+										listingData,
+										transaction?.itemType as string
+									) && listingData?.offer?.forRent?.rates.length
+										? listingData?.offer?.forRent?.rates[0].price
 										: 0
 								)}
 							</p>
@@ -293,7 +375,7 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 						</div>
 					</div>
 				</div>
-			) : (
+			) : transaction?.itemType === "Listing" ? (
 				<div className={styles.rental_detail}>
 					<div className={styles.summary_container}>
 						<h3 className={styles.title}>SHIPMENT INFORMATION</h3>
@@ -311,11 +393,21 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 						</div>
 						<div className={styles.summary_item}>
 							<h4>City</h4>
-							<p>{transaction?.listing?.location?.city}</p>
+							<p>
+								{isListing(
+									transaction?.listing,
+									transaction?.itemType as string
+								) && transaction?.listing?.location?.city}
+							</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Shipping address</h4>
-							<p>{transaction?.listing?.location?.address}</p>
+							<p>
+								{isListing(
+									transaction?.listing,
+									transaction?.itemType as string
+								) && transaction?.listing?.location?.address}
+							</p>
 						</div>
 						<div className={styles.summary_item}>
 							<h4>Mobile number</h4>
@@ -323,7 +415,7 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 						</div>
 					</div>
 				</div>
-			)}
+			) : null}
 		</div>
 	);
 };

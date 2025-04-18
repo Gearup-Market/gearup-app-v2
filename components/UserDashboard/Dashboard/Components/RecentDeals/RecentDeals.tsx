@@ -14,6 +14,7 @@ import { useAppSelector } from "@/store/configureStore";
 import { debounce } from "lodash";
 import { formatNum } from "@/utils";
 import { usePercentageToPixels } from "@/hooks";
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 const sharedColDef: GridColDef = {
 	field: "",
 	sortable: true,
@@ -37,15 +38,23 @@ const RecentDeals = () => {
 
 	const transactions = useMemo(
 		() =>
-			data.map(({ _id, item, amount, type, status, createdAt }) => {
+			data.map(({ _id, item, amount, type, status, createdAt, itemType }) => {
 				return {
 					id: _id,
-					gearName: item ? item.productName : "Listing not available",
+					gearName: item
+						? isListing(item, itemType as string)
+							? item.productName
+							: item.title
+						: "Listing not available",
 					amount,
 					transactionDate: createdAt.split("T")[0],
 					transactionType: type,
 					transactionStatus: status,
-					gearImage: item ? item.listingPhotos[0] : "",
+					gearImage: item
+						? isListing(item, itemType as string)
+							? item.listingPhotos[0]
+							: item.cover
+						: "",
 					item
 				};
 			}),

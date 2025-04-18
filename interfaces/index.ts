@@ -4,7 +4,7 @@ import { iWTransaction } from "@/app/api/hooks/wallets/types";
 import { User } from "./User";
 import { RentalBreakdown, UserRole } from "@/app/api/hooks/transactions/types";
 import { Listing } from "@/store/slices/listingsSlice";
-
+import { Course } from "@/store/slices/coursesSlice";
 export interface NavLinkMenu {
 	label: string;
 	id?: string;
@@ -146,7 +146,7 @@ export interface iTransactionDetails {
 	userRole: UserRole;
 	buyer: User;
 	seller: User;
-	listing: Listing;
+	listing: Listing | Course;
 	isBuyer: boolean;
 	payment: iWTransaction;
 	stages: Stage[];
@@ -156,6 +156,7 @@ export interface iTransactionDetails {
 	};
 	metadata?: MetadataSchema;
 	rentalBreakdown: RentalBreakdown[];
+	itemType: string;
 }
 
 export enum TransactionStatus {

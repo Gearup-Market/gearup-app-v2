@@ -438,8 +438,24 @@ const ListingTable = ({
 		<div className={styles.container}>
 			{isLoading || userLoading ? (
 				<PageLoader />
-			) : mappedListings!.length > 0 ? (
+			) : mappedListings!.length ? (
 				<>
+					<div className={styles.container__item}>
+						<div className={styles.container__item__left}>
+							<Image
+								src="/svgs/user-icon-colored.svg"
+								alt="icon"
+								width={40}
+								height={40}
+							/>
+							<div>
+								<p className={styles.title}>Total Listings</p>
+								<p className={styles.amount}>
+									{listings?.meta?.total || 0}
+								</p>
+							</div>
+						</div>
+					</div>
 					<div className={styles.container__input_filter_container}>
 						<InputField
 							placeholder="Search"
@@ -497,12 +513,6 @@ const ListingTable = ({
 									/>
 								))}
 							</MobileCardContainer>
-							<Pagination
-								currentPage={currentPage}
-								totalCount={listings?.meta?.total || 0}
-								pageSize={12}
-								onPageChange={(page: any) => updatePage(page)}
-							/>
 						</>
 					) : (
 						<>
@@ -524,6 +534,12 @@ const ListingTable = ({
 							</div>
 						</>
 					)}
+					<Pagination
+						currentPage={currentPage}
+						totalCount={listings?.meta?.total || 0}
+						pageSize={listings?.meta?.limit || 0}
+						onPageChange={(page: any) => updatePage(page)}
+					/>
 				</>
 			) : (
 				<NoListings />

@@ -69,7 +69,7 @@ const PricingView = () => {
 			) : (
 				<div className={styles.container__form_container}>
 					<Formik initialValues={initialValues} onSubmit={handleSubmit}>
-						{({ errors, touched, isSubmitting }) => (
+						{({ errors, touched, isSubmitting, values }) => (
 							<Form>
 								<div className={styles.header_title}>
 									<HeaderSubText title="Pricings" variant="main" />
@@ -88,6 +88,7 @@ const PricingView = () => {
 															errors.courseBuyerFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -105,6 +106,7 @@ const PricingView = () => {
 															errors.gearSellerFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -122,6 +124,7 @@ const PricingView = () => {
 															errors.gearBuyerFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -139,6 +142,7 @@ const PricingView = () => {
 															errors.gearLeaseFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -156,6 +160,7 @@ const PricingView = () => {
 															errors.gearRenterFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -173,6 +178,7 @@ const PricingView = () => {
 															errors.courseCreatorFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -190,6 +196,7 @@ const PricingView = () => {
 															errors.studioLeaseFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -207,6 +214,7 @@ const PricingView = () => {
 															errors.studioRenterFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -224,6 +232,7 @@ const PricingView = () => {
 															errors.talentServiceFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -241,6 +250,7 @@ const PricingView = () => {
 															errors.talentEmployerFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -258,6 +268,7 @@ const PricingView = () => {
 															errors.withdrawalFee) ||
 														""
 													}
+													prefix="₦"
 												/>
 											)}
 										</Field>
@@ -275,6 +286,7 @@ const PricingView = () => {
 															errors.withdrawalLimit) ||
 														""
 													}
+													prefix="₦"
 												/>
 											)}
 										</Field>
@@ -292,6 +304,7 @@ const PricingView = () => {
 															errors.valueAddedTax) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -309,6 +322,7 @@ const PricingView = () => {
 															errors.disputeResolutionFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -326,6 +340,7 @@ const PricingView = () => {
 															errors.currencyConversionFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>
@@ -343,6 +358,7 @@ const PricingView = () => {
 															errors.lateCancellationFee) ||
 														""
 													}
+													suffix="%"
 												/>
 											)}
 										</Field>

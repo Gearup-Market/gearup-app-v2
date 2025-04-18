@@ -9,7 +9,7 @@ import { formatNumber } from "@/utils";
 import { useAppSelector } from "@/store/configureStore";
 import { DetailsView } from "@/views/UserDashboardViews/Dashboard/Transactions/TransactionDetails/TransactionDetails";
 import { toast } from "react-toastify";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 interface Props {
 	item?: iTransactionDetails;
 	activeView: string;
@@ -27,13 +27,14 @@ const TransactionDetailsHeader = ({ activeView, setActiveView }: Props) => {
 	const router = useRouter();
 	const search = useSearchParams();
 
-	const amount =
-		transaction?.listing.listingType === "rent"
+	const amount = isListing(transaction?.listing, transaction?.itemType as string)
+		? transaction?.listing.listingType === "rent"
 			? transaction?.rentalBreakdown.reduce(
 					(total, period) => total + period.price * period.quantity,
 					0
 			  )
-			: transaction?.listing.offer?.forSell?.pricing;
+			: transaction?.listing.offer?.forSell?.pricing
+		: transaction?.amount;
 
 	const handleBack = () => {
 		router.back();

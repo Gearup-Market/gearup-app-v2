@@ -6,14 +6,14 @@ import Link from "next/link";
 import { Button } from "@/shared";
 import { iTransactionDetails, TransactionStage, TransactionStatus } from "@/interfaces";
 import { formatNum } from "@/utils";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 interface Props {
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 	item: iTransactionDetails;
 	thirdPartyVerification?: boolean;
 }
 const AwaitingApproval = ({ handleNext, item, thirdPartyVerification }: Props) => {
-	const { isBuyer, id, amount, transactionStatus, listing } = item;
+	const { isBuyer, id, amount, transactionStatus, listing, itemType } = item;
 
 	const isCancelled = useMemo(
 		() => transactionStatus === TransactionStatus.Cancelled,
@@ -33,11 +33,20 @@ const AwaitingApproval = ({ handleNext, item, thirdPartyVerification }: Props) =
 						<p className={styles.details}>
 							You have successfully paid the sum of{" "}
 							<span className={styles.bold}>
-								₦{formatNum(item.listing.offer.forSell?.pricing || 0)}
+								₦
+								{formatNum(
+									isListing(item.listing, itemType as string)
+										? item.listing.offer.forSell?.pricing || 0
+										: item?.listing.price
+								)}
 							</span>{" "}
 							for the purchase of{" "}
-							{listing ? listing.productName : "Listing not available"} and
-							the money is in escrow protection .
+							{listing
+								? isListing(listing, itemType as string)
+									? listing.productName
+									: listing.title
+								: "Listing not available"}{" "}
+							and the money is in escrow protection .
 						</p>
 					</div>
 					<div className={styles.details_container}>
@@ -70,14 +79,22 @@ const AwaitingApproval = ({ handleNext, item, thirdPartyVerification }: Props) =
 					<div className={styles.details_container}>
 						<p className={styles.details}>
 							<span className={styles.bold}>
-								{listing.user?.name || listing.user?.userName}
+								{listing
+									? isListing(listing, itemType as string)
+										? listing.user?.name || listing.user?.userName
+										: listing.author?.name || listing.author?.userName
+									: "Listing not available"}
 							</span>{" "}
 							has successfully paid the sum of{" "}
 							<span className={styles.bold}>₦{formatNum(amount)}</span> for
 							the purchase of{" "}
-							{listing ? listing.productName : "Listing not available"}, and
-							the money is in escrow protection, which will be released to
-							you once the transaction is completed
+							{listing
+								? isListing(listing, itemType as string)
+									? listing.productName
+									: listing.title
+								: "Listing not available"}
+							, and the money is in escrow protection, which will be
+							released to you once the transaction is completed
 						</p>
 					</div>
 					<div className={styles.details_container}>

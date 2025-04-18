@@ -60,8 +60,14 @@ const BuyCourseDetails = ({
 								<LiveCourse
 									setOpenModal={setOpenModal}
 									link={course?.link}
-									startDate={course?.liveTutorials?.startDate as Date}
-									endDate={course?.liveTutorials?.endDate as Date}
+									startDate={
+										course?.liveSessionDetails?.dateRange
+											.startDate as Date
+									}
+									endDate={
+										course?.liveSessionDetails?.dateRange
+											.endDate as Date
+									}
 								/>
 							)}
 							{course?.courseType === CourseType.Ebook && (

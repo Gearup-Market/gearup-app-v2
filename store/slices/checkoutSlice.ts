@@ -1,12 +1,13 @@
 import { RentalBreakdown, TransactionType } from "@/app/api/hooks/transactions/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Listing } from "./listingsSlice";
-
+import { Course } from "./coursesSlice";
 export interface Checkout {
-	item: Listing;
+	item: Listing | Course;
 	type: TransactionType;
 	amount: number;
 	rentalBreakdown?: RentalBreakdown[];
+	listingModelType: string;
 }
 
 export interface CheckoutSaleProps {

@@ -8,7 +8,7 @@ import { formatNum } from "@/utils";
 import { useAppSelector } from "@/store/configureStore";
 import { usePostTransactionStatus } from "@/app/api/hooks/transactions";
 import toast from "react-hot-toast";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 interface Props {
 	item: iTransactionDetails;
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
@@ -17,7 +17,7 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
 	const { userId } = useAppSelector(s => s.user);
 
-	const { metadata, isBuyer, id, amount, transactionStatus, listing } = item;
+	const { metadata, isBuyer, id, amount, transactionStatus, listing, itemType } = item;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
 
 	const isCancelled = useMemo(
@@ -70,11 +70,20 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 								<span className={styles.bold}>{item.buyer.userName}</span>{" "}
 								has successfully paid the sum of{" "}
 								<span className={styles.bold}>
-									₦{formatNum(item.listing.offer.forSell?.pricing || 0)}
+									₦
+									{formatNum(
+										isListing(item.listing, itemType as string)
+											? item.listing.offer.forSell?.pricing || 0
+											: item.listing.price
+									)}
 								</span>{" "}
 								for the purchase of{" "}
-								{listing ? listing.productName : "Listing not available"},
-								and the money is in escrow protection, which will be
+								{listing
+									? isListing(listing, itemType as string)
+										? listing.productName
+										: listing.title
+									: "Listing not available"}
+								, and the money is in escrow protection, which will be
 								released to you once the transaction is completed{" "}
 							</p>
 						</div>

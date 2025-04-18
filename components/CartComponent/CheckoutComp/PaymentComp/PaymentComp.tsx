@@ -18,7 +18,8 @@ import { PaystackPaymentButton } from "@/shared";
 import { PaystackProps } from "react-paystack/dist/types";
 import { formatNum } from "@/utils";
 import { useRouter } from "next/navigation";
-
+import { Course } from "@/store/slices/coursesSlice";
+import { isListing } from "../../CartItems/CartItems";
 export enum PaymentMethod {
 	Wallet = "wallet",
 	Paystack = "paystack",
@@ -33,12 +34,14 @@ const PaymentComp = ({
 	item,
 	amount,
 	type,
-	rentalBreakdown
+	rentalBreakdown,
+	listingModelType
 }: {
-	item: Listing;
+	item: Listing | Course;
 	amount: number;
 	type: string;
 	rentalBreakdown?: RentalBreakdown[];
+	listingModelType: string;
 }) => {
 	const { walletResult, isFetching } = useWallet();
 	const { data: xlmWallet, isFetching: xlmWalletFetching } = useStellarWallet();
@@ -51,11 +54,14 @@ const PaymentComp = ({
 
 	const preparedPayload = {
 		item: item._id,
-		seller: item.user._id,
+		seller: isListing(item, listingModelType as string)
+			? (item as Listing).user._id
+			: (item as Course).author._id,
 		buyer: user.userId,
 		amount,
 		type,
 		rentalBreakdown,
+		itemType: listingModelType,
 		metadata: {
 			...saleProps,
 			thirdPartyCheckup: false
@@ -82,7 +88,7 @@ const PaymentComp = ({
 					toast.success("Request submitted");
 					dispatch(resetCheckout());
 					router.push("/user/dashboard");
-					removeItemFromCart(item._id);
+					removeItemFromCart(item._id as string);
 					setOpenModal(true);
 				}
 			} catch (error: any) {
@@ -130,7 +136,7 @@ const PaymentComp = ({
 			toast.success("Request submitted");
 			dispatch(resetCheckout());
 			router.push("/user/dashboard");
-			removeItemFromCart(item._id);
+			removeItemFromCart(item._id as string);
 			setOpenModal(true);
 		}
 	};

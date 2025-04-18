@@ -11,6 +11,8 @@ import { useSingleListing } from "@/hooks/useListings";
 import { useAppSelector } from "@/store/configureStore";
 import { useParams } from "next/navigation";
 import { useFetchUserDetailsById } from "@/hooks/useUsers";
+import { usePostChangeListingStatus } from "@/app/api/hooks/listings";
+import toast from "react-hot-toast";
 
 const ListingsDetails = () => {
 	const listingType: string = "buy-rent";
@@ -20,6 +22,27 @@ const ListingsDetails = () => {
 	const { fetchingUser, user } = useFetchUserDetailsById(
 		currentListing?.user._id ?? ""
 	);
+	const { mutateAsync: postChangeListingStatus, isPending: isPendingUpdate } =
+		usePostChangeListingStatus();
+
+	const onToggleHideListing = async (
+		listingId: string,
+		status: string,
+		userId: string
+	) => {
+		try {
+			const res = await postChangeListingStatus({
+				status: status === "available" ? "unavailable" : "available",
+				userId,
+				listingId
+			});
+			if (res.data) {
+				toast.success("Status updated");
+				refetch();
+				// window.location.reload();
+			}
+		} catch (error) {}
+	};
 
 	if (!currentListing && isFetching) return <PageLoader />;
 	if (!currentListing) return null;

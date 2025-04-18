@@ -22,7 +22,7 @@ import { getTransactions } from "@/app/api/hooks/transactions";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import SearchTransactions from "./searchTransactions/SearchTransactions";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 const TransactionTable = () => {
 	const [showSearchContainer, setShowSearchContainer] = useState<boolean>(false);
 	const [searchTerm, setSearchTerm] = useState<string>("");
@@ -63,7 +63,16 @@ const TransactionTable = () => {
 	const transactions: any[] = useMemo(
 		() =>
 			data?.data.map(
-				({ _id, item, buyer, amount, type, status, createdAt }: Transaction) => {
+				({
+					_id,
+					item,
+					buyer,
+					amount,
+					type,
+					status,
+					createdAt,
+					itemType
+				}: Transaction) => {
 					const isBuyer = userId === buyer;
 					const transactionType =
 						type === TransactionType.Sale && isBuyer
@@ -82,12 +91,20 @@ const TransactionTable = () => {
 							: UserRole.Lender;
 					return {
 						id: _id,
-						gearName: item ? item.productName : "Listing not available",
+						gearName: item
+							? isListing(item, itemType as string)
+								? item.productName
+								: item.title
+							: "Listing not available",
 						amount,
 						transactionDate: createdAt.split("T")[0],
 						transactionType,
 						transactionStatus: status,
-						gearImage: item ? item.listingPhotos[0] : "",
+						gearImage: item
+							? isListing(item, itemType as string)
+								? item.listingPhotos[0]
+								: item.cover
+							: "",
 						userRole,
 						item
 					};

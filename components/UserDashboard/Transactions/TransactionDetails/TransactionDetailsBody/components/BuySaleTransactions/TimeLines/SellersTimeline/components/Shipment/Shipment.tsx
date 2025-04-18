@@ -9,13 +9,13 @@ import {
 	TransactionStage,
 	TransactionStatus
 } from "@/interfaces";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 interface Props {
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 	item: iTransactionDetails;
 }
 const Shipment = ({ handleNext, item }: Props) => {
-	const { metadata, listing, buyer } = item;
+	const { metadata, listing, buyer, itemType } = item;
 	const thirdPartyVerification = !!metadata?.thirdPartyCheckup;
 
 	return (
@@ -82,7 +82,9 @@ const Shipment = ({ handleNext, item }: Props) => {
 								Buyer has opted for local pickup option. Please ensure the{" "}
 								<strong>
 									{listing
-										? listing.productName
+										? isListing(listing, itemType as string)
+											? listing.productName
+											: listing.title
 										: "Listing not available"}
 								</strong>{" "}
 								is available for pickup at the agreed time.

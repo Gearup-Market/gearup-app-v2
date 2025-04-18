@@ -29,9 +29,9 @@ const CourseCard = ({ props, className }: Props) => {
 			</div>
 			<div className={styles.small_row} style={{ marginBottom: "1.2rem" }}>
 				<div className={styles.text}>
-					<h4>4.54</h4>
+					<h4>{props.author.rating}</h4>
 				</div>
-				<Ratings readOnly />
+				<Ratings readOnly rating={props.author.rating} />
 				<div className={styles.text}>
 					<span>
 						({/* {props.reviews}  */}
@@ -47,14 +47,19 @@ const CourseCard = ({ props, className }: Props) => {
 				<div className={styles.small_row}>
 					<div className={styles.avatar}>
 						<Image
-							src={"/svgs/user.svg"}
-							alt={props.author}
+							src={props.author.avatar || "/svgs/user.svg"}
+							alt={props.author.userName}
 							fill
 							sizes="100vw"
 						/>
 					</div>
 					<div className={styles.text} style={{ marginBottom: 0 }}>
-						<p>user</p>
+						<p>
+							{props.author.userName ||
+								props.author.firstName ||
+								props.author.lastName ||
+								"user"}
+						</p>
 					</div>
 				</div>
 			</div>

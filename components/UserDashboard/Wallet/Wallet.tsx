@@ -273,21 +273,21 @@ const Wallet = () => {
 						setOpenModal={setShowAlertModal}
 					/>
 				)}
-				{showXlmDepositModal && (
+				{/* {showXlmDepositModal && (
 					<XlmDepositModal
 						openModal={showXlmDepositModal}
 						setOpenModal={setShowXlmDepositModal}
 						wallet={stellarWallet}
 						isLoading={isFetchingStellarWallet}
 					/>
-				)}
-				{showXlmWithdrawalModal && (
+				)} */}
+				{/* {showXlmWithdrawalModal && (
 					<XlmWithdrawalModal
 						openModal={showXlmWithdrawalModal}
 						setOpenModal={setShowXlmWithdrawalModal}
 						refetch={refetch}
 					/>
-				)}
+				)} */}
 				{showWalletDepositModal && (
 					<WalletDepositModal
 						openModal={showWalletDepositModal}

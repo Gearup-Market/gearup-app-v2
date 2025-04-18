@@ -68,6 +68,9 @@ const CheckoutView = () => {
 		if (!checkout) {
 			router.back();
 		}
+		if (checkout?.listingModelType === "Course") {
+			setStep(4);
+		}
 	}, []);
 
 	// useEffect(() => {
@@ -84,32 +87,38 @@ const CheckoutView = () => {
 						amount={checkout.amount}
 						type={checkout.type}
 						rentalBreakdown={checkout.rentalBreakdown}
+						listingModelType={checkout.listingModelType}
 					/>
 				)}
 				<div>
 					{checkout?.type === TransactionType.Sale && (
 						<>
-							<ul className={styles.timeline_container}>
-								{buyTimeline.map(item => (
-									<div key={item.id} className={styles.item_container}>
-										<div className={styles.id_line_container}>
-											<span
-												className={styles.id_container}
-												data-active={step >= item.id}
-											>
-												{item.id}
-											</span>
-											{item.id != buyTimeline.length && (
+							{checkout?.listingModelType !== "Course" && (
+								<ul className={styles.timeline_container}>
+									{buyTimeline.map(item => (
+										<div
+											key={item.id}
+											className={styles.item_container}
+										>
+											<div className={styles.id_line_container}>
 												<span
-													className={styles.id_line}
+													className={styles.id_container}
 													data-active={step >= item.id}
-												></span>
-											)}
+												>
+													{item.id}
+												</span>
+												{item.id != buyTimeline.length && (
+													<span
+														className={styles.id_line}
+														data-active={step >= item.id}
+													></span>
+												)}
+											</div>
+											<h3 className={styles.name}>{item.name}</h3>
 										</div>
-										<h3 className={styles.name}>{item.name}</h3>
-									</div>
-								))}
-							</ul>
+									))}
+								</ul>
+							)}
 							<>
 								{step === 1 && (
 									<ThirdPartyCheck
@@ -136,6 +145,7 @@ const CheckoutView = () => {
 										item={checkout.item}
 										amount={checkout.amount}
 										type={checkout.type}
+										listingModelType={checkout.listingModelType}
 									/>
 								)}
 							</>
