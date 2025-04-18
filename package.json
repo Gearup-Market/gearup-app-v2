@@ -37,6 +37,7 @@
 		"react-date-range": "^2.0.1",
 		"react-datepicker": "^8.1.0",
 		"react-dom": "^18",
+		"react-google-autocomplete": "^2.7.5",
 		"react-hot-toast": "^2.4.1",
 		"react-paystack": "^6.0.0",
 		"react-player": "^2.16.0",

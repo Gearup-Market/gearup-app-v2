@@ -1,8 +1,10 @@
+import { User } from "@/interfaces/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { LiveSessionDetails } from "./addCourseSlice";
 
 export interface Course {
 	_id?: string;
-	author: string;
+	author: User;
 	title: string;
 	subtitle: string;
 	description: string;
@@ -13,10 +15,6 @@ export interface Course {
 	content: {
 		tableOfContent: string;
 		whatYouWillLearn: string;
-	};
-	liveTutorials?: {
-		startDate: Date;
-		endDate: Date;
 	};
 	ebooks?: {
 		pages: number;
@@ -30,6 +28,7 @@ export interface Course {
 		duration: string;
 		size: string;
 	};
+	liveSessionDetails?: LiveSessionDetails;
 }
 
 interface CourseState {

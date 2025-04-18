@@ -160,7 +160,8 @@ const useGetVerifyToken = ({ token }: { token: string }) => {
 			return response.data;
 		},
 		enabled: !!token,
-		refetchOnMount: true
+		refetchOnMount: true,
+		retry: false
 	});
 };
 

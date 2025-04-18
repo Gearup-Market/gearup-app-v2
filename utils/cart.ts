@@ -4,7 +4,7 @@ import {
 	TransactionType
 } from "@/app/api/hooks/transactions/types";
 import { Listing } from "@/store/slices/listingsSlice";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 // function getApplicableRate(offer: Listing["offer"], durationInDays: number) {
 // 	const { forRent } = offer;
 // 	if (!forRent || !forRent.rates || forRent.rates.length === 0) return 0;
@@ -96,7 +96,9 @@ export function calculateItemPrice(item: CartItem): number {
 	const { type, rentalBreakdown, listing } = item;
 
 	if (rentalBreakdown?.length && type === TransactionType.Rental) {
-		const rateType = listing.offer.forRent?.rates[0]?.duration;
+		const rateType =
+			isListing(listing, item.type as string) &&
+			listing.offer.forRent?.rates[0]?.duration;
 		if (!rateType) return 0;
 
 		const startDate = new Date(rentalBreakdown[0].date);
@@ -117,8 +119,10 @@ export function calculateItemPrice(item: CartItem): number {
 		}
 	}
 
-	if (listing?.offer?.forSell) {
-		return listing.offer.forSell.pricing!;
+	if (isListing(listing, item.type as string)) {
+		return listing.offer.forSell?.pricing!;
+	} else {
+		return listing.price;
 	}
 
 	return 0;

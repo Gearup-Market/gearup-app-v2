@@ -15,11 +15,12 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { addCart, clearCart, removeCartItem } from "@/store/slices/cartSlice";
 import { Listing } from "@/store/slices/listingsSlice";
+import { Course } from "@/store/slices/coursesSlice";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 
 export type CartPayload = {
-	listing: Listing;
+	listing: Listing | Course;
 	rentalBreakdown?: {
 		date: Date;
 		duration: string;
@@ -28,6 +29,7 @@ export type CartPayload = {
 	}[];
 	type: TransactionType;
 	customPrice?: number;
+	listingModelType?: "Listing" | "Course";
 };
 
 export default function useCart() {
@@ -47,14 +49,16 @@ export default function useCart() {
 
 	const addItemToCart = async (payload: CartPayload) => {
 		try {
-			const { listing, rentalBreakdown, type, customPrice } = payload;
+			const { listing, rentalBreakdown, type, customPrice, listingModelType } =
+				payload;
 			if (userId) {
 				const res = await addToCart({
-					listingId: listing._id,
+					listingId: listing._id as string,
 					type,
 					userId,
 					customPrice: customPrice || 0,
-					rentalBreakdown: rentalBreakdown ? rentalBreakdown : []
+					rentalBreakdown: rentalBreakdown ? rentalBreakdown : [],
+					listingModelType
 				});
 
 				if (res.data._id) {
@@ -124,7 +128,7 @@ export default function useCart() {
 			if (userId && cart.items.length > 0) {
 				const preparedPayload: CartReq[] = cart.items.map(
 					({ listing, type, rentalBreakdown, price }) => ({
-						listingId: listing._id,
+						listingId: listing._id as string,
 						type,
 						userId,
 						rentalBreakdown: rentalBreakdown,

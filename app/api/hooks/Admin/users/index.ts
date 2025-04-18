@@ -122,7 +122,8 @@ export const useGetVerifyAdminToken = ({ token }: { token: string }) => {
 			const response = await api.get(`${API_URL.verifyAdminToken}/${token}`);
 			return response.data;
 		},
-		refetchOnMount: true
+		refetchOnMount: true,
+		retry: false
 	});
 };
 

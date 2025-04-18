@@ -31,10 +31,16 @@ const Map = ({
 		if ("geolocation" in navigator) {
 			navigator.geolocation.getCurrentPosition(
 				position => {
-					const { latitude, longitude } = position.coords;
-					setLoc({ lat: latitude, lng: longitude });
+					// const { latitude, longitude } = position.coords;
+					setLoc({
+						lat: location?.coords?.latitude as number,
+						lng: location?.coords?.longitude as number
+					});
 					// Call function to get address
-					getAddress(latitude, longitude);
+					getAddress(
+						location?.coords?.latitude as number,
+						location?.coords?.longitude as number
+					);
 				},
 				error => {
 					console.error(`Error: ${error.message}`);

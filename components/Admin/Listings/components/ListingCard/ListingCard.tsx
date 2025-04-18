@@ -3,7 +3,7 @@
 import React from "react";
 import styles from "./ListingCard.module.scss";
 import Image from "next/image";
-import { shortenTitle } from "@/utils";
+import { formatNum, shortenTitle } from "@/utils";
 import { EllipseIcon } from "@/shared/svgs/dashboard";
 import { CustomImage } from "@/shared";
 
@@ -36,7 +36,7 @@ const ListingCard = ({ props, className, activeFilter }: Props) => {
 			</div>
 			<div className={styles.pricing_container}>
 				<div className={styles.pricing}>
-					<p>{props.price}</p>
+					<p>₦{formatNum(props.price)}</p>
 				</div>
 			</div>
 		</div>

@@ -26,7 +26,7 @@ import {
 	UserRole
 } from "@/app/api/hooks/transactions/types";
 import NoListings from "@/components/UserDashboard/Listings/NoListings/NoListings";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 interface Props {
 	setShowSearchContainer: (e?: any) => void;
 	searchTerm?: string;
@@ -91,7 +91,16 @@ const SearchTransactions = ({
 	const transactions: any[] = useMemo(
 		() =>
 			(searchTerm ? data?.data ?? [] : []).map(
-				({ _id, item, buyer, amount, type, status, createdAt }: Transaction) => {
+				({
+					_id,
+					item,
+					buyer,
+					amount,
+					type,
+					status,
+					createdAt,
+					itemType
+				}: Transaction) => {
 					const isBuyer = userId === buyer;
 					const transactionType =
 						type === TransactionType.Sale && isBuyer
@@ -110,14 +119,26 @@ const SearchTransactions = ({
 							: UserRole.Lender;
 					return {
 						id: _id,
-						gearName: item ? item.productName : "Listing not available",
+						gearName: item
+							? isListing(item, itemType as string)
+								? item.productName
+								: item.title
+							: "Listing not available",
 						amount: `₦${formatNum(
-							type === "Rental" ? amount : item.offer.forSell?.pricing
+							type === "Rental"
+								? amount
+								: isListing(item, itemType as string)
+								? item.offer.forSell?.pricing
+								: item.price
 						)}`,
 						transactionDate: createdAt.split("T")[0],
 						transactionType,
 						transactionStatus: status,
-						gearImage: item ? item.listingPhotos[0] : "",
+						gearImage: item
+							? isListing(item, itemType as string)
+								? item.listingPhotos[0]
+								: item.cover
+							: "",
 						userRole
 					};
 				}

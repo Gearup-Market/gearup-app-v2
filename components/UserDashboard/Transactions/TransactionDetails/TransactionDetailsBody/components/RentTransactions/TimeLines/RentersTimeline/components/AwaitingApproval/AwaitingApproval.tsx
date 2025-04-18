@@ -9,7 +9,7 @@ import { useAppSelector } from "@/store/configureStore";
 import { usePostTransactionStatus } from "@/app/api/hooks/transactions";
 import toast from "react-hot-toast";
 import { formatDate, getDaysDifference, getLastRentalDate } from "@/utils";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 interface Props {
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 	item: iTransactionDetails;
@@ -18,8 +18,16 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 	const { userId } = useAppSelector(s => s.user);
 	const { currentStage } = useAppSelector(s => s.transaction);
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
-	const { isBuyer, id, amount, transactionStatus, listing, rentalBreakdown, buyer } =
-		item;
+	const {
+		isBuyer,
+		id,
+		amount,
+		transactionStatus,
+		listing,
+		rentalBreakdown,
+		buyer,
+		itemType
+	} = item;
 
 	const isCancelled = useMemo(
 		() => transactionStatus === TransactionStatus.Cancelled,
@@ -93,7 +101,9 @@ const AwaitingApproval = ({ handleNext, item }: Props) => {
 										the rental of{" "}
 										<span className={styles.bold}>
 											{listing
-												? listing.productName
+												? isListing(listing, itemType as string)
+													? listing.productName
+													: listing.title
 												: "Listing not available"}
 										</span>{" "}
 										from{" "}

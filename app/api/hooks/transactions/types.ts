@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import { iWTransaction } from "../wallets/types";
 import { MetadataSchema, Stage, TransactionStage, TransactionStatus } from "@/interfaces";
 import { RentingOfferRates } from "@/interfaces/Listing";
+import { Course } from "@/store/slices/coursesSlice";
 
 export enum TransactionType {
 	Rental = "Rental",
@@ -16,6 +17,7 @@ export interface CartReq {
 	type: TransactionType;
 	rentalBreakdown: RentalBreakdown[];
 	customPrice?: number;
+	listingModelType?: "Listing" | "Course";
 }
 
 export type RentalBreakdown = {
@@ -27,8 +29,9 @@ export type RentalBreakdown = {
 
 export interface CartItem {
 	id?: string;
-	listing: Listing;
+	listing: Listing | Course;
 	type: TransactionType;
+	listingModelType?: "Listing" | "Course";
 	rentalBreakdown: RentalBreakdown[];
 	price?: number;
 	vat?: number;
@@ -68,7 +71,7 @@ export type iPostCartErr = AxiosError<{
 
 export interface Transaction {
 	_id: string;
-	item: Listing;
+	item: Listing | Course;
 	buyer: string;
 	seller: string;
 	type: TransactionType;
@@ -84,6 +87,7 @@ export interface Transaction {
 	};
 	createdAt: string;
 	updatedAt?: string;
+	itemType: string;
 }
 
 export interface iPostTransactionRes {
@@ -127,7 +131,7 @@ export type SingleTransaction = Omit<
 > & {
 	buyer: User;
 	seller: User;
-	item: Listing;
+	item: Listing | Course;
 	payment: iWTransaction;
 	updatedAt?: Date;
 };

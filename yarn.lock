@@ -3568,6 +3568,7 @@ __metadata:
     react-date-range: "npm:^2.0.1"
     react-datepicker: "npm:^8.1.0"
     react-dom: "npm:^18"
+    react-google-autocomplete: "npm:^2.7.5"
     react-hot-toast: "npm:^2.4.1"
     react-paystack: "npm:^6.0.0"
     react-player: "npm:^2.16.0"
@@ -4525,6 +4526,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.debounce@npm:^4.0.8":
+  version: 4.0.8
+  resolution: "lodash.debounce@npm:4.0.8"
+  checksum: 10c0/762998a63e095412b6099b8290903e0a8ddcb353ac6e2e0f2d7e7d03abd4275fe3c689d88960eb90b0dde4f177554d51a690f22a343932ecbc50a5d111849987
+  languageName: node
+  linkType: hard
+
 "lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
@@ -5269,7 +5277,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -5431,6 +5439,18 @@ __metadata:
   version: 3.2.2
   resolution: "react-fast-compare@npm:3.2.2"
   checksum: 10c0/0bbd2f3eb41ab2ff7380daaa55105db698d965c396df73e6874831dbafec8c4b5b08ba36ff09df01526caa3c61595247e3269558c284e37646241cba2b90a367
+  languageName: node
+  linkType: hard
+
+"react-google-autocomplete@npm:^2.7.5":
+  version: 2.7.5
+  resolution: "react-google-autocomplete@npm:2.7.5"
+  dependencies:
+    lodash.debounce: "npm:^4.0.8"
+    prop-types: "npm:^15.5.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 10c0/4386da42f7520e558b137673100feb023cbbbdcbf4e50c2474baceb78c8ff20d5829d8d928490d544c894fa18024e4d35efc5fb95a17b7959554ff1d1e72eb99
   languageName: node
   linkType: hard
 

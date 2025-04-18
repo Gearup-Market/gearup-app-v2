@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import styles from "./PriceContainer.module.scss";
 import { Course } from "@/store/slices/coursesSlice";
@@ -7,6 +9,11 @@ import { Button, Ratings } from "@/shared";
 import { CourseType } from "@/views/CourseListingView/CourseListingView";
 import format from "date-fns/format";
 import Image from "next/image";
+import useCart from "@/hooks/useCart";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useAppSelector } from "@/store/configureStore";
+import toast from "react-hot-toast";
+import { TransactionType } from "@/app/api/hooks/transactions/types";
 
 const PriceContainer = ({
 	course,
@@ -15,6 +22,37 @@ const PriceContainer = ({
 	course?: Course;
 	allPricings?: PricingData;
 }) => {
+	const { addItemToCart } = useCart();
+	const search = useSearchParams();
+	const router = useRouter();
+	const user = useAppSelector(state => state.user);
+	const pathname = usePathname();
+
+	const pricing = course?.price || 0;
+
+	const vat = (allPricings?.valueAddedTax! / 100) * pricing || 0;
+	const serviceFee = (allPricings?.courseBuyerFee! / 100) * pricing || 0;
+
+	const total = pricing + serviceFee + vat;
+
+	const handleAddToCart = () => {
+		if (!user.kyc) {
+			toast.error("Please complete kyc");
+			router.push("/verification");
+			return;
+		}
+		if (user._id === course?.author._id) return toast.error("Can not buy own course");
+		try {
+			addItemToCart({
+				listing: course as Course,
+				type: TransactionType.Sale,
+				listingModelType: "Course"
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.price_card}>
@@ -24,9 +62,9 @@ const PriceContainer = ({
 					</div>
 					<div className={styles.small_row} style={{ marginBottom: "1.2rem" }}>
 						<div className={styles.text}>
-							<h4>4.54</h4>
+							<h4>{course?.author.rating}</h4>
 						</div>
-						<Ratings readOnly />
+						<Ratings readOnly rating={course?.author.rating} />
 						<div className={styles.text}>
 							<span>
 								({/* {props.reviews}  */}
@@ -42,20 +80,27 @@ const PriceContainer = ({
 						<div className={styles.small_row}>
 							<div className={styles.avatar}>
 								<Image
-									src={"/svgs/user.svg"}
-									alt={course?.author || ""}
+									src={course?.author.avatar || "/svgs/user.svg"}
+									alt={course?.author.userName || ""}
 									fill
 									sizes="100vw"
 								/>
 							</div>
 							<div className={styles.text} style={{ marginBottom: 0 }}>
-								<p>user</p>
+								<p>
+									{course?.author.userName ||
+										course?.author.firstName ||
+										course?.author.lastName ||
+										"user"}
+								</p>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div className={styles.buttons}>
-					<Button className={styles.button}>Add to cart</Button>
+					<Button className={styles.button} onClick={handleAddToCart}>
+						Add to cart
+					</Button>
 				</div>
 			</div>
 			<div className={styles.additional_offers_container}>
@@ -69,7 +114,7 @@ const PriceContainer = ({
 							</li>
 							<li className={styles.offer}>
 								<p>Size</p>
-								<h3>{course?.ebooks?.size}</h3>
+								<h3>{course?.ebooks?.size}MB</h3>
 							</li>
 						</>
 					)}
@@ -79,7 +124,8 @@ const PriceContainer = ({
 								<p>Start Date</p>
 								<h3>
 									{format(
-										course?.liveTutorials?.startDate as Date,
+										course?.liveSessionDetails?.dateRange
+											.startDate as Date,
 										"MM/dd/yyyy"
 									)}
 								</h3>
@@ -88,7 +134,8 @@ const PriceContainer = ({
 								<p>End Date</p>
 								<h3>
 									{format(
-										course?.liveTutorials?.endDate as Date,
+										course?.liveSessionDetails?.dateRange
+											.endDate as Date,
 										"MM/dd/yyyy"
 									)}
 								</h3>
@@ -99,11 +146,11 @@ const PriceContainer = ({
 						<>
 							<li className={styles.offer}>
 								<p>Duration</p>
-								<h3>{course?.videoTutorials?.duration}</h3>
+								<h3>{course?.videoTutorials?.duration} mins</h3>
 							</li>
 							<li className={styles.offer}>
 								<p>Size</p>
-								<h3>{course?.videoTutorials?.size}</h3>
+								<h3>{course?.videoTutorials?.size}MB</h3>
 							</li>
 						</>
 					)}
@@ -111,11 +158,11 @@ const PriceContainer = ({
 						<>
 							<li className={styles.offer}>
 								<p>Duration</p>
-								<h3>{course?.audioTutorials?.duration}</h3>
+								<h3>{course?.audioTutorials?.duration} mins </h3>
 							</li>
 							<li className={styles.offer}>
 								<p>Size</p>
-								<h3>{course?.audioTutorials?.size}</h3>
+								<h3>{course?.audioTutorials?.size}MB</h3>
 							</li>
 						</>
 					)}

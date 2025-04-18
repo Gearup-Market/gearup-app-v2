@@ -9,7 +9,7 @@ import { usePostTransactionStatus } from "@/app/api/hooks/transactions";
 import { useAppSelector } from "@/store/configureStore";
 import toast from "react-hot-toast";
 import { getDaysDifference, formatDate, formatNum, getLastRentalDate } from "@/utils";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 interface Props {
 	handleNext: (stage: TransactionStage, status?: TransactionStatus) => Promise<void>;
 	item: iTransactionDetails;
@@ -17,7 +17,8 @@ interface Props {
 const AcceptDecline = ({ handleNext, item }: Props) => {
 	const { mutateAsync: postTransactionStatus, isPending } = usePostTransactionStatus();
 	const { userId } = useAppSelector(s => s.user);
-	const { isBuyer, id, amount, transactionStatus, listing, rentalBreakdown } = item;
+	const { isBuyer, id, amount, transactionStatus, listing, rentalBreakdown, itemType } =
+		item;
 
 	const isCancelled = useMemo(
 		() => transactionStatus === TransactionStatus.Cancelled,
@@ -77,15 +78,17 @@ const AcceptDecline = ({ handleNext, item }: Props) => {
 					<>
 						<div className={styles.details_container}>
 							<p className={styles.details}>
-								<span className={styles.bold}>
-									{item.buyer.userName || listing.user?.userName}
-								</span>{" "}
+								<span className={styles.bold}>{item.buyer.userName}</span>{" "}
 								has successfully paid the sum of{" "}
 								<span className={styles.bold}>
 									₦{formatNum(amount, true, 2)}
 								</span>{" "}
 								for the rental of{" "}
-								{listing ? listing.productName : "Listing not available"}{" "}
+								{listing
+									? isListing(listing, itemType as string)
+										? listing.productName
+										: listing.title
+									: "Listing not available"}{" "}
 								{rentalBreakdown?.length && (
 									<span className={styles.bold}>
 										from {formatDate(rentalBreakdown[0].date)} to{" "}

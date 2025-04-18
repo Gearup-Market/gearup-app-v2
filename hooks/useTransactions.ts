@@ -8,6 +8,7 @@ import {
 	TransactionType,
 	UserRole
 } from "@/app/api/hooks/transactions/types";
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 import { iTransactionDetails } from "@/interfaces";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateTransaction } from "@/store/slices/transactionSlice";
@@ -39,7 +40,8 @@ export function useTransaction(id?: string) {
 	const dispatch = useAppDispatch();
 
 	const formatTransaction = (data: SingleTransaction) => {
-		const { _id, item, buyer, type, status, createdAt, rentalBreakdown } = data;
+		const { _id, item, buyer, type, status, createdAt, rentalBreakdown, itemType } =
+			data;
 		const isBuyer = userId === buyer.userId;
 		const transactionType =
 			type === TransactionType.Sale && isBuyer
@@ -58,11 +60,19 @@ export function useTransaction(id?: string) {
 		return {
 			...data,
 			id: _id,
-			gearName: item ? item.productName : "Listing not available",
+			gearName: item
+				? isListing(item, itemType as string)
+					? item.productName
+					: item.title
+				: "Listing not available",
 			transactionDate: createdAt,
 			transactionType,
 			transactionStatus: status,
-			gearImage: item ? item.listingPhotos[0] : "",
+			gearImage: item
+				? isListing(item, itemType as string)
+					? item.listingPhotos[0]
+					: item.cover
+				: "",
 			userRole,
 			listing: item,
 			isBuyer,

@@ -6,19 +6,32 @@ import { PersonalDetails, ReceiptDetails, WarningContainer } from "./components"
 import { iTransactionDetails } from "@/interfaces";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
-
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
 const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
-	const { isBuyer, listing, transactionType, id, buyer, seller, rentalBreakdown } =
-		item;
-	const offer = listing ? listing.offer : null;
+	const {
+		isBuyer,
+		listing,
+		transactionType,
+		id,
+		buyer,
+		seller,
+		rentalBreakdown,
+		itemType
+	} = item;
+	const offer = listing
+		? isListing(listing, itemType as string)
+			? listing.offer
+			: null
+		: null;
 	const forSale = !!offer?.forSell;
-	const amount =
-		item.listing.listingType === "rent"
+	const amount = isListing(item.listing, itemType as string)
+		? item.listing.listingType === "rent"
 			? item.rentalBreakdown.reduce(
 					(total, period) => total + period.price * period.quantity,
 					0
 			  )
-			: offer?.forSell?.pricing;
+			: offer?.forSell?.pricing
+		: item.listing.price;
 	const user = isBuyer ? seller : buyer;
 	const duration =
 		transactionType === TransactionType.Rental

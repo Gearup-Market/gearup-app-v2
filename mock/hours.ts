@@ -115,6 +115,129 @@ export const minutes = [
 	"59"
 ];
 
+export const timeSlots24Hour: string[] = [
+	"00:00",
+	"00:30",
+	"01:00",
+	"01:30",
+	"02:00",
+	"02:30",
+	"03:00",
+	"03:30",
+	"04:00",
+	"04:30",
+	"05:00",
+	"05:30",
+	"06:00",
+	"06:30",
+	"07:00",
+	"07:30",
+	"08:00",
+	"08:30",
+	"09:00",
+	"09:30",
+	"10:00",
+	"10:30",
+	"11:00",
+	"11:30",
+	"12:00",
+	"12:30",
+	"13:00",
+	"13:30",
+	"14:00",
+	"14:30",
+	"15:00",
+	"15:30",
+	"16:00",
+	"16:30",
+	"17:00",
+	"17:30",
+	"18:00",
+	"18:30",
+	"19:00",
+	"19:30",
+	"20:00",
+	"20:30",
+	"21:00",
+	"21:30",
+	"22:00",
+	"22:30",
+	"23:00",
+	"23:30"
+];
+
+export const timezones = [
+	// North America
+	{ value: "Africa/Lagos", label: "Lagos (UTC+01:00)" },
+	{ value: "America/New_York", label: "New York (UTC-05:00)" },
+	{ value: "America/Chicago", label: "Chicago (UTC-06:00)" },
+	{ value: "America/Denver", label: "Denver (UTC-07:00)" },
+	{ value: "America/Los_Angeles", label: "Los Angeles (UTC-08:00)" },
+	{ value: "America/Anchorage", label: "Anchorage (UTC-09:00)" },
+	{ value: "America/Adak", label: "Adak (UTC-10:00)" },
+	{ value: "Pacific/Honolulu", label: "Honolulu (UTC-10:00)" },
+	{ value: "America/Halifax", label: "Halifax (UTC-04:00)" },
+	{ value: "America/St_Johns", label: "St. John's (UTC-03:30)" },
+	{ value: "America/Mexico_City", label: "Mexico City (UTC-06:00)" },
+	{ value: "America/Phoenix", label: "Phoenix (UTC-07:00)" },
+	{ value: "America/Toronto", label: "Toronto (UTC-05:00)" },
+	{ value: "America/Vancouver", label: "Vancouver (UTC-08:00)" },
+
+	// South America
+	{ value: "America/Sao_Paulo", label: "São Paulo (UTC-03:00)" },
+	{ value: "America/Argentina/Buenos_Aires", label: "Buenos Aires (UTC-03:00)" },
+	{ value: "America/Santiago", label: "Santiago (UTC-04:00)" },
+	{ value: "America/Bogota", label: "Bogota (UTC-05:00)" },
+	{ value: "America/Lima", label: "Lima (UTC-05:00)" },
+	{ value: "America/Caracas", label: "Caracas (UTC-04:00)" },
+
+	// Europe
+	{ value: "Europe/London", label: "London (UTC+00:00)" },
+	{ value: "Europe/Paris", label: "Paris (UTC+01:00)" },
+	{ value: "Europe/Berlin", label: "Berlin (UTC+01:00)" },
+	{ value: "Europe/Athens", label: "Athens (UTC+02:00)" },
+	{ value: "Europe/Moscow", label: "Moscow (UTC+03:00)" },
+	{ value: "Europe/Amsterdam", label: "Amsterdam (UTC+01:00)" },
+	{ value: "Europe/Rome", label: "Rome (UTC+01:00)" },
+	{ value: "Europe/Madrid", label: "Madrid (UTC+01:00)" },
+	{ value: "Europe/Stockholm", label: "Stockholm (UTC+01:00)" },
+	{ value: "Europe/Zurich", label: "Zurich (UTC+01:00)" },
+	{ value: "Europe/Dublin", label: "Dublin (UTC+00:00)" },
+	{ value: "Europe/Kiev", label: "Kiev (UTC+02:00)" },
+	{ value: "Europe/Istanbul", label: "Istanbul (UTC+03:00)" },
+
+	// Asia
+	{ value: "Asia/Dubai", label: "Dubai (UTC+04:00)" },
+	{ value: "Asia/Kolkata", label: "New Delhi (UTC+05:30)" },
+	{ value: "Asia/Bangkok", label: "Bangkok (UTC+07:00)" },
+	{ value: "Asia/Singapore", label: "Singapore (UTC+08:00)" },
+	{ value: "Asia/Tokyo", label: "Tokyo (UTC+09:00)" },
+	{ value: "Asia/Shanghai", label: "Shanghai (UTC+08:00)" },
+	{ value: "Asia/Hong_Kong", label: "Hong Kong (UTC+08:00)" },
+	{ value: "Asia/Seoul", label: "Seoul (UTC+09:00)" },
+	{ value: "Asia/Jakarta", label: "Jakarta (UTC+07:00)" },
+	{ value: "Asia/Karachi", label: "Karachi (UTC+05:00)" },
+	{ value: "Asia/Tel_Aviv", label: "Tel Aviv (UTC+02:00)" },
+	{ value: "Asia/Riyadh", label: "Riyadh (UTC+03:00)" },
+
+	// Australia and Pacific
+	{ value: "Australia/Sydney", label: "Sydney (UTC+10:00)" },
+	{ value: "Australia/Melbourne", label: "Melbourne (UTC+10:00)" },
+	{ value: "Australia/Perth", label: "Perth (UTC+08:00)" },
+	{ value: "Australia/Brisbane", label: "Brisbane (UTC+10:00)" },
+	{ value: "Pacific/Auckland", label: "Auckland (UTC+12:00)" },
+	{ value: "Pacific/Fiji", label: "Fiji (UTC+12:00)" },
+
+	// Africa
+	{ value: "Africa/Cairo", label: "Cairo (UTC+02:00)" },
+	{ value: "Africa/Johannesburg", label: "Johannesburg (UTC+02:00)" },
+	{ value: "Africa/Nairobi", label: "Nairobi (UTC+03:00)" },
+	{ value: "Africa/Casablanca", label: "Casablanca (UTC+00:00)" },
+
+	// UTC
+	{ value: "UTC", label: "UTC (UTC+00:00)" }
+];
+
 export interface Hour {
 	label: string;
 	time: number;

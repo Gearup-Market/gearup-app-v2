@@ -5,7 +5,7 @@
 	row-gap: 0.7rem;
 	@include flex(flex-start, flex-start, column);
 
-	img{
+	img {
 		width: 1.4rem;
 		height: 1.4rem;
 	}
@@ -107,7 +107,7 @@
 		}
 
 		.select_row {
-			@include flex(flex-start, center);
+			@include flex(flex-start, center, nowrap);
 			// padding-bottom: 2rem;
 			p {
 				font-weight: 500;
@@ -127,7 +127,7 @@
 		&[data-error="true"] {
 			border: 0.1rem solid #ff0000;
 		}
-		
+
 		&[data-type="true"] {
 			padding-inline: 0;
 			padding-block: 0.4rem;

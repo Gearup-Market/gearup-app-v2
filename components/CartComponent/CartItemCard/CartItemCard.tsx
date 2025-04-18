@@ -41,7 +41,8 @@ const CartItemCardContainer = ({
 					item: item.listing,
 					type,
 					amount: amount || 0,
-					rentalBreakdown: item.rentalBreakdown
+					rentalBreakdown: item.rentalBreakdown,
+					listingModelType: item.listingModelType as string
 				}
 			})
 		);

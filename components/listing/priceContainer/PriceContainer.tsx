@@ -130,7 +130,7 @@ const PriceContainer = ({
 	const discount = nonDiscountedPrice - discountedPrice;
 
 	const vat = (allPricings?.valueAddedTax! / 100) * price;
-	const serviceFee = (allPricings?.gearLeaseFee! / 100) * price;
+	const serviceFee = (allPricings?.gearRenterFee! / 100) * price;
 
 	const total = price + serviceFee + vat;
 
