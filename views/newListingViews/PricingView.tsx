@@ -65,6 +65,13 @@ const PricingView = () => {
 	const [forRentDetails, setForRentDetails] = useState<RentingOffer>(
 		newListing.offer.forRent || initialForRentDetails
 	);
+	const [multiOwnership, setMultiOwnership] = useState<MultiOwnershipState>({
+		allowsMultiOwnership: newListing.allowsMultiOwnership as boolean,
+		maxSharePurchase: newListing.maxSharePurchase,
+		minSharePurchase: newListing.minSharePurchase,
+		totalShares: newListing.totalShares,
+		reservedShares: newListing.reservedShares
+	});
 	const [errorFields, setErrorFields] = useState<ErrorFieldsProp>({
 		isRentPriceStructure: false
 	});
@@ -73,7 +80,8 @@ const PricingView = () => {
 			offer: {
 				forSell: newListing.listingType === "rent" ? undefined : forSellDetails,
 				forRent: newListing.listingType === "sell" ? undefined : forRentDetails
-			}
+			},
+			...multiOwnership
 		};
 		dispatch(updateNewListing(data));
 		router.push("/new-listing/summary");
@@ -100,31 +108,87 @@ const PricingView = () => {
 		checkAvailability(newListing.listingType);
 	}, []);
 
+	// const disabledButton = useMemo(() => {
+	// 	if (!newListing.listingType.length) return true;
+
+	// 	if (view === View.Sell) {
+	// 		return !forSellDetails.pricing;
+	// 	}
+
+	// 	if (view === View.Rent) {
+	// 		const baseRate = forRentDetails.rates.find(rate => rate.quantity === 1);
+	// 		if (!baseRate?.duration) return true;
+
+	// 		const hasInvalidPrices = forRentDetails.rates.some(rate => rate.price < 1);
+	// 		if (hasInvalidPrices) return true;
+
+	// 		if (!forRentDetails.totalReplacementValue) return true;
+	// 		return false;
+	// 	}
+	// 	if (multiOwnership.allowsMultiOwnership) {
+	// 		if (
+	// 			!multiOwnership.maxSharePurchase ||
+	// 			!multiOwnership.minSharePurchase ||
+	// 			!multiOwnership.totalShares ||
+	// 			!multiOwnership.reservedShares
+	// 		)
+	// 			return true;
+	// 		return false;
+	// 	}
+
+	// 	return true;
+	// }, [
+	// 	newListing.listingType,
+	// 	view,
+	// 	forSellDetails.pricing,
+	// 	forRentDetails.rates,
+	// 	forRentDetails.totalReplacementValue,
+	// 	multiOwnership
+	// ]);
+
 	const disabledButton = useMemo(() => {
 		if (!newListing.listingType.length) return true;
 
-		if (view === View.Sell) {
-			return !forSellDetails.pricing;
-		}
+		let isDisabled = false;
 
 		if (view === View.Rent) {
 			const baseRate = forRentDetails.rates.find(rate => rate.quantity === 1);
-			if (!baseRate?.duration) return true;
-
 			const hasInvalidPrices = forRentDetails.rates.some(rate => rate.price < 1);
-			if (hasInvalidPrices) return true;
 
-			if (!forRentDetails.totalReplacementValue) return true;
-			return false;
+			if (
+				!baseRate?.duration ||
+				hasInvalidPrices ||
+				!forRentDetails.totalReplacementValue
+			) {
+				isDisabled = true;
+			}
 		}
 
-		return true;
+		if (view === View.Sell) {
+			if (!forSellDetails.pricing) {
+				isDisabled = true;
+			}
+		}
+
+		if (multiOwnership.allowsMultiOwnership) {
+			if (
+				!multiOwnership.maxSharePurchase ||
+				!multiOwnership.minSharePurchase ||
+				!multiOwnership.totalShares ||
+				!multiOwnership.reservedShares
+			) {
+				isDisabled = true;
+			}
+		}
+
+		return isDisabled;
 	}, [
 		newListing.listingType,
 		view,
 		forSellDetails.pricing,
 		forRentDetails.rates,
-		forRentDetails.totalReplacementValue
+		forRentDetails.totalReplacementValue,
+		multiOwnership
 	]);
 
 	return (
@@ -188,6 +252,8 @@ const PricingView = () => {
 						<BuyView
 							forSellDetails={forSellDetails}
 							setForSellDetails={setForSellDetails}
+							multiOwnership={multiOwnership}
+							setMultiOwnership={setMultiOwnership}
 						/>
 					)}
 					{view === View.Rent && (
@@ -196,6 +262,8 @@ const PricingView = () => {
 							setForRentDetails={setForRentDetails}
 							errorFields={errorFields}
 							setErrorFields={setErrorFields}
+							multiOwnership={multiOwnership}
+							setMultiOwnership={setMultiOwnership}
 						/>
 					)}
 				</div>
@@ -230,10 +298,14 @@ export default PricingView;
 
 const BuyView = ({
 	forSellDetails,
-	setForSellDetails
+	setForSellDetails,
+	multiOwnership,
+	setMultiOwnership
 }: {
 	forSellDetails: SellingOffer;
 	setForSellDetails: React.Dispatch<React.SetStateAction<SellingOffer>>;
+	multiOwnership: MultiOwnershipState;
+	setMultiOwnership: React.Dispatch<React.SetStateAction<MultiOwnershipState>>;
 }) => {
 	return (
 		<div>
@@ -290,6 +362,10 @@ const BuyView = ({
 						showToolTip={true}
 					/>
 				</div>
+				<MultiOwnershipView
+					multiOwnership={multiOwnership}
+					setMultiOwnership={setMultiOwnership}
+				/>
 				<div className={styles.block}>
 					<div className={styles.text}>
 						<h3>Shipping</h3>
@@ -388,12 +464,16 @@ const RentView = ({
 	forRentDetails,
 	setForRentDetails,
 	errorFields,
-	setErrorFields
+	setErrorFields,
+	multiOwnership,
+	setMultiOwnership
 }: {
 	forRentDetails: RentingOffer;
 	setForRentDetails: React.Dispatch<React.SetStateAction<RentingOffer>>;
 	errorFields: ErrorFieldsProp;
 	setErrorFields: React.Dispatch<React.SetStateAction<ErrorFieldsProp>>;
+	multiOwnership: MultiOwnershipState;
+	setMultiOwnership: React.Dispatch<React.SetStateAction<MultiOwnershipState>>;
 }) => {
 	const [priceStructure, setPriceStructure] = useState<string>(
 		forRentDetails.rates.length ? forRentDetails.rates[0].duration : ""
@@ -647,7 +727,113 @@ const RentView = ({
 						/>
 					</div>
 				</div>
+				<MultiOwnershipView
+					multiOwnership={multiOwnership}
+					setMultiOwnership={setMultiOwnership}
+				/>
 			</div>
+		</div>
+	);
+};
+
+interface MultiOwnershipState {
+	allowsMultiOwnership: boolean;
+	maxSharePurchase?: number;
+	minSharePurchase?: number;
+	totalShares?: number;
+	reservedShares?: number;
+}
+
+const MultiOwnershipView = ({
+	multiOwnership,
+	setMultiOwnership
+}: {
+	multiOwnership: MultiOwnershipState;
+	setMultiOwnership: React.Dispatch<React.SetStateAction<MultiOwnershipState>>;
+}) => {
+	useEffect(() => {
+		if (!multiOwnership.allowsMultiOwnership) {
+			setMultiOwnership(prev => ({
+				...prev,
+				maxSharePurchase: undefined,
+				minSharePurchase: undefined,
+				totalShares: undefined,
+				reservedShares: undefined
+			}));
+		}
+	}, [multiOwnership.allowsMultiOwnership]);
+	return (
+		<div className={styles.block}>
+			<div className={styles.text}>
+				<h3>Multi-ownership</h3>
+			</div>
+			<CheckBox
+				className={styles.checkbox}
+				label="Allow multiple ownership"
+				checked={multiOwnership.allowsMultiOwnership}
+				onChange={() =>
+					setMultiOwnership(prev => ({
+						...prev,
+						allowsMultiOwnership: !prev.allowsMultiOwnership
+					}))
+				}
+			/>
+			{multiOwnership.allowsMultiOwnership && (
+				<div className={styles.multi_ownership_form}>
+					<InputField
+						label="Max share purchase"
+						placeholder="0"
+						type="number"
+						value={multiOwnership.maxSharePurchase}
+						onChange={(e: any) =>
+							setMultiOwnership(prev => ({
+								...prev,
+								maxSharePurchase: e.target.value ?? 0
+							}))
+						}
+						suffix="%"
+					/>
+					<InputField
+						label="Min share purchase"
+						placeholder="0"
+						type="number"
+						value={multiOwnership.minSharePurchase}
+						onChange={(e: any) =>
+							setMultiOwnership(prev => ({
+								...prev,
+								minSharePurchase: e.target.value ?? 0
+							}))
+						}
+						suffix="%"
+					/>
+					<InputField
+						label="Total shares"
+						placeholder="0"
+						type="number"
+						value={multiOwnership.totalShares}
+						onChange={(e: any) =>
+							setMultiOwnership(prev => ({
+								...prev,
+								totalShares: e.target.value ?? 0
+							}))
+						}
+						suffix="%"
+					/>
+					<InputField
+						label="Reserved shares"
+						placeholder="0"
+						type="number"
+						value={multiOwnership.reservedShares}
+						onChange={(e: any) =>
+							setMultiOwnership(prev => ({
+								...prev,
+								reservedShares: e.target.value ?? 0
+							}))
+						}
+						suffix="%"
+					/>
+				</div>
+			)}
 		</div>
 	);
 };

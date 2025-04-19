@@ -172,10 +172,10 @@ const BuyCourseDetails = ({
 
 export default BuyCourseDetails;
 
-interface LiveProps {
+export interface LiveProps {
 	startDate: Date;
 	endDate: Date;
-	setOpenModal: (e?: any) => void;
+	setOpenModal?: (e?: any) => void;
 	link: string;
 }
 
@@ -202,23 +202,25 @@ export const LiveCourse = ({ startDate, endDate, setOpenModal, link }: LiveProps
 				<h4>Daily hours</h4>
 				<p>10 hours</p>
 			</div>
-			<div className={styles.summary_item}>
-				<h4>Meeting link</h4>
-				<span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-					<p className={styles.truncated_text}>{shortenTitle(link, 20)}</p>
-					<span className={styles.edit} onClick={() => setOpenModal(true)}>
-						Edit
+			{setOpenModal && (
+				<div className={styles.summary_item}>
+					<h4>Meeting link</h4>
+					<span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+						<p className={styles.truncated_text}>{shortenTitle(link, 20)}</p>
+						<span className={styles.edit} onClick={() => setOpenModal(true)}>
+							Edit
+						</span>
 					</span>
-				</span>
-			</div>
+				</div>
+			)}
 		</>
 	);
 };
 
-interface EbookProps {
+export interface EbookProps {
 	pages: number;
 	size: string;
-	setOpenModal: (e?: any) => void;
+	setOpenModal?: (e?: any) => void;
 	link: string;
 }
 
@@ -237,23 +239,25 @@ export const EbooksType = ({ pages, size, setOpenModal, link }: EbookProps) => {
 				<h4>Size</h4>
 				<p>{size}</p>
 			</div>
-			<div className={styles.summary_item}>
-				<h4>Link to course</h4>
-				<span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-					<p className={styles.truncated_text}>{shortenTitle(link, 20)}</p>
-					<span className={styles.edit} onClick={() => setOpenModal(true)}>
-						Edit
+			{setOpenModal && (
+				<div className={styles.summary_item}>
+					<h4>Link to course</h4>
+					<span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+						<p className={styles.truncated_text}>{shortenTitle(link, 20)}</p>
+						<span className={styles.edit} onClick={() => setOpenModal(true)}>
+							Edit
+						</span>
 					</span>
-				</span>
-			</div>
+				</div>
+			)}
 		</>
 	);
 };
 
-interface TutorialProps {
+export interface TutorialProps {
 	duration: string;
 	size: string;
-	setOpenModal: (e?: any) => void;
+	setOpenModal?: (e?: any) => void;
 	link: string;
 }
 
@@ -272,15 +276,17 @@ export const VideosType = ({ duration, size, setOpenModal, link }: TutorialProps
 				<h4>Size</h4>
 				<p>{size}</p>
 			</div>
-			<div className={styles.summary_item}>
-				<h4>Link to course</h4>
-				<span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-					<p className={styles.truncated_text}>{shortenTitle(link, 20)}</p>
-					<span className={styles.edit} onClick={() => setOpenModal(true)}>
-						Edit
+			{setOpenModal && (
+				<div className={styles.summary_item}>
+					<h4>Link to course</h4>
+					<span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+						<p className={styles.truncated_text}>{shortenTitle(link, 20)}</p>
+						<span className={styles.edit} onClick={() => setOpenModal(true)}>
+							Edit
+						</span>
 					</span>
-				</span>
-			</div>
+				</div>
+			)}
 		</>
 	);
 };
@@ -300,15 +306,17 @@ export const AudiosType = ({ duration, size, setOpenModal, link }: TutorialProps
 				<h4>Size</h4>
 				<p>{size}</p>
 			</div>
-			<div className={styles.summary_item}>
-				<h4>Link to course</h4>
-				<span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-					<p className={styles.truncated_text}>{shortenTitle(link, 20)}</p>
-					<span className={styles.edit} onClick={() => setOpenModal(true)}>
-						Edit
+			{setOpenModal && (
+				<div className={styles.summary_item}>
+					<h4>Link to course</h4>
+					<span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+						<p className={styles.truncated_text}>{shortenTitle(link, 20)}</p>
+						<span className={styles.edit} onClick={() => setOpenModal(true)}>
+							Edit
+						</span>
 					</span>
-				</span>
-			</div>
+				</div>
+			)}
 		</>
 	);
 };

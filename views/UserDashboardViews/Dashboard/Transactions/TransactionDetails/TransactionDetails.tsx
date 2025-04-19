@@ -12,6 +12,7 @@ import ChatBodySection from "@/components/UserDashboard/Messages/components/Chat
 import GearDetailsSection from "@/components/UserDashboard/Transactions/TransactionDetails/TransactionDetailsBody/GearDetailsSection/GearDetailsSection";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useGetUserMessages } from "@/app/api/hooks/messages";
+import CourseTransactions from "@/components/UserDashboard/Transactions/TransactionDetails/TransactionDetailsBody/components/CoursesTransactions/CourseTransactions";
 
 export enum DetailsView {
 	OVERVIEW = "overview",
@@ -91,27 +92,25 @@ const TransactionDetails = ({ transactionId }: Props) => {
 	// 	}
 	// }, [data, isFetching]);
 
+	if (!transaction) return <PageLoader />;
 	return (
 		<div className={styles.container}>
-			{!transaction && <PageLoader />}
-			{transaction && (
-				<>
-					<TransactionDetailsHeader
-						activeView={activeView}
-						setActiveView={setActiveView}
-					/>
-					{activeView === DetailsView.OVERVIEW && <TransactionDetailsBody />}
-					{activeView === DetailsView.MESSAGES && (
-						<div className={styles.chat_body_section}>
-							{" "}
-							<ChatBodySection showAllBorder={true} />
-						</div>
-					)}
-					{activeView === DetailsView.DETAILS && (
-						<GearDetailsSection transactionId={transactionId} />
-					)}
-				</>
-			)}
+			<>
+				<TransactionDetailsHeader
+					activeView={activeView}
+					setActiveView={setActiveView}
+				/>
+				{activeView === DetailsView.OVERVIEW && <TransactionDetailsBody />}
+				{activeView === DetailsView.MESSAGES && (
+					<div className={styles.chat_body_section}>
+						{" "}
+						<ChatBodySection showAllBorder={true} />
+					</div>
+				)}
+				{activeView === DetailsView.DETAILS && (
+					<GearDetailsSection transactionId={transactionId} />
+				)}
+			</>
 		</div>
 	);
 };

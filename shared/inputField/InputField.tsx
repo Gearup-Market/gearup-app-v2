@@ -87,6 +87,7 @@ const InputField = ({
 					type={inputType}
 					data-icon={!!icon}
 					name={name}
+					min={0}
 					autoComplete="off"
 					onFocus={() => setInputFocus(true)}
 					onBlur={() => setInputFocus(false)}

@@ -328,6 +328,10 @@
 						}
 					}
 				}
+				.multi_ownership_form {
+					@include flex(flex-start, flex-start, column);
+					gap: 1.6rem;
+				}
 			}
 			.button {
 				gap: 0.8rem;

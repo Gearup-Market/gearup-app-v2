@@ -25,7 +25,12 @@ const initialState: ListingState = {
 			latitude: 0,
 			longitude: 0
 		}
-	}
+	},
+	allowsMultiOwnership: undefined,
+	maxSharePurchase: undefined,
+	minSharePurchase: undefined,
+	totalShares: undefined,
+	reservedShares: undefined
 };
 
 const addListingSlice = createSlice({

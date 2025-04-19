@@ -191,6 +191,11 @@ export interface ListingState {
 		shipping: boolean;
 		terms: boolean;
 	};
+	allowsMultiOwnership?: boolean;
+	maxSharePurchase?: number;
+	minSharePurchase?: number;
+	totalShares?: number;
+	reservedShares?: number;
 }
 
 interface SelectedValue {
