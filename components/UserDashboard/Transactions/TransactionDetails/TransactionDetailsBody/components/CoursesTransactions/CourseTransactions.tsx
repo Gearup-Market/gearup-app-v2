@@ -163,7 +163,7 @@ const CourseTransactions = ({ transaction }: Props) => {
 					<h3 className={styles.rating_title}>Your rating</h3>
 					<Ratings />
 				</div>
-				{!transaction?.isBuyer && (
+				{transaction?.isBuyer && (
 					<PersonalDetails
 						name={transaction?.seller?.userName as string}
 						subText="Tutor"
