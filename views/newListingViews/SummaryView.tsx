@@ -155,6 +155,26 @@ const SummaryView = () => {
 									/>
 								) : null;
 							})}
+							{newListing.allowsMultiOwnership && (
+								<>
+									<DetailContainer
+										title="Max Share Purchase"
+										value={`${newListing.maxSharePurchase}%`}
+									/>
+									<DetailContainer
+										title="Min Share Purchase"
+										value={`${newListing.minSharePurchase}%`}
+									/>
+									<DetailContainer
+										title="Total Shares"
+										value={`${newListing.totalShares}%`}
+									/>
+									<DetailContainer
+										title="Reserved Shares"
+										value={`${newListing.reservedShares}%`}
+									/>
+								</>
+							)}
 							<DetailContainer
 								title="Description"
 								description={newListing.description}

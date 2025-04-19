@@ -157,6 +157,7 @@ export interface iTransactionDetails {
 	metadata?: MetadataSchema;
 	rentalBreakdown: RentalBreakdown[];
 	itemType: string;
+	createdAt: string;
 }
 
 export enum TransactionStatus {

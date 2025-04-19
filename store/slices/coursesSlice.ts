@@ -29,6 +29,7 @@ export interface Course {
 		size: string;
 	};
 	liveSessionDetails?: LiveSessionDetails;
+	transactionId?: string;
 }
 
 interface CourseState {

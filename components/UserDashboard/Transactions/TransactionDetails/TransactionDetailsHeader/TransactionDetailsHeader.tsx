@@ -70,7 +70,7 @@ const TransactionDetailsHeader = ({ activeView, setActiveView }: Props) => {
 					{transaction.transactionStatus}
 				</div>
 			</div>
-			{transaction.transactionType !== "courses" && (
+			{transaction.itemType !== "Course" && (
 				<ul className={styles.container__children_container}>
 					{list.map(item => (
 						<li

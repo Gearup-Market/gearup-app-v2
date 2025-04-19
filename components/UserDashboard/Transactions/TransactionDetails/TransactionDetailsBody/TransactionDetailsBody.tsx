@@ -14,10 +14,11 @@ const TransactionDetailsBody = () => {
 	return (
 		<div className={styles.container}>
 			{transactionType === "Rental" && <RentTransactions />}
-			{(transactionType === "Purchase" || transactionType === "Sale") && (
-				<BuyTransactions />
+			{(transactionType === "Purchase" || transactionType === "Sale") &&
+				transaction?.itemType !== "Course" && <BuyTransactions />}
+			{transaction?.itemType === "Course" && (
+				<CourseTransactions transaction={transaction} />
 			)}
-			{transactionType === "courses" && <CourseTransactions item={transaction} />}
 		</div>
 	);
 };
