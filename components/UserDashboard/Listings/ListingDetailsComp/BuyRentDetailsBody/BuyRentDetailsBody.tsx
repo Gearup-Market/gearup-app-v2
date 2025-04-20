@@ -44,6 +44,8 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 		return [mainGroup, subGroup];
 	}, [fieldValues]);
 
+	const reservedShares = (listing?.reservedShares! / 100) * listing?.totalShares!;
+
 	const coOwnersIds = listing?.ownersList
 		?.filter(owner => owner.ownerId !== listing?.user._id)
 		.map(owner => owner.ownerId);
@@ -237,7 +239,7 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 									/>
 									<DetailContainer
 										title="Reserved Shares"
-										value={listing?.reservedShares}
+										value={reservedShares}
 									/>
 									{coOwners?.length && !isFetching && (
 										<>
