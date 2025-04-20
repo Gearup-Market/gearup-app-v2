@@ -11,6 +11,7 @@ import { Listing } from "@/store/slices/listingsSlice";
 import { ListingType } from "@/interfaces";
 import Link from "next/link";
 import { getExplorerUrl } from "@/utils/stellar";
+import { useGetUsers } from "@/app/api/hooks/users";
 
 interface Props {
 	listing?: Listing;
@@ -42,6 +43,14 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 		});
 		return [mainGroup, subGroup];
 	}, [fieldValues]);
+
+	const coOwnersIds = listing?.ownersList
+		?.filter(owner => owner.ownerId !== listing?.user._id)
+		.map(owner => owner.ownerId);
+	const { data: coOwners, isFetching } = useGetUsers(coOwnersIds ?? []);
+
+	const coOwnerShares = (id: string) =>
+		listing?.ownersList?.find(owner => owner.ownerId === id)?.share;
 
 	return (
 		<div className={styles.section}>
@@ -216,6 +225,37 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 									/>
 									<div className={styles.divider}></div>
 								</>
+							)}
+							{listing?.allowsMultiOwnership && (
+								<div className={styles.co_owners_container}>
+									<div className={styles.title}>
+										<h3>Multi ownership</h3>
+									</div>
+									<DetailContainer
+										title="Total Shares"
+										value={listing?.totalShares}
+									/>
+									<DetailContainer
+										title="Reserved Shares"
+										value={listing?.reservedShares}
+									/>
+									{coOwners?.length && !isFetching && (
+										<>
+											<div className={styles.title}>
+												<h4>Co owners</h4>
+											</div>
+											{coOwners?.map(coOwner => (
+												<DetailContainer
+													title={`${coOwner?.data?.kyc.firstName} ${coOwner?.data?.kyc.lastName}`}
+													value={coOwnerShares(
+														coOwner?.data?._id
+													)}
+													key={coOwner?.data?._id}
+												/>
+											))}
+										</>
+									)}
+								</div>
 							)}
 						</div>
 					</div>

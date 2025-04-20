@@ -243,6 +243,19 @@
 				}
 			}
 		}
+		.co_owners_container {
+			margin-block: 2.4rem;
+			.title {
+				h3,
+				h4 {
+					font-weight: 700;
+					@extend %text-16;
+				}
+				h4 {
+					@extend %text-14;
+				}
+			}
+		}
 		.divider {
 			width: 100%;
 			height: 0.1rem;

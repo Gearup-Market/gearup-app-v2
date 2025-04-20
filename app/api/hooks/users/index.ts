@@ -428,6 +428,21 @@ const usePostUpdateUserPin = (
 		...options
 	});
 
+const fetchUsersByIds = async (ids: string[]) => {
+	const responses = await Promise.all(
+		ids.map(id => api.get(`${API_URL.getUser}/${id}`))
+	);
+	return responses.map(res => res.data);
+};
+
+const useGetUsers = (userIds: string[], options?: UseQueryOptions<any[], Error>) =>
+	useQuery<any[], Error>({
+		queryKey: ["users", userIds],
+		queryFn: () => fetchUsersByIds(userIds),
+		enabled: userIds.length > 0,
+		...options
+	});
+
 export {
 	useResetPassword,
 	useResetPasswordRequest,
@@ -448,5 +463,6 @@ export {
 	useGetVerifyToken,
 	useGetUserReviews,
 	usePostSendOtpCode,
-	usePostValidateOtpCode
+	usePostValidateOtpCode,
+	useGetUsers
 };
