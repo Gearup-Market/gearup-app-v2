@@ -103,7 +103,6 @@ const ListingTable = ({ activeFilter }: Props) => {
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
-		// refetch();
 	};
 
 	useEffect(() => {

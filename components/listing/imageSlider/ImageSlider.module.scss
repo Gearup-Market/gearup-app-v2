@@ -28,6 +28,10 @@
 					color: #fff;
 				}
 			}
+			.multi_ownership_container {
+				width: 12rem;
+				height: 4rem;
+			}
 			&[data-active="true"] {
 				.button {
 					&:first-child {

@@ -24,7 +24,7 @@ const RecentDeals = () => {
 	const [searchInput, setSearchInput] = useState<string>("");
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const pageSize: number = 12;
-	const { data, isFetching, error } = useTransactions();
+	const { data, isFetching, error, refetch } = useTransactions();
 	const [paginatedTransactions, setPaginatedTransactions] =
 		useState<GridRowsProp>(data);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -55,7 +55,8 @@ const RecentDeals = () => {
 							? item.listingPhotos[0]
 							: item.cover
 						: "",
-					item
+					item,
+					itemType
 				};
 			}),
 		[data]
@@ -136,7 +137,8 @@ const RecentDeals = () => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Type",
-			minWidth: typeWidth
+			minWidth: typeWidth,
+			renderCell: ({ row, value }) => (row.type === "Shares" ? "Shares" : value)
 		},
 		{
 			...sharedColDef,

@@ -111,6 +111,7 @@ const useGetWalletTransactions = ({
 	query?: {
 		limit?: number;
 		skip?: number;
+		page?: number;
 	};
 	options?: UseQueryOptions<iWTransactionResp, IGetErr>;
 }) =>

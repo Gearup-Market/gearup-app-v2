@@ -23,11 +23,12 @@ import {
 } from "@/app/api/hooks/transactions/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { useAppSelector } from "@/store/configureStore";
+import { useAppSelector, useAppDispatch } from "@/store/configureStore";
 import Link from "next/link";
 import { PricingData } from "@/app/api/hooks/Admin/pricing/types";
 import { RentingOfferRates } from "@/interfaces/Listing";
 import HourDatePicker from "../hourDatePicker/HourDatePicker";
+import { updateCheckout } from "@/store/slices/checkoutSlice";
 
 const PriceContainer = ({
 	listing,
@@ -40,6 +41,7 @@ const PriceContainer = ({
 	const search = useSearchParams();
 	const pathname = usePathname();
 	const router = useRouter();
+	const dispatch = useAppDispatch();
 	const actionType = search.get("type");
 	const user = useAppSelector(state => state.user);
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
@@ -155,7 +157,8 @@ const PriceContainer = ({
 		try {
 			addItemToCart({
 				...item,
-				customPrice: price
+				customPrice: price,
+				listingModelType: "Listing"
 			});
 			refetchcartItems();
 		} catch (error) {
@@ -203,6 +206,20 @@ const PriceContainer = ({
 		}
 		if (user._id === listing.user._id) return toast.error("Can not rent own listing");
 		setOpenModal(true);
+	};
+
+	const handleBuyShares = () => {
+		dispatch(
+			updateCheckout({
+				checkout: {
+					item: listing,
+					type: TransactionType.Shares,
+					amount: 0,
+					listingModelType: "Listing"
+				}
+			})
+		);
+		router.push("/checkout");
 	};
 
 	return (
@@ -316,6 +333,14 @@ const PriceContainer = ({
 					>
 						Add to cart
 					</Button>
+					{listing.allowsMultiOwnership && (
+						<Button
+							className={styles.shares_button}
+							onClick={handleBuyShares}
+						>
+							Buy shares
+						</Button>
+					)}
 				</div>
 				{openModal && modalToOpen()}
 			</div>

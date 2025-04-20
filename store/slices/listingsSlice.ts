@@ -60,6 +60,18 @@ export interface Listing {
 	user: Partial<User>;
 	ownerOtherListings?: Listing[];
 	ownerTotalListings?: number;
+	reservedShares?: number;
+	totalShares?: number;
+	minSharePurchase?: number;
+	maxSharePurchase?: number;
+	allowsMultiOwnership?: boolean;
+	ownersList?: OwnersList[];
+}
+
+export interface OwnersList {
+	ownerId: string;
+	share: number;
+	_id: string;
 }
 
 type ListingState = {

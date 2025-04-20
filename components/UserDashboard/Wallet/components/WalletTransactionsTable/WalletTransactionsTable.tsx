@@ -10,14 +10,14 @@ import { useWalletTransactions } from "@/hooks";
 import NoWalletTransactions from "../NoWalletTransactions/NoWalletTransactions";
 import { formatDate, formatNum } from "@/utils";
 
+const pageSize = 10;
+
 const WalletTransactionsTable = () => {
-	const [page, setPage] = useState(1);
-	const [skip, setSkip] = useState(0);
-	const [limit, setLimit] = useState(5);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const { data, pagination, isFetching, refetch } = useWalletTransactions({
-		limit,
-		skip
+		limit: pageSize,
+		skip: 0,
+		page: currentPage
 	});
 
 	useEffect(() => {
@@ -108,10 +108,10 @@ const WalletTransactionsTable = () => {
 							))}
 						</ul>
 						<Pagination
-							currentPage={page}
-							onPageChange={(page: any) => updatePage(page)}
+							currentPage={currentPage}
 							totalCount={pagination.totalCount}
-							pageSize={10}
+							pageSize={pageSize}
+							onPageChange={(page: any) => updatePage(page)}
 						/>
 					</div>
 				</>

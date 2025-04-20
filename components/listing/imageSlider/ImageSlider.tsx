@@ -12,6 +12,7 @@ import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { useGlobalContext } from "@/contexts/AppContext";
 import { Button, CustomImage } from "@/shared";
+import MultiOwnership from "@/shared/svgs/MultiOwnership";
 
 const imageList = [
 	"/images/camera.png",
@@ -37,9 +38,10 @@ const imageList = [
 interface ImageProps {
 	images: string[];
 	type?: string;
+	multiOwnership?: boolean;
 }
 
-const ImageSlider = ({ images, type }: ImageProps) => {
+const ImageSlider = ({ images, type, multiOwnership }: ImageProps) => {
 	const { isMobile } = useGlobalContext();
 	const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 	const [slidesToShow, setSlidesToShow] = useState<number>(5);
@@ -71,6 +73,12 @@ const ImageSlider = ({ images, type }: ImageProps) => {
 								>
 									{type}
 								</Button>
+
+								{multiOwnership && (
+									<div className={styles.multi_ownership_container}>
+										<MultiOwnership />
+									</div>
+								)}
 							</div>
 						</div>
 					</SwiperSlide>

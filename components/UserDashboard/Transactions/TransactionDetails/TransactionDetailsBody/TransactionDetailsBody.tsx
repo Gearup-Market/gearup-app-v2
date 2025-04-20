@@ -4,9 +4,10 @@ import RentTransactions from "./components/RentTransactions/RentTransactions";
 import BuyTransactions from "./components/BuySaleTransactions/BuySaleTransactions";
 import CourseTransactions from "./components/CoursesTransactions/CourseTransactions";
 import { useAppSelector } from "@/store/configureStore";
-
+import SharesTransaction from "./components/sharesTransaction/SharesTransaction";
 const TransactionDetailsBody = () => {
 	const { transaction } = useAppSelector(s => s.transaction);
+
 	// if (!transaction) return null;
 
 	const transactionType = transaction?.transactionType;
@@ -18,6 +19,9 @@ const TransactionDetailsBody = () => {
 				transaction?.itemType !== "Course" && <BuyTransactions />}
 			{transaction?.itemType === "Course" && (
 				<CourseTransactions transaction={transaction} />
+			)}
+			{transaction?.transactionType === "Shares" && (
+				<SharesTransaction transaction={transaction} />
 			)}
 		</div>
 	);

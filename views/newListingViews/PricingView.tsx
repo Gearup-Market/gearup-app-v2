@@ -17,6 +17,7 @@ import {
 	SellingOffer
 } from "@/interfaces/Listing";
 import Link from "next/link";
+import { RevealDetails } from "@/components/UserDashboard/GetStarted/components";
 
 const enum View {
 	Idle = "idle",
@@ -780,31 +781,9 @@ const MultiOwnershipView = ({
 			/>
 			{multiOwnership.allowsMultiOwnership && (
 				<div className={styles.multi_ownership_form}>
-					<InputField
-						label="Max share purchase"
-						placeholder="0"
-						type="number"
-						value={multiOwnership.maxSharePurchase}
-						onChange={(e: any) =>
-							setMultiOwnership(prev => ({
-								...prev,
-								maxSharePurchase: e.target.value ?? 0
-							}))
-						}
-						suffix="%"
-					/>
-					<InputField
-						label="Min share purchase"
-						placeholder="0"
-						type="number"
-						value={multiOwnership.minSharePurchase}
-						onChange={(e: any) =>
-							setMultiOwnership(prev => ({
-								...prev,
-								minSharePurchase: e.target.value ?? 0
-							}))
-						}
-						suffix="%"
+					<RevealDetails
+						question="What is Multi Ownership?"
+						answer="Multi-ownership allows you to sell ownership rights of your gear to multiple users at once. You can set the total number of shares you want to be available for purchase and the percentage of shares reserved for the owner. When a user purchases a share, they become a co-owner of the gear and any profit accrued from the gear is shared among all co-owners. You'll need to send your gear to gearup"
 					/>
 					<InputField
 						label="Total shares"
@@ -817,7 +796,7 @@ const MultiOwnershipView = ({
 								totalShares: e.target.value ?? 0
 							}))
 						}
-						suffix="%"
+						description="The total number of shares available for purchase should be equivalent to the cost of the gear"
 					/>
 					<InputField
 						label="Reserved shares"
@@ -831,6 +810,35 @@ const MultiOwnershipView = ({
 							}))
 						}
 						suffix="%"
+						description="The percentage of shares reserved for the owner"
+					/>
+					<InputField
+						label="Max share purchase"
+						placeholder="0"
+						type="number"
+						value={multiOwnership.maxSharePurchase}
+						onChange={(e: any) =>
+							setMultiOwnership(prev => ({
+								...prev,
+								maxSharePurchase: e.target.value ?? 0
+							}))
+						}
+						suffix="%"
+						description="The maximum number of shares a user can purchase"
+					/>
+					<InputField
+						label="Min share purchase"
+						placeholder="0"
+						type="number"
+						value={multiOwnership.minSharePurchase}
+						onChange={(e: any) =>
+							setMultiOwnership(prev => ({
+								...prev,
+								minSharePurchase: e.target.value ?? 0
+							}))
+						}
+						suffix="%"
+						description="The minimum number of shares a user can purchase"
 					/>
 				</div>
 			)}

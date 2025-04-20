@@ -30,6 +30,7 @@ export interface Course {
 	};
 	liveSessionDetails?: LiveSessionDetails;
 	transactionId?: string;
+	nftTokenId?: string;
 }
 
 interface CourseState {
