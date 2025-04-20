@@ -12,6 +12,7 @@ interface Props {
 	profilePhoto: string;
 	forSale: boolean;
 	isBuyer?: boolean;
+	showTitle?: boolean;
 }
 
 const PersonalDetails = ({
@@ -20,13 +21,14 @@ const PersonalDetails = ({
 	profileLink,
 	profilePhoto,
 	forSale,
-	isBuyer
+	isBuyer,
+	showTitle = true
 }: Props) => {
 	const title = () => (isBuyer ? "Merchant" : "Customer");
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__customer_container}>
-				<h3 className={styles.title}>{title()}</h3>
+				{showTitle && <h3 className={styles.title}>{title()}</h3>}
 				<div className={styles.location_details}>
 					<span className={styles.location_icon}>
 						<Image src={profilePhoto} alt={name} width={16} height={16} />

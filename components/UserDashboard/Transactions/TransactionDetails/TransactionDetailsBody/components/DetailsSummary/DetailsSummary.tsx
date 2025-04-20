@@ -5,8 +5,15 @@ import { CopyIcon } from "@/shared/svgs/dashboard";
 import { PersonalDetails, ReceiptDetails, WarningContainer } from "./components";
 import { iTransactionDetails } from "@/interfaces";
 import { TransactionType } from "@/app/api/hooks/transactions/types";
-import { formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
+import {
+	copyText,
+	formatNum,
+	getDaysDifference,
+	getLastRentalDate,
+	shortenTitle
+} from "@/utils";
 import { isListing } from "@/components/CartComponent/CartItems/CartItems";
+import Link from "next/link";
 const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 	const {
 		isBuyer,
@@ -16,7 +23,8 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 		buyer,
 		seller,
 		rentalBreakdown,
-		itemType
+		itemType,
+		stages
 	} = item;
 	const offer = listing
 		? isListing(listing, itemType as string)
@@ -45,6 +53,8 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 			: 0
 		: 0;
 
+	const rentStage = stages.find(item => item.stage === "payment_received");
+	const recievedStage = stages.find(item => item.stage === "rental_ongoing");
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__summary_container}>
@@ -73,15 +83,75 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 					<h4>Price</h4>
 					<p>₦{formatNum(unitPrice)}</p>
 				</div>
-				<div className={styles.summary_item}>
-					<h4>Transaction ID</h4>
-					<span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-						<p>{id}</p>
-						<span className={styles.icon}>
-							<CopyIcon />
+				<h3 className={styles.title}>Blockchain transaction Summary</h3>
+				{listing?.transactionId && (
+					<div className={styles.summary_item}>
+						<h4>Listing Creation Transaction</h4>
+						<span
+							style={{ display: "flex", alignItems: "center", gap: "10px" }}
+						>
+							<Link
+								href={`https://stellar.expert/explorer/public/tx/${listing.transactionId}`}
+								target="_blank"
+								className={styles.link}
+							>
+								{shortenTitle(listing.transactionId as string)}
+							</Link>
+							<span
+								className={styles.icon}
+								onClick={() => copyText(listing.transactionId ?? "")}
+							>
+								<CopyIcon />
+							</span>
 						</span>
-					</span>
-				</div>
+					</div>
+				)}
+				{rentStage && (
+					<div className={styles.summary_item}>
+						<h4>{forSale ? "Purchase" : "Rent"} Transaction</h4>
+						<span
+							style={{ display: "flex", alignItems: "center", gap: "10px" }}
+						>
+							<Link
+								href={`https://stellar.expert/explorer/public/tx/${rentStage?.transactionHash}`}
+								target="_blank"
+								className={styles.link}
+							>
+								{shortenTitle(rentStage?.transactionHash as string)}
+							</Link>
+							<span
+								className={styles.icon}
+								onClick={() => copyText(rentStage?.transactionHash ?? "")}
+							>
+								<CopyIcon />
+							</span>
+						</span>
+					</div>
+				)}
+				{recievedStage && (
+					<div className={styles.summary_item}>
+						<h4>Asset received Transaction</h4>
+						<span
+							style={{ display: "flex", alignItems: "center", gap: "10px" }}
+						>
+							<Link
+								href={`https://stellar.expert/explorer/public/tx/${recievedStage?.transactionHash}`}
+								target="_blank"
+								className={styles.link}
+							>
+								{shortenTitle(recievedStage?.transactionHash as string)}
+							</Link>
+							<span
+								className={styles.icon}
+								onClick={() =>
+									copyText(recievedStage?.transactionHash ?? "")
+								}
+							>
+								<CopyIcon />
+							</span>
+						</span>
+					</div>
+				)}
 			</div>
 			<PersonalDetails
 				name={user.name || user.userName}

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./CheckoutView.module.scss";
-import { BackNavigation } from "@/shared";
+import { BackNavigation, InputField } from "@/shared";
 import { usePathname, useRouter } from "next/navigation";
 import ShippingAddress from "@/components/CartComponent/CheckoutComp/ShippingAddress/ShippingAddress";
 import ShippingType from "@/components/CartComponent/CheckoutComp/ShippingType/ShippingType";
@@ -11,7 +11,10 @@ import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { useAuth } from "@/contexts/AuthContext";
 import dynamic from "next/dynamic";
 import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
-
+import { updateCheckout } from "@/store/slices/checkoutSlice";
+import { isListing } from "@/components/CartComponent/CartItems/CartItems";
+import { formatNum } from "@/utils";
+import { useAppDispatch } from "@/store/configureStore";
 const PaymentComp = dynamic(
 	() => import("@/components/CartComponent/CheckoutComp").then(mod => mod.PaymentComp),
 	{ ssr: false }
@@ -54,6 +57,7 @@ const CheckoutView = () => {
 	const pathname = usePathname();
 	const { userId } = useAppSelector(s => s.user);
 	const { checkout } = useAppSelector(s => s.checkout);
+	const dispatch = useAppDispatch();
 	const [step, setStep] = useState(1);
 
 	const nextStep = (e: any, skip: boolean = false) => {
@@ -72,6 +76,42 @@ const CheckoutView = () => {
 			setStep(4);
 		}
 	}, []);
+
+	const handleSharesChange = (e: any) => {
+		if (!checkout || !checkout.item) return;
+
+		dispatch(
+			updateCheckout({
+				checkout: {
+					...checkout,
+					amount: e.target.value
+				}
+			})
+		);
+	};
+
+	const maxSharePurchase = isListing(checkout?.item, "Listing")
+		? (checkout?.item.maxSharePurchase! / 100) * checkout?.item.totalShares!
+		: 0;
+
+	const reservedShares = isListing(checkout?.item, "Listing")
+		? (checkout?.item.reservedShares! / 100) * checkout?.item.totalShares!
+		: 0;
+
+	const soldShares = isListing(checkout?.item, "Listing")
+		? (() => {
+				const listing = checkout?.item;
+				return (
+					listing.ownersList
+						?.filter(owner => owner.ownerId !== listing.user?._id)
+						.reduce((acc, item) => acc + item.share, 0) || 0
+				);
+		  })()
+		: 0;
+
+	const availableShares = isListing(checkout?.item, "Listing")
+		? checkout?.item.totalShares! - soldShares - reservedShares
+		: 0;
 
 	// useEffect(() => {
 	// 	if (!isAuthenticated || !userId) router.push(`/login?returnUrl=${pathname}`);
@@ -152,6 +192,44 @@ const CheckoutView = () => {
 						</>
 					)}
 				</div>
+				{checkout?.type === TransactionType.Shares && (
+					<div className={styles.shares_container}>
+						<div className={styles.shares_details}>
+							<div className={styles.shares_details_item}>
+								<h3>Total shares</h3>
+								<p>
+									{formatNum(
+										isListing(checkout.item, "Listing")
+											? checkout.item.totalShares
+											: 0
+									)}
+								</p>
+							</div>
+							<div className={styles.shares_details_item}>
+								<h3>Available shares</h3>
+								<p>{formatNum(availableShares)}</p>
+							</div>
+							<div className={styles.shares_details_item}>
+								<h3>Max purchaseable shares</h3>
+								<p>{formatNum(maxSharePurchase)}</p>
+							</div>
+						</div>
+						<InputField
+							label="Amount of shares to buy"
+							min={0}
+							value={checkout.amount}
+							max={maxSharePurchase}
+							type="number"
+							onChange={handleSharesChange}
+						/>
+						<PaymentComp
+							item={checkout.item}
+							amount={checkout.amount}
+							type={checkout.type}
+							listingModelType={checkout.listingModelType}
+						/>
+					</div>
+				)}
 			</div>
 		</div>
 	);

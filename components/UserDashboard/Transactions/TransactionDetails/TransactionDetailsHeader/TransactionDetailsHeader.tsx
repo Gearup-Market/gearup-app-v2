@@ -27,14 +27,29 @@ const TransactionDetailsHeader = ({ activeView, setActiveView }: Props) => {
 	const router = useRouter();
 	const search = useSearchParams();
 
-	const amount = isListing(transaction?.listing, transaction?.itemType as string)
-		? transaction?.listing.listingType === "rent"
-			? transaction?.rentalBreakdown.reduce(
+	const amount = () => {
+		const isShares = transaction?.transactionType === "Shares";
+
+		if (!isListing(transaction?.listing, transaction?.itemType as string)) {
+			return transaction?.amount;
+		}
+
+		const listing = transaction.listing;
+		const isRent = listing.listingType === "rent";
+
+		if (isShares) {
+			return isRent
+				? listing.offer?.forRent?.rates?.[0]?.price
+				: listing.offer?.forSell?.pricing;
+		}
+
+		return isRent
+			? transaction.rentalBreakdown?.reduce(
 					(total, period) => total + period.price * period.quantity,
 					0
 			  )
-			: transaction?.listing.offer?.forSell?.pricing
-		: transaction?.amount;
+			: listing.offer?.forSell?.pricing;
+	};
 
 	const handleBack = () => {
 		router.back();
@@ -60,7 +75,7 @@ const TransactionDetailsHeader = ({ activeView, setActiveView }: Props) => {
 					/>
 					<span className={styles.right}>
 						<h2>{transaction.gearName}</h2>
-						<p>₦{formatNumber(amount || 0)}</p>
+						<p>₦{formatNumber(amount() || 0)}</p>
 					</span>
 				</div>
 				<div
@@ -70,27 +85,28 @@ const TransactionDetailsHeader = ({ activeView, setActiveView }: Props) => {
 					{transaction.transactionStatus}
 				</div>
 			</div>
-			{transaction.itemType !== "Course" && (
-				<ul className={styles.container__children_container}>
-					{list.map(item => (
-						<li
-							onClick={() =>
-								transaction.listing
-									? setActiveView(
-											item?.name?.toLowerCase() as DetailsView
-									  )
-									: toast.error("Listing not available")
-							}
-							key={item.id}
-							className={styles.container__children_container__filter}
-							data-active={activeView === item.name.toLowerCase()}
-							data-disabled={!transaction.listing}
-						>
-							<p>{item.name}</p>
-						</li>
-					))}
-				</ul>
-			)}
+			{transaction.itemType === "Listing" &&
+				transaction.transactionType !== "Shares" && (
+					<ul className={styles.container__children_container}>
+						{list.map(item => (
+							<li
+								onClick={() =>
+									transaction.listing
+										? setActiveView(
+												item?.name?.toLowerCase() as DetailsView
+										  )
+										: toast.error("Listing not available")
+								}
+								key={item.id}
+								className={styles.container__children_container__filter}
+								data-active={activeView === item.name.toLowerCase()}
+								data-disabled={!transaction.listing}
+							>
+								<p>{item.name}</p>
+							</li>
+						))}
+					</ul>
+				)}
 		</div>
 	);
 };

@@ -106,7 +106,9 @@ const TransactionTable = () => {
 								: item.cover
 							: "",
 						userRole,
-						item
+						item,
+						itemType,
+						type
 					};
 				}
 			),
@@ -190,7 +192,8 @@ const TransactionTable = () => {
 			cellClassName: styles.table_cell,
 			headerClassName: styles.table_header,
 			headerName: "Type",
-			minWidth: typeWidth
+			minWidth: typeWidth,
+			renderCell: ({ row, value }) => (row.type === "Shares" ? "Shares" : value)
 		},
 		{
 			...sharedColDef,

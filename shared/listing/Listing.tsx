@@ -13,7 +13,7 @@ import {
 	usePostCheckItemInWishlist
 } from "@/app/api/hooks/wishlists";
 import toast from "react-hot-toast";
-
+import MultiOwnership from "../svgs/MultiOwnership";
 interface Props {
 	props: iListing;
 	className?: string;
@@ -97,6 +97,11 @@ const Listing = ({ props, className, actionType }: Props) => {
 				<div className={styles.button_container} data-active={forSale}>
 					{forSale && <Button className={styles.button}>Buy</Button>}
 					{forRent && <Button className={styles.button}>Rent</Button>}
+					{props.allowsMultiOwnership && (
+						<div className={styles.multi_ownership_container}>
+							<MultiOwnership />
+						</div>
+					)}
 				</div>
 				<span className={styles.fave_icon}>
 					<FavoriteStar

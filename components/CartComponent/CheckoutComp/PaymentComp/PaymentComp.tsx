@@ -125,19 +125,26 @@ const PaymentComp = ({
 			toast.error("Insufficient funds in wallet");
 			return;
 		}
+		try {
+			const res = await postTransaction({
+				...preparedPayload,
+				method: PaymentMethod.Wallet,
+				reference: new Date().getTime().toString()
+			});
 
-		const res = await postTransaction({
-			...preparedPayload,
-			method: PaymentMethod.Wallet,
-			reference: new Date().getTime().toString()
-		});
-
-		if (res.data) {
-			toast.success("Request submitted");
-			dispatch(resetCheckout());
-			router.push("/user/dashboard");
-			removeItemFromCart(item._id as string);
-			setOpenModal(true);
+			if (res.data) {
+				toast.success("Request submitted");
+				dispatch(resetCheckout());
+				router.push("/user/dashboard");
+				removeItemFromCart(item._id as string);
+				setOpenModal(true);
+			}
+		} catch (error: any) {
+			toast.error(
+				error?.response?.data?.message ||
+					error?.message ||
+					"An unexpected error occurred"
+			);
 		}
 	};
 

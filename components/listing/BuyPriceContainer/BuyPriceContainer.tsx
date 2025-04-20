@@ -12,8 +12,9 @@ import { TransactionType } from "@/app/api/hooks/transactions/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { useAppSelector } from "@/store/configureStore";
+import { useAppSelector, useAppDispatch } from "@/store/configureStore";
 import { PricingData } from "@/app/api/hooks/Admin/pricing/types";
+import { updateCheckout } from "@/store/slices/checkoutSlice";
 
 const BuyPriceContainer = ({
 	listing,
@@ -27,6 +28,7 @@ const BuyPriceContainer = ({
 	const actionType = search.get("type");
 	const router = useRouter();
 	const user = useAppSelector(state => state.user);
+	const dispatch = useAppDispatch();
 	const pathname = usePathname();
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
 	const [inputDate, setInputDate] = useState([
@@ -60,11 +62,26 @@ const BuyPriceContainer = ({
 		try {
 			addItemToCart({
 				listing,
-				type: transactionType
+				type: transactionType,
+				listingModelType: "Listing"
 			});
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const handleBuyShares = () => {
+		dispatch(
+			updateCheckout({
+				checkout: {
+					item: listing,
+					type: TransactionType.Shares,
+					amount: 0,
+					listingModelType: "Listing"
+				}
+			})
+		);
+		router.push("/checkout");
 	};
 
 	const goToChat = () => {
@@ -112,6 +129,14 @@ const BuyPriceContainer = ({
 					<Button className={styles.button} onClick={handleAddToCart}>
 						Add to cart
 					</Button>
+					{listing.allowsMultiOwnership && (
+						<Button
+							className={styles.shares_button}
+							onClick={handleBuyShares}
+						>
+							Buy shares
+						</Button>
+					)}
 					<Button
 						buttonType="secondary"
 						className={styles.button}

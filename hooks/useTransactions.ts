@@ -48,7 +48,7 @@ export function useTransaction(id?: string) {
 				? "Purchase"
 				: type === TransactionType.Sale && !isBuyer
 				? "Sale"
-				: TransactionType.Rental;
+				: type;
 		const userRole =
 			transactionType === "Purchase"
 				? UserRole.Buyer

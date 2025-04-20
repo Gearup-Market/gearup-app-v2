@@ -13,12 +13,14 @@ import { CourseType } from "@/views/CourseListingView/CourseListingView";
 import format from "date-fns/format";
 import { shortenTitle } from "@/utils";
 import { LiveSessionDetails } from "@/store/slices/addCourseSlice";
+import Link from "next/link";
 interface Props {
 	transaction?: iTransactionDetails;
 }
 
 const CourseTransactions = ({ transaction }: Props) => {
 	const handleCopy = useCopy();
+	const completedStage = transaction?.stages?.find(item => item.stage === "completed");
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__left}>
@@ -41,28 +43,68 @@ const CourseTransactions = ({ transaction }: Props) => {
 						<h4>Transaction date</h4>
 						<p>{formatDate(transaction?.createdAt)}</p>
 					</div>
-					<div className={styles.summary_item}>
-						<h4>Transaction ID</h4>
-						<span
-							style={{ display: "flex", alignItems: "center", gap: "10px" }}
-						>
-							<p>
-								{shortenTitle(
-									transaction?.listing?.transactionId as string
-								)}
-							</p>
+					{transaction?.listing?.transactionId && (
+						<div className={styles.summary_item}>
+							<h4>Course Creation Transaction</h4>
 							<span
-								className={styles.icon}
-								onClick={() =>
-									handleCopy(
-										transaction?.listing?.transactionId as string
-									)
-								}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									gap: "10px"
+								}}
 							>
-								<CopyIcon />
+								<Link
+									href={`https://stellar.expert/explorer/public/tx/${transaction?.listing?.transactionId}`}
+									target="_blank"
+								>
+									{shortenTitle(
+										transaction?.listing?.transactionId as string
+									)}
+								</Link>
+								<span
+									className={styles.icon}
+									onClick={() =>
+										handleCopy(
+											transaction?.listing?.transactionId as string
+										)
+									}
+								>
+									<CopyIcon />
+								</span>
 							</span>
-						</span>
-					</div>
+						</div>
+					)}
+					{completedStage?.transactionHash && (
+						<div className={styles.summary_item}>
+							<h4>Course Purchase Transaction</h4>
+							<span
+								style={{
+									display: "flex",
+									alignItems: "center",
+									gap: "10px"
+								}}
+							>
+								<Link
+									href={`https://stellar.expert/explorer/public/tx/${completedStage?.transactionHash}`}
+									target="_blank"
+								>
+									{shortenTitle(
+										completedStage?.transactionHash as string
+									)}
+								</Link>
+								<span
+									className={styles.icon}
+									onClick={() =>
+										handleCopy(
+											completedStage?.transactionHash as string
+										)
+									}
+								>
+									<CopyIcon />
+								</span>
+							</span>
+						</div>
+					)}
 
 					<div className={styles.bottom_section}>
 						<div className={styles.summary_item}>
@@ -165,6 +207,7 @@ const CourseTransactions = ({ transaction }: Props) => {
 				</div>
 				{transaction?.isBuyer && (
 					<PersonalDetails
+						showTitle={false}
 						name={transaction?.seller?.userName as string}
 						subText="Tutor"
 						profileLink={`/users/${transaction?.seller?._id}`}

@@ -7,6 +7,7 @@
 		@include flex(space-between);
 		gap: 2.4rem;
 	}
+
 	.section_grid {
 		// @include grid(30.2rem 1fr);
 		display: flex;
@@ -56,6 +57,88 @@
 					font-weight: 700;
 					color: white;
 				}
+			}
+		}
+	}
+	.blockchain_info {
+		margin-block: 2rem;
+		.blockchain_info_container {
+			display: flex;
+			gap: 0.5rem;
+			flex-direction: column;
+			background-color: #fff;
+			padding: 1.6rem;
+			border-radius: 1.6rem;
+
+			.blockchain_label_container {
+				display: flex;
+				gap: 1rem;
+				align-items: center;
+				justify-content: space-between;
+
+				.view_explorer {
+					color: #f76039;
+					font-weight: 700;
+					font-size: 1.4rem;
+					cursor: pointer;
+				}
+			}
+			.blockchain_token_container {
+				display: flex;
+				gap: 1rem;
+				align-items: center;
+				justify-content: space-between;
+				margin-top: 1.6rem;
+				color: #1b1e21;
+
+				.token_id {
+					font-weight: 700;
+					font-size: 1.6rem;
+				}
+			}
+
+			.blockchain_number_container {
+				background-color: $col-border;
+				border-radius: 0.8rem;
+				padding: 1.6rem;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: 1.6rem;
+
+				.blockchain_number {
+					font-weight: 400;
+					font-size: 1.4rem;
+					color: #1b1e21;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+
+				.blockchain_copy_icon {
+					cursor: copy;
+				}
+			}
+
+			.blockchain_info {
+				display: flex;
+				gap: 1rem;
+				align-items: center;
+
+				img {
+					height: 2rem;
+					width: 2rem;
+				}
+
+				h6 {
+					@extend %text-14;
+					font-weight: 700;
+				}
+			}
+
+			.blockchain_btn {
+				padding: 1.2rem 2.4rem;
+				font-size: 1.4rem;
 			}
 		}
 	}

@@ -76,6 +76,26 @@
 				}
 			}
 		}
+		.shares_container {
+			width: 100%;
+			@include flex(flex-start, flex-start, column);
+			gap: 1.6rem;
+			.shares_details {
+				width: 100%;
+				@include flex(space-between, flex-start);
+				gap: 1.6rem;
+				.shares_details_item {
+					h3 {
+						font-size: 2rem;
+						font-weight: 700;
+						margin-bottom: 0.6rem;
+					}
+					p {
+						font-size: 1.6rem;
+					}
+				}
+			}
+		}
 	}
 
 	@include screenMax("mobile") {

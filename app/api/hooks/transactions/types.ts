@@ -8,7 +8,8 @@ import { Course } from "@/store/slices/coursesSlice";
 
 export enum TransactionType {
 	Rental = "Rental",
-	Sale = "Sale"
+	Sale = "Sale",
+	Shares = "Shares"
 }
 
 export interface CartReq {

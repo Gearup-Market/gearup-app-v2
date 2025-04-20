@@ -13,11 +13,14 @@ import {
 import { useAppSelector } from "@/store/configureStore";
 import { useParams } from "next/navigation";
 import { useSingleListing } from "@/hooks/useListings";
-import { getIdFromSlug } from "@/utils";
+import { copyText, getIdFromSlug } from "@/utils";
 import { BackNavigation, Listing } from "@/shared";
 import BuyPriceContainer from "@/components/listing/BuyPriceContainer/BuyPriceContainer";
 import { Box, CircularProgress } from "@mui/material";
 import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
+import Image from "next/image";
+import Link from "next/link";
+import { HeaderSubText } from "@/components/UserDashboard";
 
 const typeView = ["rent", "buy"];
 
@@ -71,7 +74,9 @@ const ListingView = () => {
 
 	return (
 		<section className={styles.section}>
-			<BackNavigation />
+			<div className={styles.row}>
+				<BackNavigation />
+			</div>
 			<div className={styles.row}>
 				<div className={styles.large_block}>
 					{listingType === "both" && (
@@ -90,7 +95,11 @@ const ListingView = () => {
 							))}
 						</ul>
 					)}
-					<ImageSlider images={listingPhotos} type={activeType} />
+					<ImageSlider
+						images={listingPhotos}
+						type={activeType}
+						multiOwnership={currentListing.allowsMultiOwnership}
+					/>
 					<div className={styles.block_mob}>
 						{activeType === "rent" ? (
 							<PriceContainer
@@ -103,6 +112,54 @@ const ListingView = () => {
 					</div>
 					<SpecCard listing={currentListing} />
 					<DescriptionCard description={currentListing.description} />
+					<div className={styles.blockchain_info}>
+						<HeaderSubText title="Blockchain information" />
+						<div className={styles.blockchain_info_container}>
+							{currentListing?.transactionId ? (
+								<>
+									<div className={styles.blockchain_label_container}>
+										<p className={styles.view_explorer_title}>
+											Transaction ID
+										</p>
+										<Link
+											href={`https://stellar.expert/explorer/public/tx/${currentListing.transactionId}`}
+											target="_blank"
+											className={styles.view_explorer}
+										>
+											View explorer
+										</Link>
+									</div>
+									<div className={styles.blockchain_number_container}>
+										<p className={styles.blockchain_number}>
+											{currentListing.transactionId}
+										</p>
+										<p className={styles.blockchain_copy_icon}>
+											<Image
+												src="/svgs/copy.svg"
+												alt="copy-icon"
+												width={10}
+												height={10}
+												onClick={() =>
+													copyText(
+														currentListing?.transactionId ??
+															""
+													)
+												}
+											/>
+										</p>
+									</div>
+								</>
+							) : null}
+							{currentListing?.nftTokenId ? (
+								<div className={styles.blockchain_token_container}>
+									<p className={styles.token_id_title}>Token ID</p>
+									<p className={styles.token_id}>
+										{currentListing?.nftTokenId}
+									</p>
+								</div>
+							) : null}
+						</div>
+					</div>
 					{currentListing.location && (
 						<Map location={currentListing.location} />
 					)}

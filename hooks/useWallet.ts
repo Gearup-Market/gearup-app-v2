@@ -1,6 +1,11 @@
 "use client";
 
-import { useGetStellarTransactions, useGetStellarWallet, useGetWallet, useGetWalletTransactions } from "@/app/api/hooks/wallets";
+import {
+	useGetStellarTransactions,
+	useGetStellarWallet,
+	useGetWallet,
+	useGetWalletTransactions
+} from "@/app/api/hooks/wallets";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { updateWallet } from "@/store/slices/walletSlice";
 import { useEffect } from "react";
@@ -26,10 +31,12 @@ export function useWallet() {
 
 export function useWalletTransactions({
 	limit = 5,
-	skip = 0
+	skip = 0,
+	page = 1
 }: {
 	limit: number;
 	skip: number;
+	page: number;
 }) {
 	const { userId } = useAppSelector(s => s.user);
 	const dispatch = useAppDispatch();
@@ -40,7 +47,7 @@ export function useWalletTransactions({
 		refetch
 	} = useGetWalletTransactions({
 		userId,
-		query: { limit, skip }
+		query: { limit, skip, page }
 	});
 
 	useEffect(() => {
@@ -51,7 +58,7 @@ export function useWalletTransactions({
 				})
 			);
 		}
-	}, [isFetching, wTransactionResult, limit, skip]);
+	}, [isFetching, wTransactionResult, limit, skip, page, dispatch]);
 
 	return {
 		isFetching,

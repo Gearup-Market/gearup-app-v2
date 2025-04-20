@@ -59,7 +59,9 @@ const Listings = () => {
 					<span>
 						<p>Hide All Listings</p>
 						<ToggleSwitch />
-						{activeFilter.name !== Type.Courses && !listings.length ? (
+						{(activeFilter.name === Type.Rent ||
+							activeFilter.name === Type.Buy) &&
+						listings.length ? (
 							<Button onClick={handleButtonClick}>
 								{" "}
 								<GridAddIcon className={styles.add_icon} /> Create a
