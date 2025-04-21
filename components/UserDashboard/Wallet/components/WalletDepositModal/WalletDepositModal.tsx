@@ -48,7 +48,7 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 	const paystackComponentProps: PaystackProps = useMemo(
 		() => ({
 			...paystackConfig,
-			currency: "₦",
+			// currency: "₦",
 			email: user.email,
 			amount: +amount * 100,
 			metadata: {
