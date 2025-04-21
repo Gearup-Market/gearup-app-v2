@@ -44,7 +44,7 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 		return [mainGroup, subGroup];
 	}, [fieldValues]);
 
-	const reservedShares = (listing?.reservedShares! / 100) * listing?.totalShares!;
+	const reservedShares = listing?.reservedShares!;
 
 	const coOwnersIds = listing?.ownersList
 		?.filter(owner => owner.ownerId !== listing?.user._id)
