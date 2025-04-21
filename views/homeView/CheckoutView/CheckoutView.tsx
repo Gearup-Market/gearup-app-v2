@@ -95,7 +95,7 @@ const CheckoutView = () => {
 		: 0;
 
 	const reservedShares = isListing(checkout?.item, "Listing")
-		? (checkout?.item.reservedShares! / 100) * checkout?.item.totalShares!
+		? checkout?.item.reservedShares!
 		: 0;
 
 	const soldShares = isListing(checkout?.item, "Listing")
