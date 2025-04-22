@@ -3,7 +3,7 @@ import styles from "./GearDetailsSection.module.scss";
 import { Button, DetailContainer } from "@/shared";
 import { ImageSlider } from "@/components/listing";
 import Image from "next/image";
-import { formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
+import { formatDate, formatNum, getDaysDifference, getLastRentalDate } from "@/utils";
 import { useGetSingleTransactions } from "@/app/api/hooks/transactions";
 import { PageLoader } from "@/shared/loaders";
 import { useAppSelector } from "@/store/configureStore";
@@ -310,11 +310,14 @@ const GearDetailsSection = ({ transactionId }: Props) => {
 						<div className={styles.summary_item}>
 							<h4>
 								Duration(
-								{transaction!.rentalBreakdown[0].duration}s)
-							</h4>
-							<p>
 								{rentalPeriod} {transaction!.rentalBreakdown[0].duration}
-								{rentalPeriod > 1 ? "s" : ""}
+								s)
+							</h4>
+							<p style={{ textAlign: "right" }}>
+								{formatDate(transaction!.rentalBreakdown[0].date)} -{" "}
+								{formatDate(
+									getLastRentalDate(transaction!.rentalBreakdown)
+								)}
 							</p>
 						</div>
 						<div className={styles.summary_item}>
