@@ -15,6 +15,7 @@ import {
 	usePostValidateKycCode
 } from "@/app/api/hooks/users";
 import { toast } from "react-hot-toast";
+import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 
 interface Props {
 	setIsTokenVerified: (value: boolean) => void;
@@ -130,19 +131,26 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 						isLoading: true
 					})
 				);
-				const res = await postUpdateKyc({
-					userId: user.userId,
-					phoneNumber: values.phoneNumber
-				});
-				if (res?.data?._id) {
-					dispatch(
-						updateVerification({
-							_id: res.data._id,
-							isPhoneNumberVerified: res.data.isPhoneNumberVerified,
-							resendCodeCountdown: 60
-						})
-					);
-					// toast.success('An otp was sent to your phone number');
+
+				// Only make the API call if not already in token verification mode
+				if (!isTokenVerification) {
+					const res = await postUpdateKyc({
+						userId: user.userId,
+						phoneNumber: formatPhoneNumber(values.phoneNumber, 234)
+					});
+
+					if (res?.data?._id) {
+						dispatch(
+							updateVerification({
+								_id: res.data._id,
+								isPhoneNumberVerified: res.data.isPhoneNumberVerified,
+								resendCodeCountdown: 60
+							})
+						);
+						onSubmitSuccess();
+					}
+				} else {
+					// If already in token verification mode, don't send a new OTP
 					onSubmitSuccess();
 				}
 			} catch (error: any) {
@@ -212,7 +220,7 @@ const PhoneVerification = forwardRef<PhoneNumberFormHandle, Props>(
 				) : (
 					<>
 						<HeaderSubText
-							title="You’ve got an SMS!"
+							title="You've got an SMS!"
 							description={`Type the code you received via SMS on ${verificationState.phoneNumber}`}
 						/>
 						<ConfirmToken length={6} onComplete={handleComplete} />
