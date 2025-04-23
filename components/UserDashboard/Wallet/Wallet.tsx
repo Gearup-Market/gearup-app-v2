@@ -170,7 +170,7 @@ const Wallet = () => {
 							loading={isFetching}
 						/>
 						<BalanceSection
-							balance={wallet?.pendingDebit || 0}
+							balance={wallet?.pendingCredit || 0}
 							text="Escrow Balance"
 							loading={isFetching}
 						/>
