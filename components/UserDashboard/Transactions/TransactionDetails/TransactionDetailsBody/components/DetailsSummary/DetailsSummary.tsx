@@ -155,7 +155,7 @@ const DetailsSummary = ({ item }: { item: iTransactionDetails }) => {
 			</div>
 			<PersonalDetails
 				name={user.name || user.userName}
-				subText="Lagos, Nigeria"
+				// subText="Lagos, Nigeria"
 				profilePhoto={user.avatar || "/svgs/user.svg"}
 				profileLink={`/users/${user._id}`}
 				forSale={forSale}
