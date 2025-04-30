@@ -1058,7 +1058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-google-maps/api@npm:^2.19.3":
+"@react-google-maps/api@npm:^2.20.6":
   version: 2.20.6
   resolution: "@react-google-maps/api@npm:2.20.6"
   dependencies:
@@ -3537,7 +3537,7 @@ __metadata:
     "@mui/system": "npm:^6.4.7"
     "@mui/utils": "npm:^6.1.0"
     "@mui/x-data-grid": "npm:^7.6.1"
-    "@react-google-maps/api": "npm:^2.19.3"
+    "@react-google-maps/api": "npm:^2.20.6"
     "@reduxjs/toolkit": "npm:^2.2.3"
     "@smastrom/react-rating": "npm:^1.4.0"
     "@stellar/stellar-sdk": "npm:^12.3.0"

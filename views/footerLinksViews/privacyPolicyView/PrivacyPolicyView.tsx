@@ -20,11 +20,12 @@ const PrivacyPolicyView = () => {
 							<h3>Introduction</h3>
 							<p>
 								GearUp (<Link href={"/"}>https://gearup.market</Link>)
-								("we," "us," "our") is an online marketplace that allows
-								users to rent, buy, sell various types of creative
-								equipment, courses, list and find gig opportunities. We
-								collect certain personal data to provide you with our
-								services. By using the platform's website:
+								(&quot;we,&quot; &quot;us,&quot; &quot;our&quot;) is an
+								online marketplace that allows users to rent, buy, sell
+								various types of creative equipment, courses, list and
+								find gig opportunities. We collect certain personal data
+								to provide you with our services. By using the
+								platform&apos;s website:
 								<Link href={"/"}>https://gearup.market</Link>, you agree
 								to the practices described in this policy.
 							</p>
@@ -41,9 +42,9 @@ const PrivacyPolicyView = () => {
 						</div>
 						<ul className={styles.list}>
 							<li className={styles.list_item}>
-								<span>Account Information:</span> Name, ID, biometric,
-								age, location/address, country, date of birth, email
-								address, phone number, and password.
+								<span>Account Information:</span> Name, ID, BVN,
+								biometric, age, location/address, country, date of birth,
+								email address, phone number, and password.
 							</li>
 							<li className={styles.list_item}>
 								<span>Transaction Information:</span> Payment details,
@@ -208,9 +209,9 @@ const PrivacyPolicyView = () => {
 							<p>
 								GearUp reserves the right to update or modify this Privacy
 								Policy at any time. Any changes will be posted on this
-								page, with the "Last Updated" date revised. Continued use
-								of our services after changes to this policy constitutes
-								your acceptance of the updated terms.
+								page, with the &quot;Last Updated&quot; date revised.
+								Continued use of our services after changes to this policy
+								constitutes your acceptance of the updated terms.
 							</p>
 						</div>
 					</div>
