@@ -15,12 +15,12 @@
 
     .text {
 
-        h1,
-        span {
+        h1{
             @extend %title-56;
             font-family: $font-outfit;
             color: $col-white;
             margin-bottom: 0.8rem;
+            text-align: center;
         }
 
         p {
@@ -33,5 +33,15 @@
     @include screenMax("ssm-mobile") {
         padding-top: 12rem !important;
         height: 100%;
+
+        .text {
+            h1 {
+                font-size: 3.5rem;
+            }
+    
+            p {
+                font-size: 1.4rem;
+            }
+        }
     }
 }

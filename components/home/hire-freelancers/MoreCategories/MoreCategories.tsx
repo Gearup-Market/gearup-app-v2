@@ -1,7 +1,16 @@
 import React from 'react'
 import styles from './MoreCategories.module.scss'
+import { useUpdateUrlParams } from '@/hooks';
 
 const MoreCategories = () => {
+    const { updateParams } = useUpdateUrlParams();
+
+    const handleCategorySelect = (category: string, description: string) => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        updateParams({ category, description });
+    };
+
+
     return (
         <section className={styles.container}>
             <h2 className={styles.title}>More categories</h2>
@@ -9,10 +18,10 @@ const MoreCategories = () => {
 
                 {
                     moreCategories.map((category) => (
-                        <div key={category.id} className={styles.category}>
+                        <button onClick={() => handleCategorySelect(category.title, category.description)} key={category.id} className={styles.category}>
                             <h3>{category.title}</h3>
                             <p>{category.description}</p>
-                        </div>
+                        </button>
                     ))
                 }
             </ul>

@@ -4,14 +4,13 @@ import styles from "./WishlistComponent.module.scss";
 import HeaderSubText from "../HeaderSubText/HeaderSubText";
 import { CloseIcon } from "@/shared/svgs/dashboard";
 import Image from "next/image";
-import { BackNavigation, Button, Pagination } from "@/shared";
+import { Button, Pagination } from "@/shared";
 import Link from "next/link";
 import WishlistCard from "./WishlistCard/WishlistCard";
 import {
 	useGetUserWishlists,
 	useRemoveItemFromWishlist
 } from "@/app/api/hooks/wishlists";
-import { useAuth } from "@/contexts/AuthContext";
 import { Box } from "@mui/material";
 import { CircularProgressLoader } from "@/shared/loaders";
 import toast from "react-hot-toast";

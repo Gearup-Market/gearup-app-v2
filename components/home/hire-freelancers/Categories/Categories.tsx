@@ -7,6 +7,7 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { Pagination } from 'swiper/modules';
+import { useUpdateUrlParams } from '@/hooks';
 
 const Categories = () => {
     return (
@@ -55,23 +56,32 @@ export default Categories
 
 const ListItem = ({ title, description, bgImage }: { title: string, description: string, bgImage: string }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const { updateParams } = useUpdateUrlParams();
+
+    const handleCategorySelect = (category: string, description: string) => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        updateParams({ category, description });
+    };
+
 
     return (
-        <li
+        <button
             className={styles.category}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={{
-                background: `linear-gradient(rgba(0, 0, 0, ${isHovered ? 0.8 : 0.5}), rgba(0, 0, 0, ${isHovered ? 0.8 : 0.5})), url(${bgImage})`,
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, ${isHovered ? 0.8 : 0.5}), rgba(0, 0, 0, ${isHovered ? 0.8 : 0.5})), url(${bgImage})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center"
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
             }}
+            onClick={() => handleCategorySelect(title, description)}
         >
             <div className={`${styles.content} ${isHovered ? styles.expanded : ""}`}>
                 <h3>{title}</h3>
                 {isHovered && <p>{description}</p>}
             </div>
-        </li>
+        </button>
     );
 };
 

@@ -11,6 +11,7 @@ import { useListingFilters } from "./useListings";
 import { useResponsive } from "./useResponsive";
 import { useChatSocket } from "./useChatSocket";
 import usePercentageToPixels from "./usePercentageToPixels";
+import useUpdateUrlParams from './useUpdateUrlParams'
 
 export {
 	usePercentageToPixels,
@@ -23,5 +24,6 @@ export {
 	useStellarWalletTransactions,
 	useListingFilters,
 	useResponsive,
-	useChatSocket
+	useChatSocket,
+	useUpdateUrlParams
 };

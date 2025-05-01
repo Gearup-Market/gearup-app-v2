@@ -14,7 +14,7 @@ interface Props {
 const PieChartComponent = ({ data, colors, totalEarnings }: Props) => {
 	return (
 		<div className={styles.container}>
-			<ResponsiveContainer width={200} height={200}>
+			<ResponsiveContainer width="100%" aspect={1}>
 				<PieChart>
 					<Pie
 						data={data}

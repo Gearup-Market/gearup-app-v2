@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import styles from "./TotalEarnings.module.scss";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { customisedTableClasses } from "@/utils/classes";
@@ -83,6 +83,15 @@ const TotalEarnings = () => {
 
 	const rows = convertObjToArray(salesData?.breakdown as GearData) || [];
 
+	const rowCountRef = useRef(rows?.length || 0);
+
+	const rowCount = useMemo(() => {
+		if (rows?.length !== undefined) {
+			rowCountRef.current = rows?.length;
+		}
+		return rowCountRef.current;
+	}, [rows?.length]);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__pie_chart_container}>
@@ -107,6 +116,7 @@ const TotalEarnings = () => {
 					columns={columns}
 					hideFooter
 					autoHeight
+					rowCount={rowCount}
 					paginationMode="server"
 					getRowId={row => row.id}
 				/>

@@ -1,0 +1,32 @@
+@import "@/styles/imports";
+
+.container{ 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    width: 100%;
+    min-height: 600px;
+    background-color: white;
+    transform: translateY(-4rem);
+
+    .text {
+        color: #1E1E1E;
+        font-weight: 700;
+        font-size: 3.4rem;
+
+    }
+
+    .image {
+        width: 20rem;
+        height: 20rem;
+    }
+
+    @include screenMax("ssm-mobile") {
+
+        .text {
+            font-size: 2.4rem;
+        }
+    }
+}

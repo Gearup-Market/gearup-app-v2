@@ -1,19 +1,35 @@
 import React from 'react'
 import styles from './HeroSection.module.scss'
 import { SearchField } from '@/shared'
+import DoubleSearchField from '../DoubleSearchField/DoubleSearchField'
 
-const HeroSection = () => {
+interface Props {
+    category: string | null
+    description: string | null
+}
+
+const HeroSection = ({ category, description }: Props) => {
     return (
         <section className={styles.container}>
             <div className={styles.text}>
                 <h1>
-                    Discover & Hire Top industry expert
+                    {
+                        !category ? "Discover & Hire Top industry expert" : `Hire a ${category}`
+                    }
+
                 </h1>
                 <p>
-                    Find and collaborate with top industry experts to bring your creative projects to life with the right talent
+                    {
+                        !description ? "Find and collaborate with top industry experts to bring your creative projects to life with the right talent" : `${description}`
+                    }
                 </p>
             </div>
-            <SearchField />
+            {
+                !category ?
+                <SearchField />
+                :
+                <DoubleSearchField/>
+            }
         </section>
     )
 }
