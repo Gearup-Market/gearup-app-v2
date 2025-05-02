@@ -1,0 +1,36 @@
+@import "@/styles/imports";
+
+
+.container {
+
+    .header,
+    .content {
+        background-color: $col-bg;
+        padding: 1.6rem;
+        border-radius: 1.6rem;
+        font-size: 1.6rem;
+        width: 100%;
+    }
+
+    .header {
+        padding-bottom: 0.4rem;
+        display: flex;
+        gap: 2.4rem;
+        margin-bottom: 1.6rem;
+
+        .header_item {
+            color: $col-grey-light;
+            font-size: 1.6rem;
+            border: none;
+            padding-bottom: 1.6rem;
+            background-color: transparent;
+            transition: all 0.2s ease-linear;
+
+            &[data-active="true"] {
+                color: $col-orange;
+                font-weight: 700;
+                border-bottom: 4px solid $col-orange;
+            }
+        }
+    }
+}

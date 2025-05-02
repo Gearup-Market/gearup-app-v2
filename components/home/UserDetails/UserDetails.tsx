@@ -7,11 +7,13 @@ import { HeaderSubText } from "@/components/UserDashboard";
 import NoListings from "@/components/UserDashboard/Listings/NoListings/NoListings";
 import { ListingCard } from "@/components/UserDashboard/Listings/components";
 import Image from "next/image";
-import { useGetUserDetails, useGetUserReviews } from "@/app/api/hooks/users";
+import { useGetUserReviews } from "@/app/api/hooks/users";
 import { Box, CircularProgress } from "@mui/material";
 import LatestReviews from "./LatestReviews/LatestReviews";
 import { useFetchUserDetailsById } from "@/hooks/useUsers";
 import { useGetListingsByUser } from "@/app/api/hooks/listings";
+import { useSearchParams } from 'next/navigation'
+import FreelancerProfile from "./FreelancerProfile/FreelancerProfile";
 
 interface Props {
 	userId: string;
@@ -19,8 +21,10 @@ interface Props {
 
 const UserDetails = ({ userId }: Props) => {
 	// get user details
+	const profileType = useSearchParams().get("profile-type");
 	const { fetchingUser, user } = useFetchUserDetailsById(userId);
 	const { data: userReviews, isLoading } = useGetUserReviews({ userId });
+	const isFreelancerProfile = profileType === "freelancer";
 
 	// get user listings using id
 	const { data, isFetching, refetch } = useGetListingsByUser({
@@ -91,7 +95,7 @@ const UserDetails = ({ userId }: Props) => {
 					<UserDetailsProfile user={user} />
 				</div>
 				<div>
-					{!!user?.about && (
+					{!!user?.about && !isFreelancerProfile && (
 						<div className={styles.about_container}>
 							<HeaderSubText title="About" variant="medium" />
 							<div className={styles.about}>
@@ -99,6 +103,12 @@ const UserDetails = ({ userId }: Props) => {
 							</div>
 						</div>
 					)}
+
+					{
+						isFreelancerProfile &&
+						<FreelancerProfile />
+					}
+
 					<div className={styles.listing_container}>
 						<HeaderSubText title="Listings" variant="medium" />
 						{isFetching ? (

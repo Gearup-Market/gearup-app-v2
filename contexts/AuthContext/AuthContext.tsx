@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { clearUser, updateToken, updateUser } from "@/store/slices/userSlice";
 import useCart from "@/hooks/useCart";
 import { CircularProgressLoader } from "@/shared/loaders";
-import { queryClient } from "@/app/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { clearState, updateVerification } from "@/store/slices/verificationSlice";
 import { clearNewListing } from "@/store/slices/addListingSlice";
