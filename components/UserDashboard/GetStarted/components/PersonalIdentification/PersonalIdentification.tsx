@@ -68,7 +68,7 @@ const PersonalIdentification = forwardRef<
 	const validationSchema = Yup.object().shape({
 		firstName: Yup.string().required("First name is required"),
 		lastName: Yup.string().required("Last name is required"),
-		nin: Yup.string().required("Bvn is required").length(11),
+		nin: Yup.string().required("NIN is required").length(11),
 		birthDate: Yup.string().optional(),
 		birthMonth: Yup.string().optional(),
 		birthYear: Yup.string().optional(),
