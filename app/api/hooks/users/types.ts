@@ -170,7 +170,7 @@ export type iPostRegisterKycResp = {
 		firstName: string;
 		lastName: string;
 		birthday: string;
-		bvn: string;
+		nin: string;
 		phoneNumber: string;
 		isPhoneNumberVerified: boolean;
 		country: string;
@@ -195,7 +195,7 @@ export type iPostRegisterKycReq = {
 	firstName: string;
 	lastName: string;
 	birthday: string;
-	bvn: string;
+	nin: string;
 	phoneNumber?: string;
 	country: string;
 	address: string;
@@ -210,19 +210,17 @@ export type iPostSubmitKycRes = {
 	status: string;
 	data: {
 		userId: string;
-		documentNo: string;
-		documentType: "intl_passport" | "driver_license" | "national_id" | "voters_card";
-		documentPhoto: string;
+		nin: string;
 		selfie: string;
-		isSubmitted: boolean;
+		// isSubmitted: boolean;
 	};
 };
 
 export type iPostSubmitKycReq = {
 	userId: string;
-	documentNo: string;
-	documentType: "intl_passport" | "driver_license" | "national_id" | "voters_card";
-	documentPhoto?: string;
+	nin: string;
+	// documentType: "intl_passport" | "driver_license" | "national_id" | "voters_card";
+	// documentPhoto?: string;
 	selfie?: string;
 };
 

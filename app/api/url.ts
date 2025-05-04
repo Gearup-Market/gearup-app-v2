@@ -12,6 +12,7 @@ export const API_URL = {
 	registerKyc: "/users/kyc/register",
 	updateKyc: "/users/kyc/update",
 	submitKycDoc: "/users/kyc/submit-document",
+	submitKycNin: "/users/kyc/nin-live-check",
 	resendKycOtp: "/users/kyc/resend-otp",
 	validateKycOtp: "/users/kyc/validate-otp",
 	wallet: "/wallets",
@@ -88,6 +89,6 @@ export const API_URL = {
 	confirmTransactionPin: "/users/check-pin",
 	getAllPricings: "admin/pricing/retrieve",
 	updatePricing: "admin/pricing/update",
-	adminGetUserTransactions:(userId: string)=> `admin/transactions/${userId}`,
+	adminGetUserTransactions: (userId: string) => `admin/transactions/${userId}`,
 	getAllThirdPartyRequests: "/admin/third-party-requests"
 };

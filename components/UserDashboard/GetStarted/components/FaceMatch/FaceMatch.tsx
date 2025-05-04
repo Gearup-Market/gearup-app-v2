@@ -107,9 +107,7 @@ const FaceMatch = () => {
 
 				const payload = {
 					userId: user.userId,
-					documentNo: verificationState.documentNo,
-					documentType: verificationState.documentType,
-					documentPhoto: verificationState.documentPhoto,
+					nin: verificationState.nin,
 					...(verificationState.isRejected ? { hasResubmitted: true } : null)
 				} as iPostSubmitKycReq;
 

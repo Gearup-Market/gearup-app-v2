@@ -26,7 +26,7 @@ const initialState: VerificationState = {
 	firstName: "",
 	lastName: "",
 	birthday: "",
-	bvn: "",
+	nin: "",
 	country: "",
 	address: "",
 	postalCode: "",

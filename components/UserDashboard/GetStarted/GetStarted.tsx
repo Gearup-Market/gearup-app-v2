@@ -6,6 +6,7 @@ import { Button, RadioInput } from "@/shared";
 import ProgressBar from "@/shared/progressBar/ProgressBar";
 import Link from "next/link";
 import { useAppSelector } from "@/store/configureStore";
+import { formatNum } from "@/utils";
 
 interface Props {
 	title: string;
@@ -26,12 +27,12 @@ const GetStarted = ({
 				title: "Phone number verification",
 				completed: verificationState.isPhoneNumberVerified
 			},
-			{
-				title: "ID verification",
-				completed:
-					verificationState.documentPhoto &&
-					verificationState.documentPhoto.length > 0
-			},
+			// {
+			// 	title: "ID verification",
+			// 	completed:
+			// 		verificationState.documentPhoto &&
+			// 		verificationState.documentPhoto.length > 0
+			// },
 			{
 				title: "Face match",
 				completed: verificationState.isSubmitted
@@ -61,7 +62,7 @@ const GetStarted = ({
 						: title}
 				</p>
 				<p className={styles.container__subtext_container__percentage}>
-					{totalCompleted}% Complete
+					{formatNum(totalCompleted, true, 0)}% Complete
 				</p>
 			</div>
 			<p className={styles.container__description}>

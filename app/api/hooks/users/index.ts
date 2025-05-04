@@ -257,7 +257,7 @@ export const usePostSubmitKycDoc = (
 	useMutation<iPostSubmitKycRes, iPostUserSignUpErr, iPostSubmitKycReq>({
 		mutationFn: async props =>
 			(
-				await api.post(API_URL.submitKycDoc, {
+				await api.post(API_URL.submitKycNin, {
 					...props
 				})
 			).data,
