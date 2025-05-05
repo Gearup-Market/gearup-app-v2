@@ -1,1 +1,43 @@
 @import "@/styles/imports";
+
+.container {
+    margin-top: 4rem;
+    max-width: 120rem;
+
+    .project {
+        background: none;
+        border: none;
+        width: 100%;
+        margin: 0 2rem;
+        display: block;
+
+        .content {
+            width: 100%;
+
+            .image_container {
+                height: 183px;
+                width: 100%;
+                position: relative;
+                display: block;
+            }
+
+            .title_container{
+                display: flex;
+                justify-content: space-between;
+                gap: 1.6rem;
+                margin-top: 1.2rem;
+
+                .title{
+                    color: $col-high-emphasis-text;
+                    font-size: 1.6rem;
+                    font-weight: 700;
+                }
+
+                button{
+                    background: none;
+                    border: none;
+                }
+            }
+        }
+    }
+}

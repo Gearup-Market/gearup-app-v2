@@ -1,0 +1,17 @@
+@import "@/styles/imports";
+
+.container{
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+
+    .skill{
+        background: #E1E1E8;
+        padding: 0.4rem 0.8rem;
+        color: #2d2b4a;
+        border-radius: 3.2rem;
+        font-size: 1.4rem;
+        text-wrap: nowrap;
+    }
+}
