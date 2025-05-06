@@ -8,11 +8,10 @@
 
 	.details_body {
 		display: grid;
-		grid-template-columns: 25% 1fr;
+		grid-template-columns: 25% minmax(0, 120rem);
 		gap: 2rem;
 		padding-top: 4rem;
 		max-width: 100%;
-		// padding-right: 1.6rem;
 		
 
 		.about_container {

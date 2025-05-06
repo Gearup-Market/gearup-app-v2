@@ -12,7 +12,6 @@
         display: block;
 
         .content {
-            width: 100%;
 
             .image_container {
                 height: 183px;
@@ -47,6 +46,6 @@
         }
     }
     @include screenMax("mobile") {
-        max-width: 40rem;
+        max-width: 32rem;
     }
 }
