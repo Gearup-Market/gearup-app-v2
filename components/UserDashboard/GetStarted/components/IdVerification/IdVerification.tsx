@@ -72,13 +72,13 @@ const IdVerification = forwardRef<
 		{ label: "National ID / NIN Slip", value: "national_id" }
 	];
 
-	const defaultOption = useMemo(
-		() =>
-			(identificationOptions || []).find(
-				(option: Option) => option.value === verificationState.documentType
-			)?.label,
-		[verificationState.documentType]
-	);
+	// const defaultOption = useMemo(
+	// 	() =>
+	// 		(identificationOptions || []).find(
+	// 			(option: Option) => option.value === verificationState.documentType
+	// 		)?.label,
+	// 	[verificationState.documentType]
+	// );
 
 	const convertFileToBase64 = (file: File): Promise<string> => {
 		return new Promise((resolve, reject) => {
@@ -104,9 +104,9 @@ const IdVerification = forwardRef<
 		setImageObj(initialImageObj);
 	};
 
-	const initialValues: DocumentIdentityFormValues = {
-		documentNo: verificationState.documentNo || "",
-		documentType: verificationState.documentType || "intl_passport"
+	const initialValues: any = {
+		nin: verificationState.nin || ""
+		// documentType: verificationState.documentType || "intl_passport"
 	};
 
 	const handleSubmit = async (values: DocumentIdentityFormValues) => {
@@ -119,7 +119,7 @@ const IdVerification = forwardRef<
 					isLoading: true
 				})
 			);
-			if (isEmpty(values.documentNo) || isEmpty(values.documentType)) {
+			if (isEmpty(values.nin)) {
 				toast.error("Oops! All fields are required");
 			} else if (imageObj.image) {
 				dispatch(
@@ -174,16 +174,12 @@ const IdVerification = forwardRef<
 													);
 													field.onChange(e);
 												}}
-												error={
-													(touched.documentNo &&
-														errors.documentNo) ||
-													""
-												}
+												error={(touched.nin && errors.nin) || ""}
 											/>
 										)}
 									</Field>
 								</div>
-								<div className={styles.field}>
+								{/* <div className={styles.field}>
 									<Field name="documentType">
 										{({ field }: FieldProps) => (
 											<Select
@@ -209,11 +205,7 @@ const IdVerification = forwardRef<
 										)}
 									</Field>
 
-									{/* <Select
-										label="Identification"
-										options={identificationOptions}
-									/> */}
-								</div>
+								</div> */}
 								<div className={styles.upload_box}>
 									<span className={styles.rotate_icon}>
 										<LogoutNavIcon color="#7B8086" />

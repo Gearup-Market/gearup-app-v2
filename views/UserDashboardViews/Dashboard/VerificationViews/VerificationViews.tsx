@@ -25,7 +25,7 @@ const VerificationViews = () => {
 	const [isTokenVerification, setIsTokenVerification] = useState(false);
 	const verificationState = useAppSelector(s => s.verification);
 	const personalIdentificationRef = useRef<PersonalIdentificationHandle>(null);
-	const documentsRef = useRef<IdentificationDocumentHandle>(null);
+	// const documentsRef = useRef<IdentificationDocumentHandle>(null);
 	const phoneNumberFormRef = useRef<PhoneNumberFormHandle>(null);
 	const router = useRouter();
 
@@ -36,7 +36,7 @@ const VerificationViews = () => {
 	const verificationSteps = [
 		"Personal Identification",
 		"Phone Verification",
-		"ID Verification",
+		// "ID Verification",
 		"Face Match"
 	];
 
@@ -45,9 +45,10 @@ const VerificationViews = () => {
 			toast.success("KYC has been Approved");
 			router.push("user/dashboard");
 		} else {
-			if (verificationState.documentNo && verificationState.documentPhoto?.length) {
-				setCurrentStep(4);
-			} else if (verificationState.isPhoneNumberVerified) {
+			// if (verificationState.documentNo && verificationState.documentPhoto?.length) {
+			// 	setCurrentStep(4);
+			// } else
+			if (verificationState.isPhoneNumberVerified) {
 				setCurrentStep(3);
 				setIsTokenVerified(true);
 			} else if (!verificationState._id) {
@@ -66,13 +67,14 @@ const VerificationViews = () => {
 		}
 		if (currentStep === 2 && !isTokenVerified) {
 			phoneNumberFormRef.current?.submitForm();
+			setCurrentStep(3);
 			return;
 		}
-		if (currentStep === 3) {
-			documentsRef.current?.submitForm();
-			setCurrentStep(4);
-			return;
-		}
+		// if (currentStep === 3) {
+		// 	documentsRef.current?.submitForm();
+		// 	setCurrentStep(4);
+		// 	return;
+		// }
 		setCurrentStep(currentStep + 1);
 	};
 
@@ -109,13 +111,13 @@ const VerificationViews = () => {
 							setIsTokenVerified={setIsTokenVerified}
 						/>
 					)}
-					{currentStep === 3 && (
+					{/* {currentStep === 3 && (
 						<IdVerification
 							ref={documentsRef}
 							onSubmitSuccess={() => setCurrentStep(currentStep + 1)}
 						/>
-					)}
-					{currentStep === 4 && <FaceMatch />}
+					)} */}
+					{currentStep === 3 && <FaceMatch />}
 				</div>
 				<div className={styles.container__main_content__right_side}>
 					<div className={styles.img_container}>

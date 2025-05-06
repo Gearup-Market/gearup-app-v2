@@ -53,7 +53,7 @@ const PersonalIdentification = forwardRef<
 	const initialValues: PersonalIdentificationFormValues = {
 		firstName: verificationState.firstName,
 		lastName: verificationState.lastName,
-		bvn: verificationState.bvn,
+		nin: verificationState.nin,
 		// phoneNumber: verificationState.phoneNumber,
 		birthday: verificationState.birthday,
 		country: verificationState.country,
@@ -68,7 +68,7 @@ const PersonalIdentification = forwardRef<
 	const validationSchema = Yup.object().shape({
 		firstName: Yup.string().required("First name is required"),
 		lastName: Yup.string().required("Last name is required"),
-		bvn: Yup.string().required("Bvn is required").length(11),
+		nin: Yup.string().required("NIN is required").length(11),
 		birthDate: Yup.string().optional(),
 		birthMonth: Yup.string().optional(),
 		birthYear: Yup.string().optional(),
@@ -181,12 +181,12 @@ const PersonalIdentification = forwardRef<
 						<Form>
 							<div className={styles.container__form_container__form}>
 								<div className={styles.field}>
-									<Field name="bvn">
+									<Field name="nin">
 										{({ field }: FieldProps) => (
 											<InputField
 												{...field}
-												label="BVN"
-												placeholder="Enter BVN"
+												label="NIN"
+												placeholder="Enter NIN"
 												className={styles.input}
 												onChange={e => {
 													handleFormChange(
@@ -195,14 +195,14 @@ const PersonalIdentification = forwardRef<
 													);
 													field.onChange(e);
 												}}
-												error={(touched.bvn && errors.bvn) || ""}
+												error={(touched.nin && errors.nin) || ""}
 											/>
 										)}
 									</Field>
 								</div>
 								<RevealDetails
-									question="Why do we need your BVN?"
-									answer="We need your BVN in order to verify your identity. Your BVN does not give us access to your bank accounts or transactions"
+									question="Why do we need your NIN?"
+									answer="We need your NIN in order to verify your identity."
 								/>
 								<div className={styles.field}>
 									<Field name="firstName">

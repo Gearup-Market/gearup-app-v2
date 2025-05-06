@@ -5,7 +5,7 @@ import { string } from "yup";
 export type VerificationState = Omit<iPostRegisterKycReq, "userId" | "documentType"> & {
 	userId?: string;
 	documentNo?: string;
-	documentType?: iPostSubmitKycReq["documentType"];
+	// documentType?: iPostSubmitKycReq["documentType"];
 	selfie?: string;
 	birthDate: string;
 	birthMonth: string;
@@ -26,7 +26,7 @@ const initialState: VerificationState = {
 	firstName: "",
 	lastName: "",
 	birthday: "",
-	bvn: "",
+	nin: "",
 	country: "",
 	address: "",
 	postalCode: "",
@@ -36,7 +36,7 @@ const initialState: VerificationState = {
 	birthYear: "",
 	phoneNumber: "",
 	documentNo: "",
-	documentType: "intl_passport",
+	// documentType: "intl_passport",
 	documentPhoto: "",
 	selfie: "",
 	resendCodeCountdown: 60,

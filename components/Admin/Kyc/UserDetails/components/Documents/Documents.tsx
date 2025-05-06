@@ -12,16 +12,16 @@ const identificationOptions: Option[] = [
 ];
 
 const Documents = ({ data, kycData }: { data: any; kycData?: Kyc }) => {
-	const documentType = identificationOptions.find(
-		doc => doc.value === kycData?.documentType
-	)?.label;
+	// const documentType = identificationOptions.find(
+	// 	doc => doc.value === kycData?.documentType
+	// )?.label;
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__summary_container}>
 				<h3 className={styles.title}>Documents</h3>
 				<div className={styles.summary_item}>
 					<h4>ID type</h4>
-					<p>{documentType || "not submitted"}</p>
+					<p>ID</p>
 				</div>
 				<div className={styles.summary_item}>
 					<h4>ID number</h4>
@@ -45,8 +45,8 @@ const Documents = ({ data, kycData }: { data: any; kycData?: Kyc }) => {
 					)}
 				</div>
 				<div className={styles.summary_item}>
-					<h4>BVN</h4>
-					<p>{kycData?.bvn || "not submitted"}</p>
+					<h4>NIN</h4>
+					<p>{kycData?.nin || "not submitted"}</p>
 				</div>
 				<div className={styles.summary_item}>
 					<h4>Phone number</h4>
