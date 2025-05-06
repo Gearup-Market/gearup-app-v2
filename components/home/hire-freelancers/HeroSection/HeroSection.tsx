@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './HeroSection.module.scss'
-import { SearchField } from '@/shared'
+import { BackNavigation, SearchField } from '@/shared'
 import DoubleSearchField from '../DoubleSearchField/DoubleSearchField'
 
 interface Props {
@@ -11,6 +11,14 @@ interface Props {
 const HeroSection = ({ category, description }: Props) => {
     return (
         <section className={styles.container}>
+            <div className={styles.content}>
+
+                {
+                    category &&
+                    <span className={styles.back_navigation}>
+                        <BackNavigation />
+                    </span>
+                }
             <div className={styles.text}>
                 <h1>
                     {
@@ -30,6 +38,7 @@ const HeroSection = ({ category, description }: Props) => {
                 :
                 <DoubleSearchField/>
             }
+            </div>
         </section>
     )
 }

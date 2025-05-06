@@ -92,7 +92,7 @@ const UserDetails = ({ userId }: Props) => {
 			<BackNavigation />
 			<div className={styles.details_body}>
 				<div>
-					<UserDetailsProfile user={user} />
+					<UserDetailsProfile user={user} isFreelancer={isFreelancerProfile} />
 				</div>
 				<div>
 					{!!user?.about && !isFreelancerProfile && (

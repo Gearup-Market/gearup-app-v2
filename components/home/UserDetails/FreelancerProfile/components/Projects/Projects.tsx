@@ -1,10 +1,11 @@
 'use client'
-import React from "react";
+import React, { useState } from "react";
 import styles from './Projects.module.scss';
 import Image from 'next/image';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { Icon } from "@/shared";
+import { ProjectDetails } from "./components";
 
 const projects = [
   {
@@ -49,12 +50,17 @@ const projects = [
   },
 ];
 
+const responsive = {
+  superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 5 },
+  desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4 },
+  tablet: { breakpoint: { max: 1024, min: 464 }, items: 2 },
+  mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
+};
 const Projects = () => {
-  const responsive = {
-    superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 5 },
-    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4 },
-    tablet: { breakpoint: { max: 1024, min: 464 }, items: 2 },
-    mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
+  const [activeProject, setActiveProject] = useState<number | null>(null);
+
+  const handleProjectClick = (id: number) => {
+    setActiveProject(id);
   };
 
   return (
@@ -64,14 +70,17 @@ const Projects = () => {
         swipeable={true}
         draggable={true}
         showDots={false}
-        ssr={false}
+        ssr={true}
+        rewind={false}
         infinite={false}
         autoPlay={false}
+        slidesToSlide={1}
         keyBoardControl={true}
         transitionDuration={500}
         containerClass="carousel-container"
-        removeArrowOnDeviceType={["tablet", "mobile"]}
         itemClass="carousel-item-padding-40-px"
+        centerMode={true}
+        focusOnSelect={true}
       >
         {projects.map((project) => (
           <ListItem
@@ -79,10 +88,12 @@ const Projects = () => {
             title={project.title}
             id={project.id}
             image={project.image}
+            onClick={() => handleProjectClick(project.id)}
           />
         )
         )}
       </Carousel>
+      <ProjectDetails projectId={activeProject} onClose={() => setActiveProject(null)} />
     </div>
   );
 };
@@ -93,14 +104,14 @@ const ListItem = ({
   title,
   id,
   image,
+  onClick,
 }: {
   title: string;
   id: number;
   image: string;
+    onClick: () => void;
 }) => {
-  const handleProjectClick = () => {
-    console.log(`Project clicked: ${title}, id: ${id}`);
-  };
+
 
   return (
     <div className={styles.project}>
@@ -110,9 +121,8 @@ const ListItem = ({
         </div>
         <div className={styles.title_container}>
           <h3 className={styles.title}>{title}</h3>
-          <button onClick={handleProjectClick}>
-
-          <Icon src="/svgs/red-arrow-right.svg" />
+          <button onClick={onClick}>
+            <Icon src="/svgs/red-arrow-right.svg" className={styles.red_arrow} />
           </button>
         </div>
       </div>

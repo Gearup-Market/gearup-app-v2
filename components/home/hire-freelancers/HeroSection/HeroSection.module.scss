@@ -4,14 +4,28 @@
     min-height: 43.9rem;
     background-color: #000;
     width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 3.2rem;
+
     padding-top: 16rem !important;
     padding-bottom: 7.7rem;
     height: 60vh;
+    
+    .content{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 3.2rem;
+        height: 100%;
+
+    }
+
+    .back_navigation{
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: white;
+    }
 
     .text {
 
@@ -42,6 +56,10 @@
             p {
                 font-size: 1.4rem;
             }
+        }
+
+        .back_navigation{
+            top: -2rem;
         }
     }
 }

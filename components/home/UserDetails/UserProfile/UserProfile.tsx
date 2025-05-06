@@ -4,13 +4,13 @@ import { Button, CustomImage, Ratings } from "@/shared";
 import { VerifyIcon } from "@/shared/svgs/dashboard";
 import { UserUpdateResp } from "@/app/api/hooks/users/types";
 import { useAppSelector } from "@/store/configureStore";
-import Link from "next/link";
 
 interface Props {
 	user?: UserUpdateResp;
+	isFreelancer?: boolean
 }
 
-const UserDetailsProfile = ({ user }: Props) => {
+const UserDetailsProfile = ({ user, isFreelancer }: Props) => {
 	const { kyc } = useAppSelector(state => state.user);
 	return (
 		<div className={styles.container}>
@@ -38,6 +38,12 @@ const UserDetailsProfile = ({ user }: Props) => {
 					<Ratings rating={user?.rating} showRatingNumber={true} readOnly />
 				</div>
 				<p>{user?.totalDeals} deals</p>
+				{
+					isFreelancer &&
+					<Button buttonType="primary">
+						Hire me
+					</Button>
+				}
 				{/* {user?.userId !== userId && (
 					<Link href={`/user/messages`}>
 						<Button buttonType="secondary" iconPrefix="/svgs/send.svg">

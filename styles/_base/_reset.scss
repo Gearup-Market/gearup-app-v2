@@ -165,8 +165,13 @@ input[type="number"] {
 
 .react-multiple-carousel__arrow{
 	background: #f76039 !important;
+	z-index: 2 !important;
 }
 
 .react-multi-carousel-track{
 	gap: 2.4rem;
+}
+
+.carousel-container{
+	flex: 0;
 }

@@ -1,0 +1,59 @@
+@import "@/styles/imports";
+
+.container {
+    max-width: 62.8rem;
+    width: 100%;
+
+    .project_title{
+        color: #1B1E21;
+        font-weight: 700;
+        font-size: 1.6rem;
+        margin-top: 1.2rem;
+    }
+
+    .carousel_container{
+        margin-top: 1.5rem;
+    }
+
+    .image_container{
+        height: 20.5rem;
+        width: 100%;
+        position: relative;
+        display: block;
+        
+        img{
+            border-radius: 0.8rem;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .details_body{
+        margin-top: 1.6rem;
+        
+        .background {
+            background-color: #FBFBFD;
+            padding: 1.6rem;
+            border-radius: 0.8rem;
+            margin-top: 1.6rem;
+        }
+
+        h3{
+            color: #A3A7AB;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        p{
+            color: #A3A7AB;
+            font-size: 1.4rem;
+
+            span{
+                color: #F76039;
+                font-weight: 700;
+            }
+        }
+    }
+}

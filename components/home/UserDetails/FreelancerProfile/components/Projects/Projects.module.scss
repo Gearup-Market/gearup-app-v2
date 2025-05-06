@@ -21,23 +21,32 @@
                 display: block;
             }
 
-            .title_container{
+            .title_container {
                 display: flex;
                 justify-content: space-between;
                 gap: 1.6rem;
                 margin-top: 1.2rem;
 
-                .title{
+                .title {
                     color: $col-high-emphasis-text;
                     font-size: 1.6rem;
                     font-weight: 700;
                 }
 
-                button{
+                button {
                     background: none;
                     border: none;
+                    padding-right: 0;
+
+                    .red_arrow{
+                        padding-right: 0;
+                        margin-right: 0;
+                    }
                 }
             }
         }
+    }
+    @include screenMax("mobile") {
+        max-width: 40rem;
     }
 }

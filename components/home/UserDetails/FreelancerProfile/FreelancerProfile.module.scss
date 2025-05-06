@@ -18,6 +18,9 @@
         display: flex;
         gap: 2.4rem;
         margin-bottom: 1.6rem;
+        overflow: auto;
+
+        @include noScrollBar;
 
         .header_item {
             color: $col-grey-light;
