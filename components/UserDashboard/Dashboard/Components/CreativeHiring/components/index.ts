@@ -1,0 +1,1 @@
+export { default as GetHiredAlert } from './GetHiredAlert/GetHiredAlert'

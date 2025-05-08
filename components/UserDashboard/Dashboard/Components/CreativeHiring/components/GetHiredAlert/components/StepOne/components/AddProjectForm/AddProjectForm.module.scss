@@ -1,0 +1,29 @@
+@import "@/styles/imports";
+
+.container {
+    margin-top: 1.6rem;
+    background-color: #FBFBFD;
+    border-radius: 1,6rem;
+    padding: 1.6rem;
+    
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.6rem;
+
+        h2 {
+            color: #1B1E21;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+        }
+    }
+}

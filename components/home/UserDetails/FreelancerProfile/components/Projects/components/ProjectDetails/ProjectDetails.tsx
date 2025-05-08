@@ -57,7 +57,7 @@ const ProjectDetails = ({ projectId, onClose }: Props) => {
                         >
                             {projects.map((project) => (
                                 <div className={styles.image_container} key={project.id}>
-                                    <Image src={project.image} alt={"project-media"} height={241} width={264} />
+                                    <Image src={project.image} alt={"project-media"} height={241} width={280} />
                                 </div>
                             )
                             )}

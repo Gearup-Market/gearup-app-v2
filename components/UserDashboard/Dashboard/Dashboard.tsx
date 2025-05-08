@@ -1,16 +1,20 @@
-"use client";
-
-import React from "react";
+'use client'
+import { useState } from 'react'
 import styles from "./Dashboard.module.scss";
-import { CardsSection, DashboardHeader, RecentDeals, TotalEarnings } from "./Components";
+import { CardsSection, CreativeHiring, DashboardHeader, RecentDeals, TotalEarnings } from "./Components";
 import GetStarted from "../GetStarted/GetStarted";
 import { useAppSelector } from "@/store/configureStore";
 
 const Dashboard = () => {
 	const verification = useAppSelector(s => s.verification);
+	const [showGetHiredAlert, setShowGetHiredAlert] = useState(true)
 	return (
 		<div className={styles.container}>
 			<DashboardHeader />
+			{
+				showGetHiredAlert &&
+				<CreativeHiring onClose={() => setShowGetHiredAlert(false)} />
+			}
 			{!verification.isApproved && (
 				<GetStarted
 					description="We want to keep our community safe, you’ll need to complete the verification process to rent or rent out"
