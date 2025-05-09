@@ -20,7 +20,7 @@ interface Props {
 }
 
 const Listings = ({ showTitle, userid }: Props) => {
-	useListings();
+	// useListings();
 	const [activeFilterId, setActiveFilterId] = useState<number | string>(1);
 	const [activeSubFilterId, setActiveSubFilterId] = useState<number | string>(1);
 	const [activeFilter, setActiveFilter] = useState<Type>(Type.Rent);
