@@ -50,6 +50,7 @@ import LocationAutoComplete from "./locationAutoComplete/LocationAutoComplete";
 import BankSelect from "./selects/bankSelect/BankSelect";
 import HourSelect from "./selects/hourSelect/HourSelect";
 import SearchField from "./SearchField/SearchField";
+import FileUploader from './FileUploader/FileUploader';
 
 export {
 	HourSelect,
@@ -104,4 +105,5 @@ export {
 	FavoriteStar,
 	NoSearchResult,
 	SearchField,
+	FileUploader,
 };

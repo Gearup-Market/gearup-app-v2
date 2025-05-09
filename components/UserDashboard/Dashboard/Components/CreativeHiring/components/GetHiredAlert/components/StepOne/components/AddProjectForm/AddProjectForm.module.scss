@@ -5,6 +5,7 @@
     background-color: #FBFBFD;
     border-radius: 1,6rem;
     padding: 1.6rem;
+
     
     .header {
         display: flex;
@@ -25,5 +26,12 @@
             padding: 0;
             cursor: pointer;
         }
+    }
+
+    .form{
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        width: 100%;
     }
 }
