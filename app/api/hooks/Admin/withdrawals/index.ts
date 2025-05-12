@@ -19,7 +19,8 @@ export const useGetAllWithdrawals = (
 ) =>
 	useQuery<IGetAllWithdraw, IGetErr>({
 		queryKey: ["getAllWithdrawals"],
-		queryFn: async () => (await api.get(`${API_URL.adminGetAllWithdraws}`)).data,
+		queryFn: async () =>
+			(await api.get(`${API_URL.adminGetAllWithdraws}?limit=100`)).data,
 		...options,
 		refetchOnMount: true
 	});

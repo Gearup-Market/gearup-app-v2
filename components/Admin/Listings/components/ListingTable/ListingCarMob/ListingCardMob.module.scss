@@ -1,122 +1,114 @@
-@import '@/styles/imports.scss';
+@import "@/styles/imports.scss";
 
-.container{
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-direction: column;
-    width: 100%;
-   
-  
+.container {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-direction: column;
+	width: 100%;
 
-    &__header{
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        background: $col-bg;
-        padding: 1rem;
-        border-bottom: 1px solid $col-grey-300;
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		background: $col-bg;
+		padding: 1rem;
+		border-bottom: 1px solid $col-grey-300;
 
-        &__left{
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+		&__left {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
 
-            img{
-                width: 4.8rem;
-                height: 4.8rem;
-                border-radius: 4px;
-            }
+			img {
+				width: 4.8rem;
+				height: 4.8rem;
+				border-radius: 4px;
+			}
 
-            &__name_amount{
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                gap: 1rem;
-                height: 100%;
-                
-                .name{
-                    font-size: 1.4rem;
-                    font-weight: 700;
-                    color: $col-grey-1;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-            }
-        }
+			&__name_amount {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				gap: 1rem;
+				height: 100%;
 
-        &__header:not(:last-child){
-            border-bottom: 1px solid $col-grey-300;
-        
-        }
+				.name {
+					font-size: 1.4rem;
+					font-weight: 700;
+					color: $col-grey-1;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+			}
+		}
 
-        &__icon{
-            cursor: pointer;
-            &[data-rotate="true"]{
-                transform: rotate(180deg);
-            }
-        }
+		&__header:not(:last-child) {
+			border-bottom: 1px solid $col-grey-300;
+		}
 
+		&__icon {
+			cursor: pointer;
+			&[data-rotate="true"] {
+				transform: rotate(180deg);
+			}
+		}
+	}
 
-    }
+	&__details {
+		width: 100%;
+		padding: 1rem;
+		background-color: $col-white;
+		border-bottom: 1px solid $col-grey-300;
 
-    &__details{
-        width: 100%;
-        padding: 1rem;
-        background-color: $col-white;
-        border-bottom: 1px solid $col-grey-300;
-        
+		&__detail_container {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding: 1rem;
 
-        &__detail_container{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 1rem;
-        
-        .key{
-        font-size: 1.2rem;
-        font-weight: 400;
-        color: $col-grey-1;
-    }
-        
-        .value{
-            font-size: 1.5rem;
-            font-weight: 500;
-            color: $col-grey-1;
+			.key {
+				font-size: 1.2rem;
+				font-weight: 400;
+				color: $col-grey-1;
+			}
 
-            &[data-status="completed"]{
-                background-color: #ECFDF3;
-                color: #027A48;
-            }
-            &[data-status="ongoing"]{
-                background-color:#F0F9FF;
-                color:#026AA2;
-            }
-            &[data-status="declined"]{
-                background-color: #FEF3F2;
-                color: #B42318;
-            }
-        }
+			.value {
+				font-size: 1.5rem;
+				font-weight: 500;
+				color: $col-grey-1;
 
-        .rental{
-            background-color: #F2F4F7;
-            color: #344054;
-        
+				&[data-status="completed"] {
+					background-color: #ecfdf3;
+					color: #027a48;
+				}
+				&[data-status="ongoing"] {
+					background-color: #f0f9ff;
+					color: #026aa2;
+				}
+				&[data-status="declined"] {
+					background-color: #fef3f2;
+					color: #b42318;
+				}
+			}
 
-        }
-}
+			.rental {
+				background-color: #f2f4f7;
+				color: #344054;
+			}
+		}
 
-&__btn_container{
-    width: 100%;
-    padding: 0 1rem;
+		&__btn_container {
+			width: 100%;
+			padding: 0 1rem;
 
-    .btn{
-        width: 100%;
-        margin-top: 1rem;
-        padding: 1.6rem;
-    }
-}
-}
+			.btn {
+				width: 100%;
+				margin-top: 1rem;
+				padding: 1.6rem;
+			}
+		}
+	}
 }

@@ -25,6 +25,7 @@ const WithdrawalRequests = () => {
 	const [rejectReason, setRejectReason] = useState<string>("");
 	const [rejectedItemId, setRejectedItemId] = useState<string>("");
 	const [showModal, setShowModal] = useState<boolean>(false);
+	const [isRequestLoading, setIsRequestLoading] = useState<boolean>(false);
 	const router = useRouter();
 
 	const pendingWithdrawal = useMemo(() => {
@@ -32,7 +33,7 @@ const WithdrawalRequests = () => {
 		return withdrawalHistory.data.filter(
 			withdrawal => withdrawal.status === "pending"
 		);
-	}, [isLoading, withdrawalHistory]);
+	}, [withdrawalHistory]);
 
 	const currentTableData = useMemo(() => {
 		const firstPageIndex = (currentPage - 1) * pageSize;
@@ -53,6 +54,7 @@ const WithdrawalRequests = () => {
 				...(rejectReason && { reason: rejectReason }),
 				id
 			});
+			setIsRequestLoading(true);
 			if (res?.data) {
 				toast.success(`The withdrawal request has been ${status} successfully`);
 				setRejectedItemId("");
@@ -61,6 +63,8 @@ const WithdrawalRequests = () => {
 			}
 		} catch (error: any) {
 			toast.error(error.response.data.message || "Withdrawal Response failed");
+		} finally {
+			setIsRequestLoading(false);
 		}
 	};
 
@@ -109,7 +113,7 @@ const WithdrawalRequests = () => {
 								<Button
 									buttonType="transparent"
 									className={styles.decline_text}
-									disabled={isPending}
+									disabled={isRequestLoading}
 									onClick={() => {
 										setShowModal(true);
 										setRejectedItemId(item._id);
@@ -123,7 +127,7 @@ const WithdrawalRequests = () => {
 								</Button>
 								<Button
 									buttonType="transparent"
-									disabled={isPending}
+									disabled={isRequestLoading}
 									className={styles.accept_text}
 									onClick={() => handleSubmit("approved", item._id)}
 								>
@@ -163,7 +167,7 @@ const WithdrawalRequests = () => {
 					/>
 					<Button
 						className={styles.button}
-						disabled={!rejectReason || isPending}
+						disabled={!rejectReason || isRequestLoading}
 						onClick={() => handleSubmit("rejected", rejectedItemId)}
 					>
 						Confirm
