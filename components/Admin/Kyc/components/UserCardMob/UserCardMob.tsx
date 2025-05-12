@@ -14,12 +14,16 @@ interface Props {
 const UserCardMob = ({ item, url, lastEle, ind }: Props) => {
 	return (
 		<MobileCard
-			mainHeaderText={item.userName}
-			subHeaderText={item.email}
+			mainHeaderText={`${item.firstName} ${item.lastName}`}
+			// subHeaderText={item.email}
 			mainHeaderImage={item.avatar || "/svgs/user.svg"}
 			lastEle={lastEle}
 			ind={ind}
 		>
+			<div className={styles.container__details__detail_container}>
+				<p className={styles.key}>Email</p>
+				<p className={styles.value}>{item.userId.email}</p>
+			</div>
 			<div className={styles.container__details__detail_container}>
 				<p className={styles.key}>Joined date</p>
 				<p className={styles.value}>{item.createdAt.split("T")[0]}</p>
@@ -28,14 +32,14 @@ const UserCardMob = ({ item, url, lastEle, ind }: Props) => {
 				<p className={styles.key}>Account Status</p>
 				<p
 					className={`${styles.value} ${styles.status}`}
-					data-status={item.account_status?.toLowerCase()}
+					data-status={item.isActive ? "Active" : "Inactive"}
 				>
-					{item.account_status}
+					{item.isActive ? "Active" : "Inactive"}
 				</p>
 			</div>
 			<div className={styles.container__details__btn_container}>
 				<Link
-					href={`/admin/${url}/${item.userId}`}
+					href={`/admin/${url}/${item.userId._id}`}
 					className={styles.container__action_btn}
 				>
 					<Button buttonType="secondary" className={styles.btn}>

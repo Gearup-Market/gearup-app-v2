@@ -62,8 +62,6 @@ const ListingTable = ({
 	// if the userId is present in the url, it means that this table is currently been rendered in the user details page and therefore we need to show the listings for this particular user
 	const listings = !!userId ? userListing || null : data || null;
 
-	console.log(listings);
-
 	const mappedListings = useMemo(() => {
 		return listings?.data.map(
 			({

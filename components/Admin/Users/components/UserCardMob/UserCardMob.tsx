@@ -15,11 +15,15 @@ const UserCardMob = ({ item, url, lastEle, ind }: Props) => {
 	return (
 		<MobileCard
 			mainHeaderText={item.userName}
-			subHeaderText={item.email}
+			// subHeaderText={item.email}
 			mainHeaderImage={item.avatar || "/svgs/user.svg"}
 			lastEle={lastEle}
 			ind={ind}
 		>
+			<div className={styles.container__details__detail_container}>
+				<p className={styles.key}>Email</p>
+				<p className={styles.value}>{item.email}</p>
+			</div>
 			<div className={styles.container__details__detail_container}>
 				<p className={styles.key}>Joined date</p>
 				<p className={styles.value}>{item.createdAt.split("T")[0]}</p>
@@ -28,9 +32,9 @@ const UserCardMob = ({ item, url, lastEle, ind }: Props) => {
 				<p className={styles.key}>Account Status</p>
 				<p
 					className={`${styles.value} ${styles.status}`}
-					data-status={item.account_status?.toLowerCase()}
+					data-status={item.isActive ? "Active" : "Inactive"}
 				>
-					{item.account_status}
+					{item.isActive ? "Active" : "Inactive"}
 				</p>
 			</div>
 			<div className={styles.container__details__btn_container}>
