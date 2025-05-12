@@ -63,7 +63,7 @@ const FileUploader: React.FC<FileUploadProps> = ({
                         <video
                             src={previewUrl}
                             controls
-                            className={styles.preview}
+                            className={`${styles.preview} ${styles.video_preview}`}
                         />
                     ) : (
                         <img

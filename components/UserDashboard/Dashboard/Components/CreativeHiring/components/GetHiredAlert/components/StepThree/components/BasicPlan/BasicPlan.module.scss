@@ -1,0 +1,21 @@
+@import "@/styles/imports";
+
+.container{
+    margin-bottom: 2.4rem;
+    overflow: scroll;
+    
+
+    .new_basic_plan_btn{
+        width: 100%;
+        color: $col-orange;
+        border: 1px solid $col-border;
+        border-radius: 8px;
+        justify-content: flex-start;
+        padding: 1.6rem;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+    }
+
+}

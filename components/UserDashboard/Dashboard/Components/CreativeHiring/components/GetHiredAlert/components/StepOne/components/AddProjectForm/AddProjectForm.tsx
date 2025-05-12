@@ -7,9 +7,10 @@ import { CustomTextEditor, FileUploader, Icon, InputField } from '@/shared'
 interface Props {
     projectNumber: number
     onDelete: () => void
+    isInstagramType: boolean
 }
 
-const AddProjectForm = ({ projectNumber, onDelete }: Props) => {
+const AddProjectForm = ({ projectNumber, onDelete, isInstagramType }: Props) => {
 
     const handleFileUpload = (files: File) => {
         console.log('Uploaded files:', files);
@@ -27,7 +28,7 @@ const AddProjectForm = ({ projectNumber, onDelete }: Props) => {
                 }
             </div>
             <div className={styles.form}>
-                <InputField label="Project title" />
+                <InputField label="Project title" placeholder="Enter project title" />
                 <CustomTextEditor
                     label="Description"
                     value={""}
@@ -37,7 +38,13 @@ const AddProjectForm = ({ projectNumber, onDelete }: Props) => {
                     placeholder="Type here..."
                 />
                 <FileUploader onFileSelect={handleFileUpload} label="Cover image" />
-                <FileUploader onFileSelect={handleFileUpload} label="Upload images/videos" text="1600 x 1200 (4:3) recommended, up to 10mb each" accept="image/*,video/*" />
+                {
+                    !isInstagramType &&
+                    <FileUploader onFileSelect={handleFileUpload} label="Upload images/videos" text="1600 x 1200 (4:3) recommended, up to 10mb each" accept="image/*,video/*" />
+                }
+                {
+                    isInstagramType && <InputField label="Instagram URL" placeholder="Enter URL" />
+                }
             </div>
         </div>
     )

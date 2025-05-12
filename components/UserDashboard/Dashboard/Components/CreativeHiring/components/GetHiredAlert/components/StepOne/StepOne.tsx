@@ -40,11 +40,10 @@ const StepOne = () => {
             <div className={styles.form_section}>
                 {
                     Array.from({ length: noOfProjects }).map((_, index) => (
-                        <AddProjectForm key={index + 1} projectNumber={index + 1} onDelete={()=>handleDeleteProject(index+1)} />
+                        <AddProjectForm key={index + 1} projectNumber={index + 1} onDelete={() => handleDeleteProject(index + 1)} isInstagramType={activeType === AddTypeEnum.AddFromInstagram} />
                     ))
                 }
                 <Button onClick={handleAddNewProject} className={styles.add_project_btn} buttonType="transparent" iconPrefix="/svgs/circular-plus-icon.svg">Add another project</Button>
-                <Button className={styles.save_proceed_btn}>Save & proceed</Button>
             </div>
         </div>
     )

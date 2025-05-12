@@ -3,9 +3,15 @@
 .container {
     max-width: 62.8rem;
     width: 100%;
+    padding-bottom: 4rem;
     
     .step_count{
         color: #4B525A;
         font-size: 1.2rem;
+    }
+
+    .save_proceed_btn{
+        width: 100%;
+        margin-top: 1.6rem;
     }
 }

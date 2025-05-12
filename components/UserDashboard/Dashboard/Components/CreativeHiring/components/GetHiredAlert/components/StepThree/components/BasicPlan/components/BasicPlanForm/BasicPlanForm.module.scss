@@ -1,0 +1,89 @@
+@import "@/styles/imports";
+
+.wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.6rem;
+    margin-top: 1.6rem;
+
+    button:not(.save_btn) {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+    }      
+
+    .container {
+        border: 1px solid $col-border;
+        border-radius: 16px;
+        padding: 2.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 2.4rem;
+        flex: 1;
+        width: 100%;
+        transition: all 0.3s ease;
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+
+            h3 {
+                color: #1B1E21;
+                font-weight: 700;
+                font-size: 1.4rem;
+            }
+
+            button {
+                transition: all 0.3s ease;
+
+                &[data-active="true"] {
+                    transform: rotate(180deg);
+                }
+            }
+
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+            width: 100%;
+            opacity: 1;
+
+            .pricing_container{
+                display: flex;
+                flex-direction: column;
+                gap: 1.6rem;
+                border-top: 1px solid $col-border;
+                padding-top: 2.4rem;
+
+                .price_header{
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    h2{
+                        color: #1B1E21;
+                        font-size: 2rem;
+                        font-weight: 700;
+                    }
+
+                    p{
+                        color: #6B788E;
+                        font-size: 1.4rem;
+                    }
+
+                }
+            }
+
+            .save_btn{
+                align-self: end;
+            }
+        }
+
+    }
+}

@@ -1,1 +1,34 @@
 @import "@/styles/imports";
+
+.container{
+    
+    .header{
+        h2{
+            font-size: 2.4rem;
+            color: #1B1E21;
+            font-weight: 900;
+            margin-top: 0.5rem;
+        }
+
+        p{
+            color: #4B525A;
+            font-size: 1.4rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1.6rem;
+        }
+    }
+
+    .type_lists{
+        display: flex;
+        gap: 2.4rem;
+        align-items: center;
+        margin-bottom: 1.6rem;
+
+        .list{
+            display: flex;
+            align-items: center;
+        }
+    }
+
+
+}
