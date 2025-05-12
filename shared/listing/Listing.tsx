@@ -92,7 +92,8 @@ const Listing = ({ props, className, actionType }: Props) => {
 					src={listingPhotos[0]}
 					alt={productName || ""}
 					fill
-					sizes="100vw"
+					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+					style={{ objectFit: "cover", objectPosition: "center" }}
 				/>
 				<div className={styles.button_container} data-active={forSale}>
 					{forSale && <Button className={styles.button}>Buy</Button>}

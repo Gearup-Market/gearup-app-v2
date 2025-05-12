@@ -215,11 +215,15 @@ const WalletTransactionsTable = () => {
 					</div>
 
 					<MobileCardContainer>
-						{rows.map((item, ind) => (
+						{withdrawalHistory?.data.map((item, ind) => (
 							<WalletTransactionCardMob
-								key={item.id}
+								key={item.withdrawalId}
 								item={item}
-								lastEle={ind + 1 === rows.length ? true : false}
+								lastEle={
+									ind + 1 === withdrawalHistory?.data.length
+										? true
+										: false
+								}
 								ind={ind}
 							/>
 						))}
@@ -229,7 +233,7 @@ const WalletTransactionsTable = () => {
 						currentPage={1}
 						onPageChange={setPage}
 						totalCount={rows.length}
-						pageSize={5}
+						pageSize={100}
 					/>
 				</>
 			)}

@@ -63,55 +63,44 @@ const ListingTable = ({
 	const listings = !!userId ? userListing || null : data || null;
 
 	const mappedListings = useMemo(() => {
-		return listings?.data
-			.map(
-				({
-					_id,
-					productName,
-					offer,
-					createdAt,
-					listingType,
+		return listings?.data.map(
+			({
+				_id,
+				productName,
+				offer,
+				createdAt,
+				listingType,
+				status,
+				listingPhotos,
+				category,
+				user
+			}) => {
+				const type = listingType === "both" ? "rent | sell" : listingType;
+				const price =
+					type === "rent"
+						? offer?.forRent?.rates.length
+							? offer?.forRent?.rates[0].price
+							: 0
+						: offer?.forSell?.pricing;
+				const image = listingPhotos?.[0] || null;
+				return {
+					id: _id,
+					title: productName,
+					price,
+					transaction_date: createdAt,
+					type,
 					status,
-					listingPhotos,
-					category,
+					image,
+					availability: status === "available" ? "active" : "inactive",
+					date: createdAt,
+					sold_count: 0,
+					revenue: 0,
+					category: category?.name?.toLowerCase() || null,
 					user
-				}) => {
-					const type = listingType === "both" ? "rent | sell" : listingType;
-					const price =
-						type === "rent"
-							? offer?.forRent?.rates.length
-								? offer?.forRent?.rates[0].price
-								: 0
-							: offer?.forSell?.pricing;
-					const image = listingPhotos?.[0] || null;
-					return {
-						id: _id,
-						title: productName,
-						price,
-						transaction_date: createdAt,
-						type,
-						status,
-						image,
-						availability: status === "available" ? "active" : "inactive",
-						date: createdAt,
-						sold_count: 0,
-						revenue: 0,
-						category: category?.name?.toLowerCase() || null,
-						user
-					};
-				}
-			)
-			.filter(l => {
-				if (!l.type.includes(activeFilter)) return false;
-				/* if (
-					activeSubFilter &&
-					activeSubFilter !== l.category &&
-					activeSubFilterId !== 1
-				)
-					return false; */
-				return true;
-			});
-	}, [listings, activeFilter, activeSubFilterId, filters]);
+				};
+			}
+		);
+	}, [listings]);
 
 	const sharedColDef: GridColDef = {
 		field: "",
