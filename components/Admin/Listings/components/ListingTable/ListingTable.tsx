@@ -161,7 +161,9 @@ const ListingTable = ({
 				refetch();
 				// window.location.reload();
 			}
-		} catch (error) {}
+		} catch (error: any) {
+			toast.error(error.response.data.message);
+		}
 	};
 
 	const columns: GridColDef[] = [

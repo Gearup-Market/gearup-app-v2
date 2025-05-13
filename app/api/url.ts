@@ -83,6 +83,7 @@ export const API_URL = {
 	updateAdminUser: "/admin/user/update",
 	adminGetAllWithdraws: "/withdrawals/admin",
 	adminGetAllListings: "/admin/listing/all",
+	adminListings: "/admin/listing",
 	verifyAdminToken: "/admin/auth/authenticate",
 	courses: "/courses",
 	wishlists: "/wishlist",

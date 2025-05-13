@@ -234,7 +234,9 @@ const ListingTable = ({ activeFilter }: Props) => {
 				toast.success("Status updated");
 				refetch();
 			}
-		} catch (error) {}
+		} catch (error: any) {
+			toast.error(error.response.data.message);
+		}
 	};
 
 	const columns: GridColDef[] = [

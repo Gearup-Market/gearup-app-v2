@@ -11,7 +11,10 @@ import { useSingleListing } from "@/hooks/useListings";
 import { useAppSelector } from "@/store/configureStore";
 import { useParams } from "next/navigation";
 import { useFetchUserDetailsById } from "@/hooks/useUsers";
-import { usePostChangeListingStatus } from "@/app/api/hooks/listings";
+import {
+	usePostApproveListing,
+	usePostDeclineListing
+} from "@/app/api/hooks/Admin/listings";
 import toast from "react-hot-toast";
 
 const ListingsDetails = () => {
@@ -22,26 +25,35 @@ const ListingsDetails = () => {
 	const { fetchingUser, user } = useFetchUserDetailsById(
 		currentListing?.user._id ?? ""
 	);
-	const { mutateAsync: postChangeListingStatus, isPending: isPendingUpdate } =
-		usePostChangeListingStatus();
 
-	const onToggleHideListing = async (
-		listingId: string,
-		status: string,
-		userId: string
-	) => {
+	const { mutateAsync: postApproveListing, isPending: isPendingApprove } =
+		usePostApproveListing();
+
+	const { mutateAsync: postDeclineListing, isPending: isPendingDecline } =
+		usePostDeclineListing();
+
+	const onToggleHideListing = async (type: "approve" | "decline") => {
 		try {
-			const res = await postChangeListingStatus({
-				status: status === "available" ? "unavailable" : "available",
-				userId,
-				listingId
-			});
-			if (res.data) {
-				toast.success("Status updated");
-				refetch();
-				// window.location.reload();
+			if (type === "approve") {
+				const res = await postApproveListing({
+					listingId: currentListing?._id
+				});
+				if (res) {
+					toast.success("Listing approved");
+					refetch();
+				}
+			} else {
+				const res = await postDeclineListing({
+					listingId: currentListing?._id
+				});
+				if (res) {
+					toast.success("Listing declined");
+					refetch();
+				}
 			}
-		} catch (error) {}
+		} catch (error: any) {
+			toast.error(error.response.data.message);
+		}
 	};
 
 	if (!currentListing && isFetching) return <PageLoader />;
@@ -49,12 +61,27 @@ const ListingsDetails = () => {
 
 	return (
 		<div className={styles.container}>
-			<BackNavigation />
+			<div className={styles.header_container}>
+				<BackNavigation />
+				<HeaderSubText title={currentListing?.status} variant="normal" />
+			</div>
 			<div className={styles.header_container}>
 				<HeaderSubText title="Review listing" variant="main" />
 				<div className={styles.btn_container}>
-					<Button className={styles.decline_btn}>Decline</Button>
-					<Button className={styles.accept_btn}>Approve</Button>
+					<Button
+						className={styles.decline_btn}
+						onClick={() => onToggleHideListing("decline")}
+						disabled={isPendingDecline}
+					>
+						Decline
+					</Button>
+					<Button
+						className={styles.accept_btn}
+						onClick={() => onToggleHideListing("approve")}
+						disabled={isPendingApprove}
+					>
+						Approve
+					</Button>
 				</div>
 			</div>
 			<main className={styles.main_container}>
@@ -77,8 +104,20 @@ const ListingsDetails = () => {
 				</div>
 			</main>
 			<div className={styles.btn_container_mob}>
-				<Button className={styles.decline_btn}>Decline</Button>
-				<Button className={styles.accept_btn}>Approve</Button>
+				<Button
+					className={styles.decline_btn}
+					onClick={() => onToggleHideListing("decline")}
+					disabled={isPendingDecline}
+				>
+					Decline
+				</Button>
+				<Button
+					className={styles.accept_btn}
+					onClick={() => onToggleHideListing("approve")}
+					disabled={isPendingApprove}
+				>
+					Approve
+				</Button>
 			</div>
 		</div>
 	);

@@ -7,10 +7,11 @@ import { GridAddIcon } from "@mui/x-data-grid";
 import HeaderSubText from "../HeaderSubText/HeaderSubText";
 import ReuseableFilters from "../ReuseableFilter/ReuseableFilter";
 import { useRouter } from "next/navigation";
-import { useListingFilters } from "@/hooks/useListings";
+import { useListingFilters, useListingsByUser } from "@/hooks/useListings";
 import { useAppSelector } from "@/store/configureStore";
 import { Filter } from "@/interfaces/Listing";
-
+import { usePostHideAllListingStatus } from "@/app/api/hooks/listings";
+import { toast } from "react-toastify";
 enum Type {
 	Rent = "Rent",
 	Buy = "Sell",
@@ -18,8 +19,11 @@ enum Type {
 }
 
 const Listings = () => {
-	const [activeFilterId, setActiveFilterId] = useState<number | string>(1);
-	const [activeSubFilterId, setActiveSubFilterId] = useState<number | string>(1);
+	const user = useAppSelector(s => s.user);
+	const {
+		mutateAsync: hideAllListingStatus,
+		isPending: isPendingHideAllListingStatus
+	} = usePostHideAllListingStatus({ userId: user?._id as string });
 	const [activeFilter, setActiveFilter] = useState<Filter>({
 		id: 1,
 		name: "All",
@@ -29,6 +33,23 @@ const Listings = () => {
 	const { filters: parentFilters } = useListingFilters();
 	const listings = useAppSelector(s => s.listings.owned);
 	const courses = useAppSelector(s => s.courses.owned);
+	const { refetch } = useListingsByUser();
+
+	const isAllListingsHidden = useMemo(() => {
+		return listings.every(listing => listing.status === "draft");
+	}, [listings]);
+
+	const handleHideAllListingStatus = async () => {
+		try {
+			const res = await hideAllListingStatus({ userId: user?._id as string });
+			if (res.message) {
+				toast.success("All listings status updated");
+				refetch();
+			}
+		} catch (error: any) {
+			toast.error(error.response.data.message);
+		}
+	};
 
 	const handleButtonClick = () => {
 		if (activeFilter.name === Type.Courses) {
@@ -45,7 +66,11 @@ const Listings = () => {
 				<HeaderSubText title="Listings" variant="main" />
 				<div className={styles.listing_text}>
 					<p>Hide All Listings</p>
-					<ToggleSwitch />
+					<ToggleSwitch
+						checked={isAllListingsHidden}
+						onChange={handleHideAllListingStatus}
+						disabled={isPendingHideAllListingStatus}
+					/>
 				</div>
 			</div>
 			<div className={styles.container__filters_container}>
@@ -58,7 +83,11 @@ const Listings = () => {
 				<div className={styles.container__filters_container__listings_container}>
 					<span>
 						<p>Hide All Listings</p>
-						<ToggleSwitch />
+						<ToggleSwitch
+							checked={isAllListingsHidden}
+							onChange={handleHideAllListingStatus}
+							disabled={isPendingHideAllListingStatus}
+						/>
 						{(activeFilter.name === Type.Rent ||
 							activeFilter.name === Type.Buy) &&
 						listings.length ? (
