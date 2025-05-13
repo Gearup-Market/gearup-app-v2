@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import styles from './Projects.module.scss'
 import Image from 'next/image'
 import { Icon } from '@/shared'
-import { AddProjectModal } from './components'
+import { AddProjectModal, ProjectList } from './components'
 import { AddTypeEnum } from '@/components/UserDashboard/Dashboard/Components/CreativeHiring/components/GetHiredAlert/components/StepOne/StepOne'
 
 const Projects = () => {
@@ -36,13 +36,13 @@ const Projects = () => {
                 }
             </ul>
             <div className={styles.projects_section}>
-
+                {/*
                 <div className={styles.empty_projects_list}>
                     <Icon className={styles.add_icon} src="/images/document-text.png" />
                     <h3>No Project Added Yet</h3>
                     <p>Added projects will be displayed here</p>
-                </div>
-
+                </div> */}
+                <ProjectList />
             </div>
             <AddProjectModal openModal={openAddProjectModal} onClose={onClose} addType={addProjectType} />
         </div>

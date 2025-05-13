@@ -1,10 +1,8 @@
 'use client'
 import React from 'react'
-import styles from './MoreModal.module.scss'
+import styles from './OptionDetails.module.scss'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
-import { useDeleteBlogById } from '@/app/api/hooks/blogs';
-import toast from 'react-hot-toast';
 
 interface MoreModalProps {
     row?: any;
@@ -20,14 +18,14 @@ enum MoreModalActions {
 
 const lists = [
     {
+        id: MoreModalActions.PREVIEW,
+        title: 'View project',
+        icon: '/svgs/eye.svg'
+    },
+    {
         id: MoreModalActions.EDIT,
         title: 'Edit',
         icon: '/svgs/edit.svg'
-    },
-    {
-        id: MoreModalActions.PREVIEW,
-        title: 'Preview',
-        icon: '/svgs/eye.svg'
     },
     {
         id: MoreModalActions.DELETE,
@@ -39,28 +37,17 @@ const lists = [
 
 const MoreModal = ({ row, onClose, containerRef, refetch }: MoreModalProps) => {
     const router = useRouter()
-    const { mutateAsync: deleteBlogById } = useDeleteBlogById()
 
     const handleActions = async (id: number) => {
         switch (id) {
             case MoreModalActions.EDIT:
-                router.push(`/admin/blog/new-blog?edit_mode=true&blog_id=${row._id}`)
+                console.log("edit ")
                 break;
             case MoreModalActions.PREVIEW:
-                router.push(`/blog/${row._id}`)
+                console.log("preview ")
                 break;
             case MoreModalActions.DELETE:
-                await deleteBlogById({ blogId: row._id }, {
-                    onSuccess: () => {
-                        toast.success('Blog deleted successfully')
-                        refetch && refetch()
-                        onClose && onClose()
-                    },
-                    onError: () => {
-                        toast.error('Error deleting blog')
-                    }
-
-                })
+                console.log("deleted")
                 break;
             default:
                 break;

@@ -1,0 +1,42 @@
+@import "@/styles/imports";
+
+.container {
+    position: relative;
+    min-height: 26rem;    
+
+    h3{
+        color: #1B1E21;
+        font-size: 2rem;
+        font-weight: 900;
+        margin-bottom: 1.6rem;
+    }
+
+    .project{
+
+        .image_container{
+            height: 22.3rem;
+            position: relative;
+
+            button{
+                background-color: white;
+                border-radius: 4px;
+                @include flex(center, center);
+                border: none;
+                height: 3.2rem;
+                width: 3.2rem;
+                position: absolute;
+                right: 1rem;
+                top: 1rem;
+            }
+        }
+
+        .title{
+            color: #1B1E21;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-top: 1.2rem;
+        }
+    }
+
+
+}

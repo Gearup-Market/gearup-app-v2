@@ -9,7 +9,6 @@ import {
 	usePostRemoveListing
 } from "@/app/api/hooks/listings";
 import toast from "react-hot-toast";
-import ConfirmPin from "@/components/UserDashboard/Settings/components/confirmPin/ConfirmPin";
 import { Filter } from "@/interfaces/Listing";
 
 interface MoreModalProps {
