@@ -1,16 +1,16 @@
 @import "@/styles/imports";
 
-.container{
-    
-    .header{
-        h2{
+.container {
+
+    .header {
+        h2 {
             font-size: 2.4rem;
             color: #1B1E21;
             font-weight: 900;
             margin-top: 0.5rem;
         }
 
-        p{
+        p {
             color: #4B525A;
             font-size: 1.4rem;
             margin-top: 0.5rem;
@@ -18,21 +18,34 @@
         }
     }
 
-    .type_lists{
+    .type_lists {
         display: flex;
         gap: 2.4rem;
         align-items: center;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
 
-        .list{
+        .list {
             display: flex;
             align-items: center;
+            flex-wrap: nowrap;
+            gap: 1.2rem;
+
+            label {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
         }
     }
 
-    .form_section{
+
+    .form_section {
 
 
-        .add_project_btn{
+        .add_project_btn {
             padding: 0;
             color: $col-orange;
             gap: 1rem;

@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import styles from './StepThree.module.scss'
 import { CustomRadioButton } from '@/shared'
-import { BasicPlan, PremiumPlan, StandardPlan } from './components'
+import { ServicePlan } from './components'
 
 
 enum PlanTypeEnum {
@@ -28,9 +28,7 @@ const StepThree = () => {
                     </li>
                 ))}
             </ul>
-            {activeType === PlanTypeEnum.BASIC_PLAN && <BasicPlan/>}
-            {activeType === PlanTypeEnum.STANDARD_PLAN && <StandardPlan/>}
-            {activeType === PlanTypeEnum.PREMIUM_PLAN && <PremiumPlan/>}
+            <ServicePlan activePlan={activeType.replace("_", " ")} />
         </div>
     )
 }

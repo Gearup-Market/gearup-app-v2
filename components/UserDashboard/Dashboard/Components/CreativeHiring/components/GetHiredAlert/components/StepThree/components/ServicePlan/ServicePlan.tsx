@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import styles from './BasicPlan.module.scss'
+import styles from './ServicePlan.module.scss'
 import { Icon } from '@/shared'
-import { BasicPlanForm } from './components'
+import { ServicePlanForm } from './components'
 
-const BasicPlan = () => {
+interface Props {
+    activePlan: string
+}
+
+const ServicePlan = ({ activePlan }: Props) => {
     const [noOfPlans, setNoOfPlans] = useState(1)
 
     const handleDeletePlan = (planNumber: number) => {
@@ -12,17 +16,17 @@ const BasicPlan = () => {
         }
     }
 
-    const handleAddBasicPlanForm = () => {
+    const handleAddServicePlanForm = () => {
         setNoOfPlans(noOfPlans + 1)
     }
 
     return (
         <div className={styles.container}>
-            <button onClick={handleAddBasicPlanForm} className={styles.new_basic_plan_btn}> <Icon src="/svgs/color-add-circle.svg" /> New Basic Plan</button>
+            <button onClick={handleAddServicePlanForm} className={styles.new_basic_plan_btn}> <Icon src="/svgs/color-add-circle.svg" /> New {activePlan}</button>
             <div className={styles.form_section}>
                 {
                     Array.from({ length: noOfPlans }).map((_, index) => (
-                        <BasicPlanForm key={index + 1} formId={index + 1} onDelete={() => handleDeletePlan(index + 1)} />
+                        <ServicePlanForm key={index + 1} formId={index + 1} onDelete={() => handleDeletePlan(index + 1)} activePlan={activePlan} />
                     ))
                 }
             </div>
@@ -30,4 +34,4 @@ const BasicPlan = () => {
     )
 }
 
-export default BasicPlan
+export default ServicePlan
