@@ -4,7 +4,7 @@ import styles from './StepOne.module.scss'
 import { CustomRadioButton, Button } from '@/shared'
 import { AddProjectForm } from './components'
 
-enum AddTypeEnum {
+export enum AddTypeEnum {
     AddManually = 'add_manually',
     AddFromInstagram = 'add_from_instagram',
 }

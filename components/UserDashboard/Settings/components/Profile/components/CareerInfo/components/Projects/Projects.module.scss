@@ -13,12 +13,14 @@
             border: 1px solid $col-border;
             border-radius: 12px;
             padding: 2.4rem;
+            background-color: transparent;
 
             .project_info{
                 h3{
                     color: #1B1E21;
                     font-weight: 700;
                     font-size: 1.6rem;
+                    text-align: start;
                 }
 
                 p{
