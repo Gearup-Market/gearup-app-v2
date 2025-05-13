@@ -106,12 +106,12 @@ const Listings = () => {
 					</span>
 				</div>
 			</div>
-			{activeFilter.name !== Type.Courses && !listings.length ? (
+			{activeFilter.name !== Type.Courses && listings.length ? (
 				<Button onClick={handleButtonClick} className={styles.button}>
 					<GridAddIcon className={styles.button_icon} />
 				</Button>
 			) : null}
-			{activeFilter.name === Type.Courses && !courses.length ? (
+			{activeFilter.name === Type.Courses && courses.length ? (
 				<Button onClick={handleButtonClick} className={styles.button}>
 					<GridAddIcon className={styles.button_icon} />
 				</Button>
