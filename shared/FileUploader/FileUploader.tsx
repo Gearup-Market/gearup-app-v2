@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from 'react'
 import styles from './FileUploader.module.scss'
+import Image from 'next/image'
 
 type FileUploadProps = {
     onFileSelect: (file: File) => void
@@ -74,7 +75,7 @@ const FileUploader: React.FC<FileUploadProps> = ({
                     )
                 ) : (
                     <div className={styles.placeholder}>
-                        <div className={styles.icon}>⬆️</div>
+                            <Image className={styles.icon} alt="upload-icon" height={24} width={24} src="/images/image-icon.png" />
                         <p>
                             Drop your images here, or{' '}
                             <span className={styles.link}>click to upload</span>

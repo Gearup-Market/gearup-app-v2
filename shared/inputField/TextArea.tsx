@@ -4,7 +4,7 @@ import styles from "./InputField.module.scss";
 import Image from "next/image";
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	name?: string;
-	label?: string;
+	label?: React.ReactNode;
 	className?: string;
 	error?: string;
 }

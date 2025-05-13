@@ -8,11 +8,8 @@ import {
 	Button,
 	ImageUploader,
 	InputField,
-	LocationAutoComplete,
-	Select,
 	TextArea
 } from "@/shared";
-import HeaderSubText from "@/components/Admin/HeaderSubText/HeaderSubText";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { Map } from "@/components/listing";
 import { usePostUpdateUser } from "@/app/api/hooks/users";
@@ -111,10 +108,6 @@ const PersonalInfoForm: React.FC = () => {
 
 	return (
 		<div className={styles.container}>
-			<HeaderSubText
-				title="Profile information"
-				description="Please provide the necessary personal information"
-			/>
 			<div className={styles.container__form_container}>
 				<Formik
 					initialValues={initialValues}

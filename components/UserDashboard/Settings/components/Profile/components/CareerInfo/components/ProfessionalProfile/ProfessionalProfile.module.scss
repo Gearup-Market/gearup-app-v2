@@ -1,0 +1,20 @@
+@import "@/styles/imports";
+
+.container{
+
+    .form{
+        display: grid;
+        gap: 1.6rem;
+        width: 100%;
+
+        button{
+            margin-top: 1.6rem;
+            margin-left: auto;
+            width: fit-content;
+        }
+
+        .sub_label{
+            color: #7B8086;
+        }
+    }
+}

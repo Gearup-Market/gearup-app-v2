@@ -4,7 +4,54 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	gap: 4rem;
+	gap: 2rem;
     padding-bottom: 4rem;
     overflow: auto;
+
+	.header{
+		@include flex(space-between, center);
+
+		.offers_switch{
+			@include flex(center, center);
+			gap: 0.4rem;
+			width: fit-content;
+			border: 1px solid $col-border;
+			border-radius: 10rem;
+			padding: 0.4rem 1.6rem;
+			color: #4B525A;
+			font-weight: 700;
+		}
+	}
+
+	.profile_type_select{
+		@include flex(center, center);
+		width: fit-content;
+		border: 1px solid $col-border;
+		border-radius: 10rem;
+		padding: 0.4rem 0.8rem;
+
+		.profile_type{
+			background-color: transparent;
+			border: none;
+			color: #A3A7AB;
+			font-weight: 400;
+		}
+		
+		.active{
+			font-weight: 700;
+			background-color: $col-orange;
+			color: white;
+		}
+	}
+
+
+	@include screenMax("mobile") {
+		.header{
+	
+			.offers_switch{
+				border: none;
+				padding: 0;
+			}
+		}
+	}
 }

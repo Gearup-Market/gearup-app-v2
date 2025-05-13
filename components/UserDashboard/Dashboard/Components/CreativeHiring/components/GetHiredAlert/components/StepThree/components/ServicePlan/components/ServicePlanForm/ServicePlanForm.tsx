@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import styles from './ServicePlanForm.module.scss'
-import { FileUploader, Icon, InputField, Button, Select, CustomRadioButton } from '@/shared'
+import { FileUploader, Icon, InputField, Button, Select } from '@/shared'
 
 interface Props {
     formId: number
@@ -51,7 +51,6 @@ const ServicePlanForm = ({ formId, onDelete, activePlan }: Props) => {
                                 {
                                     Array.from({ length: noOfServices }).map((_, index) => (
                                         <li key={index + 1} className={styles.service_item}>
-                                            <CustomRadioButton addPadding={false} />
                                             <InputField placeholder="Enter service" />
 
                                             <button onClick={() => setNoOfServices(noOfServices - 1)}>

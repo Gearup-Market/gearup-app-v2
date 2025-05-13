@@ -1,0 +1,32 @@
+@import "@/styles/imports";
+
+.container{
+
+    .tabs_lists{
+        @include flex(flex-start, center);
+        border-bottom: 1px solid $col-border;
+
+        .tab{
+            @include flex(center, center);
+            gap: 0.4rem;
+            width: fit-content;
+            padding: 1rem 1.6rem;
+            color: #4B525A;
+            cursor: pointer;
+            
+            &[data-active='true']{
+                font-weight: 700;
+                border-bottom: 2px solid $col-orange;
+                color: $col-orange;
+            }
+        }
+    }
+
+    .tabs_items{
+        border: 1px solid $col-border;
+        border-radius: 1.6rem;
+        padding: 1.6rem;
+        margin-top: 1.6rem;
+        min-height: 20rem;
+    }
+}

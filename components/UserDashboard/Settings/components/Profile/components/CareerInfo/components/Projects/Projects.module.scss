@@ -1,0 +1,70 @@
+@import "@/styles/imports";
+
+.container{
+
+
+    .type_lists{
+        display: grid;
+        gap: 1.6rem;
+
+        .project_type{
+            @include flex(space-between, center);
+            gap: 0.8rem;
+            border: 1px solid $col-border;
+            border-radius: 12px;
+            padding: 2.4rem;
+
+            .project_info{
+                h3{
+                    color: #1B1E21;
+                    font-weight: 700;
+                    font-size: 1.6rem;
+                }
+
+                p{
+                    color: #4B525A;
+                    font-size: 1.4rem;
+                }
+            }
+
+            img{
+                height: 4rem;
+                width: 4rem;
+            }
+
+            .chevron{
+                margin-left: auto;
+                height: 12px;
+                width: 5px;
+            }
+
+        }
+    }
+
+    .projects_section{
+        padding: 1.6rem 0;
+        border-top: 1px solid $col-border;
+        margin-top: 3.2rem;
+
+        .empty_projects_list{
+            @include flex(center,  center);
+            flex-direction: column;
+            gap: 0.8rem;
+            height: 25rem;
+
+            h3{
+                margin-top: 0.8rem;
+                font-weight: 900;
+                font-size: 2.4rem;
+                color: #4B525A;
+            }
+
+            p{
+                font-weight: 400;
+                font-size: 1.6rem;
+                color: #7B8086;
+
+            }
+        }
+    }
+}
