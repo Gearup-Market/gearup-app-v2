@@ -3,9 +3,24 @@ import React, { useState } from 'react'
 import styles from './ServicesPricing.module.scss'
 import { PlanTypeEnum, addPlanType } from '@/components/UserDashboard/Dashboard/Components/CreativeHiring/components/GetHiredAlert/components/StepThree/StepThree'
 import { CustomImage, Button } from '@/shared'
+import CheckoutModal from '../CheckoutModal/CheckoutModal'
 
-const ServicesPricing = () => {
+interface Props {
+    fromProfile?: boolean
+}
+
+const ServicesPricing = ({ fromProfile }: Props) => {
     const [activeType, setActiveType] = useState(PlanTypeEnum.BASIC_PLAN)
+    const [openCheckout, setOpenCheckout] = useState(false)
+
+    const closeCheckoutModal = () => {
+        setOpenCheckout(false)
+    }
+
+    const handleCheckout = () => {
+        setOpenCheckout(true)
+    }
+
     return (
         <div className={styles.container}>
             <ul className={styles.type_lists}>
@@ -17,7 +32,7 @@ const ServicesPricing = () => {
             </ul>
             <div className={styles.header}>
                 <div className={styles.header_left}>
-                    <h2>Basic Photography Package</h2>
+                    <h2>Basic Plan</h2>
                     <p>25 photographs for your events and marketing services</p>
                 </div>
                 <div className={styles.header_amount}><span className={styles.amount}>$2</span>/day</div>
@@ -36,7 +51,8 @@ const ServicesPricing = () => {
                     ))
                 }
             </ul>
-            <Button>Continue</Button>
+            <Button onClick={handleCheckout}>Continue</Button>
+            <CheckoutModal showBackIcon={fromProfile} openModal={openCheckout} onClose={closeCheckoutModal} />
         </div>
     )
 }

@@ -1,0 +1,36 @@
+@import "@/styles/imports";
+
+.container{
+    max-width: 62.8rem;
+    width:100%;
+    
+    .header{
+        @include flex(space-between, flex-start);
+        border-bottom: 1px solid $col-border;
+        border-top: 1px solid $col-border;
+        padding: 1.6rem 0 2.4rem;
+
+        .header_left{
+
+            h2{
+                font-size: 1.6rem;
+                color: #1B1E21;
+                font-weight: 700;
+            }
+            
+            p{
+                color: #4B525A;
+                font-size: 1.6rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        .header_amount{
+            .amount{
+                font-size: 2.4rem;
+                color: #1B1E21;
+                font-weight: 900;
+            }
+        }
+    }
+}

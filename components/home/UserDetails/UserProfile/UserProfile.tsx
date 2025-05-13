@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./UserProfile.module.scss";
 import { Button, CustomImage, Ratings } from "@/shared";
 import { VerifyIcon } from "@/shared/svgs/dashboard";
 import { UserUpdateResp } from "@/app/api/hooks/users/types";
 import { useAppSelector } from "@/store/configureStore";
+import { ServicePricingModal } from "../FreelancerProfile/components";
 
 interface Props {
 	user?: UserUpdateResp;
@@ -12,6 +13,16 @@ interface Props {
 
 const UserDetailsProfile = ({ user, isFreelancer }: Props) => {
 	const { kyc } = useAppSelector(state => state.user);
+	const [openServiceModal, setOpenServiceModal] = useState(false)
+
+	const closeServiceModal = () => {
+		setOpenServiceModal(false)
+	}
+
+	const handleOpenServiceModal = () => {
+		setOpenServiceModal(true)
+	}
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.profile_details}>
@@ -40,7 +51,7 @@ const UserDetailsProfile = ({ user, isFreelancer }: Props) => {
 				<p>{user?.totalDeals} deals</p>
 				{
 					isFreelancer &&
-					<Button buttonType="primary">
+					<Button buttonType="primary" onClick={handleOpenServiceModal} >
 						Hire me
 					</Button>
 				}
@@ -52,6 +63,7 @@ const UserDetailsProfile = ({ user, isFreelancer }: Props) => {
 					</Link>
 				)} */}
 			</div>
+			<ServicePricingModal openModal={openServiceModal} onClose={closeServiceModal} />
 		</div>
 	);
 };

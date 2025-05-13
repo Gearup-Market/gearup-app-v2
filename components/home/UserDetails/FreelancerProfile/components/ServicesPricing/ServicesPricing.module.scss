@@ -1,7 +1,8 @@
 @import "@/styles/imports";
 
 .container{
-    
+
+
     .header{
         @include flex(space-between, flex-start);
 
