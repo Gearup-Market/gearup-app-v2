@@ -70,8 +70,20 @@ const usePostChangeListingStatus = (
 		mutationFn: async props => {
 			const { listingId } = props;
 			delete props.listingId;
-			return (await api.post(`${API_URL.changeListingStatus}/${listingId}`, props))
-				.data;
+			return (
+				await api.patch(`${API_URL.changeUserListingStatus}/${listingId}`, props)
+			).data;
+		},
+		...options
+	});
+
+const usePostHideAllListingStatus = (
+	{ userId }: { userId: string },
+	options?: Omit<UseMutationOptions<any, any, any>, "mutationFn">
+) =>
+	useMutation<any, any, any>({
+		mutationFn: async props => {
+			return (await api.patch(`${API_URL.listingsStatus}/${userId}`, props)).data;
 		},
 		...options
 	});
@@ -243,5 +255,6 @@ export {
 	usePostChangeUserListingStatus,
 	getListings,
 	getListingsByUser,
-	usePostSearchListingByUser
+	usePostSearchListingByUser,
+	usePostHideAllListingStatus
 };

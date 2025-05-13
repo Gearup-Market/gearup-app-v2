@@ -248,7 +248,13 @@ const BuyRentDetailsBody = ({ listing }: Props) => {
 											</div>
 											{coOwners?.map(coOwner => (
 												<DetailContainer
-													title={`${coOwner?.data?.kyc.firstName} ${coOwner?.data?.kyc.lastName}`}
+													title={`${
+														coOwner?.data?.kyc?.firstName ||
+														"N/A"
+													} ${
+														coOwner?.data?.kyc?.lastName ||
+														"N/A"
+													}`}
 													value={coOwnerShares(
 														coOwner?.data?._id
 													)}

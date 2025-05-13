@@ -71,6 +71,7 @@ const ListingsDetails = () => {
 					<BuyRentDetailsHeader
 						listing={listing?.data}
 						isFetching={isFetching}
+						refetch={refetch}
 					/>
 					<BuyRentDetailsBody listing={listing?.data} />
 				</>

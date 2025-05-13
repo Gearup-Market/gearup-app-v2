@@ -18,10 +18,12 @@ import { PageLoader } from "@/shared/loaders";
 
 const BuyRentHeader = ({
 	listing,
-	isFetching
+	isFetching,
+	refetch
 }: {
 	listing?: Listing;
 	isFetching: boolean;
+	refetch: () => void;
 }) => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
@@ -41,22 +43,26 @@ const BuyRentHeader = ({
 				userId,
 				listingId: listing?._id
 			});
-			if (res.data) {
+			if (res.message) {
 				toast.success("Status updated");
-				window.location.reload();
+				refetch();
 			}
-		} catch (error) {}
+		} catch (error: any) {
+			toast.error(error.response.data.message);
+		}
 	};
 
 	const onHandleDeleteListing = async () => {
 		try {
 			const payload = { userId, listingId: listing?._id };
 			const res = await postRemoveListing(payload);
-			if (res.data) {
+			if (res.message) {
 				toast.success("Listing deleted");
-				window.location.reload();
+				router.replace("/user/listings?type=rent");
 			}
-		} catch (error) {}
+		} catch (error: any) {
+			toast.error(error.response.data.message);
+		}
 	};
 
 	const onClickEdit = () => {
@@ -88,7 +94,7 @@ const BuyRentHeader = ({
 						<HeaderSubText title="Details" />
 						<div className={styles.toggle_container_mobile}>
 							<ToggleListing
-								checked={listing?.status === "unavailable"}
+								checked={listing?.status === "available"}
 								onChange={onToggleHideListing}
 								disabled={isPendingUpdate}
 							/>
@@ -97,7 +103,7 @@ const BuyRentHeader = ({
 					<div className={styles.actions_btns}>
 						<div className={styles.toggle_container_desktop}>
 							<ToggleListing
-								checked={listing?.status === "unavailable"}
+								checked={listing?.status === "available"}
 								onChange={onToggleHideListing}
 								disabled={isPendingUpdate}
 							/>
@@ -140,7 +146,7 @@ type ToggleProps = {
 const ToggleListing = ({ checked, onChange, disabled }: ToggleProps) => {
 	return (
 		<>
-			<p>Hide listing</p>
+			<p>{!checked ? "Show listing" : "Hide listing"}</p>
 			<ToggleSwitch checked={checked} onChange={onChange} disabled={disabled} />
 		</>
 	);

@@ -1,7 +1,16 @@
 import { api } from "@/app/api/api";
 import { API_URL } from "@/app/api/url";
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { iGetListingsResp } from "../../listings/types";
+import {
+	useMutation,
+	UseMutationOptions,
+	useQuery,
+	UseQueryOptions
+} from "@tanstack/react-query";
+import {
+	iGetListingsResp,
+	iPostListingErr,
+	iPostListingResp
+} from "../../listings/types";
 import { IGetErr } from "../../listings";
 
 export const useAdminGetAllListings = (
@@ -27,4 +36,38 @@ export const useAdminGetAllUserListings = (
 		...options,
 		refetchOnMount: true,
 		enabled: !!userId
+	});
+
+export const usePostApproveListing = (
+	options?: Omit<
+		UseMutationOptions<iPostListingResp, iPostListingErr, any>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostListingResp, iPostListingErr, any>({
+		mutationFn: async props => {
+			const { listingId } = props;
+			delete props.listingId;
+			return (
+				await api.patch(`${API_URL.adminListings}/${listingId}/approve`, props)
+			).data;
+		},
+		...options
+	});
+
+export const usePostDeclineListing = (
+	options?: Omit<
+		UseMutationOptions<iPostListingResp, iPostListingErr, any>,
+		"mutationFn"
+	>
+) =>
+	useMutation<iPostListingResp, iPostListingErr, any>({
+		mutationFn: async props => {
+			const { listingId } = props;
+			delete props.listingId;
+			return (
+				await api.patch(`${API_URL.adminListings}/${listingId}/decline`, props)
+			).data;
+		},
+		...options
 	});
