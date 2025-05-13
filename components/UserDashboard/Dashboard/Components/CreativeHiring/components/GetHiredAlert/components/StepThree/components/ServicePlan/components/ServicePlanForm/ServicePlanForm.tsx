@@ -89,16 +89,8 @@ const ServicePlanForm = ({ formId, onDelete, activePlan }: Props) => {
 export default ServicePlanForm
 
 const priceStructure = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
+    "per hour",
+    "per day",
+    "per week",
+    "per month"
 ]

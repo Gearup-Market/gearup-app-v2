@@ -5,7 +5,7 @@ import { CustomRadioButton } from '@/shared'
 import { ServicePlan } from './components'
 
 
-enum PlanTypeEnum {
+export enum PlanTypeEnum {
     BASIC_PLAN = 'basic_plan',
     STANDARD_PLAN = 'standard_plan',
     PREMIUM_PLAN = 'premium_plan',
@@ -21,7 +21,7 @@ const StepThree = () => {
                 <p>Set tailored pricing for your services by offering Basic, Standard, and Premium plans to suit various client needs and budgets.</p>
             </div>
             <ul className={styles.type_lists}>
-                {addType.map((item) => (
+                {addPlanType.map((item) => (
                     <li key={item.id} className={styles.list}>
                         <CustomRadioButton onChange={() => setActiveType(item.value)} checked={activeType === item.value} addPadding={false} type="radio" id={item.value} name="add_type" value={item.value} />
                         <label htmlFor={item.value}>{item.title}</label>
@@ -35,7 +35,7 @@ const StepThree = () => {
 
 export default StepThree
 
-const addType = [
+export const addPlanType = [
     {
         id: 1,
         title: 'Basic plan',
