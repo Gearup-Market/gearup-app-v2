@@ -21,6 +21,7 @@ const ServicesPricing = ({ fromProfile }: Props) => {
         setOpenCheckout(true)
     }
 
+    const formattedPlanType = activeType.replace("_", " ").split(" ")[0]
     return (
         <div className={styles.container}>
             <ul className={styles.type_lists}>
@@ -32,7 +33,7 @@ const ServicesPricing = ({ fromProfile }: Props) => {
             </ul>
             <div className={styles.header}>
                 <div className={styles.header_left}>
-                    <h2>Basic Plan</h2>
+                    <h2>{formattedPlanType} Plan</h2>
                     <p>25 photographs for your events and marketing services</p>
                 </div>
                 <div className={styles.header_amount}><span className={styles.amount}>$2</span>/day</div>
@@ -52,7 +53,7 @@ const ServicesPricing = ({ fromProfile }: Props) => {
                 }
             </ul>
             <Button onClick={handleCheckout}>Continue</Button>
-            <CheckoutModal showBackIcon={fromProfile} openModal={openCheckout} onClose={closeCheckoutModal} />
+            <CheckoutModal showBackIcon={fromProfile} openModal={openCheckout} onClose={closeCheckoutModal} activePlanType={formattedPlanType} />
         </div>
     )
 }

@@ -1,36 +1,104 @@
 @import "@/styles/imports";
 
-.container{
+.container {
     max-width: 62.8rem;
-    width:100%;
-    
-    .header{
+    width: 100%;
+
+    .header {
         @include flex(space-between, flex-start);
         border-bottom: 1px solid $col-border;
         border-top: 1px solid $col-border;
         padding: 1.6rem 0 2.4rem;
 
-        .header_left{
+        .header_left {
 
-            h2{
+            h2 {
                 font-size: 1.6rem;
                 color: #1B1E21;
                 font-weight: 700;
+                text-transform: capitalize;
             }
-            
-            p{
+
+            p {
                 color: #4B525A;
                 font-size: 1.6rem;
                 margin-top: 0.5rem;
             }
         }
 
-        .header_amount{
-            .amount{
+        .header_amount {
+            .amount {
                 font-size: 2.4rem;
                 color: #1B1E21;
                 font-weight: 900;
             }
         }
+    }
+
+    .date_section {
+        background-color: #FBFBFD;
+        padding: 1.6rem;
+        border-radius: 8px;
+        margin-top: 2.4rem;
+
+        h3 {
+            color: #1B1E21;
+            font-size: 1.4rem;
+        }
+
+        .dates_wrapper {
+            @include flex(center, center);
+            gap: 1.6rem;
+            width: 100%;
+            margin-top: 4px;
+
+            input {
+                height: 5.6rem;
+
+                flex: 1;
+                border: 1px solid $col-border;
+                padding: 0 1rem;
+                border-radius: 8px;
+            }
+        }
+    }
+
+    .items_container {
+        background-color: #FBFBFD;
+        padding: 1.6rem;
+        border-radius: 8px;
+        margin-top: 2.4rem;
+        width: 100%;
+        display: grid;
+        gap: 1.6rem;
+
+        hr{
+            border: 1px solid $col-border;
+            margin: 0.5rem 0;
+        }
+
+        .item {
+            @include flex(space-between, center);
+
+            h3 {
+                color: #1B1E21;
+                font-weight: 700;
+
+                &[data-isTotal='true']{
+                    font-size: 2.4rem;
+                    font-weight: 900;
+                    color: #1B1E21;
+                }
+            }
+
+            p {
+                color: #7B8086;
+            }
+        }
+    }
+
+    button {
+        width: 100%;
+        margin-top: 4rem;
     }
 }
