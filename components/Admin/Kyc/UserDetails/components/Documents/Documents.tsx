@@ -20,29 +20,8 @@ const Documents = ({ data, kycData }: { data: any; kycData?: Kyc }) => {
 			<div className={styles.container__summary_container}>
 				<h3 className={styles.title}>Documents</h3>
 				<div className={styles.summary_item}>
-					<h4>ID type</h4>
-					<p>ID</p>
-				</div>
-				<div className={styles.summary_item}>
-					<h4>ID number</h4>
-					<p>{kycData?.documentNo || "not submitted"}</p>
-				</div>
-				<div className={styles.summary_item}>
-					<h4>ID Photos</h4>
-
-					{/* {!kycData?.documentPhoto
-						? "not submitted"
-						: kycData?.documentPhoto?.map((photo, index) => (
-								<Link href={photo} key={index}>Click to view</Link>
-						  ))} */}
-				</div>
-				<div className={styles.summary_item}>
-					<h4>Selfie photo</h4>
-					{kycData?.selfie ? (
-						<Link href={kycData.selfie}>Click to view</Link>
-					) : (
-						<p>not submitted</p>
-					)}
+					<h4>Full name</h4>
+					<p>{`${kycData?.firstName} ${kycData?.lastName}`}</p>
 				</div>
 				<div className={styles.summary_item}>
 					<h4>NIN</h4>
@@ -50,19 +29,23 @@ const Documents = ({ data, kycData }: { data: any; kycData?: Kyc }) => {
 				</div>
 				<div className={styles.summary_item}>
 					<h4>Phone number</h4>
-					<p>{data?.phoneNumber || "not submitted"}</p>
+					<p>{kycData?.phoneNumber || "not submitted"}</p>
 				</div>
 				<div className={styles.summary_item}>
-					<h4>Full name</h4>
-					<p>{`${kycData?.firstName} ${kycData?.lastName}`}</p>
-				</div>
-				<div className={styles.summary_item}>
-					<h4>Country</h4>
-					<p>{kycData?.country || "not submitted"}</p>
+					<h4>Email</h4>
+					<p>{kycData?.userId?.email || "not submitted"}</p>
 				</div>
 				<div className={styles.summary_item}>
 					<h4>Address</h4>
 					<p>{kycData?.address || "not submitted"}</p>
+				</div>
+				<div className={styles.summary_item}>
+					<h4>City</h4>
+					<p>{kycData?.city || "not submitted"}</p>
+				</div>
+				<div className={styles.summary_item}>
+					<h4>Country</h4>
+					<p>{kycData?.country || "not submitted"}</p>
 				</div>
 			</div>
 		</div>

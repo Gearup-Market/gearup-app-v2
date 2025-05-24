@@ -14,6 +14,7 @@ import {
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Kyc } from "@/app/api/hooks/Admin/users/types";
+import { formatDate, formatTime } from "@/utils";
 
 const DashboardUserHeader = ({ data, kycData }: { data: any; kycData?: Kyc }) => {
 	const [showModal, setShowModal] = useState<boolean>(false);
@@ -76,9 +77,9 @@ const DashboardUserHeader = ({ data, kycData }: { data: any; kycData?: Kyc }) =>
 								<h3 className={styles.user_name}>{data?.userName}</h3>
 								<span
 									className={styles.verification_status}
-									data-verified={data?.isVerified}
+									data-approved={data?.isApproved}
 								>
-									{data?.isVerified ? "Verified" : "Not verified"}
+									{data?.isApproved ? "Approved" : "Not approved"}
 								</span>
 							</div>
 							<p className={styles.faded_text}>{data?.email}</p>
@@ -86,14 +87,15 @@ const DashboardUserHeader = ({ data, kycData }: { data: any; kycData?: Kyc }) =>
 							<div className={styles.flex_item}>
 								<p className={styles.faded_text}>Date submitted:</p>
 								<p className={styles.date_text}>
-									{" "}
-									{kycData?.createdAt?.split("T")?.[0]}
+									{`${formatDate(kycData?.createdAt)} / ${formatTime(
+										kycData?.createdAt
+									)}`}
 								</p>
 							</div>
 						</div>
 					</div>
 				</div>
-				{
+				{/* {
 					<div className={styles.btns_container}>
 						<Button
 							buttonType="secondary"
@@ -110,7 +112,7 @@ const DashboardUserHeader = ({ data, kycData }: { data: any; kycData?: Kyc }) =>
 							Reject KYC
 						</Button>
 					</div>
-				}
+				} */}
 
 				{showModal && (
 					<Modal
