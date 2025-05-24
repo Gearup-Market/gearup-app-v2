@@ -23,6 +23,11 @@
 			white-space: nowrap;
 		}
 	}
+	.transaction_icon {
+		position: relative;
+		width: 1.6rem;
+		height: 1.6rem;
+	}
 
 	&__title {
 		font-size: 2.4rem;

@@ -158,7 +158,19 @@ export const useGetAllKyc = (
 	useQuery<IGetAllKycResp, IGetErr>({
 		queryKey: ["getAllKyc"],
 		queryFn: async () =>
-			(await api.get(`${API_URL.adminGetKycSubmission}/all?page=${page}`)).data,
+			(await api.get(`${API_URL.adminGetKycSubmission}/all?page=${page}&limit=30`))
+				.data,
+		...options,
+		refetchOnMount: true
+	});
+
+export const useGetAllKycUnpaginated = (
+	options?: UseQueryOptions<IGetAllKycResp, IGetErr>
+) =>
+	useQuery<IGetAllKycResp, IGetErr>({
+		queryKey: ["getAllKycUnpaginated"],
+		queryFn: async () =>
+			(await api.get(`${API_URL.adminGetKycSubmission}/all/unpaginated`)).data,
 		...options,
 		refetchOnMount: true
 	});

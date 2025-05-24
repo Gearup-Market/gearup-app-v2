@@ -11,6 +11,7 @@ import { Button, InputField, MobileCardContainer, Pagination } from "@/shared";
 import UserCardMob from "../UserCardMob/UserCardMob";
 import { useGetAllKyc, useGetAllUsers } from "@/app/api/hooks/Admin/users";
 import { debounce } from "lodash";
+import { formatDate, formatTime } from "@/utils";
 const sharedColDef: GridColDef = {
 	field: "",
 	sortable: true,
@@ -18,20 +19,25 @@ const sharedColDef: GridColDef = {
 };
 
 interface Props {
-	users?: GridRowsProp;
+	users?: any[];
 	page: number;
-	limit: number;
 	handlePagination: (page: number) => void;
-	url?: string;
 	totalCount?: number;
+	refetch: () => void;
+	isLoading: boolean;
+	pageSize: number;
 }
 
-const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) => {
-	const [currentPage, setCurrentPage] = useState<number>(1);
+const UsersTable = ({
+	page,
+	handlePagination,
+	totalCount,
+	users,
+	refetch,
+	isLoading,
+	pageSize
+}: Props) => {
 	const [searchInput, setSearchInput] = useState("");
-	const { data, isLoading, refetch, isFetching } = useGetAllKyc(currentPage);
-	const pageSize: number = 12;
-	const users = data?.data || [];
 
 	const columns: GridColDef[] = [
 		{
@@ -172,7 +178,6 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 			renderCell: ({ value }) => (
 				<Link
 					href={`/admin/kyc/${value?._id}`}
-					onClick={() => handleClickMore(value)}
 					className={styles.container__action_btn}
 				>
 					<Button>View documents</Button>
@@ -181,36 +186,19 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 		}
 	];
 
-	const updatePage = (page: number) => {
-		setCurrentPage(page);
-		// refetch();
-	};
-
 	useEffect(() => {
 		refetch();
-	}, [currentPage, refetch]);
+	}, [page, refetch]);
 
 	const filteredUsers = useMemo(() => {
 		if (!searchInput) return users;
-		return users.filter(
+		return users?.filter(
 			user =>
 				user.firstName.toLowerCase().includes(searchInput.toLowerCase()) ||
 				user.lastName.toLowerCase().includes(searchInput.toLowerCase()) ||
 				user.userId?.email.toLowerCase().includes(searchInput.toLowerCase())
 		);
 	}, [searchInput, users]);
-
-	// const currentTableData = useMemo(() => {
-	// 	const firstPageIndex = (currentPage - 1) * pageSize;
-	// 	const lastPageIndex = firstPageIndex + pageSize;
-	// 	return filteredUsers.slice(firstPageIndex, lastPageIndex);
-	// }, [currentPage, filteredUsers]);
-
-	// const startNumber = (currentPage - 1) * pageSize + 1;
-	// const endNumber = Math.min(
-	// 	startNumber + currentTableData?.length - 1,
-	// 	filteredUsers?.length
-	// );
 
 	const debouncedSearch = useMemo(
 		() =>
@@ -225,10 +213,6 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 			debouncedSearch.cancel();
 		};
 	}, [debouncedSearch]);
-
-	const handleClickMore = (id: number) => {
-		console.log("More clicked", id);
-	};
 
 	return (
 		<div className={styles.container}>
@@ -276,14 +260,10 @@ const UsersTable = ({ page, limit, handlePagination, url, totalCount }: Props) =
 					</MobileCardContainer>
 
 					<Pagination
-						// currentPage={page}
-						// onPageChange={handlePagination}
-						// totalCount={totalCount || 0}
-						// pageSize={limit}
-						currentPage={currentPage}
-						totalCount={data?.meta?.total || 0}
-						pageSize={10}
-						onPageChange={(page: any) => updatePage(page)}
+						currentPage={page}
+						totalCount={totalCount || 0}
+						pageSize={pageSize}
+						onPageChange={(page: any) => handlePagination(page)}
 					/>
 				</>
 			)}
