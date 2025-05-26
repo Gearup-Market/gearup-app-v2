@@ -11,7 +11,8 @@ const nextConfig = {
 			"via.placeholder.com",
 			"res.cloudinary.com",
 			"example.com",
-			"unsplash.com"
+			"unsplash.com",
+			"f003.backblazeb2.com"
 		]
 	}
 };
