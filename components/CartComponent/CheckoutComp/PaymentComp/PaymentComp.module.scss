@@ -59,4 +59,46 @@
 			cursor: pointer;
 		}
 	}
+	.modal {
+		width: 50rem;
+		.warning_container {
+			@include flex(flex-start, center, nowrap);
+			margin-bottom: 2rem;
+			gap: 1rem;
+			background: #fef5e6;
+			color: #563600;
+			padding: 1.6rem;
+			border-radius: 1rem;
+			font-size: 1.4rem;
+			border-radius: 1.6rem;
+
+			.icon {
+				width: 2rem;
+				height: 2rem;
+				flex-shrink: 0;
+			}
+
+			p {
+				font-size: 1.4rem;
+				.bold_text {
+					font-weight: 700;
+					font-size: 1.4rem;
+				}
+			}
+		}
+		.details {
+			@include flex(space-between, center);
+			margin-bottom: 2rem;
+			p {
+				font-size: 1.4rem;
+			}
+			h3 {
+				font-size: 1.6rem;
+				font-weight: 700;
+			}
+		}
+		.button {
+			width: 100%;
+		}
+	}
 }

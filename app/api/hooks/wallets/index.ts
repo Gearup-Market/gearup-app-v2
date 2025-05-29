@@ -45,6 +45,16 @@ const useGetWallet = ({
 		refetchInterval: isRefetch ? refetchInterval : false
 	});
 
+const useGetOffRampRates = (options?: UseQueryOptions<any, IGetErr>) =>
+	useQuery<any, IGetErr>({
+		queryKey: ["offRampRates"],
+		queryFn: async () => (await api.get(`${API_URL.offRates}`)).data,
+		...options,
+		enabled: true,
+		refetchOnMount: true,
+		refetchInterval: 10000
+	});
+
 const useGetStellarWallet = ({
 	userId,
 	options
@@ -57,7 +67,7 @@ const useGetStellarWallet = ({
 		queryFn: async () => (await api.get(`${API_URL.stellarWallet}/${userId}`)).data,
 		...options,
 		enabled: !!userId,
-		refetchOnMount: false
+		refetchOnMount: true
 	});
 
 const useGetExportWallet = ({
@@ -140,6 +150,14 @@ const usePostTransferXLM = (
 		...options
 	});
 
+const usePostOffRampPayment = (
+	options?: Omit<UseMutationOptions<any, IPostErr, any>, "mutationFn">
+) =>
+	useMutation<any, IPostErr, any>({
+		mutationFn: async props => (await api.post(API_URL.offRampPayment, props)).data,
+		...options
+	});
+
 const usePostWithdraw = (
 	options?: Omit<
 		UseMutationOptions<iWithdraw, IPostErr, iPostWithdrawRsq>,
@@ -158,5 +176,7 @@ export {
 	useGetStellarTransactions,
 	usePostTransferXLM,
 	useGetExportWallet,
-	usePostWithdraw
+	usePostWithdraw,
+	useGetOffRampRates,
+	usePostOffRampPayment
 };

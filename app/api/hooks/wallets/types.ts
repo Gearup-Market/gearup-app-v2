@@ -73,6 +73,7 @@ export interface StellarWallet {
 	status: WalletStatus;
 	createdAt?: string;
 	accountId?: string;
+	usdcBalance: string;
 }
 
 export interface StellarTransaction {
