@@ -186,7 +186,7 @@ const PaymentComp = ({
 			}
 			const res = await postOffRampPayment({
 				userId: user.userId,
-				amount: amountInUSDC
+				amount: amountInUSDC.toFixed(3)
 			});
 			if (res.data) {
 				const res = await postTransaction({
