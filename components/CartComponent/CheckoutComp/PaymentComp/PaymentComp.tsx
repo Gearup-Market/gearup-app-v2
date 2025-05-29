@@ -188,13 +188,20 @@ const PaymentComp = ({
 				userId: user.userId,
 				amount: amountInUSDC
 			});
-			if (res.message) {
-				toast.success("Request submitted successfully");
-				refetchXlmWallet();
-				dispatch(resetCheckout());
-				router.push("/user/dashboard");
-				removeItemFromCart(item._id as string);
-				setOpenModal(false);
+			if (res.data) {
+				const res = await postTransaction({
+					...preparedPayload,
+					reference: new Date().getTime().toString(),
+					method: PaymentMethod.XLM
+				});
+				if (res.data) {
+					toast.success("Request submitted successfully");
+					refetchXlmWallet();
+					dispatch(resetCheckout());
+					router.push("/user/dashboard");
+					removeItemFromCart(item._id as string);
+					setOpenModal(false);
+				}
 			}
 		} catch (error: any) {
 			toast.error(
