@@ -14,12 +14,14 @@ import { usePostTransaction } from "@/app/api/hooks/transactions";
 import { RentalBreakdown } from "@/app/api/hooks/transactions/types";
 import { resetCheckout } from "@/store/slices/checkoutSlice";
 import useCart from "@/hooks/useCart";
-import { PaystackPaymentButton } from "@/shared";
+import { Button, PaystackPaymentButton } from "@/shared";
 import { PaystackProps } from "react-paystack/dist/types";
 import { formatNum } from "@/utils";
 import { useRouter } from "next/navigation";
 import { Course } from "@/store/slices/coursesSlice";
 import { isListing } from "../../CartItems/CartItems";
+import { useGetOffRampRates, usePostOffRampPayment } from "@/app/api/hooks/wallets";
+import Modal from "@/shared/modals/modal/Modal";
 export enum PaymentMethod {
 	Wallet = "wallet",
 	Paystack = "paystack",
@@ -44,10 +46,16 @@ const PaymentComp = ({
 	listingModelType: string;
 }) => {
 	const { walletResult, isFetching } = useWallet();
-	const { data: xlmWallet, isFetching: xlmWalletFetching } = useStellarWallet();
+	const {
+		data: xlmWallet,
+		isFetching: xlmWalletFetching,
+		refetch: refetchXlmWallet
+	} = useStellarWallet();
 	const router = useRouter();
 	const user = useAppSelector(s => s.user);
 	const { mutateAsync: postTransaction, isPending } = usePostTransaction();
+	const { mutateAsync: postOffRampPayment, isPending: isPostingOffRampPayment } =
+		usePostOffRampPayment();
 	const { removeItemFromCart } = useCart();
 	const saleProps = useAppSelector(s => s.checkout.saleProps);
 	const dispatch = useAppDispatch();
@@ -74,6 +82,7 @@ const PaymentComp = ({
 	);
 
 	const [openModal, setOpenModal] = useState(false);
+	const [openOffRampModal, setOpenOffRampModal] = useState(false);
 
 	const onPaystackSuccess = async ({ reference, status }: any) => {
 		if (status === "success") {
@@ -169,6 +178,33 @@ const PaymentComp = ({
 		}
 	};
 
+	const handleOffRampPayment = async (amountInUSDC: number) => {
+		try {
+			if (amountInUSDC < 20) {
+				toast.error("Minimum order amount is 20USDC");
+				return;
+			}
+			const res = await postOffRampPayment({
+				userId: user.userId,
+				amount: amountInUSDC
+			});
+			if (res.message) {
+				toast.success("Request submitted successfully");
+				refetchXlmWallet();
+				dispatch(resetCheckout());
+				router.push("/user/dashboard");
+				removeItemFromCart(item._id as string);
+				setOpenModal(false);
+			}
+		} catch (error: any) {
+			toast.error(
+				error?.response?.data?.message ||
+					error?.message ||
+					"An unexpected error occurred"
+			);
+		}
+	};
+
 	return (
 		<div className={styles.container}>
 			<HeaderSubText title="Choose payment option" variant="main" />
@@ -183,12 +219,12 @@ const PaymentComp = ({
 					onClick={() => handlePayment("fiat")}
 				/>
 				<PaymentOption
-					title="Pay from XLM wallet"
-					balance={xlmWallet?.xlmBalance}
+					title="Pay with Stellar USDC"
+					balance={xlmWallet?.usdcBalance}
 					icon="/svgs/xlm-wallet.svg"
 					isLoading={xlmWalletFetching}
 					hasBalance
-					onClick={() => handlePayment("xlm")}
+					onClick={() => setOpenOffRampModal(true)}
 				/>
 				<PaystackPaymentButton {...paystackComponentProps} disabled={amount <= 0}>
 					<PaymentOption
@@ -198,6 +234,15 @@ const PaymentComp = ({
 				</PaystackPaymentButton>
 			</div>
 			<SuccessModal openModal={openModal} setOpenModal={setOpenModal} />
+			{openOffRampModal && (
+				<OffRampModal
+					openModal={openOffRampModal}
+					setOpenModal={setOpenOffRampModal}
+					amount={amount}
+					handleOffRampPayment={handleOffRampPayment}
+					isPostingOffRampPayment={isPostingOffRampPayment}
+				/>
+			)}
 		</div>
 	);
 };
@@ -257,5 +302,55 @@ function PaymentOption({
 				<ChevronIcon color="#A3A7AB" />
 			</span>
 		</div>
+	);
+}
+
+function OffRampModal({
+	openModal,
+	setOpenModal,
+	amount,
+	handleOffRampPayment,
+	isPostingOffRampPayment
+}: {
+	openModal: boolean;
+	setOpenModal: (openModal: boolean) => void;
+	amount: number;
+	handleOffRampPayment: (amountInUSDC: number) => void;
+	isPostingOffRampPayment: boolean;
+}) {
+	const { data: offRates } = useGetOffRampRates();
+	const rate = offRates?.data.USDCNGN;
+	const amountInUSDC = amount / rate;
+
+	return (
+		<Modal
+			openModal={openModal}
+			setOpenModal={setOpenModal}
+			title="OffRamp"
+			className={styles.modal}
+		>
+			<div className={styles.warning_container}>
+				<span className={styles.icon}>
+					<Image src="/svgs/warningIcon.svg" alt="" height={16} width={16} />
+				</span>
+				<p>
+					Note: Mininum order amount is{" "}
+					<span className={styles.bold_text}>20USDC.</span> It may take up to{" "}
+					<span className={styles.bold_text}>20mins</span> before the off
+					ramping transaction is completed
+				</p>
+			</div>
+			<div className={styles.details}>
+				<p>USDC/NGN rate:</p>
+				<h3>₦{formatNum(rate || 0)}</h3>
+			</div>
+			<Button
+				className={styles.button}
+				onClick={() => handleOffRampPayment(amountInUSDC)}
+				disabled={isPostingOffRampPayment}
+			>
+				Pay {formatNum(amountInUSDC || 0, true, 3)} USDC
+			</Button>
+		</Modal>
 	);
 }

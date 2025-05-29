@@ -91,5 +91,7 @@ export const API_URL = {
 	getAllPricings: "admin/pricing/retrieve",
 	updatePricing: "admin/pricing/update",
 	adminGetUserTransactions: (userId: string) => `admin/transactions/${userId}`,
-	getAllThirdPartyRequests: "/admin/third-party-requests"
+	getAllThirdPartyRequests: "/admin/third-party-requests",
+	offRates: "/payments/offramp-rate",
+	offRampPayment: "/payments/offramp"
 };
