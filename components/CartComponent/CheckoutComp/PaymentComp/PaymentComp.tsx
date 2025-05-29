@@ -186,7 +186,7 @@ const PaymentComp = ({
 			}
 			const res = await postOffRampPayment({
 				userId: user.userId,
-				amount: 21.39
+				amount: amountInUSDC.toFixed(3)
 			});
 			if (res.data) {
 				const res = await postTransaction({
@@ -349,14 +349,14 @@ function OffRampModal({
 			</div>
 			<div className={styles.details}>
 				<p>USDC/NGN rate:</p>
-				<h3>₦{formatNum(1496)}</h3>
+				<h3>₦{formatNum(rate || 0)}</h3>
 			</div>
 			<Button
 				className={styles.button}
 				onClick={() => handleOffRampPayment(amountInUSDC)}
 				disabled={isPostingOffRampPayment}
 			>
-				Pay {formatNum(21.39, true, 3)} USDC
+				Pay {formatNum(amountInUSDC || 0, true, 3)} USDC
 			</Button>
 		</Modal>
 	);
