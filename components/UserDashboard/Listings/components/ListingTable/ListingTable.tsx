@@ -185,7 +185,8 @@ const ListingTable = ({ activeFilter }: Props) => {
 			listingPhotos,
 			_id,
 			location,
-			listingType
+			listingType,
+			productionType
 		} = listing!;
 		const payload = {
 			_id,
@@ -201,7 +202,8 @@ const ListingTable = ({ activeFilter }: Props) => {
 			items: [{ name: productName, quantity: 1, id: 0 }],
 			userId,
 			location,
-			listingType
+			listingType,
+			productionType
 		};
 
 		dispatch(updateNewListing(payload));

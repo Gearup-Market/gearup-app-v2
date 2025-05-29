@@ -66,6 +66,7 @@ export interface Listing {
 	maxSharePurchase?: number;
 	allowsMultiOwnership?: boolean;
 	ownersList?: OwnersList[];
+	productionType?: string;
 }
 
 export interface OwnersList {
