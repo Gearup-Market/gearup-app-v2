@@ -66,9 +66,31 @@ const BuyRentHeader = ({
 	};
 
 	const onClickEdit = () => {
+		const {
+			productName,
+			description,
+			category,
+			subCategory,
+			condition,
+			offer,
+			listingPhotos,
+			_id,
+			location,
+			listingType,
+			productionType
+		} = listing!;
 		const payload = {
-			...listing,
-			...(listing?.condition ? { condition: listing?.condition } : {}),
+			productName,
+			description,
+			category,
+			subCategory,
+			offer,
+			listingPhotos,
+			_id,
+			location,
+			listingType,
+			productionType,
+			...(condition ? { condition } : {}),
 			items: [
 				{
 					name: listing?.productName || "Default Product Name",
@@ -81,7 +103,7 @@ const BuyRentHeader = ({
 		};
 
 		dispatch(updateNewListing(payload));
-		router.push(`/new-listing?id=${listing?._id}`);
+		router.push(`/new-listing/listing-details`);
 	};
 
 	return (
