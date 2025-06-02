@@ -17,6 +17,7 @@ import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { HeaderSubText } from "@/components/UserDashboard";
 import {
+	clearNewCourse,
 	Course,
 	LiveSessionDetails,
 	updateNewCourse
@@ -39,7 +40,7 @@ export enum CourseType {
 }
 
 export const courseTypes = [
-	{ label: CourseType.Ebook, value: "ebook" },
+	{ label: CourseType.Ebook, value: "ebooks" },
 	{ label: CourseType.Video, value: "video-tutorial" },
 	{ label: CourseType.Audio, value: "audio-tutorial" },
 	{ label: CourseType.Live, value: "live-tutorial" }
@@ -48,6 +49,7 @@ export const courseTypes = [
 const CourseListingView = () => {
 	const router = useRouter();
 	const onClose = () => {
+		dispatch(clearNewCourse());
 		router.push("/user/dashboard");
 	};
 
@@ -135,17 +137,19 @@ const CourseListingView = () => {
 	});
 
 	const handleSubmit = () => {
+		const { courseType, ...rest } = inputValues;
 		dispatch(
 			updateNewCourse({
-				...inputValues,
-				...(inputValues.courseType === CourseType.Ebook && { ebooks }),
-				...(inputValues.courseType === CourseType.Video && {
+				...rest,
+				courseType: courseType === "ebooks" ? "ebook" : courseType,
+				...(courseType === "ebooks" && { ebooks }),
+				...(courseType === CourseType.Video && {
 					videoTutorials: tutorials
 				}),
-				...(inputValues.courseType === CourseType.Audio && {
+				...(courseType === CourseType.Audio && {
 					audioTutorials: tutorials
 				}),
-				...(inputValues.courseType === CourseType.Live && {
+				...(courseType === CourseType.Live && {
 					liveSessionDetails
 				})
 			})

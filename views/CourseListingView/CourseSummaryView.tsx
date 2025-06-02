@@ -87,7 +87,8 @@ const CourseSummaryView = () => {
 		} catch (error: any) {
 			console.log(error);
 			toast.error(
-				error?.response?.data?.message ||
+				error?.response?.data?.error ||
+					error?.response?.data?.message ||
 					`Error ${courseId ? "updating" : "creating"} course`
 			);
 		}
