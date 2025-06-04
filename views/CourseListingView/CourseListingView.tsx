@@ -242,6 +242,8 @@ const CourseListingView = () => {
 		}
 	}, [liveSessionDetails.sessions]);
 
+	// console.log("hello")
+
 	return (
 		<div className={styles.container}>
 			<NewCourseListingsNav
