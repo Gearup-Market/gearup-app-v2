@@ -242,7 +242,7 @@ const CourseListingView = () => {
 		}
 	}, [liveSessionDetails.sessions]);
 
-	// console.log("hello")
+	// console.log("live")
 
 	return (
 		<div className={styles.container}>
