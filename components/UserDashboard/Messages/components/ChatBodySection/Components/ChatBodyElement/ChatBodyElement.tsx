@@ -55,6 +55,7 @@ const ChatBodyElement = () => {
 	// } = useFetchChatMessages(chatId);
 	const { userId } = useAppSelector(state => state.user);
 	const { currentChatMessages } = useAppSelector(s => s.messages);
+	// console.log(currentChatMessages);
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (userId && participantId && listingId) {

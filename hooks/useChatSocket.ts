@@ -25,7 +25,7 @@ export const useChatSocket = (chatId?: string) => {
 		}
 
 		socketInstance.on("connect", () => {
-			console.log("Connected to server with socket id:", socketInstance.id);
+			// console.log("Connected to server with socket id:", socketInstance.id);
 			socketInstance.emit("userConnected", userId);
 		});
 
@@ -37,7 +37,7 @@ export const useChatSocket = (chatId?: string) => {
 
 		// Listen for all messages for a specific chat
 		socketInstance.on("allMessages", messages => {
-			console.log("Received all messages for chatId:", chatId);
+			// console.log("Received all messages for chatId:", chatId);
 			queryClient.setQueryData(["getChatMessages", chatId], { data: messages });
 		});
 

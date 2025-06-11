@@ -79,9 +79,13 @@ const messagesSlice = createSlice({
 			state.currentChatMessages = action.payload;
 		},
 		addChatMessage(state, action: PayloadAction<ChatMessage>) {
-			// console.log(action.payload);
-			state.currentChatMessages.messages.push(action.payload);
-			state.currentChatMessages.messageCount += 1;
+			const messages = state.currentChatMessages.messages;
+			const { _id } = action.payload;
+			const isDuplicate = messages.find(message => message._id === _id);
+			if (!isDuplicate) {
+				const newMessages: ChatMessage[] = [...messages, action.payload];
+				state.currentChatMessages.messages = newMessages;
+			}
 		},
 		clearMessages: () => initialState
 	}
