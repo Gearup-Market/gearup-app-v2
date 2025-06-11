@@ -1,6 +1,7 @@
 import { useFetchChatMessages, useGetUserMessages } from "@/app/api/hooks/messages";
 import { useAppSelector, useAppDispatch } from "@/store/configureStore";
 import { setAllMessages, setCurrentChatMessages } from "@/store/slices/messagesSlice";
+import { useEffect } from "react";
 
 export const useMessages = () => {
 	const dispatch = useAppDispatch();
@@ -27,10 +28,21 @@ export const useCurrentChatMessages = ({ chatId }: { chatId?: string }) => {
 		isLoading
 	} = useFetchChatMessages(chatId as string);
 
-	// Dispatch action to set current chat messages
-	if (chatMessages) {
-		dispatch(setCurrentChatMessages(chatMessages?.data));
-	}
+	const currentMessages = useAppSelector(s => s.messages.currentChatMessages);
+
+	// if (chatMessages) {
+	//     dispatch(setCurrentChatMessages(chatMessages?.data));
+	// }
+
+	useEffect(() => {
+		if (
+			chatMessages &&
+			chatMessages.data &&
+			chatMessages.data._id !== currentMessages._id
+		) {
+			dispatch(setCurrentChatMessages(chatMessages.data));
+		}
+	}, [chatMessages, currentMessages, dispatch]);
 
 	return {
 		chatMessages: chatMessages?.data,

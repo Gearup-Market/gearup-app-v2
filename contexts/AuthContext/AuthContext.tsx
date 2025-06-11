@@ -16,8 +16,8 @@ import { clearState, updateVerification } from "@/store/slices/verificationSlice
 import { clearNewListing } from "@/store/slices/addListingSlice";
 
 const AuthContext = createContext<DefaultProviderType>({
-	isAuthenticated: false,
-	isOtpVerified: false,
+	isAuthenticated: null,
+	isOtpVerified: null,
 	user: null,
 	loading: false,
 	logout: async () => {}
@@ -29,12 +29,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const dispatch = useAppDispatch();
 	const user = useAppSelector(state => state.user);
 
-	const [isTokenValid, setIsTokenValid] = useState(false);
+	const [isTokenValid, setIsTokenValid] = useState<boolean | null>(null);
 	const { isFetching: isUserLoading, data: userData } = useGetUser({
 		userId: user.userId as string
 	});
 
-	const { data: tokenData, isFetched } = useGetVerifyToken({
+	const {
+		data: tokenData,
+		isFetched,
+		isFetching: isTokenFetching
+	} = useGetVerifyToken({
 		token: user.token as string
 	});
 	const { syncCartItems } = useCart();
@@ -50,12 +54,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	// Verify Token
 	useEffect(() => {
-		if (tokenData?.token) {
-			dispatch(updateToken(tokenData.token));
-			setAuthToken(tokenData.token);
+		if (isFetched) {
+			if (tokenData?.data?.token) {
+				dispatch(updateToken(tokenData.data?.token));
+				setAuthToken(tokenData.data?.token);
+				setIsTokenValid(true);
+			} else {
+				setIsTokenValid(false);
+			}
 		}
-
-		setIsTokenValid(!!tokenData);
 	}, [isFetched, tokenData, dispatch]);
 
 	// Sync User Data
@@ -87,13 +94,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const authValues = useMemo(
 		() => ({
-			isAuthenticated: isTokenValid,
+			isAuthenticated: isTokenValid === true,
 			isOtpVerified: isTokenValid,
 			user,
-			loading: isUserLoading,
+			loading: isUserLoading || isTokenFetching || isTokenValid === null,
 			logout
 		}),
-		[user, isTokenValid, isUserLoading, logout]
+		[user, isTokenValid, isUserLoading, logout, isTokenFetching]
 	);
 
 	return <AuthContext.Provider value={authValues}>{children}</AuthContext.Provider>;
@@ -122,14 +129,20 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 		[]
 	);
 
-	const returnUrl = searchParams.get("returnUrl") || pathname;
+	const structuredReturnUrl = useMemo(() => {
+		const queryString = searchParams.toString();
+		const returnUrl = searchParams.get("returnUrl");
+		return `${returnUrl || pathname}${
+			queryString.includes("returnUrl") ? "" : `?${queryString}`
+		}`;
+	}, [searchParams, pathname]);
 
 	useEffect(() => {
 		if (!loading) {
-			if (!isAuthenticated && !UNPROTECTED_ROUTES.includes(pathname)) {
-				router.replace(`/login?returnUrl=${pathname}`);
+			if (isAuthenticated === false && !UNPROTECTED_ROUTES.includes(pathname)) {
+				router.replace(`/login?returnUrl=${structuredReturnUrl}`);
 			} else if (isAuthenticated && pathname === "/login") {
-				router.replace(returnUrl);
+				router.replace(structuredReturnUrl);
 			}
 		}
 	}, [
@@ -139,7 +152,7 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 		UNPROTECTED_ROUTES,
 		router,
 		user.isAuthenticated,
-		returnUrl
+		structuredReturnUrl
 	]);
 
 	if (loading) {
