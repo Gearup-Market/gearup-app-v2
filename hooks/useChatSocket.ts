@@ -65,7 +65,7 @@ export const useChatSocket = (chatId?: string) => {
 		return () => {
 			socketInstance.disconnect();
 		};
-	}, [chatId, userId]);
+	}, [chatId, userId, dispatch]);
 
 	// Function to send a message
 	const sendMessage = (message: string) => {

@@ -23,4 +23,5 @@ export interface DefaultProviderType {
 	user: null | UserType;
 	loading: boolean;
 	logout: () => Promise<void>;
+	UNPROTECTED_ROUTES: string[];
 }

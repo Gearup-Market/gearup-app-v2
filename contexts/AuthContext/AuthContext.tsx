@@ -20,7 +20,17 @@ const AuthContext = createContext<DefaultProviderType>({
 	isOtpVerified: null,
 	user: null,
 	loading: false,
-	logout: async () => {}
+	logout: async () => {},
+	UNPROTECTED_ROUTES: [
+		"/login",
+		"/signup",
+		"/forgot-password",
+		"/password-reset",
+		"/verify",
+		"/reset",
+		"/verified",
+		"new-password"
+	]
 });
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -92,29 +102,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		router.replace("/login");
 	};
 
-	const authValues = useMemo(
-		() => ({
-			isAuthenticated: isTokenValid === true,
-			isOtpVerified: isTokenValid,
-			user,
-			loading: isUserLoading || isTokenFetching || isTokenValid === null,
-			logout
-		}),
-		[user, isTokenValid, isUserLoading, logout, isTokenFetching]
-	);
-
-	return <AuthContext.Provider value={authValues}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = () => useContext(AuthContext);
-
-export const ProtectRoute = ({ children }: ProtectRouteProps) => {
-	const router = useRouter();
-	const pathname = usePathname();
-	const searchParams = useSearchParams();
-	const { isAuthenticated, loading } = useAuth();
-	const user = useAppSelector(state => state.user);
-
 	const UNPROTECTED_ROUTES = useMemo(
 		() => [
 			"/login",
@@ -128,6 +115,40 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 		],
 		[]
 	);
+
+	const authValues = useMemo(
+		() => ({
+			isAuthenticated: isTokenValid === true,
+			isOtpVerified: isTokenValid,
+			user,
+			loading: UNPROTECTED_ROUTES.includes(pathname)
+				? isUserLoading
+				: isUserLoading || isTokenFetching || isTokenValid === null,
+			logout,
+			UNPROTECTED_ROUTES
+		}),
+		[
+			user,
+			isTokenValid,
+			isUserLoading,
+			logout,
+			isTokenFetching,
+			UNPROTECTED_ROUTES,
+			pathname
+		]
+	);
+
+	return <AuthContext.Provider value={authValues}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => useContext(AuthContext);
+
+export const ProtectRoute = ({ children }: ProtectRouteProps) => {
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const { isAuthenticated, loading, UNPROTECTED_ROUTES } = useAuth();
+	const user = useAppSelector(state => state.user);
 
 	const structuredReturnUrl = useMemo(() => {
 		const queryString = searchParams.toString();
@@ -154,6 +175,8 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 		user.isAuthenticated,
 		structuredReturnUrl
 	]);
+
+	console.log(loading);
 
 	if (loading) {
 		return (
