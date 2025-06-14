@@ -47,15 +47,8 @@ const ChatBodyElement = () => {
 	const pathname = usePathname();
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
 	const { mutateAsync: addChat } = useAddChatMessage();
-	// const {
-	// 	data: chatMessages,
-	// 	isFetching: isPending,
-	// 	refetch,
-	// 	isLoading
-	// } = useFetchChatMessages(chatId);
 	const { userId } = useAppSelector(state => state.user);
 	const { currentChatMessages } = useAppSelector(s => s.messages);
-	// console.log(currentChatMessages);
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
 		if (userId && participantId && listingId) {
