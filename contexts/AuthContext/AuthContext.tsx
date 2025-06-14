@@ -160,7 +160,7 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 
 	useEffect(() => {
 		if (!loading) {
-			if (isAuthenticated === false && !UNPROTECTED_ROUTES.includes(pathname)) {
+			if (isAuthenticated === false && !UNPROTECTED_ROUTES?.includes(pathname)) {
 				router.replace(`/login?returnUrl=${structuredReturnUrl}`);
 			} else if (isAuthenticated && pathname === "/login") {
 				router.replace(structuredReturnUrl);
