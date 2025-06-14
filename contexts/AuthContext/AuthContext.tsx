@@ -176,8 +176,6 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 		structuredReturnUrl
 	]);
 
-	console.log(loading);
-
 	if (loading) {
 		return (
 			<Box

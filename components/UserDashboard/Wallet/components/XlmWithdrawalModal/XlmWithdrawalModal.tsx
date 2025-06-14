@@ -14,7 +14,7 @@ import { calculateTotalCost } from "@/utils/stellar";
 interface Props {
 	openModal: boolean;
 	setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-    refetch: () => void;
+	refetch: () => void;
 }
 
 enum ModalType {
@@ -32,12 +32,12 @@ type FundingOption = {
 };
 
 const xlmFundOptions: FundingOption[] = [
-	{
-		id: 1,
-		title: "Withdraw to bank account",
-		description: "Withdraw XLM directly to your local bank account",
-		icon: "/svgs/xlm-bank-deposit-icon.svg"
-	},
+	// {
+	// 	id: 1,
+	// 	title: "Withdraw to bank account",
+	// 	description: "Withdraw XLM directly to your local bank account",
+	// 	icon: "/svgs/xlm-bank-deposit-icon.svg"
+	// },
 	{
 		id: 2,
 		title: "External wallet",
@@ -137,7 +137,7 @@ const WalletWithdrawalModalModal = ({ setOpenModal, openModal, refetch }: Props)
 				setModalTitle("Choose withdrawal method");
 				setModalType(ModalType.SHOW_OPTIONS);
 				setBackBtn(false);
-                refetch()
+				refetch();
 			}
 		} catch (error: any) {
 			toast.error(error?.message || "An error occured");
@@ -298,7 +298,11 @@ const WalletWithdrawalModalModal = ({ setOpenModal, openModal, refetch }: Props)
 								<p className={styles.key}>Max total</p>
 								<p className={styles.value}>{transactionValue.total}</p>
 							</div>
-							<Button className={styles.submit_btn} disabled={isPending} onClick={handleConfirm}>
+							<Button
+								className={styles.submit_btn}
+								disabled={isPending}
+								onClick={handleConfirm}
+							>
 								Confirm
 							</Button>
 						</div>
