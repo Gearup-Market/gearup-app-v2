@@ -159,7 +159,7 @@ const useGetVerifyToken = ({ token }: { token: string }) => {
 			const response = await api.get(`${API_URL.verifyToken}/${token}`);
 			return response.data;
 		},
-		enabled: !!token,
+		enabled: true,
 		refetchOnMount: true,
 		retry: false
 	});
