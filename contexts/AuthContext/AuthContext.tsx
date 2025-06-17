@@ -121,7 +121,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			isAuthenticated: isTokenValid === true,
 			isOtpVerified: isTokenValid,
 			user,
-			loading: UNPROTECTED_ROUTES.includes(pathname)
+			loading: UNPROTECTED_ROUTES.some(route => pathname.startsWith(route))
 				? isUserLoading
 				: isUserLoading || isTokenFetching || isTokenValid === null,
 			logout,
@@ -153,14 +153,21 @@ export const ProtectRoute = ({ children }: ProtectRouteProps) => {
 	const structuredReturnUrl = useMemo(() => {
 		const queryString = searchParams.toString();
 		const returnUrl = searchParams.get("returnUrl");
-		return `${returnUrl || pathname}${
+		const finalReturnUrl =
+			returnUrl && !UNPROTECTED_ROUTES?.some(route => returnUrl.startsWith(route))
+				? returnUrl
+				: pathname;
+		return `${finalReturnUrl}${
 			queryString.includes("returnUrl") ? "" : `?${queryString}`
 		}`;
-	}, [searchParams, pathname]);
+	}, [searchParams, pathname, UNPROTECTED_ROUTES]);
 
 	useEffect(() => {
 		if (!loading) {
-			if (isAuthenticated === false && !UNPROTECTED_ROUTES?.includes(pathname)) {
+			if (
+				isAuthenticated === false &&
+				!UNPROTECTED_ROUTES?.some(route => pathname.startsWith(route))
+			) {
 				router.replace(`/login?returnUrl=${structuredReturnUrl}`);
 			} else if (isAuthenticated && pathname === "/login") {
 				router.replace(structuredReturnUrl);
