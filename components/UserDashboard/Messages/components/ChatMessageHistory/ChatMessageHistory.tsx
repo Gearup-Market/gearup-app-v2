@@ -33,6 +33,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 	const pathname = usePathname();
 	const [showMessageDetails, setShowMessageDetails] = useState<boolean>(false);
 	const participantId = searchParams.get("participantId");
+	const fromListing = searchParams.get("fromListing");
 	const router = useRouter();
 	const { userId } = useAppSelector(state => state.user);
 	const { isMobile } = useResponsive();
@@ -131,8 +132,16 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 				chatBody: false,
 				userProfile: false
 			});
+		} else {
+			if (participantId && fromListing) {
+				setShowScreen({
+					chatHistory: false,
+					chatBody: true,
+					userProfile: false
+				});
+			}
 		}
-	}, [isMobile]);
+	}, [isMobile, activeChatId, participantId, fromListing]);
 
 	return (
 		<div className={styles.container}>
