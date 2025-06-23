@@ -89,7 +89,7 @@ const SignupView = () => {
 						handleSubmit(values);
 					}}
 				>
-					{({ errors, touched, isSubmitting, values }) => {
+					{({ errors, touched, values }) => {
 						const disabled =
 							!values.email ||
 							!values.userName ||
@@ -206,7 +206,7 @@ const SignupView = () => {
 								<Button
 									type="submit"
 									className={styles.button}
-									disabled={disabled || isSubmitting}
+									disabled={disabled || isPending}
 								>
 									{isPending ? (
 										<LoadingSpinner size="small" />
