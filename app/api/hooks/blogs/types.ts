@@ -7,6 +7,7 @@ export interface IGetArticle {
 	status: "available" | "unavailable";
 	readMinutes: number;
 	slug: string;
+	metaDescription: string;
 	category: IUpdateCategoryReq;
 	content: {
 		text: string;
