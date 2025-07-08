@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import styles from "./NewBlog.module.scss";
 import {
@@ -32,6 +32,8 @@ interface NewBlogFormValues {
 	category?: string;
 	readMinutes?: number;
 	status?: string;
+	slug?: string;
+	metaDescription?: string;
 }
 
 const NewBlog = () => {
@@ -51,22 +53,33 @@ const NewBlog = () => {
 	const { data, isLoading } = useGetArticleById(articleId as string);
 	const { data: categories, refetch } = useGetAllCategories();
 	const blogsCategories = categories?.data.map(item => item.name) || [];
-	const [imageSrc, setImageSrc] = useState<string>(data?.bannerImage ?? "");
+	const [imageSrc, setImageSrc] = useState<string>("");
 	const router = useRouter();
+
+	// Update imageSrc when data changes (for editing mode)
+	useEffect(() => {
+		if (data?.bannerImage) {
+			setImageSrc(data.bannerImage);
+		}
+	}, [data?.bannerImage]);
 
 	const initialValues: NewBlogFormValues = {
 		title: !!editingMode ? data?.title : "",
 		content: !!editingMode ? data?.content.text : "",
 		category: !!editingMode ? data?.category.name : "",
 		readMinutes: !!editingMode ? data?.readMinutes : 0,
-		status: !!editingMode ? data?.status : "available"
+		status: !!editingMode ? data?.status : "available",
+		slug: !!editingMode ? data?.slug : "",
+		metaDescription: !!editingMode ? data?.metaDescription : ""
 	};
 
 	const validationSchema = Yup.object().shape({
 		title: Yup.string().required("Blog title is required"),
 		content: Yup.string().required("Blog content is required"),
 		category: Yup.string().required("Blog category is required"),
-		readMinutes: Yup.string().required("Read time is required")
+		readMinutes: Yup.string().required("Read time is required"),
+		slug: Yup.string().required("Blog slug is required"),
+		metaDescription: Yup.string().required("Blog meta Description is required")
 	});
 
 	const handleUpdateSubmit = async (
@@ -346,6 +359,50 @@ const NewBlog = () => {
 										</Field>
 										<ErrorMessage
 											name="title"
+											component="div"
+											className={styles.error_text}
+										/>
+									</div>
+									<div className={styles.form_field}>
+										<Field name="slug">
+											{({ field }: any) => (
+												<InputField
+													label="Slug"
+													placeholder="Enter slug"
+													onChange={e => {
+														const sanitizedSlug =
+															e.target.value
+																.toLowerCase()
+																.trim()
+																.replace(/\s+/g, "-");
+
+														setFieldValue(
+															"slug",
+															sanitizedSlug
+														);
+													}}
+													value={values.slug}
+												/>
+											)}
+										</Field>
+										<ErrorMessage
+											name="slug"
+											component="div"
+											className={styles.error_text}
+										/>
+									</div>
+									<div className={styles.form_field}>
+										<Field name="metaDescription">
+											{({ field }: any) => (
+												<InputField
+													label="Meta Description"
+													placeholder="Enter meta Description"
+													{...field}
+												/>
+											)}
+										</Field>
+										<ErrorMessage
+											name="metaDescription"
 											component="div"
 											className={styles.error_text}
 										/>
