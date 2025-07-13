@@ -45,19 +45,28 @@ export const useCreateChatMessage = (
 	options?: UseMutationOptions<
 		ICreateChatMessageResp,
 		IGetMessagesErr,
-		{ participants: string[]; listingId: string }
+		{
+			participants: string[];
+			listingId: string;
+			listingItemType: "Listing" | "Course";
+		}
 	>
 ) => {
 	return useMutation<
 		ICreateChatMessageResp,
 		IGetMessagesErr,
-		{ participants: string[]; listingId: string }
+		{
+			participants: string[];
+			listingId: string;
+			listingItemType: "Listing" | "Course";
+		}
 	>({
-		mutationFn: async ({ participants, listingId }) => {
+		mutationFn: async ({ participants, listingId, listingItemType }) => {
 			return (
 				await api.post(`${API_URL.createMessages}`, {
 					participants,
-					listingId
+					listingId,
+					listingItemType
 				})
 			).data;
 		},

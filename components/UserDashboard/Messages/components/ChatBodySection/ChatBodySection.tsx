@@ -7,6 +7,8 @@ import ChatBodyElement from "./Components/ChatBodyElement/ChatBodyElement";
 import { useSearchParams } from "next/navigation";
 import { useGetUserDetails } from "@/app/api/hooks/users";
 import { useGetListingById } from "@/app/api/hooks/listings";
+import { useGetCourseById } from "@/app/api/hooks/courses";
+import { Course } from "@/store/slices/coursesSlice";
 
 interface ChatBodySectionProps {
 	showAllBorder?: boolean;
@@ -16,15 +18,22 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 	const searchParams = useSearchParams();
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
+	const courseId = searchParams.get("courseId");
 	const { data } = useGetUserDetails({
 		userId: participantId as string
 	});
 
 	const { data: listing } = useGetListingById(listingId as string);
+	const { data: course } = useGetCourseById(courseId as string);
 
 	return (
 		<div className={styles.container} data-borders={showAllBorder}>
-			<ReUseableChatHeader data={data} listing={listing} />
+			<ReUseableChatHeader
+				data={data}
+				listing={listing}
+				isCourse={!!courseId}
+				course={course}
+			/>
 			<ChatBodyElement />
 		</div>
 	);
@@ -32,7 +41,17 @@ const ChatBodySection = ({ showAllBorder }: ChatBodySectionProps) => {
 
 export default ChatBodySection;
 
-export const ReUseableChatHeader = ({ data, listing }: { data: any; listing: any }) => {
+export const ReUseableChatHeader = ({
+	data,
+	listing,
+	isCourse,
+	course
+}: {
+	data: any;
+	listing: any;
+	isCourse: boolean;
+	course?: any;
+}) => {
 	return (
 		<div className={styles.header}>
 			<div className={styles.left}>
@@ -55,7 +74,8 @@ export const ReUseableChatHeader = ({ data, listing }: { data: any; listing: any
 					<div className={styles.date_convo_about}>
 						{/* <span className={styles.date}> </span>{" "} */}
 						<span className={styles.convo_about}>
-							conversations about {listing?.data?.productName}
+							conversations about{" "}
+							{isCourse ? course?.data?.title : listing?.data?.productName}
 						</span>
 					</div>
 				</div>

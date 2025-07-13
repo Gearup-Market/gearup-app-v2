@@ -29,6 +29,7 @@ import { PricingData } from "@/app/api/hooks/Admin/pricing/types";
 import { RentingOfferRates } from "@/interfaces/Listing";
 import HourDatePicker from "../hourDatePicker/HourDatePicker";
 import { updateCheckout } from "@/store/slices/checkoutSlice";
+import { useGetBookedDates } from "@/app/api/hooks/transactions";
 
 const PriceContainer = ({
 	listing,
@@ -54,6 +55,10 @@ const PriceContainer = ({
 		}
 	]);
 	const { productName, offer, listingType } = listing;
+
+	const { data: bookedDatesData } = useGetBookedDates(listing._id, "Listing");
+	const bookedDates = bookedDatesData?.data.map((item: any) => item.date) || [];
+
 	const forSale = !!offer?.forSell;
 	const forRent = !!offer?.forRent;
 
@@ -185,6 +190,7 @@ const PriceContainer = ({
 					setOpenModal={setOpenModal}
 					inputDate={inputDate}
 					setIsDateSelected={setIsDateSelected}
+					disabledDates={bookedDates}
 				/>
 			);
 		}
@@ -196,6 +202,7 @@ const PriceContainer = ({
 				inputDate={inputDate}
 				setHourRentalBreakdown={setHourRentalBreakdown}
 				setIsDateSelected={setIsDateSelected}
+				disabledDates={bookedDates}
 			/>
 		);
 	};

@@ -18,6 +18,7 @@ const Messages = () => {
 	const searchParams = useSearchParams();
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
+	const courseId = searchParams.get("courseId");
 
 	if (isFetchingAllUserMessages) {
 		return (
@@ -34,7 +35,8 @@ const Messages = () => {
 
 	return (
 		<div className={styles.container}>
-			{allUserMessages?.data.length === 0 && (!participantId || !listingId) ? (
+			{allUserMessages?.data.length === 0 &&
+			(!participantId || !listingId || !courseId) ? (
 				<NoMessages />
 			) : (
 				<div className={styles.chat_messages}>

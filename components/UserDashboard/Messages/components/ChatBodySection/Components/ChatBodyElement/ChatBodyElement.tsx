@@ -43,6 +43,7 @@ const ChatBodyElement = () => {
 	} = useCurrentChatMessages({ chatId });
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
+	const courseId = searchParams.get("courseId");
 	const router = useRouter();
 	const pathname = usePathname();
 	const { mutateAsync: createChatMessage } = useCreateChatMessage();
@@ -51,14 +52,15 @@ const ChatBodyElement = () => {
 	const { currentChatMessages } = useAppSelector(s => s.messages);
 
 	const handleSubmit = async (values: { message: string }, { resetForm }: any) => {
-		if (userId && participantId && listingId) {
+		if (userId && participantId && (listingId || courseId)) {
 			try {
 				let newChatId = "";
 				// update the chatId in the URL if it's a new chat
 				if (!chatId) {
 					const resp = await createChatMessage({
 						participants: [userId as string, participantId],
-						listingId
+						listingId: listingId || courseId || "",
+						listingItemType: courseId ? "Course" : "Listing"
 					});
 					const currentParams = new URLSearchParams(searchParams.toString());
 					currentParams.set("activeChatId", resp?.data?._id);

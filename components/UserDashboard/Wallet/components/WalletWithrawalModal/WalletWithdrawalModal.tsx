@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import { isEmpty } from "lodash";
 import toast from "react-hot-toast";
 import { usePostWithdraw } from "@/app/api/hooks/wallets";
+import { useGetAllPricings } from "@/app/api/hooks/Admin/pricing";
 
 interface Props {
 	openModal: boolean;
@@ -28,7 +29,8 @@ interface Props {
 const validationSchema = Yup.object().shape({
 	amount: Yup.number()
 		.required("Amount is required")
-		.moreThan(0, "Amount must be greater than 0"),
+		.moreThan(1000, "Amount must be at least 1000")
+		.max(1000000, "Amount cannot exceed 1,000,000"),
 	pin: Yup.number()
 		.required("PIN is required")
 		.min(6, "PIN must be at least 6 characters long")
@@ -53,17 +55,23 @@ const WalletWithrawalModal = ({
 		amount: 0,
 		pin: ""
 	};
+	const { data: allPricings } = useGetAllPricings();
 
 	const isBankDetails = wallet?.bankName && wallet?.accountNumber;
 
 	const handleSubmit = async (values: PayoutFormValues) => {
+		const withdrawalFee = allPricings?.withdrawalFee || 0;
 		if (values.amount > walletBalance) {
 			toast.error("Amount is greater than available balance");
 			return;
 		}
+		if (values.amount <= withdrawalFee) {
+			toast.error("Amount must be greater than the withdrawal fee");
+			return;
+		}
 		try {
 			const payload = {
-				amount: +values.amount,
+				amount: +values.amount - withdrawalFee,
 				pin: +values.pin,
 				userId: user.userId
 			};
@@ -87,6 +95,10 @@ const WalletWithrawalModal = ({
 				<div className={styles.container__balance_container}>
 					<p className={styles.title}>Available balance</p>
 					<p className={styles.amount}>₦{formatNum(walletBalance)}</p>
+					<p className={styles.title}>
+						Withdrawal attracts a flat fee of ₦
+						{formatNum(allPricings?.withdrawalFee || 0)}
+					</p>
 				</div>
 				{isBankDetails ? (
 					<>
@@ -105,21 +117,62 @@ const WalletWithrawalModal = ({
 										>
 											<div className={styles.form_field}>
 												<Field name="amount">
-													{({ field }: FieldProps) => (
-														<InputField
-															{...field}
-															maxLength={10}
-															label="Amount"
-															type="number"
-															onChange={e => {
-																field.onChange(e);
-															}}
-															error={
-																touched.amount &&
-																errors.amount
-															}
-														/>
-													)}
+													{({ field, form }: FieldProps) => {
+														const withdrawalFee =
+															allPricings?.withdrawalFee ||
+															0;
+														const enteredAmount = Number(
+															form.values.amount
+														);
+														const netAmount =
+															enteredAmount >
+																withdrawalFee &&
+															enteredAmount >= 1000
+																? enteredAmount -
+																  withdrawalFee
+																: 0;
+														return (
+															<>
+																<InputField
+																	{...field}
+																	maxLength={7}
+																	label="Amount"
+																	type="number"
+																	max={1000000}
+																	onChange={e => {
+																		field.onChange(e);
+																	}}
+																	error={
+																		typeof form.errors
+																			.amount ===
+																			"string" &&
+																		form.touched
+																			.amount
+																			? form.errors
+																					.amount
+																			: undefined
+																	}
+																/>
+																{enteredAmount >
+																	withdrawalFee && (
+																	<p
+																		className={
+																			styles.title
+																		}
+																		style={{
+																			marginTop: 4
+																		}}
+																	>
+																		Net amount you
+																		will receive: ₦
+																		{formatNum(
+																			netAmount
+																		)}
+																	</p>
+																)}
+															</>
+														);
+													}}
 												</Field>
 											</div>
 											<div className={styles.form_field}>
