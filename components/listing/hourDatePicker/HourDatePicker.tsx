@@ -20,6 +20,7 @@ interface Props {
 	inputDate: any;
 	setHourRentalBreakdown: (e?: any) => void;
 	setIsDateSelected: (e?: any) => void;
+	disabledDates: Date[];
 }
 
 interface Period {
@@ -40,7 +41,8 @@ const HourDatePicker = ({
 	openModal,
 	inputDate,
 	setHourRentalBreakdown,
-	setIsDateSelected
+	setIsDateSelected,
+	disabledDates
 }: Props) => {
 	const [period, setPeriod] = useState<Period[]>([emptyPeriod]);
 
@@ -94,6 +96,7 @@ const HourDatePicker = ({
 						quantity={_period.quantity}
 						updatePeriod={updatePeriod}
 						deletePeriod={deletePeriod}
+						disabledDates={disabledDates}
 					/>
 				))}
 
@@ -131,11 +134,21 @@ interface BlockProps {
 	quantity: number;
 	updatePeriod: (index: number, field: keyof Period, value: any) => void;
 	deletePeriod: (index: number) => void;
+	disabledDates: Date[];
 }
 
-const Block = ({ index, date, quantity, updatePeriod, deletePeriod }: BlockProps) => {
+const Block = ({
+	index,
+	date,
+	quantity,
+	updatePeriod,
+	deletePeriod,
+	disabledDates
+}: BlockProps) => {
 	const [showCalendar, setShowCalendar] = useState<boolean>(false);
 	const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
+
+	// console.log(disabledDates);
 
 	const onDateChange = (newDate: any) => {
 		updatePeriod(index, "date", newDate);
@@ -181,6 +194,15 @@ const Block = ({ index, date, quantity, updatePeriod, deletePeriod }: BlockProps
 							className={styles.calender}
 							prev2Label={null}
 							next2Label={null}
+							// tileDisabled={({ date, view }) => {
+							// 	if (view !== "month") return false;
+
+							// 	return disabledDates.some(
+							// 		d =>
+							// 			normalizeDate(d).getTime() ===
+							// 			normalizeDate(date).getTime()
+							// 	);
+							// }}
 						/>
 					</div>
 				)}
@@ -204,3 +226,8 @@ const checkEmptyState = (period: Period[]) => {
 	}
 	return true;
 };
+
+function normalizeDate(date: Date) {
+	const newDate = new Date(date);
+	return new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
+}

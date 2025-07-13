@@ -47,8 +47,12 @@ const SummaryView = () => {
 			if (newListing.tempPhotos && newListing.tempPhotos.length > 0) {
 				try {
 					const imgUploadRes = await postUploadFile(newListing.tempPhotos!);
-					if (!imgUploadRes || !imgUploadRes.imageUrls) {
-						throw new Error("Failed to upload images");
+					if (
+						!imgUploadRes ||
+						!imgUploadRes.imageUrls ||
+						!imgUploadRes.imageUrls.length
+					) {
+						return toast.error("Failed to upload images");
 					}
 					listingPhotos = imgUploadRes.imageUrls;
 				} catch (uploadError: any) {

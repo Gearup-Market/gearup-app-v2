@@ -18,6 +18,7 @@ interface Props {
 	openModal: boolean;
 	inputDate: any;
 	setIsDateSelected: (e?: any) => void;
+	disabledDates?: Date[];
 }
 
 const DatePicker = ({
@@ -25,7 +26,8 @@ const DatePicker = ({
 	setInputDate,
 	openModal,
 	inputDate,
-	setIsDateSelected
+	setIsDateSelected,
+	disabledDates
 }: Props) => {
 	const apply = () => {
 		setIsDateSelected(true);
@@ -75,6 +77,7 @@ const DatePicker = ({
 						displayMode="dateRange"
 						rangeColors={["#F76039", "#FEEFEB", "#F76039"]}
 						minDate={new Date()}
+						disabledDates={disabledDates || []}
 						// classNames={}
 					/>
 					<div className={styles.row}>

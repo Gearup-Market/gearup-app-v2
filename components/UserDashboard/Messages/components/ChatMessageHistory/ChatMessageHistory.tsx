@@ -15,6 +15,9 @@ import { useGetUserDetails } from "@/app/api/hooks/users";
 import { useGetListingById } from "@/app/api/hooks/listings";
 import Image from "next/image";
 import { useAppSelector } from "@/store/configureStore";
+import { useGetCourseById } from "@/app/api/hooks/courses";
+import { Listing } from "@/store/slices/listingsSlice";
+import { Course } from "@/store/slices/coursesSlice";
 
 interface ShowScreen {
 	chatHistory: boolean;
@@ -44,11 +47,13 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 	});
 
 	const listingId = searchParams.get("listingId");
+	const courseId = searchParams.get("courseId");
 	const { data } = useGetUserDetails({
 		userId: participantId as string
 	});
 
 	const { data: listing } = useGetListingById(listingId as string);
+	const { data: course } = useGetCourseById(courseId as string);
 
 	// Set the first chat as active chat if no chat is active
 	useEffect(() => {
@@ -77,13 +82,17 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 		setShowMessageDetails(true);
 		setActiveChatId(id);
 		// return
+		const currentParams = new URLSearchParams(searchParams.toString());
+		if (chat?.listingItemType === "Course") {
+			currentParams.set("courseId", chat?.listingItem._id || "");
+			currentParams.delete("listingId");
+		} else {
+			currentParams.set("listingId", chat?.listingItem._id || "");
+			currentParams.delete("courseId");
+		}
 		if (!!participantId) {
-			const currentParams = new URLSearchParams(searchParams.toString());
 			currentParams.set("participantId", participantId);
 			currentParams.set("activeChatId", id);
-			if (chat?.listingItem?._id) {
-				currentParams.set("listingId", chat?.listingItem?._id || "");
-			}
 			router.push(`${pathname}?${currentParams.toString()}`);
 		}
 		if (!isMobile) return;
@@ -179,7 +188,15 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 						<ChatItem
 							key={chat._id}
 							chat={chat}
-							onClick={() => handleMessageClick(chat)}
+							onClick={() =>
+								handleMessageClick({
+									...chat,
+									listingItem: {
+										...chat.listingItem,
+										_id: chat.listingItem as unknown as string
+									}
+								})
+							}
 							active={activeChatId === chat._id}
 						/>
 					))}
@@ -204,20 +221,23 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 							<div className={styles.date_convo_about}>
 								{/* <span className={styles.date}> </span>{" "} */}
 								<span className={styles.convo_about}>
-									conversations about {listing?.data?.productName}
+									conversations about{" "}
+									{courseId
+										? course?.data?.title
+										: listing?.data?.productName}
 								</span>
 							</div>
 						</div>
 					</div>
 					<div className={styles.right}>
-						<span className={styles.icon}>
+						{/* <span className={styles.icon}>
 							<Image
 								src="/svgs/call.svg"
 								alt="phone-icon"
 								height={30}
 								width={30}
 							/>
-						</span>
+						</span> */}
 						<span className={styles.icon}>
 							<Image
 								src="/svgs/error.svg"

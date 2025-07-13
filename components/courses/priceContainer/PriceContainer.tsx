@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./PriceContainer.module.scss";
 import { Course } from "@/store/slices/coursesSlice";
 import { PricingData } from "@/app/api/hooks/Admin/pricing/types";
-import { formatNumber } from "@/utils";
+import { AppRoutes, formatNumber } from "@/utils";
 import { Button, Ratings } from "@/shared";
 import { CourseType } from "@/views/CourseListingView/CourseListingView";
 import format from "date-fns/format";
@@ -53,6 +53,18 @@ const PriceContainer = ({
 		}
 	};
 
+	const goToChat = () => {
+		if (user._id === course?.author._id)
+			return toast.error("Can not buy own course?");
+		router.push(
+			user.isAuthenticated
+				? `${AppRoutes.userDashboard.messages}?participantId=${course?.author?._id}&courseId=${course?._id}&fromListing=true`
+				: `/signup`
+		);
+	};
+
+	// console.log(course);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.price_card}>
@@ -100,6 +112,13 @@ const PriceContainer = ({
 				<div className={styles.buttons}>
 					<Button className={styles.button} onClick={handleAddToCart}>
 						Add to cart
+					</Button>
+					<Button
+						buttonType="secondary"
+						className={`${styles.button} ${styles.ask_question}`}
+						onClick={goToChat}
+					>
+						Ask a question
 					</Button>
 				</div>
 			</div>

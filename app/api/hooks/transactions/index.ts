@@ -66,6 +66,24 @@ const useGetCart = (
 		refetchOnMount: true
 	});
 
+const useGetBookedDates = (
+	listingId: string,
+	listingItemType: "Listing" | "Course",
+	options?: UseQueryOptions<any, IGetErr>
+) =>
+	useQuery<any, IGetErr>({
+		queryKey: ["booked-dates"],
+		queryFn: async () =>
+			(
+				await api.get(
+					`${API_URL.transactions}/booked-dates/${listingItemType}/${listingId}`
+				)
+			).data,
+		...options,
+		enabled: !!listingId,
+		refetchOnMount: true
+	});
+
 const usePostTransaction = (
 	options?: Omit<
 		UseMutationOptions<iPostTransactionRes, iPostCartErr, any>,
@@ -182,5 +200,6 @@ export {
 	useGetSingleTransactions,
 	usePostTransactionStatus,
 	getTransactions,
-	useGetSearchTransactions
+	useGetSearchTransactions,
+	useGetBookedDates
 };

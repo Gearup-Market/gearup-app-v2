@@ -12,11 +12,13 @@ import { useGetListingById } from "@/app/api/hooks/listings";
 import UserSocials from "@/shared/userSocials/UserSocials";
 import { UserUpdateResp } from "@/app/api/hooks/users/types";
 import { formatNum, shortenTitle } from "@/utils";
+import { useGetCourseById } from "@/app/api/hooks/courses";
 
 const UserProfileSection = () => {
 	const searchParams = useSearchParams();
 	const participantId = searchParams.get("participantId");
 	const listingId = searchParams.get("listingId");
+	const courseId = searchParams.get("courseId");
 	const router = useRouter();
 	const { isFetching: fetchingUser, data } = useGetUserDetails({
 		userId: participantId as string
@@ -28,13 +30,18 @@ const UserProfileSection = () => {
 		error
 	} = useGetListingById(listingId as string);
 
+	const { data: course, isFetching: fetchingCourse } = useGetCourseById(
+		courseId as string
+	);
+
 	const isRent = !!listing?.data?.offer;
 	const isBuy = !!listing?.data?.offer?.forSell;
-	const price =
-		listing?.data?.offer?.forSell?.pricing ||
-		(listing?.data?.offer?.forRent?.rates.length
-			? listing?.data?.offer?.forRent?.rates[0].price
-			: 0);
+	const price = courseId
+		? course?.data?.price
+		: listing?.data?.offer?.forSell?.pricing ||
+		  (listing?.data?.offer?.forRent?.rates.length
+				? listing?.data?.offer?.forRent?.rates[0].price
+				: 0);
 	const isBoth = isRent && isBuy;
 	const currency =
 		listing?.data?.offer?.forSell?.currency ||
@@ -88,14 +95,16 @@ const UserProfileSection = () => {
 						<p>{data?.data?.totalDeals} deals</p>
 						<UserSocials user={data?.data as UserUpdateResp} />
 					</div>
-					{listing?.data && (
+					{(listing?.data || course?.data) && (
 						<div className={styles.conversation_about}>
 							<p className={styles.title}>CONVERSATION ABOUT</p>
 
 							<div className={styles.conversation_image}>
 								<CustomImage
 									src={
-										listing?.data.listingPhotos[0] ??
+										(courseId
+											? course?.data.cover
+											: listing?.data.listingPhotos[0]) ??
 										"/svgs/convo_image.svg"
 									}
 									height={150}
@@ -107,15 +116,21 @@ const UserProfileSection = () => {
 								className={styles.convo_name}
 								style={{ cursor: "pointer" }}
 								onClick={() =>
-									router.push(`/listings/${listing?.data.productSlug}`)
+									router.push(
+										courseId
+											? `/courses/${course?.data._id}`
+											: `/listings/${listing?.data.productSlug}`
+									)
 								}
 							>
-								{listing?.data.productName}
+								{courseId
+									? course?.data.title
+									: listing?.data.productName}
 							</h2>
 							<p className={styles.text}>
-								<span className={styles.amount}>{`${currency} ${formatNum(
-									price
-								)}`}</span>
+								<span className={styles.amount}>{`${
+									currency || "₦"
+								} ${formatNum(price)}`}</span>
 								{isRent && (
 									<span className={styles.day}>
 										/{listing.data.offer.forRent?.rates[0].duration}
