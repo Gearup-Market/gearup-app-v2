@@ -109,21 +109,21 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 								</p>
 							</div>
 						</div>
-						<span className={styles.divider_container}>
+						{/* <span className={styles.divider_container}>
 							<hr className={styles.divider} />
 							or
 							<hr className={styles.divider} />
-						</span>
+						</span> */}
 					</>
 				)}
-				<InputField
+				{/* <InputField
 					placeholder="Enter amount"
 					label="Amount"
 					value={amount}
 					type="number"
 					min={0}
 					onChange={e => setAmount(e.target.value)}
-				/>
+				/> */}
 				{/* <div>
 					<ul className={styles.container__bank_details}>
 						{fundOptions.map((option, index) => {
