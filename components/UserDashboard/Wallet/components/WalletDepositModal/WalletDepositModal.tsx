@@ -124,7 +124,7 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 					min={0}
 					onChange={e => setAmount(e.target.value)}
 				/>
-				<div>
+				{/* <div>
 					<ul className={styles.container__bank_details}>
 						{fundOptions.map((option, index) => {
 							return (
@@ -194,7 +194,7 @@ const WalletDepositModal = ({ openModal, close, refetch }: Props) => {
 							);
 						})}
 					</ul>
-				</div>
+				</div> */}
 			</div>
 		</Modal>
 	);
