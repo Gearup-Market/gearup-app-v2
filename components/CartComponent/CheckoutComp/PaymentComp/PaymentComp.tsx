@@ -233,12 +233,12 @@ const PaymentComp = ({
 					hasBalance
 					onClick={() => setOpenOffRampModal(true)}
 				/>
-				<PaystackPaymentButton {...paystackComponentProps} disabled={amount <= 0}>
+				{/* <PaystackPaymentButton {...paystackComponentProps} disabled={amount <= 0}>
 					<PaymentOption
 						title="Pay with paystack"
 						icon="/svgs/paystack-wallet.svg"
 					/>
-				</PaystackPaymentButton>
+				</PaystackPaymentButton> */}
 			</div>
 			<SuccessModal openModal={openModal} setOpenModal={setOpenModal} />
 			{openOffRampModal && (
