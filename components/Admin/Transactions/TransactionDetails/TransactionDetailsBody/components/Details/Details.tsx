@@ -16,8 +16,8 @@ interface Props {
 
 const DetailsComponent = ({ item }: Props) => {
 	const { data: allPricings, isLoading } = useGetAllPricings();
-	const { data: merchant } = useGetUser({ userId: item?.seller?.userId })
-	const { data: customer } = useGetUser({ userId: item?.buyer?.userId })
+	const { data: merchant } = useGetUser({ userId: item?.seller?.userId });
+	const { data: customer } = useGetUser({ userId: item?.buyer?.userId });
 
 	const formatDate = (isoString: string): string => {
 		const date = new Date(isoString);
@@ -41,7 +41,6 @@ const DetailsComponent = ({ item }: Props) => {
 	const fee = price * (allPricings?.valueAddedTax! / 100);
 	const total = price + vat + fee;
 
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__left}>
@@ -57,7 +56,10 @@ const DetailsComponent = ({ item }: Props) => {
 							style={{ display: "flex", alignItems: "center", gap: "10px" }}
 						>
 							<p>{item._id}</p>
-							<span className={styles.icon} onClick={() => copyText(item._id)}>
+							<span
+								className={styles.icon}
+								onClick={() => copyText(item._id)}
+							>
 								<CopyIcon />
 							</span>
 						</span>
@@ -94,21 +96,28 @@ const DetailsComponent = ({ item }: Props) => {
 					</div>
 				</div>
 				<div>
-					<DetailsTimeline timelines={item?.stages ?? []} status={item?.status} />
+					<DetailsTimeline
+						timelines={item?.stages ?? []}
+						status={item?.status}
+					/>
 				</div>
 			</div>
 			<div className={styles.container__right}>
 				<PersonalDetails
 					title="Customer"
-					name={customer?.data?.userName}
-					subText={!!customer?.data?.address ? customer?.data?.address : "Nigeria"}
-					profileLink={AppRoutes.userDetails(customer?.data?.userId)}
+					name={item.buyer.userName}
+					subText={
+						!!customer?.data?.address ? customer?.data?.address : "Nigeria"
+					}
+					profileLink={`/admin/users/${item.buyer.userId}`}
 				/>
 				<PersonalDetails
 					title="Merchant"
-					name={merchant?.data?.userName}
-					subText={!!merchant?.data?.address ? merchant?.data?.address : "Nigeria"}
-					profileLink={AppRoutes.userDetails(merchant?.data?.userId)}
+					name={item.seller.userName}
+					subText={
+						!!merchant?.data?.address ? merchant?.data?.address : "Nigeria"
+					}
+					profileLink={`/admin/users/${item.seller.userId}`}
 				/>
 				<StatusUpdate activeStatus={item?.status} />
 			</div>
