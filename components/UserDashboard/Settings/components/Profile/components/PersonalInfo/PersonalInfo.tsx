@@ -264,6 +264,19 @@ const PersonalInfoForm: React.FC = () => {
 														});
 													}}
 												/>
+												// <LocationAutoComplete
+												// 	{...field}
+												// 	label="Enter address"
+												// 	error={
+												// 		(touched.address &&
+												// 			errors.address) ||
+												// 		""
+												// 	}
+												// 	onAddressSelect={setLocation}
+												// 	placeholder={removePlusCode(
+												// 		user?.address as string
+												// 	)}
+												// />
 											)}
 										</Field>
 									</div>
