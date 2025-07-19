@@ -9,10 +9,22 @@ import Link from "next/link";
 import { AppRoutes } from "@/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAppSelector } from "@/store/configureStore";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const ProfileCard = ({ listing }: { listing: Listing }) => {
-	const { userId } = useAppSelector(state => state.user);
+	const { userId, isAuthenticated } = useAppSelector(state => state.user);
+	const router = useRouter();
 	const { location, user, reviews, averageRating, ownerTotalListings } = listing;
+	const goToChat = () => {
+		if (userId === user._id) return toast.error("Can not buy own listing");
+		router.push(
+			isAuthenticated
+				? `${AppRoutes.userDashboard.messages}?participantId=${user?._id}&listingId=${listing?._id}&fromListing=true`
+				: `/signup`
+		);
+	};
+
 	return (
 		<div className={styles.card}>
 			<div className={styles.text}>
@@ -59,16 +71,20 @@ const ProfileCard = ({ listing }: { listing: Listing }) => {
 					</div>
 				</div>
 				{userId !== user._id && (
-					<Link
-						href={`${AppRoutes.userDashboard.messages}?participantId=${user?._id}&listingId=${listing?._id}`}
+					// <Link
+					// 	href={`${AppRoutes.userDashboard.messages}?participantId=${user?._id}&listingId=${listing?._id}`}
+					// >
+					<Button
+						className={styles.button}
+						buttonType="transparent"
+						onClick={goToChat}
 					>
-						<Button className={styles.button} buttonType="transparent">
-							<div className={styles.icon}>
-								<Image src="/svgs/send.svg" alt="" fill sizes="100vw" />
-							</div>
-							<h5>Send a message</h5>
-						</Button>
-					</Link>
+						<div className={styles.icon}>
+							<Image src="/svgs/send.svg" alt="" fill sizes="100vw" />
+						</div>
+						<h5>Send a message</h5>
+					</Button>
+					// </Link>
 				)}
 			</div>
 			{user?.about && (
