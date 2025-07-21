@@ -11,6 +11,8 @@ import Link from "next/link";
 import WishlistComponent from "../WishlistComponent/WishlistComponent";
 import { useAdminAuth } from "@/contexts/AuthContext/AdminAuthContext";
 import { useAppSelector } from "@/store/configureStore";
+import { useRouter } from "next/navigation";
+import useCart from "@/hooks/useCart";
 
 const AdminNavbar = () => {
 	const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -18,6 +20,9 @@ const AdminNavbar = () => {
 	const [showDropDown, setShowDropDown] = useState(false);
 	const [showWishList, setShowWishList] = useState(false);
 	const { user } = useAuth();
+	const router = useRouter();
+	const { getCartItems } = useCart();
+	const cartItems = getCartItems();
 
 	useEffect(() => {
 		// Function to handle click events
@@ -86,6 +91,29 @@ const AdminNavbar = () => {
 			<div className={styles.navbar_container__details}>
 				<Button
 					buttonType="transparent"
+					className={styles.cart_icon}
+					onClick={() => {
+						router.push("/cart");
+						setCollapsed(!collapsed);
+					}}
+					data-cart={!!cartItems?.items.length}
+				>
+					<div>
+						<Image
+							src={"/svgs/icon-cart-dark.svg"}
+							fill
+							alt=""
+							sizes="100vw"
+						/>
+					</div>
+					{cartItems?.items.length ? (
+						<div className={styles.cart}>
+							<p>{cartItems?.items.length}</p>
+						</div>
+					) : null}
+				</Button>
+				<Button
+					buttonType="transparent"
 					className={`${styles.small_icon} ${styles.circle_border}`}
 				>
 					<Image
@@ -145,7 +173,7 @@ const MenuDropDown = ({
 	showDropDownMenu: boolean;
 	setShowWishList: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-		const user = useAppSelector(state => state.user);
+	const user = useAppSelector(state => state.user);
 	return (
 		<div
 			className={`${styles.drop_down_menu_container} drop-down-menu-class`}

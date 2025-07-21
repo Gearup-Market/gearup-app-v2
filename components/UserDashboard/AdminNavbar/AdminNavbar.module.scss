@@ -11,7 +11,46 @@
 	box-sizing: border-box;
 	position: relative;
 	background-color: #fff;
-	
+	.cart_icon {
+		width: 4rem;
+		height: 4rem;
+		padding: 1.2rem;
+		div {
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+		border-radius: 50%;
+		border-color: $col-white;
+		&:hover {
+			background-color: rgba($col-white, 0.12);
+		}
+	}
+	.cart_icon {
+		width: auto;
+		gap: 0.8rem;
+		&[data-cart="true"] {
+			border-radius: 4rem;
+		}
+		div {
+			width: 2rem;
+			height: 2rem;
+		}
+		.cart {
+			background-color: #7f1b14;
+			border-radius: 50%;
+			width: 2.4rem;
+			height: 2.4rem;
+			@extend %center;
+			p {
+				color: white;
+				font-weight: 700;
+				font-size: 1.4rem;
+				line-height: 1.4rem;
+			}
+		}
+	}
+
 	.icons_container {
 		display: flex;
 		gap: 1.5rem;
