@@ -22,6 +22,7 @@ import { Course } from "@/store/slices/coursesSlice";
 import { isListing } from "../../CartItems/CartItems";
 import { useGetOffRampRates, usePostOffRampPayment } from "@/app/api/hooks/wallets";
 import Modal from "@/shared/modals/modal/Modal";
+import { WalletDepositModal } from "@/components/UserDashboard/Wallet/components";
 export enum PaymentMethod {
 	Wallet = "wallet",
 	Paystack = "paystack",
@@ -45,7 +46,7 @@ const PaymentComp = ({
 	rentalBreakdown?: RentalBreakdown[];
 	listingModelType: string;
 }) => {
-	const { walletResult, isFetching } = useWallet();
+	const { walletResult, isFetching, refetch } = useWallet();
 	const {
 		data: xlmWallet,
 		isFetching: xlmWalletFetching,
@@ -83,6 +84,7 @@ const PaymentComp = ({
 
 	const [openModal, setOpenModal] = useState(false);
 	const [openOffRampModal, setOpenOffRampModal] = useState(false);
+	const [openFundModal, setOpenFundModal] = useState(false);
 
 	const onPaystackSuccess = async ({ reference, status }: any) => {
 		if (status === "success") {
@@ -131,7 +133,8 @@ const PaymentComp = ({
 
 	const payWithWallet = async () => {
 		if (walletBalance < amount) {
-			toast.error("Insufficient funds in wallet");
+			toast.error("Insufficient funds in wallet, please fund your wallet");
+			setOpenFundModal(true);
 			return;
 		}
 		try {
@@ -248,6 +251,13 @@ const PaymentComp = ({
 					amount={amount}
 					handleOffRampPayment={handleOffRampPayment}
 					isPostingOffRampPayment={isPostingOffRampPayment}
+				/>
+			)}
+			{openFundModal && (
+				<WalletDepositModal
+					openModal={openFundModal}
+					close={() => setOpenFundModal(false)}
+					refetch={refetch}
 				/>
 			)}
 		</div>
