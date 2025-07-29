@@ -46,7 +46,7 @@ const Wallet = () => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.container__header_container}>
-				<div
+				{/* <div
 					className={`${styles.container__header_container__item} ${styles.left}`}
 				>
 					<div>
@@ -74,7 +74,7 @@ const Wallet = () => {
 							Withdraw
 						</Button>
 					</div>
-				</div>
+				</div> */}
 				<>
 					{isRequests ? (
 						<div

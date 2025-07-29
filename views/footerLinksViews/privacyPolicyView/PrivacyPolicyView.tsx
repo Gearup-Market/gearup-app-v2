@@ -42,7 +42,7 @@ const PrivacyPolicyView = () => {
 						</div>
 						<ul className={styles.list}>
 							<li className={styles.list_item}>
-								<span>Account Information:</span> Name, ID, BVN,
+								<span>Account Information:</span> Name, ID, NIN,
 								biometric, age, location/address, country, date of birth,
 								email address, phone number, and password.
 							</li>

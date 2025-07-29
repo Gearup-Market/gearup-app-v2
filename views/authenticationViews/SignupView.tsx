@@ -183,7 +183,7 @@ const SignupView = () => {
 											<a
 												target="_blank"
 												rel="noreferrer noopener"
-												href="#"
+												href="/privacy-policy"
 												style={{ fontSize: "1.4rem" }}
 											>
 												Privacy Policy
@@ -192,7 +192,7 @@ const SignupView = () => {
 											<a
 												target="_blank"
 												rel="noreferrer noopener"
-												href="#"
+												href="terms-&-conditions"
 												style={{ fontSize: "1.4rem" }}
 											>
 												Terms and conditions.
