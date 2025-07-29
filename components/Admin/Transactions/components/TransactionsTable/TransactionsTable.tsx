@@ -21,7 +21,10 @@ import NoTransactions from "@/components/UserDashboard/Transactions/components/N
 import { formatDate, formatNum } from "@/utils";
 import { Filter } from "@/interfaces/Listing";
 import { useAppSelector } from "@/store/configureStore";
-import { useGetAllTransactions, useGetAllUserTransactions } from "@/app/api/hooks/Admin/transactions";
+import {
+	useGetAllTransactions,
+	useGetAllUserTransactions
+} from "@/app/api/hooks/Admin/transactions";
 
 interface Props {
 	transactionType: string;
@@ -42,7 +45,7 @@ const TransactionTable = ({
 	const [limit, setLimit] = useState(7);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [isNoSearchResult, setIsNoSearchResult] = useState(false);
-	const { slug: currentUserId } = useParams()
+	const { slug: currentUserId } = useParams();
 
 	const { userId } = useAppSelector(s => s.user);
 
@@ -50,10 +53,13 @@ const TransactionTable = ({
 		enabled: !currentUserId
 	});
 
-	const { data: userTransactions } = useGetAllUserTransactions({ page: currentPage, userId: currentUserId as string });
+	const { data: userTransactions } = useGetAllUserTransactions({
+		page: currentPage,
+		userId: currentUserId as string
+	});
 
 	// if the currentUserId is present in the url, it means that this table is currently been rendered in the user details page and therefore we need to show the transaction for this particular user
-	const listings = !!currentUserId ? (userTransactions?.data || []) : data?.data || [];
+	const listings = !!currentUserId ? userTransactions?.data || [] : data?.data || [];
 
 	const updatePage = (page: number) => {
 		setCurrentPage(page);
@@ -109,7 +115,7 @@ const TransactionTable = ({
 		// 	?.name.toLowerCase();
 
 		return listings.map((listing: any) => {
-			const { _id } = listing;
+			const { _id, createdAt, status, amount } = listing;
 			if (!listing.item) {
 				return {
 					id: _id,
@@ -126,27 +132,21 @@ const TransactionTable = ({
 					category: "Unavailable"
 				};
 			}
-			const {
-				productName,
-				offer,
-				createdAt,
-				listingType,
-				status,
-				listingPhotos,
-				category
-			} = listing.item;
+			const { productName, offer, listingType, listingPhotos, category } =
+				listing.item;
 			const type = listingType === "both" ? "rent | sell" : listingType;
-			const price =
-				type === "rent"
-					? offer?.forRent?.rates.length
-						? offer?.forRent?.rates[0].price
-						: 0
-					: offer?.forSell?.pricing;
+			// const price =
+			// 	type === "rent"
+			// 		? offer?.forRent?.rates.length
+			// 			? offer?.forRent?.rates[0].price
+			// 			: 0
+			// 		: offer?.forSell?.pricing;
 			const image = listingPhotos?.[0] || null;
+
 			return {
 				id: _id,
 				title: productName,
-				price,
+				price: amount,
 				transaction_date: createdAt,
 				type,
 				status,
@@ -168,19 +168,12 @@ const TransactionTable = ({
 		// 		return false; */
 		// 	return true;
 		// });
-	}, [listings, activeFilter, activeSubFilterId, filters]);
+	}, [listings]);
 
 	const sharedColDef: GridColDef = {
 		field: "",
 		sortable: true,
 		flex: 1
-	};
-
-	const handlePagination = (page: number) => {
-		const start = (page - 1) * limit;
-		const end = start + limit;
-		setPaginatedTransactions(end);
-		setPage(page);
 	};
 
 	// const columns: GridColDef[] = [
@@ -309,12 +302,9 @@ const TransactionTable = ({
 					<p
 						style={{ fontSize: "1.2rem" }}
 						className={styles.container__status_container__status}
+						data-status={value}
 					>
-						{value?.toLowerCase() !== "unavailable"
-							? value?.toLowerCase() === "available"
-								? "Live"
-								: "Paused"
-							: "Unavailable"}
+						{value}
 					</p>
 				</div>
 			)
@@ -394,7 +384,7 @@ const TransactionTable = ({
 												? true
 												: false
 										}
-									// loading={isFetching}
+										// loading={isFetching}
 									/>
 								))}
 							</>
