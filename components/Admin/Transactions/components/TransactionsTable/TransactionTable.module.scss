@@ -69,7 +69,8 @@
 		&__status {
 			border-radius: 0.5rem;
 			font-weight: 600;
-			&[data-status="awaiting approval"] {
+			&[data-status="awaiting approval"],
+			&[data-status="pending"] {
 				background-color: #fffaeb;
 				color: #b54708;
 			}
@@ -81,7 +82,8 @@
 				background-color: #f0f9ff;
 				color: #026aa2;
 			}
-			&[data-status="declined"] {
+			&[data-status="declined"],
+			&[data-status="cancelled"] {
 				background-color: #fef3f2;
 				color: #b42318;
 			}
