@@ -59,6 +59,29 @@ const AdminNavbar = () => {
 				<div className={styles.mob_buttons}>
 					<Button
 						buttonType="transparent"
+						className={`${styles.cart_icon} ${styles.circle_border}`}
+						onClick={() => {
+							router.push("/cart");
+							setCollapsed(!collapsed);
+						}}
+						data-cart={!!cartItems?.items.length}
+					>
+						<div className={styles.cart__icon}>
+							<Image
+								src={"/svgs/icon-cart-dark.svg"}
+								fill
+								alt=""
+								sizes="100vw"
+							/>
+						</div>
+						{cartItems?.items.length ? (
+							<div className={styles.cart}>
+								<p>{cartItems?.items.length}</p>
+							</div>
+						) : null}
+					</Button>
+					<Button
+						buttonType="transparent"
 						className={`${styles.small_icon} ${styles.circle_border}`}
 					>
 						<Image
@@ -91,14 +114,14 @@ const AdminNavbar = () => {
 			<div className={styles.navbar_container__details}>
 				<Button
 					buttonType="transparent"
-					className={styles.cart_icon}
+					className={`${styles.cart_icon} ${styles.circle_border}`}
 					onClick={() => {
 						router.push("/cart");
 						setCollapsed(!collapsed);
 					}}
 					data-cart={!!cartItems?.items.length}
 				>
-					<div>
+					<div className={styles.cart__icon}>
 						<Image
 							src={"/svgs/icon-cart-dark.svg"}
 							fill

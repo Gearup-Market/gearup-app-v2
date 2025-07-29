@@ -95,7 +95,7 @@
 				line-height: 5rem;
 				font-weight: bold;
 				margin: 1.5rem 0; /* Spacing above and below */
-				color: #2c3e50; /* Dark color for main title */
+				color: #000; /* Dark color for main title */
 			}
 
 			h2 {
@@ -103,7 +103,14 @@
 				line-height: 4rem;
 				font-weight: bold;
 				margin: 1.2rem 0; /* Spacing above and below */
-				color: #34495e; /* Slightly lighter color */
+				color: #000; /* Slightly lighter color */
+				span {
+					font-size: 3.2rem; /* 32px */
+					line-height: 4rem;
+					font-weight: bold;
+					margin: 1.2rem 0; /* Spacing above and below */
+					color: #000; /* Slightly lighter color */
+				}
 			}
 
 			h3 {
@@ -112,6 +119,13 @@
 				font-weight: bold;
 				margin: 1rem 0; /* Spacing above and below */
 				color: #4e5b77; /* Even lighter color */
+				span {
+					font-size: 2.4rem; /* 28px */
+					line-height: 3.2rem;
+					font-weight: bold;
+					margin: 1rem 0; /* Spacing above and below */
+					color: #4e5b77;
+				}
 			}
 
 			h4 {

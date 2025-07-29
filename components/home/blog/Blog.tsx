@@ -55,7 +55,7 @@ const Blog = () => {
 							>
 								{blog.title}
 							</h2>
-							<p
+							{/* <p
 								className={
 									styles.container__blogs_section__blog__content__description
 								}
@@ -65,7 +65,7 @@ const Blog = () => {
 										__html: shortenTitle(blog.content.text, 100) ?? ""
 									}}
 								/>
-							</p>
+							</p> */}
 						</div>
 
 						<Link href={`/blog/${blog.slug}`} className={styles.learn_more}>

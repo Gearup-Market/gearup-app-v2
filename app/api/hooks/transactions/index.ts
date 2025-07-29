@@ -84,6 +84,16 @@ const useGetBookedDates = (
 		refetchOnMount: true
 	});
 
+const useGetReceipt = (transactionId: string, options?: UseQueryOptions<any, IGetErr>) =>
+	useQuery<any, IGetErr>({
+		queryKey: ["receipt"],
+		queryFn: async () =>
+			(await api.get(`${API_URL.transactions}/receipt/${transactionId}`)).data,
+		...options,
+		enabled: !!transactionId,
+		refetchOnMount: true
+	});
+
 const usePostTransaction = (
 	options?: Omit<
 		UseMutationOptions<iPostTransactionRes, iPostCartErr, any>,
@@ -201,5 +211,6 @@ export {
 	usePostTransactionStatus,
 	getTransactions,
 	useGetSearchTransactions,
-	useGetBookedDates
+	useGetBookedDates,
+	useGetReceipt
 };
