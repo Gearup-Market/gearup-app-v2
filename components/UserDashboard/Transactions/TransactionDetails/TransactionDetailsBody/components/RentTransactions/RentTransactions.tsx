@@ -11,7 +11,7 @@ const RentTransactions = () => {
 	const { transaction } = useAppSelector(s => s.transaction);
 	const [openModal, setOpenModal] = useState(false);
 
-	if(!transaction) return null;
+	if (!transaction) return null;
 	const timeline = transaction.userRole;
 
 	return (
