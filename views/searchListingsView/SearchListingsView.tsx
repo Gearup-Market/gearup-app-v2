@@ -26,12 +26,13 @@ const SearchListingsView = () => {
 		null
 	);
 	const [isMobile, setIsMobile] = useState<boolean>(true);
-	const [currentPage, setCurrentPage] = useState<number>(1);
+	// const [currentPage, setCurrentPage] = useState<number>(1);
 	const elementRef: any = useRef(null);
 	const pathName = usePathname();
 	const listingsData = searchedListings.length > 0 ? searchedListings : listings;
 
 	const searchParams = new URLSearchParams(search.toString());
+	const page = searchParams.get("page");
 	const fieldsParams: Record<string, string[]> = {};
 
 	Array.from(searchParams.entries()).forEach(([key, value]) => {
@@ -50,7 +51,7 @@ const SearchListingsView = () => {
 		fields: Object.keys(fieldsParams).length > 0 ? fieldsParams : undefined
 	};
 
-	const { meta, isFetching } = useListings(currentPage, queryParams);
+	const { meta, isFetching } = useListings(Number(page), queryParams);
 
 	const checkActive = (url: string) => {
 		return url === typePathName;
@@ -119,9 +120,17 @@ const SearchListingsView = () => {
 		[searchParams, router, pathName]
 	);
 
-	const updatePage = (page: number) => {
-		setCurrentPage(page);
-	};
+	const updatePage = useCallback(
+		(page: number) => {
+			const current = new URLSearchParams(Array.from(searchParams.entries()));
+			current.set("page", page.toString());
+			const search = current.toString();
+			const query = search ? `?${search}` : "";
+
+			router.push(`${pathName}${query}`);
+		},
+		[pathName, router, searchParams]
+	);
 
 	useEffect(() => {
 		if (!categories?.data) return;
@@ -151,6 +160,12 @@ const SearchListingsView = () => {
 			}
 		}
 	}, [categories, search]);
+
+	useEffect(() => {
+		if (!page) {
+			updatePage(1);
+		}
+	}, [page, updatePage]);
 
 	return (
 		<section className={styles.section} data-hidden={hideFilters} ref={elementRef}>
@@ -256,7 +271,7 @@ const SearchListingsView = () => {
 								))}
 							</div>
 							<Pagination
-								currentPage={currentPage}
+								currentPage={Number(page)}
 								totalCount={meta?.total || 0}
 								pageSize={meta?.limit || 12}
 								onPageChange={(page: any) => updatePage(page)}

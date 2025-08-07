@@ -47,7 +47,12 @@ const LendersTimeline = ({ openModal, setOpenModal }: Props) => {
 						<ConfirmHandover item={transaction} handleNext={handleAction} />
 					)}
 					{steps === 3 && <AwaitingConfirmation />}
-					{steps === 4 && <TransactionOngoing isTimeElapsed={false} />}
+					{steps === 4 && (
+						<TransactionOngoing
+							isTimeElapsed={false}
+							handleNext={handleAction}
+						/>
+					)}
 					{steps === 5 && <ConfirmReturn handleNext={handleAction} />}
 					{steps === 6 && (
 						<CustomRatingFeedback
