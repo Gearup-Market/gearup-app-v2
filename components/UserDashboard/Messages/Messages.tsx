@@ -33,10 +33,15 @@ const Messages = () => {
 		);
 	}
 
+	console.log(
+		!allUserMessages?.data.length && !participantId && (!listingId || !courseId)
+	);
+
 	return (
 		<div className={styles.container}>
 			{allUserMessages?.data.length === 0 &&
-			(!participantId || !listingId || !courseId) ? (
+			!participantId &&
+			(!listingId || !courseId) ? (
 				<NoMessages />
 			) : (
 				<div className={styles.chat_messages}>
