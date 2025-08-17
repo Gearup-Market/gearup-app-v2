@@ -39,7 +39,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 	const fromListing = searchParams.get("fromListing");
 	const router = useRouter();
 	const { userId } = useAppSelector(state => state.user);
-	const { isTablet } = useResponsive();
+	const { isMobile } = useResponsive();
 	const [showScreen, setShowScreen] = useState<ShowScreen>({
 		chatHistory: true,
 		chatBody: false,
@@ -95,7 +95,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 			currentParams.set("activeChatId", id);
 			router.push(`${pathname}?${currentParams.toString()}`);
 		}
-		if (!isTablet) return;
+		if (!isMobile) return;
 		setShowScreen({
 			chatHistory: false,
 			chatBody: true,
@@ -105,7 +105,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 
 	const handleSeeDetails = () => {
 		setShowMessageDetails(false);
-		if (!isTablet) return;
+		if (!isMobile) return;
 		setShowScreen({
 			chatHistory: false,
 			chatBody: false,
@@ -116,7 +116,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 	const handleBack = () => {
 		if (showScreen.userProfile) {
 			setShowMessageDetails(true);
-			if (!isTablet) return;
+			if (!isMobile) return;
 			setShowScreen({
 				chatHistory: false,
 				chatBody: true,
@@ -124,7 +124,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 			});
 		} else if (showScreen.chatBody) {
 			setShowMessageDetails(false);
-			if (!isTablet) return;
+			if (!isMobile) return;
 			setShowScreen({
 				chatHistory: true,
 				chatBody: false,
@@ -135,7 +135,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 
 	// a useEffect to reset the view on large screen
 	useEffect(() => {
-		if (!isTablet) {
+		if (!isMobile) {
 			setShowScreen({
 				chatHistory: true,
 				chatBody: false,
@@ -150,7 +150,7 @@ const ChatMessageHistory = ({ allUserMessages }: Props) => {
 				});
 			}
 		}
-	}, [isTablet, activeChatId, participantId, fromListing]);
+	}, [isMobile, activeChatId, participantId, fromListing]);
 
 	return (
 		<div className={styles.container}>
