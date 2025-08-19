@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./TransactionCardMob.module.scss";
 import Image from "next/image";
 import { Button, MobileCard } from "@/shared";
+import Link from "next/link";
 
 interface Props {
 	item: any;
@@ -33,11 +34,14 @@ const TransactionCardMob = ({ item, lastEle, ind }: Props) => {
 					{item.status}
 				</p>
 			</div>
-			<div className={styles.container__details__btn_container}>
+			<Link
+				href={`/admin/transactions/${item.id}`}
+				className={styles.container__details__btn_container}
+			>
 				<Button buttonType="secondary" className={styles.btn}>
 					see details
 				</Button>
-			</div>
+			</Link>
 		</MobileCard>
 	);
 };
