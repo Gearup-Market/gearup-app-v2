@@ -225,7 +225,7 @@ const PaymentComp = ({
 					icon="/svgs/fiat-wallet.svg"
 					isLoading={isFetching}
 					hasBalance
-					disabled={isPending || amount <= 0}
+					disabled={isPending || amount < 0}
 					onClick={() => handlePayment("fiat")}
 				/>
 				<PaymentOption

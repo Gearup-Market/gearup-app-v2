@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./TransactionTable.module.scss";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -19,7 +19,7 @@ import { debounce } from "lodash";
 import { usePercentageToPixels } from "@/hooks";
 import { formatNum } from "@/utils";
 import { getTransactions } from "@/app/api/hooks/transactions";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import SearchTransactions from "./searchTransactions/SearchTransactions";
 import { isListing } from "@/components/CartComponent/CartItems/CartItems";
@@ -30,6 +30,9 @@ const TransactionTable = () => {
 	const { userId } = useAppSelector(s => s.user);
 	const search = useSearchParams();
 	const searchParams = new URLSearchParams(search.toString());
+	const router = useRouter();
+	const pathName = usePathname();
+	const page = searchParams.get("page");
 
 	const queryParams = {
 		status: searchParams.get("status") || undefined,
@@ -37,7 +40,7 @@ const TransactionTable = () => {
 	};
 
 	const { data, isFetching, refetch } = useQuery({
-		queryKey: ["transactions", { page: currentPage, userId, ...queryParams }],
+		queryKey: ["transactions", { page, userId, ...queryParams }],
 		queryFn: getTransactions,
 		refetchInterval: 60000,
 		enabled: true
@@ -52,13 +55,23 @@ const TransactionTable = () => {
 	const statusWidth = usePercentageToPixels(containerRef, 10);
 	const actionsWidth = usePercentageToPixels(containerRef, 10);
 
-	const updatePage = (page: number) => {
-		setCurrentPage(page);
-	};
+	const updatePage = useCallback(
+		(page: number) => {
+			const current = new URLSearchParams(Array.from(searchParams.entries()));
+			current.set("page", page.toString());
+			const search = current.toString();
+			const query = search ? `?${search}` : "";
+
+			router.push(`${pathName}${query}`);
+		},
+		[pathName, router, searchParams]
+	);
 
 	useEffect(() => {
-		refetch();
-	}, [currentPage, refetch]);
+		if (!page) {
+			updatePage(1);
+		}
+	}, [page, updatePage]);
 
 	const transactions: any[] = useMemo(
 		() =>

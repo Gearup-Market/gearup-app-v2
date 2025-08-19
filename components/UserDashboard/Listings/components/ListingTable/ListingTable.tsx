@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./ListingTable.module.scss";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -15,7 +15,7 @@ import Fade from "@mui/material/Fade";
 import ListingCardMob from "./ListingCardMob/ListingCardMob";
 import { useAppDispatch, useAppSelector } from "@/store/configureStore";
 import { Filter } from "@/interfaces/Listing";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { updateNewListing } from "@/store/slices/addListingSlice";
 import {
 	getListingsByUser,
@@ -67,6 +67,8 @@ const ListingTable = ({ activeFilter }: Props) => {
 
 	const search = useSearchParams();
 	const searchParams = new URLSearchParams(search.toString());
+	const pathName = usePathname();
+	const page = searchParams.get("page");
 	const type = searchParams.get("type");
 
 	const queryParams = {
@@ -81,7 +83,7 @@ const ListingTable = ({ activeFilter }: Props) => {
 		isFetching,
 		refetch
 	} = useQuery({
-		queryKey: ["getUserListings", { page: currentPage, userId, ...queryParams }],
+		queryKey: ["getUserListings", { page, userId, ...queryParams }],
 		queryFn: getListingsByUser,
 		refetchInterval: 60000,
 		enabled: true
@@ -101,13 +103,23 @@ const ListingTable = ({ activeFilter }: Props) => {
 	const { mutateAsync: postRemoveListing, isPending: isPendingRemoval } =
 		usePostRemoveListing();
 
-	const updatePage = (page: number) => {
-		setCurrentPage(page);
-	};
+	const updatePage = useCallback(
+		(page: number) => {
+			const current = new URLSearchParams(Array.from(searchParams.entries()));
+			current.set("page", page.toString());
+			const search = current.toString();
+			const query = search ? `?${search}` : "";
+
+			router.push(`${pathName}${query}`);
+		},
+		[pathName, router, searchParams]
+	);
 
 	useEffect(() => {
-		refetch();
-	}, [currentPage, refetch]);
+		if (!page) {
+			updatePage(1);
+		}
+	}, [page, updatePage]);
 
 	const listings = userListings?.data || [];
 	const courses = userCourses?.data || [];
