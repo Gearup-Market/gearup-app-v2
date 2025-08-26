@@ -58,7 +58,7 @@ const PriceContainer = ({
 			return toast.error("Can not buy own course?");
 		router.push(
 			user.isAuthenticated
-				? `${AppRoutes.userDashboard.messages}?participantId=${course?.author?._id}&courseId=${course?._id}&fromListing=true`
+				? `${AppRoutes.userDashboard.messages}?participantId=${course?.author?._id}&courseId=${course?._id}&mobile=true`
 				: `/signup`
 		);
 	};

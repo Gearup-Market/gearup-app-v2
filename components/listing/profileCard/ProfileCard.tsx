@@ -20,7 +20,7 @@ const ProfileCard = ({ listing }: { listing: Listing }) => {
 		if (userId === user._id) return toast.error("Can not buy own listing");
 		router.push(
 			isAuthenticated
-				? `${AppRoutes.userDashboard.messages}?participantId=${user?._id}&listingId=${listing?._id}&fromListing=true`
+				? `${AppRoutes.userDashboard.messages}?participantId=${user?._id}&listingId=${listing?._id}&mobile=true`
 				: `/signup`
 		);
 	};
