@@ -3,8 +3,8 @@ import { QueryClient } from "@tanstack/react-query";
 import { getAuthToken } from "@/utils/tokenStorage";
 
 const DEFAULT_API_CONFIG: CreateAxiosDefaults = {
-	// baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-	baseURL: "http://localhost:5002/api/v1/",
+	baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+	// baseURL: "http://localhost:5002/api/v1/",
 	headers: {
 		Accept: "application/json",
 		"Content-Type": "application/json"
