@@ -88,7 +88,7 @@ const BuyPriceContainer = ({
 		if (user._id === listing.user._id) return toast.error("Can not buy own listing");
 		router.push(
 			user.isAuthenticated
-				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}&fromListing=true`
+				? `${AppRoutes.userDashboard.messages}?participantId=${listing.user?._id}&listingId=${listing?._id}&mobile=true`
 				: `/signup`
 		);
 	};
